@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PUBLIC_GITHUB_TOKEN }}
+          token: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
       - uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -25,13 +25,13 @@ jobs:
       - name: Update dist
         run: |
           npm run build
-          git config --global user.name 'wgsadmin'
-          git config --global user.email 'operations@webgeoservices.com'
+          git config --global user.name 'gaelsimon'
+          git config --global user.email 'gael.simon@woosmap.com'
           git add dist
           git commit -m "chore: update dist folder [skip ci]" || true
           git push origin
         env:
-          GH_TOKEN: ${{ secrets.PUBLIC_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
@@ -44,5 +44,5 @@ jobs:
             "@semantic-release/git@9.0.1"
             "@semantic-release/github@7.2.3"
         env:
-          GH_TOKEN: ${{ secrets.PUBLIC_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
           NPM_TOKEN: skip

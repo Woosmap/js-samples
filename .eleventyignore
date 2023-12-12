@@ -1,0 +1,9 @@
+dist
+rules
+cli
+assets
+.github
+node_modules
+shared
+*.md
+.cache

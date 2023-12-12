@@ -1,0 +1,61 @@
+{
+  "name": "@woosmap/js-samples",
+  "description": "Samples for Woosmap Map JS API",
+  "version": "1.0.0",
+  "keywords": [
+    "woosmap",
+    "javascript",
+    "map"
+  ],
+  "homepage": "https://github.com/woosmap/js-samples#readme",
+  "bugs": {
+    "url": "https://github.com/woosmap/js-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woosmap/js-samples.git"
+  },
+  "files": [],
+  "private": true,
+  "scripts": {
+    "build:eleventy": "eleventy --incremental",
+    "build": "npm-run-all clean -p build:*",
+    "ci": "npm run build && npm run test",
+    "clean": "npx rimraf dist/*",
+    "clean:cache": "npx rimraf .cache/* ",
+    "format": "npx eslint --fix \"samples/**/*.{ts*,js*}\" \"src/**/*.{ts*,js*}\"",
+    "lint": "npx eslint \"samples/**/*.{ts*,js*}\" \"src/**/*.{ts*,js*}\"",
+    "start": "npm-run-all clean -p watch:*",
+    "serve": "http-server dist --port 8080",
+    "test": "npm-run-all -s test:*",
+    "test:check": "tsc --noEmit --skipLibCheck",
+    "test:playwright": "playwright test e2e show-report",
+    "test:playwright:app": "playwright test app",
+    "watch:eleventy": "eleventy --serve --port 8080 --incremental"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@playwright/test": "^1.40.1",
+    "@types/woosmap.map": "^1.4.5",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.3.1",
+    "dts-minify": "^0.3.2",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "http-server": "^14.1.1",
+    "jimp": "^0.22.10",
+    "mime": "^3.0.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.1.0",
+    "sass": "^1.69.5",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.7",
+    "lodash": "^4.17.21",
+    "yaml": "^2.3.4"
+  },
+  "dependencies": {}
+}

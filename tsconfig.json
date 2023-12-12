@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+    "target": "es6",
+    "strict": true,
+    "noImplicitAny": false,
+    "lib": ["esnext", "es6", "dom", "dom.iterable"],
+    "moduleResolution": "Node",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "experimentalDecorators": true
+  },
+  "include": ["samples/**/*", "src/**/*"],
+  "exclude": ["node_modules", "./dist"]
+}

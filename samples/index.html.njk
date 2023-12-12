@@ -1,0 +1,268 @@
+---
+permalink: /index.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>JS Samples</title>
+    <meta name="description" content="Demo explorer for Woosmap Map JS API samples.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        }
+
+        .card {
+            font-size: 15px;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0, 0, 0, .08);
+        }
+
+        .card:hover:not(.active) {
+            background-color: rgba(60, 64, 67, 0.04);
+        }
+
+        .card-header {
+            margin-bottom: 10px;
+        }
+
+        .card-header .subheader {
+            opacity: .55;
+            font-weight: 400;
+        }
+
+        .card-footer {
+            gap: 4px;
+            flex-wrap: wrap;
+            display: none;
+        }
+
+        .card.active .card-footer {
+            display: flex;
+        }
+
+        .card-description {
+            padding-bottom: 10px;
+        }
+
+        .button {
+            color: #1d1d1d;
+            cursor: pointer;
+            height: 36px;
+            font: inherit;
+            vertical-align: baseline;
+            letter-spacing: .01em;
+            background: transparent;
+            border: 1px solid #dadce0;
+            border-radius: 36px;
+            outline: 0;
+            align-items: center;
+            margin: 2px 0;
+            padding: 0 12px;
+            font-size: .875rem;
+            font-weight: 500;
+            list-style: none;
+            display: flex;
+            overflow: visible;
+            position: relative;
+        }
+
+        .button:hover, .button.active {
+            color: #fff;
+            background-color: #1D1D1D;
+            border-color: #1D1D1D;
+        }
+
+        .button a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .button:focus:not(:focus-visible):not(.focus-visible) {
+            outline: none;
+        }
+
+        iframe {
+            border: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #sidebar {
+            width: 330px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        #content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        #title-rendering {
+            background: #fff;
+            padding: 10px 15px;
+            font-size: 13px;
+            border-top: 1px solid #ccc;
+        }
+
+        .buttonIcon {
+            display: flex;
+        }
+
+        .buttonIcon:before {
+            content: "";
+            width: 18px;
+            height: 18px;
+            background-size: contain;
+            margin-left: 0;
+            margin-right: 6px;
+            display: inline-block;
+            position: relative;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .stackblitz:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231D1D1D'/%3E%3Cpath d='M8 18.1176H14.8868L10.8359 28L24 13.8824H17.1132L21.1641 4L8 18.1176Z' fill='white'/%3E%3C/svg%3E");
+        }
+
+        .button:hover .stackblitz:before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='white'/%3E%3Cpath d='M8 18.1176H14.8868L10.8359 28L24 13.8824H17.1132L21.1641 4L8 18.1176Z' fill='%231D1D1D'/%3E%3C/svg%3E");
+        }
+
+        .codesandbox:before {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' class='c-ePRSge c-ePRSge-iwEsqY-css'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 0h23.987v24H0V0Zm21.533 2.455v19.09H2.453V2.456h19.08Z' fill='currentColor' class='c-gSiLpy'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .button:hover .codesandbox:before {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' class='c-ePRSge c-ePRSge-iwEsqY-css'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 0h23.987v24H0V0Zm21.533 2.455v19.09H2.453V2.456h19.08Z' fill='white' class='c-gSiLpy'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .jsfiddle:before {
+            background-image: url("data:image/svg+xml,%0A%3Csvg width='20px' height='15px' viewBox='0 0 20 15' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='jsfiddle-logo-svgrepo-com' transform='translate(0.000000, 0.991000)' fill-rule='nonzero'%3E%3Cpath d='M17.4041194,6.15872574 C17.4156538,6.01198261 17.4265473,5.86716189 17.4265473,5.71849636 C17.4265473,2.55999473 14.8659118,0 11.708051,0 C9.40181293,0 7.41853792,1.36938892 6.51501036,3.33600314 C6.0388962,2.99894251 5.45769089,2.79773141 4.8284256,2.79773141 C3.214892,2.79773141 1.90766065,4.10560356 1.90766065,5.71913716 C1.90766065,5.96071864 1.94034144,6.19461052 1.99545021,6.41953121 C0.806766799,7.06866129 0,8.32847346 0,9.77860314 C0,11.8913197 1.71221675,13.6035364 3.8242925,13.6035364 C5.93636825,13.6035364 14.6236895,13.6035364 16.1757064,13.6035364 C18.2877821,13.6035364 20,11.8913197 20,9.77860314 C20.0012805,8.09586318 18.9138434,6.67072469 17.4041194,6.15872574 Z' id='Path' fill='%231D1D1D'%3E%3C/path%3E%3Cpath d='M16.9861763,8.67268671 C16.8554532,10.0555324 15.8936128,11.5357797 13.5880156,11.5357797 C11.8443997,11.5357797 10.1860101,9.68386861 9.46254724,8.65666672 C9.46062484,8.65346272 8.11110071,6.56958216 6.61739666,6.62340933 C5.15637338,6.67595491 4.77125277,7.44427372 4.70525041,8.13313338 C4.63988884,8.82135224 5.03333984,9.53007669 5.66196433,9.85496213 C6.45142954,10.2599475 7.43505705,10.0113172 8.43150055,9.14751928 L9.40872007,10.2785307 C8.44623895,11.1115703 7.41967786,11.5396245 6.44630314,11.5402653 C5.93622659,11.5402653 5.44088844,11.4223581 4.97694947,11.1833399 C3.80172285,10.5771434 3.09428001,9.29554401 3.21795434,7.99343905 C3.34867748,6.60931174 4.3111586,5.12906447 6.61675586,5.12906447 C8.67436363,5.12906447 10.1200077,7.00148114 10.5909955,7.65509682 C11.3708487,8.73997068 12.7312664,10.0420756 13.5873748,10.0420756 C15.0496797,10.0420756 15.4335187,9.21992964 15.499521,8.53171078 C15.5648826,7.84413273 15.1714316,7.13476748 14.5428071,6.81052284 C13.7539827,6.40553744 12.7703552,6.65480852 11.7739117,7.51796569 L10.7966922,6.38759505 C12.2647643,5.11817088 13.8795794,4.78815904 15.2284628,5.4834267 C16.4036894,6.0889824 17.1104914,7.37058176 16.9861763,8.67268671 Z' id='Path' fill='%23FFFFFF'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .button:hover .jsfiddle:before {
+            background-image: url("data:image/svg+xml,%0A%3Csvg width='20px' height='15px' viewBox='0 0 20 15' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='jsfiddle-logo-svgrepo-com' transform='translate(0.000000, 0.991000)' fill-rule='nonzero'%3E%3Cpath d='M17.4041194,6.15872574 C17.4156538,6.01198261 17.4265473,5.86716189 17.4265473,5.71849636 C17.4265473,2.55999473 14.8659118,0 11.708051,0 C9.40181293,0 7.41853792,1.36938892 6.51501036,3.33600314 C6.0388962,2.99894251 5.45769089,2.79773141 4.8284256,2.79773141 C3.214892,2.79773141 1.90766065,4.10560356 1.90766065,5.71913716 C1.90766065,5.96071864 1.94034144,6.19461052 1.99545021,6.41953121 C0.806766799,7.06866129 0,8.32847346 0,9.77860314 C0,11.8913197 1.71221675,13.6035364 3.8242925,13.6035364 C5.93636825,13.6035364 14.6236895,13.6035364 16.1757064,13.6035364 C18.2877821,13.6035364 20,11.8913197 20,9.77860314 C20.0012805,8.09586318 18.9138434,6.67072469 17.4041194,6.15872574 Z' id='Path' fill='%23FFFFFF'%3E%3C/path%3E%3Cpath d='M16.9861763,8.67268671 C16.8554532,10.0555324 15.8936128,11.5357797 13.5880156,11.5357797 C11.8443997,11.5357797 10.1860101,9.68386861 9.46254724,8.65666672 C9.46062484,8.65346272 8.11110071,6.56958216 6.61739666,6.62340933 C5.15637338,6.67595491 4.77125277,7.44427372 4.70525041,8.13313338 C4.63988884,8.82135224 5.03333984,9.53007669 5.66196433,9.85496213 C6.45142954,10.2599475 7.43505705,10.0113172 8.43150055,9.14751928 L9.40872007,10.2785307 C8.44623895,11.1115703 7.41967786,11.5396245 6.44630314,11.5402653 C5.93622659,11.5402653 5.44088844,11.4223581 4.97694947,11.1833399 C3.80172285,10.5771434 3.09428001,9.29554401 3.21795434,7.99343905 C3.34867748,6.60931174 4.3111586,5.12906447 6.61675586,5.12906447 C8.67436363,5.12906447 10.1200077,7.00148114 10.5909955,7.65509682 C11.3708487,8.73997068 12.7312664,10.0420756 13.5873748,10.0420756 C15.0496797,10.0420756 15.4335187,9.21992964 15.499521,8.53171078 C15.5648826,7.84413273 15.1714316,7.13476748 14.5428071,6.81052284 C13.7539827,6.40553744 12.7703552,6.65480852 11.7739117,7.51796569 L10.7966922,6.38759505 C12.2647643,5.11817088 13.8795794,4.78815904 15.2284628,5.4834267 C16.4036894,6.0889824 17.1104914,7.37058176 16.9861763,8.67268671 Z' id='Path' fill='%231D1D1D'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        a[target=_blank]:after {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='10' viewBox='0 0 11 10'%3E%3Cpolygon points='12 5.038 6.962 10.066 5.668 8.772 8.502 5.961 0 5.961 0 4.116 8.502 4.116 5.691 1.282 6.984 0' transform='rotate(-40 6 5.033)'/%3E%3C/svg%3E") 50%/contain no-repeat;
+            content: "";
+            margin: 0 0.15rem;
+            padding-right: 0.65rem;
+        }
+
+        .button:hover a[target=_blank]:after {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='10' viewBox='0 0 11 10'%3E%3Cpolygon fill='%23FFF' points='12 5.038 6.962 10.066 5.668 8.772 8.502 5.961 0 5.961 0 4.116 8.502 4.116 5.691 1.282 6.984 0' transform='rotate(-40 6 5.033)'/%3E%3C/svg%3E") 50%/contain no-repeat;
+        }
+    </style>
+
+    <script>
+      let activeCard, activeElement;
+
+      function setSource(event, src, title, targetElement) {
+        if (event) {
+          event.stopPropagation();
+        }
+
+        const iframe = document.getElementById("iframe");
+        const path = document.getElementById("path");
+
+        iframe.src = src;
+        iframe.title = title;
+        path.setAttribute("href", src);
+        path.innerText = src;
+
+        if (targetElement) {
+          if (activeCard) {
+            activeCard.classList.remove("active");
+            activeElement.classList.remove("active");
+          }
+
+          activeCard = targetElement.closest(".card");
+          activeCard.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+          activeElement = targetElement.tagName === "BUTTON" ? targetElement : targetElement.getElementsByTagName("button")[0];
+          activeElement.classList.add("active");
+          activeCard.classList.add("active");
+        }
+      }
+    </script>
+</head>
+<body>
+
+{% set initialURL="./samples/add-map/app/dist/index.html" %}
+{% set initialTitle="Add map" %}
+{% set initialScript="var toto = poeut" %}
+
+<div style="display:flex; height: 100%;">
+    <div id="sidebar">
+        {% for sample in collections.samples_ts|sort(false, true, 'fileSlug') %}
+            <div class="card"
+                 onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}', this)">
+                <h4 class="card-header">{{ sample.data.title }} <span class="subheader">({{ sample.data.name }})</span>
+                </h4>
+                <div class="card-description">{{ sample.data.description }}</div>
+                <div class="card-footer">
+                    <button class="button"
+                            onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}', this)">
+                        Iframe
+                    </button>
+                    <button class="button"
+                            onclick="setSource(event, './samples/{{ sample.data.name }}/app/dist/index.html', '{{ sample.data.title }}', this)">
+                        App
+                    </button>
+                    <button class="button">
+                        <div class="buttonIcon codesandbox"></div>
+                        <a target="_blank"
+                           href="https://codesandbox.io/p/devbox/github/woosmap/js-samples/tree/master/dist/samples/{{ sample.data.name }}/app?file=index.ts">
+                            CodeSandbox
+                        </a>
+                    </button>
+
+                    <button class="button">
+                        <div class="buttonIcon stackblitz"></div>
+                        <a target="_blank"
+                           href="https://stackblitz.com/github/woosmap/js-samples/tree/master/dist/samples/{{ sample.data.name }}/app?file=index.ts">
+                            StackBlitz
+                        </a>
+                    </button>
+
+                    <button class="button">
+                        <div class="buttonIcon jsfiddle"></div>
+                        <a target="_blank"
+                           href="https://jsfiddle.net/gh/get/library/pure/woosmap/js-samples/tree/master/dist/samples/{{ sample.data.name }}/jsfiddle">
+                            JsFiddle
+                        </a>
+                    </button>
+
+                    <button class="button">
+                        <a target="_blank"
+                           href="https://github.com/woosmap/js-samples/tree/master/samples/{{ sample.data.name }}">Code</a>
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="content">
+        <iframe id="iframe" title="{{ initialTitle }}" src="{{ initialURL }}" allow="geolocation"></iframe>
+        <div id="title-rendering">Rendering <a id="path" href="{{ initialURL }}">{{ initialURL }}</a></div>
+        <script>
+          setSource(null, '{{ initialURL }}', '{{ initialTitle }}', document.querySelectorAll(".card")[0]);
+        </script>
+    </div>
+</div>
+</body>
+</html>

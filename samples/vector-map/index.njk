@@ -1,0 +1,14 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <div id="map-panel">
+        <label class="toggle">
+            <span class="toggle-label">Buildings</span>
+            <input class="toggle-checkbox" type="checkbox" id="toggleBuildings">
+            <div class="toggle-switch"></div>
+        </label>
+    </div>
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

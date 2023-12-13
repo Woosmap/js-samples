@@ -4,6 +4,9 @@ on:
     branches:
       - master
     types: [submitted]
+  push:
+    branches-ignore:
+      - master
 concurrency:
   group: e2e-${{ github.ref }}
   cancel-in-progress: true

@@ -182,12 +182,18 @@ permalink: /index.html
     </style>
 
     <script>
-      let activeCard, activeElement;
+      let activeCard, activeElement, config;
 
-      function setSource(event, src, title, targetElement) {
+      function setSource(event, src, title, name, targetElement) {
+        console.log(event, src, title, name, targetElement);
         if (event) {
           event.stopPropagation();
         }
+
+        config.set("sample", name);
+        window.history.replaceState({}, "", `${document.location.pathname}?${config}`);
+
+        console.log(config);
 
         const iframe = document.getElementById("iframe");
         const path = document.getElementById("path");
@@ -214,25 +220,25 @@ permalink: /index.html
 </head>
 <body>
 
-{% set initialURL="./samples/add-map/app/dist/index.html" %}
-{% set initialTitle="Add map" %}
-{% set initialScript="var toto = poeut" %}
-
+{% set initialSample=collections.samples_ts|sort(false, true, 'fileSlug')|first %}
+{% set initialURL="./samples/" + initialSample.data.name + "/iframe/index.html" %}
+{% set initialTitle=initialSample.data.title %}
+{% set initialName=initialSample.data.name %}
 <div style="display:flex; height: 100%;">
     <div id="sidebar">
         {% for sample in collections.samples_ts|sort(false, true, 'fileSlug') %}
-            <div class="card"
-                 onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}', this)">
+            <div class="card" id="card-{{ sample.data.name }}"
+                 onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}', '{{ sample.data.name }}', this)">
                 <h4 class="card-header">{{ sample.data.title }} <span class="subheader">({{ sample.data.name }})</span>
                 </h4>
                 <div class="card-description">{{ sample.data.description }}</div>
                 <div class="card-footer">
                     <button class="button"
-                            onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}', this)">
+                            onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}','{{ sample.data.name }}', this)">
                         Iframe
                     </button>
                     <button class="button"
-                            onclick="setSource(event, './samples/{{ sample.data.name }}/app/dist/index.html', '{{ sample.data.title }}', this)">
+                            onclick="setSource(event, './samples/{{ sample.data.name }}/app/dist/index.html', '{{ sample.data.title }}', '{{ sample.data.name }}', this)">
                         App
                     </button>
                     <button class="button">
@@ -271,7 +277,13 @@ permalink: /index.html
         <iframe id="iframe" title="{{ initialTitle }}" src="{{ initialURL }}" allow="geolocation"></iframe>
         <div id="title-rendering">Rendering <a id="path" href="{{ initialURL }}">{{ initialURL }}</a></div>
         <script>
-          setSource(null, '{{ initialURL }}', '{{ initialTitle }}', document.querySelectorAll(".card")[0]);
+          config = new URL(document.location.href).searchParams;
+          if (config.get("sample")) {
+            const sampleElement = document.getElementById("card-" + config.get("sample"));
+            sampleElement.click();
+          } else {
+            setSource(null, '{{ initialURL }}', '{{ initialTitle }}', '{{ initialName }}', document.querySelectorAll(".card")[0]);
+          }
         </script>
     </div>
 </div>

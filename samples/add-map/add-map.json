@@ -2,8 +2,6 @@
   "title": "Add Map",
   "description": "A basic Woosmap Map sample centered on London",
   "callback": "initMap",
-  "version": "weekly",
-  "dynamic_import": "true",
   "tag": "add_map",
   "name": "add-map",
   "pagination": {

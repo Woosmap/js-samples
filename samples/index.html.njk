@@ -22,10 +22,21 @@ permalink: /index.html
             cursor: pointer;
             vertical-align: middle;
             border-bottom: 1px solid rgba(0, 0, 0, .08);
+            position: relative;
         }
 
         .card:hover:not(.active) {
             background-color: rgba(60, 64, 67, 0.04);
+        }
+
+        .card.active::before {
+            content: '';
+            position: absolute;
+            background-color: #F50157;
+            width: 3px;
+            height: 100%;
+            bottom: 0;
+            left: 0;
         }
 
         .card-header {

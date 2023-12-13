@@ -200,12 +200,22 @@
     </style>
 
     <script>
-      let activeCard, activeElement;
+      let activeCard, activeElement, config;
 
-      function setSource(event, src, title, targetElement) {
+      function setSource(event, src, title, name, targetElement) {
+        console.log(event, src, title, name, targetElement);
         if (event) {
           event.stopPropagation();
         }
+
+        config.set("sample", name);
+        window.history.replaceState(
+          {},
+          "",
+          `${document.location.pathname}?${config}`,
+        );
+
+        console.log(config);
 
         const iframe = document.getElementById("iframe");
         const path = document.getElementById("path");
@@ -242,7 +252,8 @@
       <div id="sidebar">
         <div
           class="card"
-          onclick="setSource(event, './samples/add-map/iframe/index.html', 'Add Map', this)"
+          id="card-add-map"
+          onclick="setSource(event, './samples/add-map/iframe/index.html', 'Add Map', 'add-map', this)"
         >
           <h4 class="card-header">
             Add Map <span class="subheader">(add-map)</span>
@@ -253,13 +264,13 @@
           <div class="card-footer">
             <button
               class="button"
-              onclick="setSource(event, './samples/add-map/iframe/index.html', 'Add Map', this)"
+              onclick="setSource(event, './samples/add-map/iframe/index.html', 'Add Map','add-map', this)"
             >
               Iframe
             </button>
             <button
               class="button"
-              onclick="setSource(event, './samples/add-map/app/dist/index.html', 'Add Map', this)"
+              onclick="setSource(event, './samples/add-map/app/dist/index.html', 'Add Map', 'add-map', this)"
             >
               App
             </button>
@@ -305,7 +316,8 @@
 
         <div
           class="card"
-          onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Simple Marker', this)"
+          id="card-marker-simple"
+          onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Simple Marker', 'marker-simple', this)"
         >
           <h4 class="card-header">
             Simple Marker <span class="subheader">(marker-simple)</span>
@@ -316,13 +328,13 @@
           <div class="card-footer">
             <button
               class="button"
-              onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Simple Marker', this)"
+              onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Simple Marker','marker-simple', this)"
             >
               Iframe
             </button>
             <button
               class="button"
-              onclick="setSource(event, './samples/marker-simple/app/dist/index.html', 'Simple Marker', this)"
+              onclick="setSource(event, './samples/marker-simple/app/dist/index.html', 'Simple Marker', 'marker-simple', this)"
             >
               App
             </button>
@@ -368,7 +380,8 @@
 
         <div
           class="card"
-          onclick="setSource(event, './samples/stores-overlay/iframe/index.html', 'Stores Overlay', this)"
+          id="card-stores-overlay"
+          onclick="setSource(event, './samples/stores-overlay/iframe/index.html', 'Stores Overlay', 'stores-overlay', this)"
         >
           <h4 class="card-header">
             Stores Overlay <span class="subheader">(stores-overlay)</span>
@@ -377,13 +390,13 @@
           <div class="card-footer">
             <button
               class="button"
-              onclick="setSource(event, './samples/stores-overlay/iframe/index.html', 'Stores Overlay', this)"
+              onclick="setSource(event, './samples/stores-overlay/iframe/index.html', 'Stores Overlay','stores-overlay', this)"
             >
               Iframe
             </button>
             <button
               class="button"
-              onclick="setSource(event, './samples/stores-overlay/app/dist/index.html', 'Stores Overlay', this)"
+              onclick="setSource(event, './samples/stores-overlay/app/dist/index.html', 'Stores Overlay', 'stores-overlay', this)"
             >
               App
             </button>
@@ -429,7 +442,8 @@
 
         <div
           class="card"
-          onclick="setSource(event, './samples/stores-overlay-click-event/iframe/index.html', 'Stores Overlay Click Event', this)"
+          id="card-stores-overlay-click-event"
+          onclick="setSource(event, './samples/stores-overlay-click-event/iframe/index.html', 'Stores Overlay Click Event', 'stores-overlay-click-event', this)"
         >
           <h4 class="card-header">
             Stores Overlay Click Event
@@ -442,13 +456,13 @@
           <div class="card-footer">
             <button
               class="button"
-              onclick="setSource(event, './samples/stores-overlay-click-event/iframe/index.html', 'Stores Overlay Click Event', this)"
+              onclick="setSource(event, './samples/stores-overlay-click-event/iframe/index.html', 'Stores Overlay Click Event','stores-overlay-click-event', this)"
             >
               Iframe
             </button>
             <button
               class="button"
-              onclick="setSource(event, './samples/stores-overlay-click-event/app/dist/index.html', 'Stores Overlay Click Event', this)"
+              onclick="setSource(event, './samples/stores-overlay-click-event/app/dist/index.html', 'Stores Overlay Click Event', 'stores-overlay-click-event', this)"
             >
               App
             </button>
@@ -494,7 +508,8 @@
 
         <div
           class="card"
-          onclick="setSource(event, './samples/vector-map/iframe/index.html', 'Vector Map', this)"
+          id="card-vector-map"
+          onclick="setSource(event, './samples/vector-map/iframe/index.html', 'Vector Map', 'vector-map', this)"
         >
           <h4 class="card-header">
             Vector Map <span class="subheader">(vector-map)</span>
@@ -505,13 +520,13 @@
           <div class="card-footer">
             <button
               class="button"
-              onclick="setSource(event, './samples/vector-map/iframe/index.html', 'Vector Map', this)"
+              onclick="setSource(event, './samples/vector-map/iframe/index.html', 'Vector Map','vector-map', this)"
             >
               Iframe
             </button>
             <button
               class="button"
-              onclick="setSource(event, './samples/vector-map/app/dist/index.html', 'Vector Map', this)"
+              onclick="setSource(event, './samples/vector-map/app/dist/index.html', 'Vector Map', 'vector-map', this)"
             >
               App
             </button>
@@ -558,23 +573,32 @@
       <div id="content">
         <iframe
           id="iframe"
-          title="Add map"
-          src="./samples/add-map/app/dist/index.html"
+          title="Add Map"
+          src="./samples/add-map/iframe/index.html"
           allow="geolocation"
         ></iframe>
         <div id="title-rendering">
           Rendering
-          <a id="path" href="./samples/add-map/app/dist/index.html"
-            >./samples/add-map/app/dist/index.html</a
+          <a id="path" href="./samples/add-map/iframe/index.html"
+            >./samples/add-map/iframe/index.html</a
           >
         </div>
         <script>
-          setSource(
-            null,
-            "./samples/add-map/app/dist/index.html",
-            "Add map",
-            document.querySelectorAll(".card")[0],
-          );
+          config = new URL(document.location.href).searchParams;
+          if (config.get("sample")) {
+            const sampleElement = document.getElementById(
+              "card-" + config.get("sample"),
+            );
+            sampleElement.click();
+          } else {
+            setSource(
+              null,
+              "./samples/add-map/iframe/index.html",
+              "Add Map",
+              "add-map",
+              document.querySelectorAll(".card")[0],
+            );
+          }
         </script>
       </div>
     </div>

@@ -4,8 +4,58 @@
     <title>Add Map</title>
     <meta name="viewport" content="initial-scale=1.0" />
 
-    <script type="module" crossorigin src="./assets/index-izMqfpWN.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-0mrAfM0I.css" />
+    <script type="module" crossorigin>
+      (function () {
+        const r = document.createElement("link").relList;
+        if (r && r.supports && r.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          n(e);
+        new MutationObserver((e) => {
+          for (const t of e)
+            if (t.type === "childList")
+              for (const o of t.addedNodes)
+                o.tagName === "LINK" && o.rel === "modulepreload" && n(o);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function s(e) {
+          const t = {};
+          return (
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
+          );
+        }
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const t = s(e);
+          fetch(e.href, t);
+        }
+      })();
+      function c() {
+        const i = { lat: 51.50940214, lng: -0.133012 };
+        new woosmap.map.Map(document.getElementById("map"), {
+          zoom: 13,
+          center: i,
+        });
+      }
+      window.initMap = c;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
   <body>
     <!--The div element for the map -->

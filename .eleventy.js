@@ -66,15 +66,15 @@ module.exports = function (eleventyConfig) {
             switch (asset.name) {
               case "index.css":
                 html = html.replace(
-                  /<link rel="stylesheet" href="\.\/assets\/index\..*.css">/gm,
-                  () => `<style>${asset.source.trim()}</style>`
+                  /<link rel="stylesheet" crossorigin href="\.\/assets\/index-.+\.css">/gm,
+                  () => `<style>${asset.source.trim()}</style>`,
                 );
                 break;
               case "index":
                 html = html.replace(
-                  /<script type="module" crossorigin src="\.\/assets\/index\..*.js"><\/script>/gm,
+                  /<script type="module" crossorigin src="\.\/assets\/index-.+\.js"><\/script>/gm,
                   () =>
-                    `<script type="module" crossorigin>${asset.code.trim()}</script>`
+                    `<script type="module" crossorigin>${asset.code.trim()}</script>`,
                 );
                 break;
               default:
@@ -111,11 +111,11 @@ module.exports = function (eleventyConfig) {
           plugins: [...(config.plugins || []), inlinePlugin],
           root,
         });
-      })
+      }),
     );
 
     console.log(
-      chalk.green("[11ty.after] Finished building dist/samples/*/app")
+      chalk.green("[11ty.after] Finished building dist/samples/*/app"),
     );
   });
 

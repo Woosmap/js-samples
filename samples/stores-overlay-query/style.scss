@@ -1,0 +1,11 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_stores_overlay_query] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_toggle.scss");
+@import "../../shared/scss/mixins.scss";
+
+#map-panel {
+  @include map-panel($top: 0, $left: 0);
+}
+/* [END woosmap_stores_overlay_query] */

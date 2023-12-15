@@ -142,6 +142,8 @@ module.exports = {
       switch (data.file) {
         case "app.ts":
         case "app.tsx":
+        case "highlight.ts":
+        case "highlight.tsx":
           return inputContent.replace(/^.*PRESERVE_COMMENT_ABOVE.*\n?/gm, "");
         default:
           return compileTypescriptSample(inputContent, data);
@@ -156,7 +158,13 @@ module.exports = {
           "utf8",
         ),
       ),
-      file: ["docs.js", "app.ts", "jsfiddle.js"],
+      file: [
+        "docs.js",
+        "app.ts",
+        "jsfiddle.js",
+        "highlight.ts",
+        "highlight.js",
+      ],
       pagination: {
         data: "file",
         alias: "file",

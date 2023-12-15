@@ -185,15 +185,12 @@ permalink: /index.html
       let activeCard, activeElement, config;
 
       function setSource(event, src, title, name, targetElement) {
-        console.log(event, src, title, name, targetElement);
         if (event) {
           event.stopPropagation();
         }
 
         config.set("sample", name);
         window.history.replaceState({}, "", `${document.location.pathname}?${config}`);
-
-        console.log(config);
 
         const iframe = document.getElementById("iframe");
         const path = document.getElementById("path");
@@ -221,18 +218,22 @@ permalink: /index.html
 <body>
 
 {% set initialSample=collections.samples_ts|sort(false, true, 'fileSlug')|first %}
-{% set initialURL="./samples/" + initialSample.data.name + "/iframe/index.html" %}
+{% set initialURL="./samples/" + initialSample.data.name + "/highlight/highlight.html" %}
 {% set initialTitle=initialSample.data.title %}
 {% set initialName=initialSample.data.name %}
 <div style="display:flex; height: 100%;">
     <div id="sidebar">
         {% for sample in collections.samples_ts|sort(false, true, 'fileSlug') %}
             <div class="card" id="card-{{ sample.data.name }}"
-                 onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}', '{{ sample.data.name }}', this)">
+                 onclick="setSource(event, './samples/{{ sample.data.name }}/highlight/highlight.html', '{{ sample.data.title }}', '{{ sample.data.name }}', this)">
                 <h4 class="card-header">{{ sample.data.title }} <span class="subheader">({{ sample.data.name }})</span>
                 </h4>
                 <div class="card-description">{{ sample.data.description }}</div>
                 <div class="card-footer">
+                    <button class="button"
+                            onclick="setSource(event, './samples/{{ sample.data.name }}/highlight/highlight.html', '{{ sample.data.title }}','{{ sample.data.name }}', this)">
+                        Highlight
+                    </button>
                     <button class="button"
                             onclick="setSource(event, './samples/{{ sample.data.name }}/iframe/index.html', '{{ sample.data.title }}','{{ sample.data.name }}', this)">
                         Iframe

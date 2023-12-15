@@ -1,3 +1,4 @@
+// [START woosmap_stores_overlay_query]
 function initMap(): void {
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
 
@@ -28,7 +29,7 @@ function initMap(): void {
   const map = new woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
-      zoom: 13,
+      zoom: 8,
       center: center,
     },
   );
@@ -36,29 +37,16 @@ function initMap(): void {
   const storesOverlay = new woosmap.map.StoresOverlay(style);
   storesOverlay.setMap(map);
 
-  // Configure the click listener.
-  window.woosmap.map.event.addListener(
-    map,
-    "store_selected",
-    (store: woosmap.map.stores.StoreResponse) => {
-      const getAddress = (store: woosmap.map.stores.Store): string =>
-        `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
-
-      const getPhone = (store: woosmap.map.stores.Store): string =>
-        `Phone: <a href='${store.contact.phone}'>${store.contact.phone}</a>`;
-
-      function getStoreHTML(store: woosmap.map.stores.Store): string {
-        return `<div>
-                  <span><strong>${store.name}</strong></span>
-                  <p>${getAddress(store)}</p>
-                  <span>${getPhone(store)}</span>
-                </div>`;
-      }
-
-      const infoElement = document.getElementById("info") as HTMLElement;
-      infoElement.innerHTML = getStoreHTML(store.properties);
-    },
-  );
+  // [START woosmap_stores_overlay_query_set_query]
+  const toggle = document.getElementById("toggleQuery") as HTMLInputElement;
+  toggle.onchange = function () {
+    if (toggle.checked) {
+      storesOverlay.setQuery('tag:"DT"');
+    } else {
+      storesOverlay.setQuery(null);
+    }
+  };
+  // [END woosmap_stores_overlay_query_set_query]
 }
 
 declare global {
@@ -67,4 +55,5 @@ declare global {
   }
 }
 window.initMap = initMap;
+// [END woosmap_stores_overlay_query]
 export {};

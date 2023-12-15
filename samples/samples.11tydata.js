@@ -9,7 +9,7 @@ const data = {
     ["WOOSMAP_PUBLIC_API_KEY"],
   ),
   libraries: [],
-  mode: ["jsfiddle", "docs", "app"],
+  mode: ["jsfiddle", "docs", "app", "highlight"],
   availableTypings: ["@types/woosmap.map"],
   devDependencies: ["@types/woosmap.map", "typescript", "vite"],
   dependencies: [],

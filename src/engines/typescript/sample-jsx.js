@@ -12,7 +12,7 @@ module.exports = {
           "utf8",
         ),
       ),
-      file: ["docs.jsx", "app.tsx", "jsfiddle.jsx"],
+      file: ["docs.jsx", "app.tsx", "jsfiddle.jsx", "highlight.jsx"],
       pagination: {
         data: "file",
         alias: "file",

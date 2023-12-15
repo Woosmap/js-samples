@@ -203,7 +203,6 @@
       let activeCard, activeElement, config;
 
       function setSource(event, src, title, name, targetElement) {
-        console.log(event, src, title, name, targetElement);
         if (event) {
           event.stopPropagation();
         }
@@ -214,8 +213,6 @@
           "",
           `${document.location.pathname}?${config}`,
         );
-
-        console.log(config);
 
         const iframe = document.getElementById("iframe");
         const path = document.getElementById("path");
@@ -253,7 +250,7 @@
         <div
           class="card"
           id="card-add-map"
-          onclick="setSource(event, './samples/add-map/iframe/index.html', 'Add Map', 'add-map', this)"
+          onclick="setSource(event, './samples/add-map/highlight/highlight.html', 'Add Map', 'add-map', this)"
         >
           <h4 class="card-header">
             Add Map <span class="subheader">(add-map)</span>
@@ -262,6 +259,12 @@
             A basic Woosmap Map sample centered on London
           </div>
           <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/add-map/highlight/highlight.html', 'Add Map','add-map', this)"
+            >
+              Highlight
+            </button>
             <button
               class="button"
               onclick="setSource(event, './samples/add-map/iframe/index.html', 'Add Map','add-map', this)"
@@ -317,7 +320,7 @@
         <div
           class="card"
           id="card-marker-simple"
-          onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Simple Marker', 'marker-simple', this)"
+          onclick="setSource(event, './samples/marker-simple/highlight/highlight.html', 'Simple Marker', 'marker-simple', this)"
         >
           <h4 class="card-header">
             Simple Marker <span class="subheader">(marker-simple)</span>
@@ -326,6 +329,12 @@
             Adding a simple marker on the center of the map
           </div>
           <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/marker-simple/highlight/highlight.html', 'Simple Marker','marker-simple', this)"
+            >
+              Highlight
+            </button>
             <button
               class="button"
               onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Simple Marker','marker-simple', this)"
@@ -381,13 +390,19 @@
         <div
           class="card"
           id="card-stores-overlay"
-          onclick="setSource(event, './samples/stores-overlay/iframe/index.html', 'Stores Overlay', 'stores-overlay', this)"
+          onclick="setSource(event, './samples/stores-overlay/highlight/highlight.html', 'Stores Overlay', 'stores-overlay', this)"
         >
           <h4 class="card-header">
             Stores Overlay <span class="subheader">(stores-overlay)</span>
           </h4>
           <div class="card-description">Display and Style Stores on a Map</div>
           <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/stores-overlay/highlight/highlight.html', 'Stores Overlay','stores-overlay', this)"
+            >
+              Highlight
+            </button>
             <button
               class="button"
               onclick="setSource(event, './samples/stores-overlay/iframe/index.html', 'Stores Overlay','stores-overlay', this)"
@@ -443,7 +458,7 @@
         <div
           class="card"
           id="card-stores-overlay-click-event"
-          onclick="setSource(event, './samples/stores-overlay-click-event/iframe/index.html', 'Stores Overlay Click Event', 'stores-overlay-click-event', this)"
+          onclick="setSource(event, './samples/stores-overlay-click-event/highlight/highlight.html', 'Stores Overlay Click Event', 'stores-overlay-click-event', this)"
         >
           <h4 class="card-header">
             Stores Overlay Click Event
@@ -454,6 +469,12 @@
             associated attributes.
           </div>
           <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/stores-overlay-click-event/highlight/highlight.html', 'Stores Overlay Click Event','stores-overlay-click-event', this)"
+            >
+              Highlight
+            </button>
             <button
               class="button"
               onclick="setSource(event, './samples/stores-overlay-click-event/iframe/index.html', 'Stores Overlay Click Event','stores-overlay-click-event', this)"
@@ -509,7 +530,7 @@
         <div
           class="card"
           id="card-vector-map"
-          onclick="setSource(event, './samples/vector-map/iframe/index.html', 'Vector Map', 'vector-map', this)"
+          onclick="setSource(event, './samples/vector-map/highlight/highlight.html', 'Vector Map', 'vector-map', this)"
         >
           <h4 class="card-header">
             Vector Map <span class="subheader">(vector-map)</span>
@@ -518,6 +539,12 @@
             Display 3D buildings on tilt the map
           </div>
           <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/vector-map/highlight/highlight.html', 'Vector Map','vector-map', this)"
+            >
+              Highlight
+            </button>
             <button
               class="button"
               onclick="setSource(event, './samples/vector-map/iframe/index.html', 'Vector Map','vector-map', this)"
@@ -574,13 +601,13 @@
         <iframe
           id="iframe"
           title="Add Map"
-          src="./samples/add-map/iframe/index.html"
+          src="./samples/add-map/highlight/highlight.html"
           allow="geolocation"
         ></iframe>
         <div id="title-rendering">
           Rendering
-          <a id="path" href="./samples/add-map/iframe/index.html"
-            >./samples/add-map/iframe/index.html</a
+          <a id="path" href="./samples/add-map/highlight/highlight.html"
+            >./samples/add-map/highlight/highlight.html</a
           >
         </div>
         <script>
@@ -593,7 +620,7 @@
           } else {
             setSource(
               null,
-              "./samples/add-map/iframe/index.html",
+              "./samples/add-map/highlight/highlight.html",
               "Add Map",
               "add-map",
               document.querySelectorAll(".card")[0],

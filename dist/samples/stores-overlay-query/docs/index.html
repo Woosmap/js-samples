@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- [START woosmap_stores_overlay_query] -->
+<html>
+  <head>
+    <title>Stores Overlay Query</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div id="map-panel">
+      <label class="toggle">
+        <span class="toggle-label">Drive-thru</span>
+        <input class="toggle-checkbox" type="checkbox" id="toggleQuery" />
+        <div class="toggle-switch"></div>
+      </label>
+    </div>
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>
+<!-- [END woosmap_stores_overlay_query] -->

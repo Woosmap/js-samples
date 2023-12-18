@@ -319,11 +319,82 @@
 
         <div
           class="card"
-          id="card-marker-simple"
-          onclick="setSource(event, './samples/marker-simple/highlight/highlight.html', 'Simple Marker', 'marker-simple', this)"
+          id="card-marker-click-event"
+          onclick="setSource(event, './samples/marker-click-event/highlight/highlight.html', 'Marker Click Event', 'marker-click-event', this)"
         >
           <h4 class="card-header">
-            Simple Marker <span class="subheader">(marker-simple)</span>
+            Marker Click Event
+            <span class="subheader">(marker-click-event)</span>
+          </h4>
+          <div class="card-description">
+            Listen to this event to get the marker associated attributes.
+          </div>
+          <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/marker-click-event/highlight/highlight.html', 'Marker Click Event','marker-click-event', this)"
+            >
+              Highlight
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/marker-click-event/iframe/index.html', 'Marker Click Event','marker-click-event', this)"
+            >
+              Iframe
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/marker-click-event/app/dist/index.html', 'Marker Click Event', 'marker-click-event', this)"
+            >
+              App
+            </button>
+            <button class="button">
+              <div class="buttonIcon codesandbox"></div>
+              <a
+                target="_blank"
+                href="https://codesandbox.io/p/devbox/github/woosmap/js-samples/tree/master/dist/samples/marker-click-event/app?file=index.ts"
+              >
+                CodeSandbox
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon stackblitz"></div>
+              <a
+                target="_blank"
+                href="https://stackblitz.com/github/woosmap/js-samples/tree/master/dist/samples/marker-click-event/app?file=index.ts"
+              >
+                StackBlitz
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon jsfiddle"></div>
+              <a
+                target="_blank"
+                href="https://jsfiddle.net/gh/get/library/pure/woosmap/js-samples/tree/master/dist/samples/marker-click-event/jsfiddle"
+              >
+                JsFiddle
+              </a>
+            </button>
+
+            <button class="button">
+              <a
+                target="_blank"
+                href="https://github.com/woosmap/js-samples/tree/master/samples/marker-click-event"
+                >Code</a
+              >
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="card"
+          id="card-marker-simple"
+          onclick="setSource(event, './samples/marker-simple/highlight/highlight.html', 'Marker Simple', 'marker-simple', this)"
+        >
+          <h4 class="card-header">
+            Marker Simple <span class="subheader">(marker-simple)</span>
           </h4>
           <div class="card-description">
             Adding a simple marker on the center of the map
@@ -331,19 +402,19 @@
           <div class="card-footer">
             <button
               class="button"
-              onclick="setSource(event, './samples/marker-simple/highlight/highlight.html', 'Simple Marker','marker-simple', this)"
+              onclick="setSource(event, './samples/marker-simple/highlight/highlight.html', 'Marker Simple','marker-simple', this)"
             >
               Highlight
             </button>
             <button
               class="button"
-              onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Simple Marker','marker-simple', this)"
+              onclick="setSource(event, './samples/marker-simple/iframe/index.html', 'Marker Simple','marker-simple', this)"
             >
               Iframe
             </button>
             <button
               class="button"
-              onclick="setSource(event, './samples/marker-simple/app/dist/index.html', 'Simple Marker', 'marker-simple', this)"
+              onclick="setSource(event, './samples/marker-simple/app/dist/index.html', 'Marker Simple', 'marker-simple', this)"
             >
               App
             </button>

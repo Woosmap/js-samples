@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Marker Click Event</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
+        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
+          c(t);
+        new MutationObserver((t) => {
+          for (const e of t)
+            if (e.type === "childList")
+              for (const i of e.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && c(i);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function l(t) {
+          const e = {};
+          return (
+            t.integrity && (e.integrity = t.integrity),
+            t.referrerPolicy && (e.referrerPolicy = t.referrerPolicy),
+            t.crossOrigin === "use-credentials"
+              ? (e.credentials = "include")
+              : t.crossOrigin === "anonymous"
+                ? (e.credentials = "omit")
+                : (e.credentials = "same-origin"),
+            e
+          );
+        }
+        function c(t) {
+          if (t.ep) return;
+          t.ep = !0;
+          const e = l(t);
+          fetch(t.href, e);
+        }
+      })();
+      let s;
+      const r = {
+        megaCities: [
+          {
+            latlng: "35.700556,139.715",
+            cityName: "Tokyo",
+            citizens: "37,400,000",
+          },
+          {
+            latlng: "23.133333,113.266667",
+            cityName: "Guangzhou",
+            citizens: "24,900,000",
+          },
+          {
+            latlng: "37.566535,126.9779692",
+            cityName: "Seoul",
+            citizens: "24,500,000",
+          },
+          {
+            latlng: "28.635308,77.22496",
+            cityName: "Delhi",
+            citizens: "23,900,000",
+          },
+          {
+            latlng: "19.0176147,72.8561644",
+            cityName: "Mumbai",
+            citizens: "23,300,000",
+          },
+          {
+            latlng: "19.4326077,-99.133208",
+            cityName: "Mexico City",
+            citizens: "22,800,000",
+          },
+          {
+            latlng: "40.7143528,-74.00597",
+            cityName: "New York City",
+            citizens: "22,200,000",
+          },
+          {
+            latlng: "-23.5489433,-46.6388182",
+            cityName: "São Paulo",
+            citizens: "20,800,000",
+          },
+          {
+            latlng: "14.5995124,120.9842195",
+            cityName: "Manila",
+            citizens: "20,100,000",
+          },
+          {
+            latlng: "31.230393,121.473704",
+            cityName: "Shanghai",
+            citizens: "18,800,000",
+          },
+          {
+            latlng: "-6.211544,106.845172",
+            cityName: "Jakarta",
+            citizens: "18,700,000",
+          },
+          {
+            latlng: "34.0522342,-118.2436849",
+            cityName: "Los Angeles",
+            citizens: "17,900,000",
+          },
+          {
+            latlng: "24.893379,67.02806",
+            cityName: "Karachi",
+            citizens: "16,900,000",
+          },
+          {
+            latlng: "34.6937378,135.5021651",
+            cityName: "Osaka",
+            citizens: "16,800,000",
+          },
+          {
+            latlng: "22.572646,88.363895",
+            cityName: "Kolkata",
+            citizens: "16,600,000",
+          },
+          {
+            latlng: "30.064742,31.249509",
+            cityName: "Cairo",
+            citizens: "15,300,000",
+          },
+          {
+            latlng: "-34.6084175,-58.3731613",
+            cityName: "Buenos Aires",
+            citizens: "14,800,000",
+          },
+          {
+            latlng: "55.755786,37.617633",
+            cityName: "Moscow",
+            citizens: "14,800,000",
+          },
+          {
+            latlng: "23.709921,90.407143",
+            cityName: "Dhaka",
+            citizens: "14,000,000",
+          },
+          {
+            latlng: "39.904214,116.407413",
+            cityName: "Beijing",
+            citizens: "13,900,000",
+          },
+          {
+            latlng: "35.6961111,51.4230556",
+            cityName: "Tehran",
+            citizens: "13,100,000",
+          },
+          {
+            latlng: "41.00527,28.97696",
+            cityName: "Istanbul",
+            citizens: "13,000,000",
+          },
+          {
+            latlng: "51.5001524,-0.1262362",
+            cityName: "London",
+            citizens: "12,500,000",
+          },
+          {
+            latlng: "-22.9035393,-43.2095869",
+            cityName: "Rio de Janeiro",
+            citizens: "12,500,000",
+          },
+          {
+            latlng: "6.4530556,3.3958333",
+            cityName: "Lagos",
+            citizens: "12,100,000",
+          },
+          {
+            latlng: "48.856614,2.3522219",
+            cityName: "Paris",
+            citizens: "11,000,000",
+          },
+        ],
+      };
+      function m() {
+        const o = { lat: 40, lng: 0 },
+          n = {
+            url: "https://images.woosmap.com/icons/pin-red.png",
+            scaledSize: { height: 38, width: 26 },
+          },
+          l = {
+            url: "https://images.woosmap.com/icons/pin-green.png",
+            scaledSize: { height: 38, width: 26 },
+          },
+          c = new woosmap.map.Map(document.getElementById("map"), {
+            zoom: 0,
+            center: o,
+          });
+        r.megaCities.forEach((e) => {
+          const i = {
+              lat: parseFloat(e.latlng.split(",")[0]),
+              lng: parseFloat(e.latlng.split(",")[1]),
+            },
+            a = new woosmap.map.Marker({ position: i, icon: n });
+          a.setMap(c), a.addListener("click", () => t(a, e));
+        });
+        const t = (e, i) => {
+          s && s.setIcon(n), (s = e), e.setIcon(l);
+          const a = document.getElementById("info");
+          a.innerHTML = `<strong>${i.cityName}</strong><span>: ${i.citizens}</span>`;
+        };
+      }
+      window.initMap = m;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #info {
+        max-width: 300px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info">Click on a marker to display attributes here</div>
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

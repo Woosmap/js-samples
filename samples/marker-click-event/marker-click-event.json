@@ -1,10 +1,10 @@
 {
-  "title": "Marker Simple",
-  "description": "Adding a simple marker on the center of the map",
+  "title": "Marker Click Event",
+  "description": "Listen to this event to get the marker associated attributes.",
   "callback": "initMap",
   "libraries": [],
-  "tag": "marker_simple",
-  "name": "marker-simple",
+  "tag": "marker_click_event",
+  "name": "marker-click-event",
   "pagination": {
     "data": "mode",
     "size": 1,

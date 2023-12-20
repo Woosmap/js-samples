@@ -160,6 +160,7 @@ module.exports = {
       ),
       file: [
         "docs.js",
+        "docs.ts",
         "app.ts",
         "jsfiddle.js",
         "highlight.ts",

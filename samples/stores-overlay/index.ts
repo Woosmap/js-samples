@@ -1,7 +1,7 @@
 // [START woosmap_stores_overlay]
 function initMap(): void {
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
-
+  // [START woosmap_stores_overlay_style]
   const style: woosmap.map.Style = {
     breakPoint: 14,
     rules: [],
@@ -25,7 +25,9 @@ function initMap(): void {
       },
     },
   };
+  // [END woosmap_stores_overlay_style]
 
+  // [START woosmap_stores_overlay_add_map]
   const map = new woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
@@ -36,6 +38,7 @@ function initMap(): void {
 
   const storesOverlay = new woosmap.map.StoresOverlay(style);
   storesOverlay.setMap(map);
+  // [END woosmap_stores_overlay_add_map]
 }
 
 declare global {

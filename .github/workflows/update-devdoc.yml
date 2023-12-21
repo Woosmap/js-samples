@@ -10,7 +10,7 @@ jobs:
       - name: Dispatch Release Event
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.PUBLIC_GITHUB_TOKEN }}
+          token: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
           repository: woosmap/developers.woosmap.com
           event-type: update_js_samples
           client-payload: '{"release_name": "${{ github.event.release.tag_name }}", "source_url":  "${{ github.server_url }}/${{ github.repository }}/archive/refs/tags/${{ github.event.release.tag_name }}.tar.gz"}'

@@ -1,7 +1,8 @@
 // [START woosmap_stores_overlay_query]
-function initMap() {
-  const center = { lat: 51.52, lng: -0.13 };
-  const style = {
+function initMap(): void {
+  const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
+
+  const style: woosmap.map.Style = {
     breakPoint: 14,
     rules: [],
     default: {
@@ -24,17 +25,20 @@ function initMap() {
       },
     },
   };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
-    zoom: 8,
-    center: center,
-  });
-  const storesOverlay = new woosmap.map.StoresOverlay(style);
 
+  const map = new woosmap.map.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      zoom: 8,
+      center: center,
+    },
+  );
+
+  const storesOverlay = new woosmap.map.StoresOverlay(style);
   storesOverlay.setMap(map);
 
   // [START woosmap_stores_overlay_query_set_query]
-  const toggle = document.getElementById("toggleQuery");
-
+  const toggle = document.getElementById("toggleQuery") as HTMLInputElement;
   toggle.onchange = function () {
     if (toggle.checked) {
       storesOverlay.setQuery('tag:"DT"');
@@ -45,5 +49,11 @@ function initMap() {
   // [END woosmap_stores_overlay_query_set_query]
 }
 
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
+}
 window.initMap = initMap;
 // [END woosmap_stores_overlay_query]
+export {};

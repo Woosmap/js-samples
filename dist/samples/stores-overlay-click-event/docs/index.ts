@@ -1,7 +1,8 @@
 // [START woosmap_stores_overlay_click_event]
-function initMap() {
-  const center = { lat: 51.52, lng: -0.13 };
-  const style = {
+function initMap(): void {
+  const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
+
+  const style: woosmap.map.Style = {
     breakPoint: 14,
     rules: [],
     default: {
@@ -24,35 +25,50 @@ function initMap() {
       },
     },
   };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
-    zoom: 13,
-    center: center,
-  });
-  const storesOverlay = new woosmap.map.StoresOverlay(style);
 
+  const map = new woosmap.map.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      zoom: 13,
+      center: center,
+    },
+  );
+
+  const storesOverlay = new woosmap.map.StoresOverlay(style);
   storesOverlay.setMap(map);
+
   // [START woosmap_stores_overlay_click_event_listener]
   // Configure the click listener.
-  window.woosmap.map.event.addListener(map, "store_selected", (store) => {
-    const getAddress = (store) =>
-      `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
-    const getPhone = (store) =>
-      `Phone: <a href='${store.contact.phone}'>${store.contact.phone}</a>`;
+  window.woosmap.map.event.addListener(
+    map,
+    "store_selected",
+    (store: woosmap.map.stores.StoreResponse) => {
+      const getAddress = (store: woosmap.map.stores.Store): string =>
+        `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
 
-    function getStoreHTML(store) {
-      return `<div>
+      const getPhone = (store: woosmap.map.stores.Store): string =>
+        `Phone: <a href='${store.contact.phone}'>${store.contact.phone}</a>`;
+
+      function getStoreHTML(store: woosmap.map.stores.Store): string {
+        return `<div>
                   <span><strong>${store.name}</strong></span>
                   <p>${getAddress(store)}</p>
                   <span>${getPhone(store)}</span>
                 </div>`;
-    }
+      }
 
-    const infoElement = document.getElementById("info");
-
-    infoElement.innerHTML = getStoreHTML(store.properties);
-  });
+      const infoElement = document.getElementById("info") as HTMLElement;
+      infoElement.innerHTML = getStoreHTML(store.properties);
+    },
+  );
   // [END woosmap_stores_overlay_click_event_listener]
 }
 
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
+}
 window.initMap = initMap;
 // [END woosmap_stores_overlay_click_event]
+export {};

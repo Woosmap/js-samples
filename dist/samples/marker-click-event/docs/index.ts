@@ -1,6 +1,6 @@
 // [START woosmap_marker_click_event]
-const markers = [];
-let markerSelected;
+const markers: woosmap.map.Marker[] = [];
+let markerSelected: woosmap.map.Marker;
 const data = {
   megaCities: [
     {
@@ -136,26 +136,33 @@ const data = {
   ],
 };
 
-function initMap() {
-  const center = { lat: 40.0, lng: 0.0 };
-  const iconCity = {
+function initMap(): void {
+  const center: woosmap.map.LatLngLiteral = { lat: 40.0, lng: 0.0 };
+
+  const iconCity: woosmap.map.Icon = {
     url: "https://images.woosmap.com/icons/pin-red.png",
     scaledSize: { height: 38, width: 26 },
   };
-  const iconSelectedCity = {
+
+  const iconSelectedCity: woosmap.map.Icon = {
     url: "https://images.woosmap.com/icons/pin-green.png",
     scaledSize: { height: 38, width: 26 },
   };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
-    zoom: 0,
-    center: center,
-  });
+
+  const map = new woosmap.map.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      zoom: 0,
+      center: center,
+    },
+  );
 
   data.megaCities.forEach((cityData) => {
     const latlng = {
       lat: parseFloat(cityData.latlng.split(",")[0]),
       lng: parseFloat(cityData.latlng.split(",")[1]),
     };
+
     const markerCity = new woosmap.map.Marker({
       position: latlng,
       icon: iconCity,
@@ -165,10 +172,14 @@ function initMap() {
     markerCity.addListener("click", () =>
       handleMarkerClick(markerCity, cityData),
     );
+
     markers.push(markerCity);
   });
 
-  const handleMarkerClick = (marker, cityData) => {
+  const handleMarkerClick = (
+    marker: woosmap.map.Marker,
+    cityData: Record<string, string>,
+  ) => {
     if (markerSelected) {
       markerSelected.setIcon(iconCity);
     }
@@ -176,11 +187,15 @@ function initMap() {
     markerSelected = marker;
     marker.setIcon(iconSelectedCity);
 
-    const infoElement = document.getElementById("info");
-
+    const infoElement = document.getElementById("info") as HTMLElement;
     infoElement.innerHTML = `<strong>${cityData.cityName}</strong><span>: ${cityData.citizens}</span>`;
   };
 }
-
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
+}
 window.initMap = initMap;
 // [END woosmap_marker_click_event]
+export {};

@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
+          token: ${{ secrets.PUBLIC_GITHUB_TOKEN }}
       - uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -42,10 +42,10 @@ jobs:
             "@semantic-release/git"
             "@semantic-release/github"
         env:
-          GH_TOKEN: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.PUBLIC_GITHUB_TOKEN }}
           NPM_TOKEN: skip
       - name: Push samples to branches
         run: |
           bash ./sample-to-branch.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUBLIC_GITHUB_TOKEN }}

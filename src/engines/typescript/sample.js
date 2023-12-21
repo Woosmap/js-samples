@@ -144,6 +144,8 @@ module.exports = {
         case "app.tsx":
         case "highlight.ts":
         case "highlight.tsx":
+        case "docs.ts":
+        case "docs.tsx":
           return inputContent.replace(/^.*PRESERVE_COMMENT_ABOVE.*\n?/gm, "");
         default:
           return compileTypescriptSample(inputContent, data);

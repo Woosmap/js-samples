@@ -37,7 +37,7 @@
     "@11ty/eleventy": "^2.0.1",
     "@playwright/test": "^1.40.1",
     "@types/woosmap.map": "^1.4.5",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^5.62.0",
     "chalk": "^4.1.2",
     "dotenv": "^16.3.1",

@@ -1,4 +1,4 @@
-/* [START woosmap_marker_simple] */
+/* [START woosmap_stores_overlay] */
 /*
  * Always set the map height explicitly to define the size of the div element
  * that contains the map.
@@ -17,4 +17,4 @@ body {
   padding: 0;
 }
 
-/* [END woosmap_marker_simple] */
+/* [END woosmap_stores_overlay] */

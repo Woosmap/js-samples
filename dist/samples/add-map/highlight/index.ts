@@ -1,5 +1,6 @@
 // Initialize and add the map
 let map: woosmap.map.Map;
+
 function initMap(): void {
   // The location of London
   const position: woosmap.map.LatLngLiteral = {

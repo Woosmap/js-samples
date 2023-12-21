@@ -1,6 +1,7 @@
 // [START woosmap_add_map]
 // Initialize and add the map
 let map: woosmap.map.Map;
+
 function initMap(): void {
   // [START woosmap_add_map_instantiate_map]
   // The location of London

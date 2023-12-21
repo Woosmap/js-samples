@@ -1,6 +1,7 @@
 // [START woosmap_stores_overlay]
 function initMap() {
   const center = { lat: 51.52, lng: -0.13 };
+  // [START woosmap_stores_overlay_style]
   const style = {
     breakPoint: 14,
     rules: [],
@@ -24,6 +25,8 @@ function initMap() {
       },
     },
   };
+  // [END woosmap_stores_overlay_style]
+  // [START woosmap_stores_overlay_add_map]
   const map = new woosmap.map.Map(document.getElementById("map"), {
     zoom: 4,
     center: center,
@@ -31,6 +34,7 @@ function initMap() {
   const storesOverlay = new woosmap.map.StoresOverlay(style);
 
   storesOverlay.setMap(map);
+  // [END woosmap_stores_overlay_add_map]
 }
 
 window.initMap = initMap;

@@ -190,6 +190,7 @@ function initMap(): void {
     infoElement.innerHTML = `<strong>${cityData.cityName}</strong><span>: ${cityData.citizens}</span>`;
   };
 }
+
 declare global {
   interface Window {
     initMap: () => void;

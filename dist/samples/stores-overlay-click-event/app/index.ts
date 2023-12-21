@@ -40,7 +40,7 @@ function initMap(): void {
   window.woosmap.map.event.addListener(
     map,
     "store_selected",
-    (store: woosmap.map.stores.StoreResponse) => {
+    (storeGeoJSON: woosmap.map.stores.StoreResponse) => {
       const getAddress = (store: woosmap.map.stores.Store): string =>
         `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
 
@@ -56,7 +56,7 @@ function initMap(): void {
       }
 
       const infoElement = document.getElementById("info") as HTMLElement;
-      infoElement.innerHTML = getStoreHTML(store.properties);
+      infoElement.innerHTML = getStoreHTML(storeGeoJSON.properties);
     },
   );
 }

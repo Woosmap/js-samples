@@ -33,24 +33,28 @@ function initMap() {
   storesOverlay.setMap(map);
   // [START woosmap_stores_overlay_click_event_listener]
   // Configure the click listener.
-  window.woosmap.map.event.addListener(map, "store_selected", (store) => {
-    const getAddress = (store) =>
-      `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
-    const getPhone = (store) =>
-      `Phone: <a href='${store.contact.phone}'>${store.contact.phone}</a>`;
+  window.woosmap.map.event.addListener(
+    map,
+    "store_selected",
+    (storeGeoJSON) => {
+      const getAddress = (store) =>
+        `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
+      const getPhone = (store) =>
+        `Phone: <a href='${store.contact.phone}'>${store.contact.phone}</a>`;
 
-    function getStoreHTML(store) {
-      return `<div>
+      function getStoreHTML(store) {
+        return `<div>
                   <span><strong>${store.name}</strong></span>
                   <p>${getAddress(store)}</p>
                   <span>${getPhone(store)}</span>
                 </div>`;
-    }
+      }
 
-    const infoElement = document.getElementById("info");
+      const infoElement = document.getElementById("info");
 
-    infoElement.innerHTML = getStoreHTML(store.properties);
-  });
+      infoElement.innerHTML = getStoreHTML(storeGeoJSON.properties);
+    },
+  );
   // [END woosmap_stores_overlay_click_event_listener]
 }
 

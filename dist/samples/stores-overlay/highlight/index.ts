@@ -1,6 +1,5 @@
 function initMap(): void {
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
-
   const style: woosmap.map.Style = {
     breakPoint: 14,
     rules: [],

@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Marker Label</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const o = document.createElement("link").relList;
+        if (o && o.supports && o.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          n(e);
+        new MutationObserver((e) => {
+          for (const t of e)
+            if (t.type === "childList")
+              for (const i of t.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && n(i);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function r(e) {
+          const t = {};
+          return (
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
+          );
+        }
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const t = r(e);
+          fetch(e.href, t);
+        }
+      })();
+      function c() {
+        const s = { lat: 51.52, lng: -0.13 },
+          o = {
+            labelOrigin: new window.woosmap.map.Point(14, 15),
+            url: "https://images.woosmap.com/marker-red.svg",
+          },
+          r = new woosmap.map.Map(document.getElementById("map"), {
+            zoom: 10,
+            center: s,
+          });
+        let n = 1;
+        new window.woosmap.map.Marker({
+          position: r.getCenter(),
+          icon: o,
+          label: { text: String(n), color: "white" },
+          map: r,
+        }),
+          r.addListener("click", (e) => {
+            (n += 1),
+              new window.woosmap.map.Marker({
+                position: e.latlng,
+                icon: o,
+                label: { text: String(n), color: "white" },
+                map: r,
+              });
+          });
+      }
+      window.initMap = c;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #info {
+        max-width: 300px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info">Click on the map to add new MarkerLabel</div>
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

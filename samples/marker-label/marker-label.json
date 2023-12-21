@@ -1,0 +1,14 @@
+{
+  "title": "Marker Label",
+  "description": "A Marker Label is a maker with a text label drawn inside it.",
+  "callback": "initMap",
+  "libraries": [],
+  "tag": "marker_label",
+  "name": "marker-label",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

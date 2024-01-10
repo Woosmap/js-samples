@@ -1,0 +1,5 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_event_simple] */
+@include meta.load-css("../../shared/scss/_default.scss");
+/* [END woosmap_event_simple] */

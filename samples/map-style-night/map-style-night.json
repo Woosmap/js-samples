@@ -1,0 +1,13 @@
+{
+  "title": "Map Style Transit By Night",
+  "description": "Map style useful for giving directions in low-light conditions.",
+  "callback": "initMap",
+  "tag": "map_style_night",
+  "name": "map-style-night",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

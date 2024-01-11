@@ -50,6 +50,5 @@ declare global {
   }
 }
 window.initMap = initMap;
-// [END  woosmap_infowindow_simple]
 
 export {};

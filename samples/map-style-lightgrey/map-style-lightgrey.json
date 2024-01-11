@@ -1,0 +1,13 @@
+{
+  "title": "Map Style Light Grey",
+  "description": "Map style useful to display overlays and highlight particular components.",
+  "callback": "initMap",
+  "tag": "map_style_lightgrey",
+  "name": "map-style-lightgrey",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

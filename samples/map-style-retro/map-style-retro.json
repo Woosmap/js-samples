@@ -1,0 +1,13 @@
+{
+  "title": "Map Style Retro",
+  "description": "Map style with colors inspired from old paper maps.",
+  "callback": "initMap",
+  "tag": "map_style_retro",
+  "name": "map-style-retro",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

@@ -149,7 +149,7 @@ function initMap() {
       lat: parseFloat(data.megacities[city].latlng.split(",")[0]),
       lng: parseFloat(data.megacities[city].latlng.split(",")[1]),
     };
-    const cityCircle = new woosmap.map.Circle({
+    new woosmap.map.Circle({
       strokeColor: "#b71c1c",
       strokeOpacity: 0.8,
       strokeWeight: 2,

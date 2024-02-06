@@ -1,6 +1,6 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
-/* [START woosmap_render_shapes_polygons] */
+/* [START woosmap_render_shapes_geojson] */
 @include meta.load-css("../../shared/scss/_default.scss");
 
-/* [END woosmap_render_shapes_polygons] */
+/* [END woosmap_render_shapes_geojson] */

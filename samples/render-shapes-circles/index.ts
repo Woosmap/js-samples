@@ -1,5 +1,4 @@
 // [START woosmap_render_shapes_circles]
-// Initialize and add the map
 let map: woosmap.map.Map;
 const data = {
   megacities: [

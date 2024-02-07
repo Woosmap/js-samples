@@ -1,11 +1,11 @@
 // [START woosmap_draw_shapes]
 // Initialize and add the map
 let map: woosmap.map.Map;
-const modal = document.getElementById("myModal");
+const modal = document.getElementById("modal") as HTMLElement;
+const modalOverlay = document.getElementById("modal-overlay") as HTMLElement;
+const modalContent = document.getElementById("modal-content") as HTMLElement;
 
 function initMap() {
-  console.log("init map");
-
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
@@ -19,19 +19,20 @@ function initMap() {
 
   draw.addControl(map);
 
-  const getAll_Button = document.getElementById("getAll");
-  if (getAll_Button) {
-    getAll_Button.onclick = function () {
-      // Retrieve geospatial data of all features
-      const data = draw.getAll();
-      const modalContent = document.getElementById("modal-content");
-      if (modalContent && modal) {
-        modalContent.innerHTML =
-          "<div><pre>" + JSON.stringify(data, null, 2) + "</pre></div>";
-        modal.style.display = "block";
-      }
-    };
-  }
+  const getDrawDataBtn = document.getElementById(
+    "getDrawData",
+  ) as HTMLButtonElement;
+
+  getDrawDataBtn.onclick = function () {
+    // Retrieve geospatial data of all features
+    const data = draw.getAll();
+    if (modalContent && modal && modalOverlay) {
+      modalContent.innerHTML =
+        "<div><pre>" + JSON.stringify(data, null, 2) + "</pre></div>";
+      modal.classList.toggle("closed");
+      modalOverlay.classList.toggle("closed");
+    }
+  };
 
   // Once map is loaded, load features and update them
   window.woosmap.map.event.addListenerOnce(map, "idle", () => {
@@ -497,13 +498,9 @@ function initMap() {
     // draw.add() method allows you to load features on the map.
     draw.add(data);
   });
-
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      if (modal) {
-        modal.style.display = "none";
-      }
-    }
+  modalOverlay.onclick = function () {
+    modal.classList.toggle("closed");
+    modalOverlay.classList.toggle("closed");
   };
 }
 

@@ -2,19 +2,11 @@
 
 /* [START woosmap_render_shapes_data] */
 @include meta.load-css("../../shared/scss/_default.scss");
+@import "../../shared/scss/mixins.scss";
 
 #info {
-    position: absolute;
-    top: 0;
-    z-index: 10000;
-    margin: 10px;
-    background: #fff;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    max-width: 200px;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-  }
-  
+  max-width: 200px;
+  @include map-panel($top: 0, $left: 0);
+}
+
 /* [END woosmap_render_shapes_data] */

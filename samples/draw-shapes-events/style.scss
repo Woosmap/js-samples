@@ -1,16 +1,9 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
 /* [START woosmap_draw_shapes_events] */
-@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_sidebar.scss");
 
-#events {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 75%;
-  bottom: 0;
-  border-right: 2px solid #f5f5f5;
-  border-bottom: 1px solid #f5f5f5;
+.events {
   font-family: "Droid Sans Mono", monospace;
 }
 

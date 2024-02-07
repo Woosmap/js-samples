@@ -15,7 +15,7 @@ const events = [
 ];
 
 function populateTable() {
-  const eventsTable = document.getElementById("events");
+  const eventsTable = document.getElementById("sidebar");
   let content = "";
   for (let i = 0; i < events.length; i++) {
     content += `<div class="event" id="${events[i]}">${events[i]}</div>`;

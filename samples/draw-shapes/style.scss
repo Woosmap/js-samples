@@ -2,56 +2,20 @@
 
 /* [START woosmap_draw_shapes] */
 @include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_modal.scss");
+@import "../../shared/scss/mixins.scss";
 
-#getAll {
-    background-color: #4caf50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  
-  #buttons {
-    position: absolute;
-    top: 0;
-    z-index: 10000;
-    margin: 10px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-  }
-  
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  
-  /* The Modal (background) */
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content */
-  .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
+.btn {
+  @include button($background: #3d5afe);
+}
+
+.btnText {
+  @include actionText($color: #fff);
+}
+
+.container {
+  z-index: 1;
+  @include position($position: absolute, $top: 10px, $left: 10px);
+}
 
 /* [END woosmap_draw_shapes] */

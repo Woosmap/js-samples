@@ -1,0 +1,21 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_draw_shapes] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_modal.scss");
+@import "../../shared/scss/mixins.scss";
+
+.btn {
+  @include button($background: #3d5afe);
+}
+
+.btnText {
+  @include actionText($color: #fff);
+}
+
+.container {
+  z-index: 1;
+  @include position($position: absolute, $top: 10px, $left: 10px);
+}
+
+/* [END woosmap_draw_shapes] */

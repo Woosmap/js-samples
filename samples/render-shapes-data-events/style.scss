@@ -1,6 +1,6 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
-/* [START woosmap_map_events] */
+/* [START woosmap_render_shapes_data_events] */
 @include meta.load-css("../../shared/scss/_sidebar.scss");
 
 .events {
@@ -23,4 +23,4 @@
   background-color: white;
 }
 
-/* [END woosmap_map_events] */
+/* [END woosmap_render_shapes_data_events] */

@@ -1,0 +1,13 @@
+{
+  "title": "Render Shapes - GeoJSON data",
+  "description": "Add a map and load external GeoJSON data.",
+  "callback": "initMap",
+  "tag": "render_shapes_geojson",
+  "name": "render-shapes-geojson",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

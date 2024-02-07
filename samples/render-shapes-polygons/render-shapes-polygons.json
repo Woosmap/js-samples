@@ -1,0 +1,13 @@
+{
+  "title": "Render Shapes - Polygons",
+  "description": "Display and style geospatial data like polygons or any GeoJSON data.",
+  "callback": "initMap",
+  "tag": "render_shapes_polygons",
+  "name": "render-shapes-polygons",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

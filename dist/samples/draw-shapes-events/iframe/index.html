@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Draw Shapes - Handling Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          s(e);
+        new MutationObserver((e) => {
+          for (const o of e)
+            if (o.type === "childList")
+              for (const c of o.addedNodes)
+                c.tagName === "LINK" && c.rel === "modulepreload" && s(c);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function r(e) {
+          const o = {};
+          return (
+            e.integrity && (o.integrity = e.integrity),
+            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
+          );
+        }
+        function s(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const o = r(e);
+          fetch(e.href, o);
+        }
+      })();
+      let a;
+      const i = [
+          "draw.create",
+          "draw.delete",
+          "draw.modechange",
+          "draw.selectionchange",
+          "draw.update",
+          "draw.combine",
+          "draw.uncombine",
+        ],
+        d = {
+          type: "FeatureCollection",
+          features: [
+            {
+              id: "c40c2c23ce0c89dbc445b4dcc5913754",
+              type: "Feature",
+              properties: {},
+              geometry: {
+                coordinates: [
+                  [
+                    [-98.73532642865247, 30.126769329207107],
+                    [-99.58823422826457, 29.363810063756134],
+                    [-97.94703285628337, 28.640467970538566],
+                    [-96.84859099314622, 28.41338984007197],
+                    [-96.04737457532838, 28.867055658752506],
+                    [-95.37538661199761, 29.330016761277975],
+                    [-94.54832450328229, 29.846944934629335],
+                    [-94.9230870212941, 30.750699730175043],
+                    [-97.93411001083463, 30.950398105638087],
+                    [-98.73532642865247, 30.126769329207107],
+                  ],
+                ],
+                type: "Polygon",
+              },
+            },
+            {
+              id: "56cc82cc895f6cb52d87f75a7e94a904",
+              type: "Feature",
+              properties: {},
+              geometry: {
+                coordinates: [
+                  [
+                    [-98.27139781722337, 33.638565671747955],
+                    [-98.25118921584728, 32.02551092926721],
+                    [-95.62407103697022, 32.05977071105772],
+                    [-95.62407103697022, 33.65538867007554],
+                    [-98.27139781722337, 33.638565671747955],
+                  ],
+                ],
+                type: "Polygon",
+              },
+            },
+          ],
+        };
+      function l() {
+        const n = document.getElementById("sidebar");
+        let t = "";
+        for (let r = 0; r < i.length; r++)
+          t += `<div class="event" id="${i[r]}">${i[r]}</div>`;
+        n && (n.innerHTML = t);
+      }
+      function u(n) {
+        const t = document.getElementById(n);
+        t &&
+          ((t.className = "event active"),
+          setTimeout(() => {
+            t.className = "event inactive";
+          }, 1e3));
+      }
+      function p() {
+        a = new window.woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 31.54350013250679, lng: -97.13238669872247 },
+          zoom: 6.5,
+        });
+        const n = new window.woosmap.map.Drawing({});
+        n.addControl(a),
+          window.woosmap.map.event.addListenerOnce(a, "idle", () => {
+            n.add(d);
+          }),
+          l();
+        for (let t = 0; t < i.length; t++) {
+          const r = i[t];
+          n.addListener(r, () => {
+            u(r);
+          });
+        }
+      }
+      window.initMap = p;
+    </script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #container {
+        height: 100%;
+        display: flex;
+      }
+      #sidebar {
+        flex-basis: 12rem;
+        flex-grow: 1;
+        max-width: 30rem;
+        height: 100%;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+      #map {
+        flex-basis: 70vw;
+        flex-grow: 5;
+        height: 100%;
+      }
+      .events {
+        font-family:
+          Droid Sans Mono,
+          monospace;
+      }
+      .event {
+        transition: background-color 0.5s ease-out;
+        padding: 0.5em;
+        overflow: hidden;
+        font-size: 14px;
+      }
+      .active {
+        background-color: #fd0;
+        color: #000;
+      }
+      .inactive {
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="map"></div>
+      <div class="events" id="sidebar"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap&libraries=drawing"
+      defer
+    ></script>
+  </body>
+</html>

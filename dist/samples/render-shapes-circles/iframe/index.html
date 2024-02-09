@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Render Shapes - Circles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const i = document.createElement("link").relList;
+        if (i && i.supports && i.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          l(e);
+        new MutationObserver((e) => {
+          for (const t of e)
+            if (t.type === "childList")
+              for (const c of t.addedNodes)
+                c.tagName === "LINK" && c.rel === "modulepreload" && l(c);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function o(e) {
+          const t = {};
+          return (
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
+          );
+        }
+        function l(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const t = o(e);
+          fetch(e.href, t);
+        }
+      })();
+      let s;
+      const a = {
+        megacities: [
+          { latlng: "35.700556,139.715", cityname: "Tokyo", citizens: 374e5 },
+          {
+            latlng: "23.133333,113.266667",
+            cityname: "Guangzhou",
+            citizens: 249e5,
+          },
+          {
+            latlng: "37.566535,126.9779692",
+            cityname: "Seoul",
+            citizens: 245e5,
+          },
+          { latlng: "28.635308,77.22496", cityname: "Delhi", citizens: 239e5 },
+          {
+            latlng: "19.0176147,72.8561644",
+            cityname: "Mumbai",
+            citizens: 233e5,
+          },
+          {
+            latlng: "19.4326077,-99.133208",
+            cityname: "Mexico City",
+            citizens: 228e5,
+          },
+          {
+            latlng: "40.7143528,-74.00597",
+            cityname: "New York City",
+            citizens: 222e5,
+          },
+          {
+            latlng: "-23.5489433,-46.6388182",
+            cityname: "São Paulo",
+            citizens: 208e5,
+          },
+          {
+            latlng: "14.5995124,120.9842195",
+            cityname: "Manila",
+            citizens: 201e5,
+          },
+          {
+            latlng: "31.230393,121.473704",
+            cityname: "Shanghai",
+            citizens: 188e5,
+          },
+          {
+            latlng: "-6.211544,106.845172",
+            cityname: "Jakarta",
+            citizens: 187e5,
+          },
+          {
+            latlng: "34.0522342,-118.2436849",
+            cityname: "Los Angeles",
+            citizens: 179e5,
+          },
+          {
+            latlng: "24.893379,67.02806",
+            cityname: "Karachi",
+            citizens: 169e5,
+          },
+          {
+            latlng: "34.6937378,135.5021651",
+            cityname: "Osaka",
+            citizens: 168e5,
+          },
+          {
+            latlng: "22.572646,88.363895",
+            cityname: "Kolkata",
+            citizens: 166e5,
+          },
+          { latlng: "30.064742,31.249509", cityname: "Cairo", citizens: 153e5 },
+          {
+            latlng: "-34.6084175,-58.3731613",
+            cityname: "Buenos Aires",
+            citizens: 148e5,
+          },
+          {
+            latlng: "55.755786,37.617633",
+            cityname: "Moscow",
+            citizens: 148e5,
+          },
+          { latlng: "23.709921,90.407143", cityname: "Dhaka", citizens: 14e6 },
+          {
+            latlng: "39.904214,116.407413",
+            cityname: "Beijing",
+            citizens: 139e5,
+          },
+          {
+            latlng: "35.6961111,51.4230556",
+            cityname: "Tehran",
+            citizens: 131e5,
+          },
+          { latlng: "41.00527,28.97696", cityname: "Istanbul", citizens: 13e6 },
+          {
+            latlng: "51.5001524,-0.1262362",
+            cityname: "London",
+            citizens: 125e5,
+          },
+          {
+            latlng: "-22.9035393,-43.2095869",
+            cityname: "Rio de Janeiro",
+            citizens: 125e5,
+          },
+          { latlng: "6.4530556,3.3958333", cityname: "Lagos", citizens: 121e5 },
+          { latlng: "48.856614,2.3522219", cityname: "Paris", citizens: 11e6 },
+        ],
+      };
+      function r() {
+        s = new woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 40, lng: 0 },
+          zoom: 2,
+        });
+        for (const n in a.megacities) {
+          const i = {
+            lat: parseFloat(a.megacities[n].latlng.split(",")[0]),
+            lng: parseFloat(a.megacities[n].latlng.split(",")[1]),
+          };
+          new woosmap.map.Circle({
+            strokeColor: "#b71c1c",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#b71c1c",
+            fillOpacity: 0.5,
+            map: s,
+            center: i,
+            radius: Math.sqrt(a.megacities[n].citizens) * 100,
+          });
+        }
+      }
+      window.initMap = r;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

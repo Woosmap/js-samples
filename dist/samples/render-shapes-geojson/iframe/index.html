@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Render Shapes - GeoJSON data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const r = document.createElement("link").relList;
+        if (r && r.supports && r.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          o(e);
+        new MutationObserver((e) => {
+          for (const t of e)
+            if (t.type === "childList")
+              for (const n of t.addedNodes)
+                n.tagName === "LINK" && n.rel === "modulepreload" && o(n);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function s(e) {
+          const t = {};
+          return (
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
+          );
+        }
+        function o(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const t = s(e);
+          fetch(e.href, t);
+        }
+      })();
+      let i;
+      function a() {
+        (i = new window.woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 53.51, lng: 8.15 },
+          zoom: 4,
+        })),
+          i.data.loadGeoJson(
+            "https://demo.woosmap.com/misc/data/europe.geojson.json",
+          );
+        const l = { fillColor: "#FFAB00", strokeWeight: 2 };
+        i.data.setStyle((s) => {
+          let o = l.fillColor;
+          return (
+            s.getProperty("highlighted") && (o = "#C51162"),
+            {
+              fillColor: o,
+              strokeColor: o,
+              strokeOpacity: 1,
+              strokeWeight: l.strokeWeight,
+            }
+          );
+        });
+        let r;
+        i &&
+          i.data &&
+          i.data.addListener("click", (s) => {
+            if (r) {
+              const o = i.data.getFeatureById(r);
+              o && o.setProperty("highlighted", !1);
+            }
+            s.feature.setProperty("highlighted", !0), (r = s.feature.getId());
+          });
+      }
+      window.initMap = a;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <!--The div element for the map -->
+    <div id="app">
+      <div id="map"></div>
+      <div id="service-info">
+       <div style="width: 50%;margin: 5px;">
+          <h4>Request</h4>
+        <pre id="request"></pre>
+        </div>
+        <div style="width: 50%;margin: 5px;">
+          <h4>Response</h4>
+        <pre id="response"></pre>
+          </div>
+      </div>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

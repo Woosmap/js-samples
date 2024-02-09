@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Draw Shapes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <button class="btn" id="getDrawData" type="button">
+        <span class="btnText" tabindex="-1">Get GeoJSON</span>
+      </button>
+    </div>
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <div class="modal-overlay closed" id="modal-overlay"></div>
+    <div class="modal closed" id="modal">
+      <!-- Modal content -->
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap&libraries=drawing"
+      defer
+    ></script>
+  </body>
+</html>

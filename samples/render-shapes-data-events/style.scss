@@ -1,0 +1,26 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_render_shapes_data_events] */
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+
+.events {
+  font-family: "Droid Sans Mono", monospace;
+}
+
+.event {
+  transition: background-color 0.5s ease-out;
+  padding: 0.5em;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.active {
+  background-color: #ffdd00;
+  color: #000;
+}
+
+.inactive {
+  background-color: white;
+}
+
+/* [END woosmap_render_shapes_data_events] */

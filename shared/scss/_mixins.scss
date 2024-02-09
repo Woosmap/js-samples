@@ -29,3 +29,36 @@
   z-index: 1;
 }
 
+@mixin button($background:#fff, $color:#202124, $hover: darken($background, 10%)) {
+  background: $background;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+  -webkit-transition: background .3s, color .3s;
+  transition: background .3s, color .3s;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: $color;
+  cursor: pointer;
+  display: flex;
+  font-weight: 600;
+  height: 32px;
+  padding: 0 15px;
+  position: relative;
+  align-items: center;
+  &:hover {
+    background: $hover;
+  }
+}
+
+@mixin actionText($color: #202124) {
+  color: $color;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25rem;
+  &:hover {
+    text-decoration: none;
+  }
+}

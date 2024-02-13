@@ -1,9 +1,9 @@
 {
-  "title": "Map - DistanceService",
-  "description": "Using the DistanceService to calculate distances and durations between multiple origins and destinations or to compute isochrones.",
+  "title": "Distance Matrix",
+  "description": "Using the DistanceService to calculate distances and durations between multiple origins and destinations",
   "callback": "initMap",
-  "tag": "distance",
-  "name": "distance",
+  "tag": "distance_matrix",
+  "name": "distance-matrix",
   "pagination": {
     "data": "mode",
     "size": 1,

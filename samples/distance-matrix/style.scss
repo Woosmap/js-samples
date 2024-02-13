@@ -1,6 +1,6 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
-/* [START woosmap_distance] */
+/* [START woosmap_distance_matrix] */
 @include meta.load-css("../../shared/scss/_default.scss");
 
 #app {
@@ -31,4 +31,4 @@ h4 {
     width: 100%;
 }
 
-/* [END woosmap_distance] */
+/* [END woosmap_distance_matrix] */

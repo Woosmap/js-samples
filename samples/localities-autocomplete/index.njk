@@ -1,17 +1,18 @@
 {% extends '../../src/_includes/layout.njk' %}
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
-      <div id="app">
-      <div id="autocomplete-container">
-        <input
-          type="text"
-          id="autocomplete-input"
-          placeholder="Search Localities..."
-        />
-        <ul id="suggestions-list"></ul>
-      </div>
+    <div id="app">
+        <div id="autocomplete-container">
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search Localities..."
+                    autocomplete="off"
+            />
+            <ul id="suggestions-list"></ul>
+        </div>
 
-      <div id="map"></div>
+        <div id="map"></div>
     </div>
     <!-- [END woosmap_{{ tag }}_div] -->
 {% endblock %}

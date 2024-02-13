@@ -1,11 +1,12 @@
 // [START woosmap_localities_autocomplete]
-// Initialize and add the map
 let map: woosmap.map.Map;
 let marker: woosmap.map.Marker;
 let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
-let request, debouncedLocalitiesAutocomplete;
-function initMap() {
+let request: woosmap.map.localities.LocalitiesAutocompleteRequest;
+let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
+
+function initMap(): void {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
@@ -17,6 +18,7 @@ function initMap() {
   localitiesService = new window.woosmap.map.LocalitiesService();
 
   request = {
+    input: "",
     types: ["locality", "address", "postal_cde"],
   };
 
@@ -26,12 +28,16 @@ function initMap() {
   );
 }
 
-const inputElement = document.getElementById("autocomplete-input");
-const suggestionsList = document.getElementById("suggestions-list");
+const inputElement = document.getElementById(
+  "autocomplete-input",
+) as HTMLInputElement;
+const suggestionsList = document.getElementById(
+  "suggestions-list",
+) as HTMLUListElement;
 if (inputElement && suggestionsList) {
   inputElement.addEventListener("input", handleAutocomplete);
   inputElement.addEventListener("keydown", (event) => {
-    if (event.keyCode === 13) {
+    if (event.key === "Enter") {
       const firstLi = suggestionsList.querySelector("li");
       if (firstLi) {
         firstLi.click();
@@ -40,10 +46,10 @@ if (inputElement && suggestionsList) {
   });
 }
 
-function handleAutocomplete() {
+function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
-    request["input"] = inputElement["value"];
-    if (request["input"]) {
+    request.input = inputElement.value;
+    if (request.input) {
       debouncedLocalitiesAutocomplete(request)
         .then((localities) => displaySuggestions(localities))
         .catch((error) =>
@@ -55,43 +61,49 @@ function handleAutocomplete() {
   }
 }
 
-function handleDetails(publicId) {
+function handleDetails(publicId: string) {
   localitiesService
     .getDetails({ publicId })
-    .then((locality) => displayLocality(locality["result"]))
+    .then((locality) => displayLocality(locality.result))
     .catch((error) => console.error("Error getting locality details:", error));
 }
 
-function displayLocality(locality) {
+function displayLocality(
+  locality: woosmap.map.localities.LocalitiesDetailsResult,
+) {
   if (marker) {
     marker.setMap(null);
     infoWindow.close();
   }
-  marker = new woosmap.map.Marker({
-    position: locality.geometry.location,
-    icon: {
-      url: "https://images.woosmap.com/dot-marker.png",
-      scaledSize: {
-        height: 64,
-        width: 46,
+  if (locality?.geometry) {
+    marker = new woosmap.map.Marker({
+      position: locality.geometry.location,
+      icon: {
+        url: "https://images.woosmap.com/dot-marker.png",
+        scaledSize: {
+          height: 64,
+          width: 46,
+        },
       },
-    },
-  });
-  marker.setMap(map);
-  infoWindow.setContent(`<span>${locality.formatted_address}</span>`);
-  infoWindow.open(map, marker);
-  map.flyTo({ center: locality.geometry.location, zoom: 14 });
+    });
+    marker.setMap(map);
+    infoWindow.setContent(`<span>${locality.formatted_address}</span>`);
+    infoWindow.open(map, marker);
+    map.flyTo({ center: locality.geometry.location, zoom: 14 });
+  }
 }
 
-function displaySuggestions(localitiesPredictions) {
+function displaySuggestions(
+  localitiesPredictions: woosmap.map.localities.LocalitiesAutocompleteResponse,
+) {
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
     if (localitiesPredictions.localities.length > 0 && request["input"]) {
       localitiesPredictions.localities.forEach((locality) => {
         const li = document.createElement("li");
-        li.textContent = locality.description;
+        li.textContent = locality.description ?? "";
         li.addEventListener("click", () => {
-          inputElement["value"] = locality.description;
+          inputElement.value = locality.description ?? "";
           suggestionsList.style.display = "none";
           handleDetails(locality.public_id);
         });
@@ -104,26 +116,35 @@ function displaySuggestions(localitiesPredictions) {
   }
 }
 
-document.addEventListener("click", (e) => {
-  if (
-    e &&
-    e.target &&
-    !e.target["closest"]("#autocomplete-container") &&
-    suggestionsList
-  ) {
+document.addEventListener("click", (event) => {
+  const targetElement = event.target as Element;
+  const isClickInsideAutocomplete = targetElement.closest(
+    "#autocomplete-container",
+  );
+
+  if (!isClickInsideAutocomplete && suggestionsList) {
     suggestionsList.style.display = "none";
   }
 });
 
-function debouncePromise(fn, delay) {
-  let timeoutId;
-  let latestResolve;
-  let latestReject;
-  return function (...args) {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    return new Promise((resolve, reject) => {
+// [START woosmap_localities_autocomplete_debounce_promise]
+type DebouncePromiseFunction<T, Args extends any[]> = (
+  ...args: Args
+) => Promise<T>;
+
+function debouncePromise<T, Args extends any[]>(
+  fn: (...args: Args) => Promise<T>,
+  delay: number,
+): DebouncePromiseFunction<T, Args> {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
+  let latestReject: ((reason?: any) => void) | null = null;
+
+  return function (...args: Args): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
       latestResolve = resolve;
       latestReject = reject;
       timeoutId = setTimeout(() => {
@@ -142,6 +163,8 @@ function debouncePromise(fn, delay) {
     });
   };
 }
+
+// [END woosmap_localities_autocomplete_debounce_promise]
 
 declare global {
   interface Window {

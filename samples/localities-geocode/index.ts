@@ -4,7 +4,8 @@ let map: woosmap.map.Map;
 let marker: woosmap.map.Marker;
 let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
-const request = {};
+const request: woosmap.map.localities.LocalitiesGeocodeRequest = {};
+
 function initMap() {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
@@ -20,12 +21,16 @@ function initMap() {
   });
 }
 
-const inputElement = document.getElementById("autocomplete-input");
-const submitButton = document.getElementById("submit-button"); // Add this line
+const inputElement = document.getElementById(
+  "autocomplete-input",
+) as HTMLInputElement;
+const submitButton = document.getElementById(
+  "submit-button",
+) as HTMLButtonElement; // Add this line
 
 if (inputElement) {
   inputElement.addEventListener("keydown", (e) => {
-    if (e.keyCode === 13) {
+    if (e.key === "Enter") {
       handleGeocode(null);
     }
   });
@@ -38,31 +43,33 @@ if (submitButton) {
 function handleGeocodeFromSubmit() {
   handleGeocode(null);
 }
-function handleGeocode(latlng) {
+
+function handleGeocode(latlng: woosmap.map.LatLngLiteral | null) {
   if (latlng) {
-    request["latLng"] = latlng;
-    delete request["address"];
-  } else {
-    if (inputElement && inputElement["value"] !== "") {
-      request["address"] = inputElement && inputElement["value"];
-      delete request["latLng"];
-    }
+    request.latLng = latlng;
+    delete request.address;
+  } else if (inputElement?.value !== "") {
+    request.address = inputElement.value;
+    delete request.latLng;
   }
-  if (request["latLng"] || request["address"]) {
+
+  if (request.latLng || request.address) {
     localitiesService
       .geocode(request)
       .then((localities) => displayLocality(localities.results[0]))
-      .catch((error) => console.error("Error geocode localities:", error));
+      .catch((error) => console.error("Error geocoding localities:", error));
   }
 }
 
-function displayLocality(locality) {
+function displayLocality(
+  locality: woosmap.map.localities.LocalitiesGeocodeResult | null,
+) {
   if (marker) {
     marker.setMap(null);
     infoWindow.close();
   }
 
-  if (locality) {
+  if (locality?.geometry) {
     marker = new woosmap.map.Marker({
       position: locality.geometry.location,
       icon: {

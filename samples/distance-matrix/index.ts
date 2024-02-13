@@ -1,12 +1,15 @@
-// [START woosmap_distance]
-// Initialize and add the map
+// [START woosmap_distance_matrix]
 let map: woosmap.map.Map;
-let distanceService: woosmap.map.DistanceService;
 let bounds: woosmap.map.LatLngBounds;
-let distanceRequest;
-const markersArray = [];
+let distanceService: woosmap.map.DistanceService;
+let distanceRequest: woosmap.map.distance.DistanceMatrixRequest;
+const markersArray: woosmap.map.Marker[] = [];
 
-const createMarker = (position, label, url) => {
+function createMarker(
+  position: woosmap.map.LatLng,
+  label: string,
+  url: string,
+): woosmap.map.Marker {
   return new woosmap.map.Marker({
     map,
     position,
@@ -23,17 +26,16 @@ const createMarker = (position, label, url) => {
       color: "white",
     },
   });
-};
+}
 
-const fitBoundsToMatrix = (origins, destinations) => {
+function fitBoundsToMatrix(
+  origins: woosmap.map.LatLng[] | woosmap.map.LatLngLiteral[],
+  destinations: woosmap.map.LatLng[] | woosmap.map.LatLngLiteral[],
+): void {
   origins.forEach((origin) => {
     bounds.extend(origin);
     markersArray.push(
-      createMarker(
-        origin,
-        "O",
-        "https://images.woosmap.com/marker-blue.svg",
-      ) as never,
+      createMarker(origin, "O", "https://images.woosmap.com/marker-blue.svg"),
     );
   });
 
@@ -44,18 +46,21 @@ const fitBoundsToMatrix = (origins, destinations) => {
         destination,
         "D",
         "https://images.woosmap.com/marker-red.svg",
-      ) as never,
+      ),
     );
   });
 
   map.fitBounds(bounds, { top: 70, bottom: 40, left: 50, right: 50 }, true);
-};
+}
 
-const createRequest = () => {
-  const origin1 = { lat: 45.4642, lng: 9.19 };
-  const origin2 = { lat: 45.75, lng: 4.85 };
-  const destinationA = { lat: 42.6976, lng: 9.45 };
-  const destinationB = { lat: 41.9028, lng: 12.4964 };
+function createRequest(): woosmap.map.distance.DistanceMatrixRequest {
+  const origin1: woosmap.map.LatLngLiteral = { lat: 45.4642, lng: 9.19 };
+  const origin2: woosmap.map.LatLngLiteral = { lat: 45.75, lng: 4.85 };
+  const destinationA: woosmap.map.LatLngLiteral = { lat: 42.6976, lng: 9.45 };
+  const destinationB: woosmap.map.LatLngLiteral = {
+    lat: 41.9028,
+    lng: 12.4964,
+  };
 
   return {
     origins: [origin1, origin2],
@@ -65,25 +70,28 @@ const createRequest = () => {
     avoidHighways: false,
     avoidTolls: false,
   };
-};
-const handleResponse = (response) => {
+}
+
+function handleResponse(
+  response: woosmap.map.distance.DistanceMatrixResponse,
+): void {
   const responseElement = document.getElementById("response");
   if (responseElement) {
     responseElement.innerText = JSON.stringify(response, null, 2);
     fitBoundsToMatrix(distanceRequest.origins, distanceRequest.destinations);
   }
-};
+}
 
-const calculateDistances = () => {
+function calculateDistances(): void {
   distanceRequest = createRequest();
   const requestElement = document.getElementById("request");
   if (requestElement) {
     requestElement.innerText = JSON.stringify(distanceRequest, null, 2);
     distanceService.getDistanceMatrix(distanceRequest).then(handleResponse);
   }
-};
+}
 
-const initMap = () => {
+function initMap(): void {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
     center: { lat: 45.53, lng: 2.4 },
     zoom: 10,
@@ -91,7 +99,7 @@ const initMap = () => {
   distanceService = new woosmap.map.DistanceService();
   bounds = new woosmap.map.LatLngBounds();
   calculateDistances();
-};
+}
 
 declare global {
   interface Window {
@@ -99,6 +107,6 @@ declare global {
   }
 }
 window.initMap = initMap;
-// [END woosmap_distance]
+// [END woosmap_distance_matrix]
 
 export {};

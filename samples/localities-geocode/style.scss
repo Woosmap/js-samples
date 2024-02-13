@@ -1,0 +1,27 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_localities_geocode] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete.scss");
+@import "../../shared/scss/mixins.scss";
+
+#app {
+  height: 100%;
+}
+
+.btn {
+  @include button($background: #3d5afe, $display: inline, $position: relative, $height: 38px);
+}
+
+.btnText {
+  @include actionText($color: #fff);
+}
+
+#instructions {
+  max-width: 300px;
+  font-size: 17px;
+  padding: 10px;
+  @include map-panel($bottom: 50px, $left: 0);
+}
+
+/* [END woosmap_localities_geocode] */

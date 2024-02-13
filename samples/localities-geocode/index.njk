@@ -1,0 +1,23 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+      <div id="app">
+        <div id="autocomplete-container">
+          <input
+            type="text"
+            id="autocomplete-input"
+            placeholder="Geocode Localities..."
+          />
+          <button class="btn" id="submit-button" type="button">
+              <span class="btnText" tabindex="-1">Search</span>
+          </button>
+        </div>
+        
+        <div id="instructions">
+          Enter an address to geocode or click on the map to reverse geocode.
+        </div>
+
+        <div id="map"></div>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

@@ -1,0 +1,32 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_distance_isochrone] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@import "../../shared/scss/mixins.scss";
+
+#app {
+    height: 100%;
+}
+#selector {
+    @include map-panel($top: 0px, $left: 0);
+}
+
+select{
+    width: 100px;
+}
+input {
+    width: 92px;
+}
+
+.select-container {
+    padding: 2px 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#selector span {
+    padding: 0 5px;
+}
+
+/* [END woosmap_distance_isochrone] */

@@ -63,7 +63,9 @@ function initMap() {
   computeIsochrone(centerLatLng);
 }
 
-function computeIsochrone(origin: woosmap.map.LatLngLiteral) {
+function computeIsochrone(
+  origin: woosmap.map.LatLng | woosmap.map.LatLngLiteral,
+) {
   if (
     parseInt(distanceInput.value) > 120 ||
     parseInt(distanceInput.value) <= 0
@@ -102,7 +104,9 @@ function displayIsochrone(
   fitToCoordinates(isochrone.isoline.path || null);
 }
 
-function fitToCoordinates(coordinates: woosmap.map.LatLng[] | null) {
+function fitToCoordinates(
+  coordinates: woosmap.map.LatLng[] | woosmap.map.LatLngLiteral[] | null,
+) {
   const bounds = new woosmap.map.LatLngBounds();
   if (coordinates) {
     for (const latlng of coordinates) {

@@ -1,0 +1,6 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START map_style_pois] */
+@include meta.load-css("../../shared/scss/_default.scss");
+
+/* [END map_style_pois] */

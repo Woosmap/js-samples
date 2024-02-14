@@ -1,5 +1,5 @@
 {
-  "name": "localities-geocode",
+  "name": "distance-isochrone",
   "description": "Samples for Woosmap Map JS API",
   "version": "1.13.1",
   "keywords": [

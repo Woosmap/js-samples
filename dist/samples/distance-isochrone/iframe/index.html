@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Distance Isochrone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          i(e);
+        new MutationObserver((e) => {
+          for (const o of e)
+            if (o.type === "childList")
+              for (const d of o.addedNodes)
+                d.tagName === "LINK" && d.rel === "modulepreload" && i(d);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function r(e) {
+          const o = {};
+          return (
+            e.integrity && (o.integrity = e.integrity),
+            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
+          );
+        }
+        function i(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const o = r(e);
+          fetch(e.href, o);
+        }
+      })();
+      let s, m, f, a, c, l, w;
+      const h = {
+          url: "https://images.woosmap.com/icons/pin-red.png",
+          scaledSize: { height: 38, width: 26 },
+        },
+        u = { lat: 51.5, lng: -0.234 };
+      function g(t, n, r) {
+        const i = new window.woosmap.map.Marker({ position: t, icon: n });
+        return i.setMap(r), i;
+      }
+      function y() {
+        (s = new window.woosmap.map.Map(document.getElementById("map"), {
+          zoom: 9,
+          center: u,
+        })),
+          (w = new woosmap.map.DistanceService()),
+          (c = g(u, h, s)),
+          s.addListener("click", (n) => {
+            c.setMap(null), (c = g(n.latlng, h, s)), p(n.latlng);
+          });
+        const t = () => {
+          p(c.getPosition().toJSON());
+        };
+        (m = document.getElementById("isochrone-method-select")),
+          (f = document.getElementById("isochrone-mode-select")),
+          (a = document.getElementById("isochrone-distance-input")),
+          m.addEventListener("change", t),
+          f.addEventListener("change", t),
+          a.addEventListener("change", t),
+          p(u);
+      }
+      function p(t) {
+        if (parseInt(a.value) > 120 || parseInt(a.value) <= 0) {
+          alert("Value should be between 1 and 120");
+          return;
+        }
+        const n = {
+          origin: t,
+          method: m.value,
+          travelMode: f.value,
+          value: parseInt(a.value),
+        };
+        w.getDistanceIsochrone(n)
+          .then(v)
+          .catch((r) => {
+            console.error(r);
+          });
+      }
+      function v(t) {
+        l && l.setMap(null),
+          (l = new woosmap.map.Polyline({
+            path: t.isoline.path || null,
+            strokeColor: "#b71c1c",
+            strokeOpacity: 0.8,
+            strokeWeight: 4,
+          })),
+          l.setMap(s),
+          I(t.isoline.path || null);
+      }
+      function I(t) {
+        const n = new woosmap.map.LatLngBounds();
+        if (t) {
+          for (const r of t) n.extend(r);
+          s.fitBounds(n);
+        }
+      }
+      window.initMap = y;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #app {
+        height: 100%;
+      }
+      #selector {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
+      }
+      select {
+        width: 100px;
+      }
+      input {
+        width: 92px;
+      }
+      .select-container {
+        padding: 2px 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      #selector span {
+        padding: 0 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="selector">
+        <div class="select-container">
+          <span>mode </span>
+          <select id="isochrone-mode-select">
+            <option value="driving">Driving</option>
+            <option value="walking">Walking</option>
+            <option value="cycling">Cycling</option>
+          </select>
+        </div>
+        <div class="select-container">
+          <span>method </span>
+          <select id="isochrone-method-select">
+            <option value="time">Time</option>
+            <option value="distance">Distance</option>
+          </select>
+        </div>
+        <div class="select-container">
+          <span>value </span>
+          <input
+            id="isochrone-distance-input"
+            type="number"
+            value="50"
+            min="1"
+            max="120"
+          />
+        </div>
+        <div class="select-container">
+          <small style="opacity: 0.5; padding: 0 5px"
+            >click on the map to change isochrone origin</small
+          >
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

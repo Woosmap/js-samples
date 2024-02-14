@@ -319,6 +319,78 @@
 
         <div
           class="card"
+          id="card-distance-isochrone"
+          onclick="setSource(event, './samples/distance-isochrone/highlight/highlight.html', 'Distance Isochrone', 'distance-isochrone', this)"
+        >
+          <h4 class="card-header">
+            Distance Isochrone
+            <span class="subheader">(distance-isochrone)</span>
+          </h4>
+          <div class="card-description">
+            Distance Isochrones lets you calculate distance isochrones from a
+            given location.
+          </div>
+          <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/distance-isochrone/highlight/highlight.html', 'Distance Isochrone','distance-isochrone', this)"
+            >
+              Highlight
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/distance-isochrone/iframe/index.html', 'Distance Isochrone','distance-isochrone', this)"
+            >
+              Iframe
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/distance-isochrone/app/dist/index.html', 'Distance Isochrone', 'distance-isochrone', this)"
+            >
+              App
+            </button>
+            <button class="button">
+              <div class="buttonIcon codesandbox"></div>
+              <a
+                target="_blank"
+                href="https://codesandbox.io/p/devbox/github/woosmap/js-samples/tree/master/dist/samples/distance-isochrone/app?file=index.ts"
+              >
+                CodeSandbox
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon stackblitz"></div>
+              <a
+                target="_blank"
+                href="https://stackblitz.com/github/woosmap/js-samples/tree/master/dist/samples/distance-isochrone/app?file=index.ts"
+              >
+                StackBlitz
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon jsfiddle"></div>
+              <a
+                target="_blank"
+                href="https://jsfiddle.net/gh/get/library/pure/woosmap/js-samples/tree/master/dist/samples/distance-isochrone/jsfiddle"
+              >
+                JsFiddle
+              </a>
+            </button>
+
+            <button class="button">
+              <a
+                target="_blank"
+                href="https://github.com/woosmap/js-samples/tree/master/samples/distance-isochrone"
+                >Code</a
+              >
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="card"
           id="card-distance-matrix"
           onclick="setSource(event, './samples/distance-matrix/highlight/highlight.html', 'Distance Matrix', 'distance-matrix', this)"
         >

@@ -1,0 +1,53 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_distance_isochrone] */
+@include meta.load-css("../../shared/scss/_default.scss");
+
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map,
+#app {
+    height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#selector {
+    position: absolute;
+    top: 0;
+    z-index: 10000;
+    margin: 10px;
+    background: #fff;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+select,
+input {
+    width: 100px;
+}
+
+.select-container {
+    padding: 2px 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#selector span {
+    padding: 0 5px;
+}
+
+/* [END woosmap_distance_isochrone] */

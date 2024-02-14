@@ -2,29 +2,20 @@
 
 /* [START woosmap_distance_isochrone] */
 @include meta.load-css("../../shared/scss/_default.scss");
+@import "../../shared/scss/mixins.scss";
 
 #app {
     height: 100%;
 }
 #selector {
-    position: absolute;
-    top: 0;
-    z-index: 10000;
-    margin: 10px;
-    background: #fff;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    border-radius: 3px;
-    display: flex;
-    flex-direction: column;
+    @include map-panel($top: 0px, $left: 0);
 }
 
-select,
-input {
+select{
     width: 100px;
+}
+input {
+    width: 92px;
 }
 
 .select-container {

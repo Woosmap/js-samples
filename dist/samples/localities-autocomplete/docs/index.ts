@@ -128,6 +128,7 @@ document.addEventListener("click", (event) => {
 });
 
 // [START woosmap_localities_autocomplete_debounce_promise]
+
 type DebouncePromiseFunction<T, Args extends any[]> = (
   ...args: Args
 ) => Promise<T>;
@@ -163,8 +164,7 @@ function debouncePromise<T, Args extends any[]>(
     });
   };
 }
-
-// [END woosmap_localities_autocomplete_debounce_promise]
+// [END woosmap_localities_autocomplete_debounce_promise] */
 
 declare global {
   interface Window {

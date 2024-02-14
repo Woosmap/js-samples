@@ -126,6 +126,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
+
 type DebouncePromiseFunction<T, Args extends any[]> = (
   ...args: Args
 ) => Promise<T>;
@@ -161,7 +162,6 @@ function debouncePromise<T, Args extends any[]>(
     });
   };
 }
-
 
 declare global {
   interface Window {

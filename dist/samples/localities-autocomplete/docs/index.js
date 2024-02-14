@@ -123,6 +123,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
+// [START woosmap_localities_autocomplete_debounce_promise]
 function debouncePromise(fn, delay) {
   let timeoutId = null;
   let latestResolve = null;
@@ -153,5 +154,6 @@ function debouncePromise(fn, delay) {
   };
 }
 
+// [END woosmap_localities_autocomplete_debounce_promise] */
 window.initMap = initMap;
 // [END woosmap_localities_autocomplete]

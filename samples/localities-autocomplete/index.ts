@@ -128,6 +128,8 @@ document.addEventListener("click", (event) => {
 });
 
 // [START woosmap_localities_autocomplete_debounce_promise]
+let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
+
 type DebouncePromiseFunction<T, Args extends any[]> = (
   ...args: Args
 ) => Promise<T>;
@@ -163,8 +165,8 @@ function debouncePromise<T, Args extends any[]>(
     });
   };
 }
-
-// [END woosmap_localities_autocomplete_debounce_promise]
+// [END woosmap_localities_autocomplete_debounce_promise] */
+PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
 
 declare global {
   interface Window {

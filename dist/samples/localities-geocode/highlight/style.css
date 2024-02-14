@@ -1,0 +1,119 @@
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+  height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#autocomplete-container {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+#autocomplete-input {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  text-overflow: ellipsis;
+}
+
+#suggestions-list {
+  position: absolute;
+  width: 320px;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  border: 1px solid #ccc;
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+  max-height: 225px;
+  overflow-y: auto;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+#suggestions-list li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#suggestions-list li:hover {
+  background-color: #f2f2f2;
+}
+
+#app {
+  height: 100%;
+}
+
+.btn {
+  background: #3d5afe;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  -webkit-transition: background 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #202124;
+  cursor: pointer;
+  display: inline;
+  font-weight: 600;
+  height: 38px;
+  padding: 0 15px;
+  position: relative;
+  align-items: center;
+}
+.btn:hover {
+  background: #0a2ffe;
+}
+
+.btnText {
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25rem;
+}
+.btnText:hover {
+  text-decoration: none;
+}
+
+#instructions {
+  max-width: 300px;
+  font-size: 17px;
+  padding: 10px;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 5px;
+  overflow: hidden;
+  z-index: 1;
+}
+

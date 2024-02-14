@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities Geocode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          u(e);
+        new MutationObserver((e) => {
+          for (const o of e)
+            if (o.type === "childList")
+              for (const a of o.addedNodes)
+                a.tagName === "LINK" && a.rel === "modulepreload" && u(a);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function p(e) {
+          const o = {};
+          return (
+            e.integrity && (o.integrity = e.integrity),
+            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
+          );
+        }
+        function u(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const o = p(e);
+          fetch(e.href, o);
+        }
+      })();
+      let i, c, d, f;
+      const r = {};
+      function g() {
+        (i = new window.woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 51.50940214, lng: -0.133012 },
+          zoom: 12,
+        })),
+          (d = new woosmap.map.InfoWindow({})),
+          (f = new woosmap.map.LocalitiesService()),
+          i.addListener("click", (t) => {
+            l(t.latlng);
+          });
+      }
+      const s = document.getElementById("autocomplete-input"),
+        m = document.getElementById("submit-button");
+      s &&
+        s.addEventListener("keydown", (t) => {
+          t.key === "Enter" && l(null);
+        });
+      m && m.addEventListener("click", w);
+      function w() {
+        l(null);
+      }
+      function l(t) {
+        t
+          ? ((r.latLng = t), delete r.address)
+          : (s == null ? void 0 : s.value) !== "" &&
+            ((r.address = s.value), delete r.latLng),
+          (r.latLng || r.address) &&
+            f
+              .geocode(r)
+              .then((n) => h(n.results[0]))
+              .catch((n) => console.error("Error geocoding localities:", n));
+      }
+      function h(t) {
+        c && (c.setMap(null), d.close()),
+          t != null &&
+            t.geometry &&
+            ((c = new woosmap.map.Marker({
+              position: t.geometry.location,
+              icon: {
+                url: "https://images.woosmap.com/dot-marker.png",
+                scaledSize: { height: 64, width: 46 },
+              },
+            })),
+            c.setMap(i),
+            d.setContent(`<span>${t.formatted_address}</span>`),
+            d.open(i, c),
+            i.setCenter(t.geometry.location),
+            i.setZoom(14));
+      }
+      window.initMap = g;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #autocomplete-container {
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+      }
+      #autocomplete-input {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        text-overflow: ellipsis;
+      }
+      #suggestions-list {
+        position: absolute;
+        width: 320px;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        border: 1px solid #ccc;
+        border-top: none;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: none;
+        max-height: 225px;
+        overflow-y: auto;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        box-shadow: 0 4px 8px #0000001a;
+        background-color: #fff;
+      }
+      #suggestions-list li {
+        padding: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #suggestions-list li:hover {
+        background-color: #f2f2f2;
+      }
+      #app {
+        height: 100%;
+      }
+      .btn {
+        background: #3d5afe;
+        border: 0;
+        border-radius: 4px;
+        box-shadow:
+          0 2px 2px #00000024,
+          0 1px 5px #0000001f,
+          0 3px 1px -2px #0003;
+        -webkit-transition:
+          background 0.3s,
+          color 0.3s;
+        transition:
+          background 0.3s,
+          color 0.3s;
+        box-sizing: border-box;
+        font-size: 14px;
+        color: #202124;
+        cursor: pointer;
+        display: inline;
+        font-weight: 600;
+        height: 38px;
+        padding: 0 15px;
+        position: relative;
+        align-items: center;
+      }
+      .btn:hover {
+        background: #0a2ffe;
+      }
+      .btnText {
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 1.25rem;
+      }
+      .btnText:hover {
+        text-decoration: none;
+      }
+      #instructions {
+        max-width: 300px;
+        font-size: 17px;
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="autocomplete-container">
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Geocode Localities..."
+        />
+        <button class="btn" id="submit-button" type="button">
+          <span class="btnText" tabindex="-1">Search</span>
+        </button>
+      </div>
+
+      <div id="instructions">
+        Enter an address to geocode or click on the map to reverse geocode.
+      </div>
+
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

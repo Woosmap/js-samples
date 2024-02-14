@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- [START woosmap_distance_matrix] -->
+<html>
+  <head>
+    <title>Distance Matrix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <!-- [START woosmap_distance_matrix_div] -->
+    <div id="app">
+      <div id="map"></div>
+      <div id="service-info">
+        <div style="width: 50%; margin: 5px">
+          <h4>Request</h4>
+          <pre id="request"></pre>
+        </div>
+        <div style="width: 50%; margin: 5px">
+          <h4>Response</h4>
+          <pre id="response"></pre>
+        </div>
+      </div>
+    </div>
+    <!-- [END woosmap_distance_matrix_div] -->
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>
+<!-- [END woosmap_distance_matrix] -->

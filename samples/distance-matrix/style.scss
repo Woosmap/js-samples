@@ -1,0 +1,34 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_distance_matrix] */
+@include meta.load-css("../../shared/scss/_default.scss");
+
+#app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#map,
+#service-info {
+    height: 50%;
+    width: 100%;
+}
+
+h4 {
+    margin-bottom: 0px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+#service-info {
+    display: flex;
+    overflow-y: auto;
+}
+
+#request,
+#response {
+    width: 100%;
+}
+
+/* [END woosmap_distance_matrix] */

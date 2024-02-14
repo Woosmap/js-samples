@@ -1,0 +1,13 @@
+{
+  "title": "Map Style Point of Interest",
+  "description": "Standard style displaying all Points of Interest on the map.",
+  "callback": "initMap",
+  "tag": "map_style_pois",
+  "name": "map-style-pois",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

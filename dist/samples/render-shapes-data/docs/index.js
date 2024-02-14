@@ -2474,9 +2474,7 @@ function initMap() {
     const infoElement = document.getElementById("info");
 
     if (infoElement) {
-      infoElement.innerHTML = `<strong>${event.feature.getProperty(
-        "name",
-      )}</strong>`;
+      infoElement.innerHTML = `<strong>${event.feature.getProperty("name")}</strong>`;
     }
 
     event.feature.setProperty("highlighted", true);

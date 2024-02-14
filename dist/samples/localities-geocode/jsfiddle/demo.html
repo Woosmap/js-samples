@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities Geocode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <!-- jsFiddle will insert css and js -->
+  </head>
+  <body>
+    <div id="app">
+      <div id="autocomplete-container">
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Geocode Localities..."
+        />
+        <button class="btn" id="submit-button" type="button">
+          <span class="btnText" tabindex="-1">Search</span>
+        </button>
+      </div>
+
+      <div id="instructions">
+        Enter an address to geocode or click on the map to reverse geocode.
+      </div>
+
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities autocomplete and details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
+        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
+          r(t);
+        new MutationObserver((t) => {
+          for (const o of t)
+            if (o.type === "childList")
+              for (const l of o.addedNodes)
+                l.tagName === "LINK" && l.rel === "modulepreload" && r(l);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function s(t) {
+          const o = {};
+          return (
+            t.integrity && (o.integrity = t.integrity),
+            t.referrerPolicy && (o.referrerPolicy = t.referrerPolicy),
+            t.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : t.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
+          );
+        }
+        function r(t) {
+          if (t.ep) return;
+          t.ep = !0;
+          const o = s(t);
+          fetch(t.href, o);
+        }
+      })();
+      let p, a, m, g, u, y;
+      function h() {
+        (p = new window.woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 51.50940214, lng: -0.133012 },
+          zoom: 4,
+        })),
+          (m = new woosmap.map.InfoWindow({})),
+          (g = new window.woosmap.map.LocalitiesService()),
+          (u = { input: "", types: ["locality", "address", "postal_cde"] }),
+          (y = I(g.autocomplete, 0));
+      }
+      const c = document.getElementById("autocomplete-input"),
+        i = document.getElementById("suggestions-list");
+      c &&
+        i &&
+        (c.addEventListener("input", w),
+        c.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            const n = i.querySelector("li");
+            n && n.click();
+          }
+        }));
+      function w() {
+        c &&
+          i &&
+          ((u.input = c.value),
+          u.input
+            ? y(u)
+                .then((e) => v(e))
+                .catch((e) =>
+                  console.error("Error autocomplete localities:", e),
+                )
+            : (i.style.display = "none"));
+      }
+      function E(e) {
+        g.getDetails({ publicId: e })
+          .then((n) => L(n.result))
+          .catch((n) => console.error("Error getting locality details:", n));
+      }
+      function L(e) {
+        a && (a.setMap(null), m.close()),
+          e != null &&
+            e.geometry &&
+            ((a = new woosmap.map.Marker({
+              position: e.geometry.location,
+              icon: {
+                url: "https://images.woosmap.com/dot-marker.png",
+                scaledSize: { height: 64, width: 46 },
+              },
+            })),
+            a.setMap(p),
+            m.setContent(`<span>${e.formatted_address}</span>`),
+            m.open(p, a),
+            p.flyTo({ center: e.geometry.location, zoom: 14 }));
+      }
+      function v(e) {
+        c &&
+          i &&
+          ((i.innerHTML = ""),
+          e.localities.length > 0 && u.input
+            ? (e.localities.forEach((n) => {
+                var r;
+                const s = document.createElement("li");
+                (s.textContent = (r = n.description) != null ? r : ""),
+                  s.addEventListener("click", () => {
+                    var t;
+                    (c.value = (t = n.description) != null ? t : ""),
+                      (i.style.display = "none"),
+                      E(n.public_id);
+                  }),
+                  i.appendChild(s);
+              }),
+              (i.style.display = "block"))
+            : (i.style.display = "none"));
+      }
+      document.addEventListener("click", (e) => {
+        !e.target.closest("#autocomplete-container") &&
+          i &&
+          (i.style.display = "none");
+      });
+      function I(e, n) {
+        let s = null,
+          r = null,
+          t = null;
+        return function (...o) {
+          return new Promise((l, d) => {
+            s !== null && clearTimeout(s),
+              (r = l),
+              (t = d),
+              (s = setTimeout(() => {
+                e(...o)
+                  .then((f) => {
+                    r === l && t === d && l(f);
+                  })
+                  .catch((f) => {
+                    r === l && t === d && d(f);
+                  });
+              }, n));
+          });
+        };
+      }
+      window.initMap = h;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #autocomplete-container {
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+      }
+      #autocomplete-input {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        text-overflow: ellipsis;
+      }
+      #suggestions-list {
+        position: absolute;
+        width: 320px;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        border: 1px solid #ccc;
+        border-top: none;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: none;
+        max-height: 225px;
+        overflow-y: auto;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        box-shadow: 0 4px 8px #0000001a;
+        background-color: #fff;
+      }
+      #suggestions-list li {
+        padding: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #suggestions-list li:hover {
+        background-color: #f2f2f2;
+      }
+      #app {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="autocomplete-container">
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Search Localities..."
+          autocomplete="off"
+        />
+        <ul id="suggestions-list"></ul>
+      </div>
+
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

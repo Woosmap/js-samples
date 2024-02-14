@@ -29,7 +29,7 @@
   z-index: 1;
 }
 
-@mixin button($background:#fff, $color:#202124, $hover: darken($background, 10%)) {
+@mixin button($background:#fff, $color:#202124, $hover: darken($background, 10%), $display: flex, $position: relative, $height: 32px) {
   background: $background;
   border: 0;
   border-radius: 4px;
@@ -40,11 +40,11 @@
   font-size: 14px;
   color: $color;
   cursor: pointer;
-  display: flex;
+  display: $display;
   font-weight: 600;
-  height: 32px;
+  height: $height;
   padding: 0 15px;
-  position: relative;
+  position: $position;
   align-items: center;
   &:hover {
     background: $hover;

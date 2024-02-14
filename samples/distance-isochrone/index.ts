@@ -1,5 +1,4 @@
 // [START woosmap_distance_isochrone]
-// Initialize and add the map
 let map: woosmap.map.Map;
 let methodSelect, modeSelect: HTMLSelectElement;
 let distanceInput: HTMLInputElement;

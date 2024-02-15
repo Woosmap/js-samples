@@ -319,6 +319,77 @@
 
         <div
           class="card"
+          id="card-directions-simple"
+          onclick="setSource(event, './samples/directions-simple/highlight/highlight.html', 'Directions Service', 'directions-simple', this)"
+        >
+          <h4 class="card-header">
+            Directions Service
+            <span class="subheader">(directions-simple)</span>
+          </h4>
+          <div class="card-description">
+            Compute routes between an origin and a destination.
+          </div>
+          <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/directions-simple/highlight/highlight.html', 'Directions Service','directions-simple', this)"
+            >
+              Highlight
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/directions-simple/iframe/index.html', 'Directions Service','directions-simple', this)"
+            >
+              Iframe
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/directions-simple/app/dist/index.html', 'Directions Service', 'directions-simple', this)"
+            >
+              App
+            </button>
+            <button class="button">
+              <div class="buttonIcon codesandbox"></div>
+              <a
+                target="_blank"
+                href="https://codesandbox.io/p/devbox/github/woosmap/js-samples/tree/master/dist/samples/directions-simple/app?file=index.ts"
+              >
+                CodeSandbox
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon stackblitz"></div>
+              <a
+                target="_blank"
+                href="https://stackblitz.com/github/woosmap/js-samples/tree/master/dist/samples/directions-simple/app?file=index.ts"
+              >
+                StackBlitz
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon jsfiddle"></div>
+              <a
+                target="_blank"
+                href="https://jsfiddle.net/gh/get/library/pure/woosmap/js-samples/tree/master/dist/samples/directions-simple/jsfiddle"
+              >
+                JsFiddle
+              </a>
+            </button>
+
+            <button class="button">
+              <a
+                target="_blank"
+                href="https://github.com/woosmap/js-samples/tree/master/samples/directions-simple"
+                >Code</a
+              >
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="card"
           id="card-distance-isochrone"
           onclick="setSource(event, './samples/distance-isochrone/highlight/highlight.html', 'Distance Isochrone', 'distance-isochrone', this)"
         >

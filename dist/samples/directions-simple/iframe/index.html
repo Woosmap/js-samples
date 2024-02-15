@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Directions Service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          i(e);
+        new MutationObserver((e) => {
+          for (const n of e)
+            if (n.type === "childList")
+              for (const a of n.addedNodes)
+                a.tagName === "LINK" && a.rel === "modulepreload" && i(a);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function r(e) {
+          const n = {};
+          return (
+            e.integrity && (n.integrity = e.integrity),
+            e.referrerPolicy && (n.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (n.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (n.credentials = "omit")
+                : (n.credentials = "same-origin"),
+            n
+          );
+        }
+        function i(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const n = r(e);
+          fetch(e.href, n);
+        }
+      })();
+      let c, d, s;
+      function f() {
+        const o = new woosmap.map.DirectionsService(),
+          t = new woosmap.map.DirectionsRenderer({});
+        (c = new woosmap.map.Map(document.getElementById("map"), {
+          zoom: 7,
+          center: { lat: 43.5, lng: 2.4 },
+        })),
+          t.setMap(c);
+        const r = () => {
+          l(o, t);
+        };
+        (d = document.getElementById("from")),
+          (s = document.getElementById("to")),
+          d.addEventListener("change", r),
+          s.addEventListener("change", r),
+          l(o, t);
+      }
+      function l(o, t) {
+        const r = (i) => {
+          i &&
+            ((document.getElementById("distance").innerText =
+              i.legs[0].distance.text),
+            (document.getElementById("duration").innerText =
+              i.legs[0].duration.text));
+        };
+        o.route(
+          { origin: u(d), destination: u(s), provideRouteAlternatives: !0 },
+          (i, e) => {
+            e === "OK"
+              ? (t.setDirections(i),
+                r(i.routes[0]),
+                t.addListener("routeIndex_changed", () => {
+                  r(i.routes[t.get("routeIndex")]);
+                }))
+              : window.alert(`Directions request failed due to ${e}`);
+          },
+        );
+      }
+      function u(o) {
+        var t, r;
+        return {
+          lat: parseFloat(
+            (t = o.options[o.selectedIndex]) == null
+              ? void 0
+              : t.getAttribute("data-lat"),
+          ),
+          lng: parseFloat(
+            (r = o.options[o.selectedIndex]) == null
+              ? void 0
+              : r.getAttribute("data-lng"),
+          ),
+        };
+      }
+      window.initMap = f;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #od-selector {
+        width: 350px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
+      }
+      .od-container {
+        padding: 2px 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      #od-selector span {
+        padding: 0 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="od-selector">
+      <div class="od-container">
+        <span>from </span>
+        <select id="from">
+          <option value="Paris" data-lat="48.86288" data-lng="2.34946">
+            Paris
+          </option>
+          <option value="Montpellier" data-lat="43.61486" data-lng="3.86798">
+            Montpellier
+          </option>
+          <option value="Berlin" data-lat="52.52457" data-lng="13.42347">
+            Berlin
+          </option>
+          <option value="Milan" data-lat="45.47520" data-lng="9.18530">
+            Milan
+          </option>
+          <option value="Madrid" data-lat="40.42629" data-lng="-3.68574">
+            Madrid
+          </option>
+          <option value="Bruxelles" data-lat="50.84670" data-lng="4.35684">
+            Bruxelles
+          </option>
+          <option value="Amsterdam" data-lat="52.37342" data-lng="4.84631">
+            Amsterdam
+          </option>
+        </select>
+      </div>
+      <div class="od-container">
+        <span>to </span>
+        <select id="to">
+          <option value="Paris" data-lat="48.86288" data-lng="2.34946">
+            Paris
+          </option>
+          <option
+            value="Montpellier"
+            data-lat="43.61486"
+            data-lng="3.86798"
+            selected
+          >
+            Montpellier
+          </option>
+          <option value="Berlin" data-lat="52.52457" data-lng="13.42347">
+            Berlin
+          </option>
+          <option value="Milan" data-lat="45.47520" data-lng="9.18530">
+            Milan
+          </option>
+          <option value="Madrid" data-lat="40.42629" data-lng="-3.68574">
+            Madrid
+          </option>
+          <option value="Bruxelles" data-lat="50.84670" data-lng="4.35684">
+            Bruxelles
+          </option>
+          <option value="Amsterdam" data-lat="52.37342" data-lng="4.84631">
+            Amsterdam
+          </option>
+        </select>
+      </div>
+      <div class="od-container">
+        <span>distance </span>
+        <div id="distance"></div>
+      </div>
+      <div class="od-container">
+        <span>time </span>
+        <div id="duration"></div>
+      </div>
+    </div>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

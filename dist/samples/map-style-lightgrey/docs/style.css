@@ -1,4 +1,4 @@
-/* [START woosmap_add_map] */
+/* [START woosmap_map_style_lightgrey] */
 /*
  * Always set the map height explicitly to define the size of the div element
  * that contains the map.
@@ -17,4 +17,4 @@ body {
   padding: 0;
 }
 
-/* [END woosmap_add_map] */
+/* [END woosmap_map_style_lightgrey] */

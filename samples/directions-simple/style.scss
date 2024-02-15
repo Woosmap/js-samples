@@ -1,0 +1,23 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_directions_simple] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@import "../../shared/scss/mixins.scss";
+
+#od-selector {
+  width: 200px;
+  @include map-panel($top: 0, $left: 0);
+}
+
+.od-container {
+  padding: 2px 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#od-selector span {
+  padding: 0 5px;
+}
+
+/* [END woosmap_directions_simple] */

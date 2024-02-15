@@ -5,7 +5,7 @@
 @import "../../shared/scss/mixins.scss";
 
 #od-selector {
-  width: 350px;
+  width: 200px;
   @include map-panel($top: 0, $left: 0);
 }
 

@@ -29,11 +29,11 @@
   z-index: 1;
 }
 
-@mixin button($background:#fff, $color:#202124, $hover: darken($background, 10%), $display: flex, $position: relative, $height: 32px) {
+@mixin button($background: #fff, $color: #202124, $hover: darken($background, 10%), $display: flex, $position: relative, $height: 32px) {
   background: $background;
   border: 0;
   border-radius: 4px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12), 0 3px 1px -2px rgba(0, 0, 0, .2);
   -webkit-transition: background .3s, color .3s;
   transition: background .3s, color .3s;
   box-sizing: border-box;
@@ -46,6 +46,7 @@
   padding: 0 15px;
   position: $position;
   align-items: center;
+
   &:hover {
     background: $hover;
   }
@@ -58,7 +59,17 @@
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.25rem;
+
   &:hover {
     text-decoration: none;
   }
+}
+
+@mixin loader($width: 70px, $height:70px, $borderColor: #f3f3f3, $borderTopColor: #444444) {
+  border: 12px solid $borderColor;
+  border-radius: 50%;
+  border-top: 12px solid $borderTopColor;
+  width: $width;
+  height: $height;
+  animation: spin 1s linear infinite;
 }

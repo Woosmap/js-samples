@@ -1,0 +1,13 @@
+{
+  "title": "Indoor Map Renderer",
+  "description": "A simple example using the Map-Js library to embed interactive indoor maps directly into your webpages",
+  "callback": "initMap",
+  "tag": "indoor_map_simple",
+  "name": "indoor-map-simple",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

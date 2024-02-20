@@ -1,0 +1,13 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_store_locator_widget] */
+
+#store-locator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* [END woosmap_store_locator_widget] */

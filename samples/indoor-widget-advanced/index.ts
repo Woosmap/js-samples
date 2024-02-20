@@ -1,16 +1,17 @@
-// [START woosmap_indoor_Widget_simple]
+// [START woosmap_indoor_widget_advanced]
 let map: woosmap.map.Map;
 
 function initMap(): void {
-  console.log("init map");
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
-    {},
+    { center: { lat: 43.6066, lng: 3.9218 } },
   );
 
   const conf: woosmap.map.IndoorRendererOptions = {
-    defaultFloor: 0, //Render map with default floor
-    venue: "gdn_doc",
+    centerMap: false,
+    defaultFloor: 3, //Render map with default floor
+    highlightPOIByRef: "tropiques",
+    venue: "wgs_doc",
     responsive: "desktop",
   };
 
@@ -63,6 +64,6 @@ declare global {
   }
 }
 window.initMap = initMap;
-// [END woosmap_indoor_Widget_simple]
+// [END woosmap_indoor_widget_advanced]
 
 export {};

@@ -1,0 +1,130 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_store_locator_widget_custom_renderer] */
+
+#store-locator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica   Neue",
+    sans-serif;
+}
+
+#myCustomContentID {
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  padding: 0;
+}
+
+#myCustomContentID li {
+  line-height: 32px;
+  padding: 6px;
+  list-style: none;
+}
+#myCustomContentID p {
+  margin: 0;
+}
+
+.review-image,
+.marker-image {
+  height: 32px;
+  width: 32px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  position: absolute;
+}
+
+#store-hours .marker-image {
+  background-size: 70%;
+  background-image: url("https://images.woosmap.com/icons/hours-blue.svg");
+}
+
+#store-address .marker-image {
+  background-size: 60%;
+  background-image: url("https://images.woosmap.com/icons/place-blue.svg");
+}
+
+#store-website .marker-image {
+  background-size: 70%;
+  background-image: url("https://images.woosmap.com/icons/link-blue.svg");
+}
+
+#store-phone .marker-image {
+  background-size: 60%;
+  background-image: url("https://images.woosmap.com/icons/phone-blue.svg");
+}
+
+#store-hours p,
+#store-address p,
+#store-phone p,
+#store-website a {
+  margin-left: 40px;
+}
+
+.review-meta {
+  margin-bottom: -6px;
+}
+
+.review-author {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.review-item {
+  margin-left: 40px;
+  margin-bottom: 1em;
+}
+
+.review-date,
+.summary-address {
+  opacity: 0.6;
+}
+
+.review-text {
+  line-height: 1.55;
+  text-align: left;
+  max-width: 32em;
+}
+
+.store-summary p {
+  margin: 0;
+}
+
+.store-name {
+  font-size: 1rem !important;
+  margin-right: 20px;
+}
+
+.text-black {
+  color: black;
+  text-decoration: none;
+}
+
+.text-black:hover {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hours-table {
+  margin-left: 40px;
+}
+
+.padding-right {
+  padding-right: 15px !important;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* [END woosmap_store_locator_widget_custom_renderer] */

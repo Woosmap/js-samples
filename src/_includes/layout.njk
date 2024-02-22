@@ -25,9 +25,11 @@
 <body>
 {% block html %}{% endblock %}
 {% block api %}
-    <script
-            src="https://sdk.woosmap.com/map/map.js?key={{ WOOSMAP_PUBLIC_API_KEY }}&callback={{ callback }}{% if libraries|length %}&libraries={{ libraries }}{% endif %}{% if language %}&language={{ language }}{% endif %}"
+    {% if target_lib == "webapp" %}
+    {% else %}
+    <script src="https://sdk.woosmap.com/map/map.js?key={{ WOOSMAP_PUBLIC_API_KEY }}&callback={{ callback }}{% if libraries|length %}&libraries={{ libraries }}{% endif %}{% if language %}&language={{ language }}{% endif %}"
             defer></script>
+   {% endif -%}
 {% endblock %}
 </body>
 </html>

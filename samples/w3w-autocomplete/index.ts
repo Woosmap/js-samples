@@ -11,6 +11,7 @@ let autoSuggestResultsTitle: HTMLElement;
 let results: HTMLElement;
 let inputElement: HTMLInputElement;
 let detailsHTML: HTMLElement;
+let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
 let marker: woosmap.map.Marker;
 let debouncedAutosuggestW3W: (
@@ -265,6 +266,9 @@ function w3wClickCallback(suggestion: What3WordsSuggestion): void {
 
 function displayW3wSuggestion() {
   const value = inputElement.value;
+  if (value) {
+    displaySection(clearSearchBtn);
+  }
   value.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
   hideSection(autoSuggestResultsTitle);
   if ((value.match(/[.]/g) || []).length !== 2) {
@@ -329,6 +333,23 @@ function initMap() {
   initUI();
 }
 
+function resetUI() {
+  hideSection(resultsContainer);
+  hideSection(addressListContainer);
+  hideSection(subBuildingListContainer);
+  hideSection(addressDetailsContainer);
+  hideSection(clearSearchBtn);
+  hideSection(allResultsContainer);
+  clearSection(addressList);
+  clearSection(subBuildingList);
+  clearSection(detailsHTML);
+  inputElement.value = "";
+  if (marker) {
+    marker.setMap(null);
+  }
+  inputElement.focus();
+}
+
 function initUI() {
   inputElement = document.getElementById(
     "autocomplete-input",
@@ -359,8 +380,13 @@ function initUI() {
     ".addressDetails .options",
   ) as HTMLElement;
   results = document.querySelector(".autosuggest-results") as HTMLElement;
+  clearSearchBtn = document.querySelector(
+    ".clear-searchButton",
+  ) as HTMLButtonElement;
+
   autoSuggestResultsTitle.addEventListener("click", backToAddressList);
   inputElement.addEventListener("input", displayW3wSuggestion);
+  clearSearchBtn.addEventListener("click", resetUI);
 }
 
 type DebouncePromiseFunction<T, Args extends any[]> = (

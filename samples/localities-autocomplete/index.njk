@@ -3,12 +3,16 @@
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
         <div id="autocomplete-container">
+            {% svgIcon 'search.svg' %}
             <input
                     type="text"
                     id="autocomplete-input"
                     placeholder="Search Localities..."
                     autocomplete="off"
             />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+                {% svgIcon 'clear.svg' %}
+            </button>
             <ul id="suggestions-list"></ul>
         </div>
 

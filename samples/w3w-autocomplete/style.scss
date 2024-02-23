@@ -1,0 +1,271 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_w3w_autocomplete] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+@import "../../shared/scss/mixins.scss";
+
+#app {
+  height: 100%;
+  font-size: 13px;
+}
+
+#autocomplete-container {
+  font-size: 13px
+}
+
+* {
+  box-sizing: border-box;
+}
+
+p {
+  margin: 5px 0;
+}
+
+li {
+  list-style: none outside;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul > :not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.bold {
+  font-weight: 700;
+}
+
+#all-results-container {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  z-index: 1;
+  list-style: none;
+  margin: 8px 0 0;
+  display: none;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+}
+
+.autosuggest-results-container {
+  display: none;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 6px;
+}
+
+.autosuggest-results {
+  width: 100%;
+  min-width: 0;
+}
+
+.autosuggest-results-title, .address-list .title {
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.02);
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-weight: 500;
+}
+
+.address-list {
+  max-height: 305px;
+  overflow-y: auto;
+}
+
+.addressDetails {
+  display: none;
+  position: absolute;
+  right: 10px;
+  bottom: 60px;
+  border-radius: 6px;
+  max-width: 240px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  z-index: 1;
+  overflow: hidden;
+
+  .info {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    background-color: #fff;
+  }
+
+  .options {
+    overflow-y: auto;
+    max-height: 240px;
+    font-size: 12px;
+    padding-top: 12px;
+    background-color: #fff;
+
+    .option-detail {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 12px 8px 12px;
+      margin: 0;
+
+      &-label {
+        color: rgba(0, 0, 0, 0.5);
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.address-components {
+  padding: 0 0 18px 0;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.address-components .title {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 16px 12px 10px 12px;
+}
+
+.options > label {
+  display: block;
+  padding: 5px;
+}
+
+.options select, .options button {
+  padding: 3px;
+  margin: 5px;
+  width: 200px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.w3w-results {
+  display: flex;
+  background-color: #fff;
+  min-width: 300px;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.w3w-results-container {
+  display: none;
+}
+
+.address-list-container {
+  display: none;
+}
+
+.suggestion {
+  padding: 10px 16px;
+  width: 100%;
+  min-width: 0;
+  transition: 0.3s all ease-in-out;
+}
+
+.suggestion:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+}
+
+.info .words, .suggestion .words {
+  font-weight: 700;
+  margin-bottom: 1px;
+  transition: 0.3s all ease-in-out;
+  color: #252525;
+}
+
+.info .words::before, .suggestion .words::before {
+  content: "///";
+  margin-right: 5px;
+  color: #e01f25;
+  letter-spacing: -0.06rem;
+}
+
+.suggestion:hover .words {
+  color: #000;
+}
+
+.info .nearest, .suggestion .nearest {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: 0.3s all ease-in-out;
+}
+
+.suggestion:hover .nearest {
+  color: #000;
+}
+
+.sub-building-list-container .autosuggest-results-title {
+  cursor: pointer;
+  display: none;
+}
+
+.not-found {
+  padding: 12px 16px;
+  color: #930e07;
+}
+
+.address {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 16px 10px;
+  min-height: 50px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+    color: #3949ab;
+
+    .pin {
+      @include bg-marker("#3949ab");
+    }
+
+    .arrow {
+      @include bg-list("#3949ab")
+    }
+  }
+
+  &.selected {
+    color: #da0082;
+    font-weight: 700;
+    background-color: rgba(85, 134, 255, 0.06);
+
+    .pin {
+      @include bg-marker("#da0082");
+    }
+
+    .arrow {
+      @include bg-list("#da0082")
+    }
+  }
+}
+
+.pin, .arrow {
+  flex: 0 0 13px;
+  height: 18px;
+  margin-right: 12px;
+}
+
+.pin {
+  @include bg-marker("#1f88e5")
+}
+
+.arrow {
+  @include bg-list("#1f88e5")
+}
+
+/* [END woosmap_w3w_autocomplete] */

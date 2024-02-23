@@ -2,7 +2,8 @@
 
 /* [START woosmap_localities_autocomplete] */
 @include meta.load-css("../../shared/scss/_default.scss");
-@include meta.load-css("../../shared/scss/_autocomplete.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
 
 #app {
     height: 100%;

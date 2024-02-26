@@ -1,0 +1,21 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+      <div class="autocomplete-input-container">
+        <div class="autocomplete-input">
+          <input
+            id="input"
+            autocomplete="off"
+            type="text"
+            placeholder="Search a locality or a postal code..."
+          />
+        </div>
+        <div class="autocomplete-results-container">
+          <div class="autocomplete-results"></div>
+        </div>
+      </div>
+    </div>
+    <pre id="selected-locality"></pre>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

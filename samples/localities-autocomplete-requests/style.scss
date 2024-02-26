@@ -1,0 +1,103 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_localities_autocomplete_requests] */
+@include meta.load-css("../../shared/scss/_default.scss");
+input {
+    font-size: 15px;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
+  
+  .bold {
+    font-weight: 700;
+  }
+  .autocomplete-input-container {
+    display: flex;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+    background: #fff;
+    border-radius: 12px;
+    padding: 0 12px;
+    max-width: 370px;
+    width: 100%;
+    height: 42px;
+    border: none;
+    box-sizing: border-box;
+    align-items: center;
+    cursor: text;
+    font-size: 15px;
+  }
+  
+  .autocomplete-input > input {
+    box-sizing: border-box;
+    padding: 0;
+    height: 40px;
+    line-height: 24px;
+    vertical-align: top;
+    transition-property: color;
+    transition-duration: .3s;
+    width: 100%;
+    text-overflow: ellipsis;
+    background: transparent;
+    border-radius: 0;
+    border: 0;
+    margin: 0 8px;
+    outline: 0;
+    overflow: visible;
+    appearance: textfield;
+    font-size: 100%;
+  }
+  
+  .autocomplete-input > input:focus {
+    outline: none;
+  }
+  
+  .autocomplete-results {
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+    position: absolute;
+    max-width: 370px;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    list-style: none;
+    margin: 5px 0 0;
+    padding: 0;
+    display: none;
+    max-height: 225px;
+    overflow-y: auto;
+    background-color: #fff;
+  }
+  
+  .autocomplete-results-container {
+    display: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .prediction {
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .prediction:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+  #selected-locality{
+    margin-top: 50px;
+  }
+  body {
+    padding: 2em;
+    background: #fbfbfb;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    font-size: 15px;
+  }
+/* [END woosmap_localities_autocomplete_requests] */

@@ -1,17 +1,7 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
 /* [START woosmap_store_locator_custom_filters] */
-
-#store-locator {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  border: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
+@include meta.load-css("../../shared/scss/_default.scss");
 
 button {
   color: #1d1d1d;
@@ -23,7 +13,6 @@ button {
   height: 32px;
   padding: 0 12px;
   border: 1px solid #dadce0;
-  background: transparent;
   font: inherit;
   list-style: none;
   outline: 0;

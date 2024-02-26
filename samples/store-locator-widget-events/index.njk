@@ -1,8 +1,11 @@
 {% extends '../../src/_includes/layout.njk' %}
+{% block external %}
+    <script src="https://webapp.woosmap.com/webapp.js"></script>
+{% endblock %}
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="container">
-      <div id="store-locator"></div>
+      <div id="map"></div>
       <div class="events" id="sidebar"></div>
     </div>
     <!-- [END woosmap_{{ tag }}_div] -->

@@ -11,163 +11,34 @@ const configLocator = {
     max_distance: 0,
   },
   theme: {
-    primary_color: "#e31a1c",
+    primary_color: "#00754a",
   },
   woosmapview: {
-    initialZoom: 4,
-    breakPoint: 3,
-    baseMapStyle: [
-      {
-        featureType: "poi.business",
-        elementType: "labels",
-        stylers: [
-          {
-            visibility: "off",
-          },
-        ],
-      },
-      {
-        featureType: "administrative",
-        elementType: "all",
-        stylers: [
-          {
-            visibility: "on",
-          },
-          {
-            lightness: 33,
-          },
-        ],
-      },
-      {
-        featureType: "landscape",
-        stylers: [
-          {
-            hue: "#FFBB00",
-          },
-          {
-            saturation: 43.400000000000006,
-          },
-          {
-            lightness: 37.599999999999994,
-          },
-          {
-            gamma: 1,
-          },
-        ],
-      },
-      {
-        featureType: "road.highway",
-        stylers: [
-          {
-            hue: "#FFC200",
-          },
-          {
-            saturation: -61.8,
-          },
-          {
-            lightness: 45.599999999999994,
-          },
-          {
-            gamma: 1,
-          },
-        ],
-      },
-      {
-        featureType: "road.arterial",
-        stylers: [
-          {
-            hue: "#FF0300",
-          },
-          {
-            saturation: -100,
-          },
-          {
-            lightness: 51.19999999999999,
-          },
-          {
-            gamma: 1,
-          },
-        ],
-      },
-      {
-        featureType: "road.local",
-        stylers: [
-          {
-            hue: "#FF0300",
-          },
-          {
-            saturation: -100,
-          },
-          {
-            lightness: 52,
-          },
-          {
-            gamma: 1,
-          },
-        ],
-      },
-      {
-        featureType: "water",
-        stylers: [
-          {
-            hue: "#0078FF",
-          },
-          {
-            saturation: -13.200000000000003,
-          },
-          {
-            lightness: 2.4000000000000057,
-          },
-          {
-            gamma: 1,
-          },
-        ],
-      },
-      {
-        featureType: "poi",
-        stylers: [
-          {
-            hue: "#00FF6A",
-          },
-          {
-            saturation: -1.0989010989011234,
-          },
-          {
-            lightness: 11.200000000000017,
-          },
-          {
-            gamma: 1,
-          },
-        ],
-      },
-    ],
+    initialCenter: {
+      lat: 51.50940214,
+      lng: -0.133012,
+    },
+    initialZoom: 15,
+    breakPoint: 16,
     tileStyle: {
-      color: "#e31a1c",
+      color: "#00754a",
       size: 13,
       minSize: 5,
     },
     style: {
       default: {
         icon: {
-          url: "https://s3.eu-central-1.amazonaws.com/webapp-conf.woosmap.com/foodmarkets-woos/default.svg",
+          url: "https://images.woosmap.com/starbucks-marker.svg",
           scaledSize: {
-            width: 24,
-            height: 24,
-          },
-          anchor: {
-            x: 16,
-            y: 16,
+            height: 40,
+            width: 34,
           },
         },
         selectedIcon: {
-          url: "https://s3.eu-central-1.amazonaws.com/webapp-conf.woosmap.com/foodmarkets-woos/selected.svg",
+          url: "https://images.woosmap.com/starbucks-marker-selected.svg",
           scaledSize: {
-            width: 32,
-            height: 32,
-          },
-          anchor: {
-            x: 21,
-            y: 21,
+            height: 50,
+            width: 43,
           },
         },
       },
@@ -187,49 +58,41 @@ const events = [
   "SELECT_STORE",
 ];
 
-const populateTable = () => {
-  const eventsTable = document.getElementById("sidebar");
-  let content = "";
-  for (let i = 0; i < events.length; i++) {
-    content += `<div class="event" id="${events[i]}">${events[i]}</div>`;
-  }
-  if (eventsTable) {
-    eventsTable.innerHTML = content;
-  }
-};
+function populateTable(): void {
+  const eventsTable = document.getElementById("sidebar") as HTMLElement;
+  eventsTable.innerHTML = events
+    .map((event) => `<div class="event" id="${event}">${event}</div>`)
+    .join("");
+}
 
-const setupListener = (name) => {
-  const eventRow = document.getElementById(name);
-  if (eventRow) {
-    eventRow.className = "event active";
-    window.setTimeout(() => {
-      eventRow.className = "event inactive";
-    }, 1000);
-  }
-};
+function setupListener(name: string) {
+  const eventRow = document.getElementById(name) as HTMLElement;
+  eventRow.classList.remove("inactive");
+  eventRow.classList.add("event", "active");
+  window.setTimeout(() => {
+    eventRow.classList.remove("active");
+    eventRow.classList.add("inactive");
+  }, 1000);
+}
 
-const loadStoreLocator = () => {
-  //@ts-ignore
-  const webapp = new WebApp("store-locator", "foodmarkets-woos");
+function isMobileDevice(): boolean {
+  return window.innerWidth < 500;
+}
 
-  const bodyElement = document.querySelector("body");
-  let isMobile = false;
-  if (bodyElement && bodyElement.clientWidth) {
-    isMobile = bodyElement.clientWidth < 550;
-  }
+function initStoreLocator(): void {
+  const webapp = new window.WebApp("map", "YOUR_API_KEY");
+
   populateTable();
   webapp.listenOn(webapp.HANDLED_EVENT.SELECT_STORE, (storeId) => {
     console.log(storeId);
     setupListener("SELECT_STORE");
   });
   webapp.listenOn(webapp.HANDLED_EVENT.PHONE_CLICK, (storeId, phone) => {
-    console.log(storeId);
-    console.log(phone);
+    console.log(storeId, phone);
     setupListener("PHONE_CLICK");
   });
   webapp.listenOn(webapp.HANDLED_EVENT.EMAIL_CLICK, (storeId, email) => {
-    console.log(storeId);
-    console.log(email);
+    console.log(storeId, email);
     setupListener("EMAIL_CLICK");
   });
   webapp.listenOn(webapp.HANDLED_EVENT.LOCATION_SELECTED, (location) => {
@@ -247,9 +110,7 @@ const loadStoreLocator = () => {
   webapp.listenOn(
     webapp.HANDLED_EVENT.GET_DIRECTIONS,
     (storeId, start, end) => {
-      console.log(storeId);
-      console.log(start);
-      console.log(end);
+      console.log(storeId, start, end);
       setupListener("GET_DIRECTIONS");
     },
   );
@@ -262,17 +123,17 @@ const loadStoreLocator = () => {
     setupListener("FAVORITED");
   });
   webapp.setConf(configLocator);
-  webapp.render(isMobile);
-};
+  webapp.render(isMobileDevice());
+}
 
-loadStoreLocator();
+initStoreLocator();
 
 declare global {
+  // currently, the WebApp typings are not exported, so we use `any` here
   interface Window {
-    loadStoreLocator: () => void;
+    WebApp: new (elementId: string, projectKey: string) => any;
   }
 }
-window.loadStoreLocator = loadStoreLocator;
 // [END woosmap_store_locator_widget_events]
 
 export {};

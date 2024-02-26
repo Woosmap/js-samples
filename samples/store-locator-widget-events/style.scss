@@ -1,12 +1,8 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
-@include meta.load-css("../../shared/scss/_sidebar.scss");
 /* [START woosmap_store_locator_widget_events] */
-
-#store-locator {
-  flex-basis: 70vw;
-  flex-grow: 5;
-}
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+@include meta.load-css("../../shared/scss/_default.scss");
 
 .events {
   font-family: "Droid Sans Mono", monospace;

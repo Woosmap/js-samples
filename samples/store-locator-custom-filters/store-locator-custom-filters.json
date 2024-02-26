@@ -1,7 +1,6 @@
 {
   "title": "Store Locator Widget - Custom Filters",
   "description": "Change the default filters block by applying your own style and creating filters based on search query.",
-  "target_lib": "webapp",
   "tag": "store_locator_custom_filters",
   "name": "store-locator-custom-filters",
   "pagination": {

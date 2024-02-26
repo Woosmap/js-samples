@@ -571,29 +571,24 @@ const storeLocatorConfig = {
   },
 };
 
-const loadStoreLocator = () => {
-  //@ts-ignore
-  const webapp = new WebApp(
-    "store-locator",
-    "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
-  );
-  const bodyElement = document.querySelector("body");
-  let isMobile = false;
-  if (bodyElement && bodyElement.clientWidth) {
-    isMobile = bodyElement.clientWidth < 450;
-  }
-  webapp.setConf(storeLocatorConfig);
-  webapp.render(isMobile);
-};
+function isMobileDevice(): boolean {
+  return window.innerWidth < 500;
+}
 
-loadStoreLocator();
+function initStoreLocator(): void {
+  const webapp = new window.WebApp("map", "YOUR_API_KEY");
+  webapp.setConf(storeLocatorConfig);
+  webapp.render(isMobileDevice());
+}
+
+initStoreLocator();
 
 declare global {
+  // currently, the WebApp typings are not exported, so we use `any` here
   interface Window {
-    loadStoreLocator: () => void;
+    WebApp: new (elementId: string, projectKey: string) => any;
   }
 }
-window.loadStoreLocator = loadStoreLocator;
 // [END woosmap_store_locator_widget]
 
 export {};

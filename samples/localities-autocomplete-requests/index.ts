@@ -104,7 +104,6 @@ function bold_matched_substring(string, matched_substrings) {
 }
 
 function initUI() {
-  const overlayCb = document.getElementById("bgOverlay") as HTMLElement;
   const results = document.querySelector(
     ".autocomplete-results",
   ) as HTMLElement;
@@ -112,7 +111,6 @@ function initUI() {
     ".autocomplete-input > input",
   ) as HTMLInputElement;
 
-  const componentExpanded = false;
   input?.addEventListener(
     "input",
     debounce(() => {
@@ -126,16 +124,6 @@ function initUI() {
         }
       }
     }, 0),
-  );
-
-  overlayCb.addEventListener(
-    "click",
-    (e) => {
-      if (componentExpanded) {
-        displayAddress();
-      }
-    },
-    false,
   );
 }
 function autocompleteAddress(

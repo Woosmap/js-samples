@@ -1,0 +1,12 @@
+{
+  "title": "Store Locator Widget - Custom Filters",
+  "description": "Change the default filters block by applying your own style and creating filters based on search query.",
+  "tag": "store_locator_custom_filters",
+  "name": "store-locator-custom-filters",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

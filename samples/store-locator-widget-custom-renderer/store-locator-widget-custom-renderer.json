@@ -1,0 +1,12 @@
+{
+  "title": "Store Locator Widget - Custom Renderer",
+  "description": "Customise the rendering of your asset data on the side panel.",
+  "tag": "store_locator_widget_custom_renderer",
+  "name": "store-locator-widget-custom-renderer",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

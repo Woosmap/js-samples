@@ -11,7 +11,7 @@ module.exports = {
     };
   },
 
-  render() {
-    return `VITE_WOOSMAP_PUBLIC_API_KEY=woos-48c80350-88aa-333e-835a-07f4b658a9a4`;
+  render({ sample }) {
+    return `VITE_WOOSMAP_PUBLIC_API_KEY=${sample.data.WOOSMAP_PUBLIC_API_KEY ? sample.data.WOOSMAP_PUBLIC_API_KEY : "woos-48c80350-88aa-333e-835a-07f4b658a9a4"}`;
   },
 };

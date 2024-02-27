@@ -1,4 +1,3 @@
-// [START woosmap_w3w_autocomplete]
 let selectedAddress;
 let addressDetailsContainer;
 let addressListContainer;
@@ -386,4 +385,3 @@ function debouncePromise(fn, delay) {
 }
 
 window.initMap = initMap;
-// [END woosmap_w3w_autocomplete]

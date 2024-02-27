@@ -1,4 +1,3 @@
-// [START woosmap_w3w_autocomplete]
 let selectedAddress: HTMLElement | null;
 let addressDetailsContainer: HTMLElement;
 let addressListContainer: HTMLElement;
@@ -56,6 +55,7 @@ function convertToAddress(words: string): Promise<What3WordsAddressesResponse> {
   ).then((response) => response.json());
 }
 
+
 function getLocalitiesDetails(
   publicId: string,
 ): Promise<woosmap.map.localities.LocalitiesDetailsResponse> {
@@ -64,11 +64,13 @@ function getLocalitiesDetails(
   ).then((response) => response.json());
 }
 
+
 function autosuggestW3W(input: string): Promise<What3WordsSuggestionsResponse> {
   return fetch(
     `https://api.woosmap.com/what3words/autosuggest?key=${API_KEY}&input=${input}`,
   ).then((response) => response.json());
 }
+
 
 function clearSection(section: HTMLElement): void {
   section.innerHTML = "";
@@ -161,6 +163,7 @@ function fillAddressDetails(
   }
   detailsHTML.innerHTML = details.join("");
 }
+
 
 function getAddressDetails(target, publicId) {
   setSelectedAddress(target);
@@ -431,6 +434,5 @@ declare global {
   }
 }
 window.initMap = initMap;
-// [END woosmap_w3w_autocomplete]
 
 export {};

@@ -50,12 +50,16 @@ interface What3WordsAddress {
   types: string[];
 }
 
+// [START woosmap_w3w_autocomplete_convert_to_address_promise]
 function convertToAddress(words: string): Promise<What3WordsAddressesResponse> {
   return fetch(
     `https://api.woosmap.com/what3words/convert-to-address?key=${API_KEY}&words=${words}`,
   ).then((response) => response.json());
 }
 
+// [END woosmap_w3w_autocomplete_convert_to_address_promise]
+
+// [START woosmap_w3w_autocomplete_localities_details_promise]
 function getLocalitiesDetails(
   publicId: string,
 ): Promise<woosmap.map.localities.LocalitiesDetailsResponse> {
@@ -64,11 +68,16 @@ function getLocalitiesDetails(
   ).then((response) => response.json());
 }
 
+// [END woosmap_w3w_autocomplete_localities_details_promise]
+
+// [START woosmap_w3w_autocomplete_autosuggest_promise]
 function autosuggestW3W(input: string): Promise<What3WordsSuggestionsResponse> {
   return fetch(
     `https://api.woosmap.com/what3words/autosuggest?key=${API_KEY}&input=${input}`,
   ).then((response) => response.json());
 }
+
+// [END woosmap_w3w_autocomplete_autosuggest_promise]
 
 function clearSection(section: HTMLElement): void {
   section.innerHTML = "";
@@ -129,6 +138,7 @@ function createAddressMarker(addressDetail) {
   panMap(addressDetail);
 }
 
+// [START woosmap_w3w_autocomplete_fillAddressDetails]
 function fillAddressDetails(
   addressDetails: woosmap.map.localities.LocalitiesDetailsResult,
 ) {
@@ -162,8 +172,11 @@ function fillAddressDetails(
   detailsHTML.innerHTML = details.join("");
 }
 
+// [END woosmap_w3w_autocomplete_fillAddressDetails]
+
 function getAddressDetails(target, publicId) {
   setSelectedAddress(target);
+  // [START woosmap_w3w_autocomplete_getLocalitiesDetails]
   getLocalitiesDetails(publicId)
     .then((detailResponse) => {
       const addressDetails = detailResponse.result;
@@ -176,6 +189,7 @@ function getAddressDetails(target, publicId) {
     .catch((error) => {
       console.error(error);
     });
+  // [END woosmap_w3w_autocomplete_getLocalitiesDetails]
 }
 
 function displaySubBuildings(target: HTMLElement, subBuildings) {
@@ -206,6 +220,7 @@ function backToAddressList() {
   displaySection(addressListContainer);
 }
 
+// [START woosmap_w3w_autocomplete_displayAddressList]
 function displayAddressList(addressDetails) {
   backToAddressList();
   const addressListContainer = addressList;
@@ -239,11 +254,13 @@ function displayAddressList(addressDetails) {
   addressListContainer.appendChild(newAddressList);
 }
 
+// [END woosmap_w3w_autocomplete_displayAddressList]
 function getPossibleAddress(words: string) {
   hideSection(resultsContainer);
   displaySection(addressListContainer);
   hideSection(addressDetailsContainer);
   clearSection(addressList);
+  // [START woosmap_w3w_autocomplete_convertToAddress]
   convertToAddress(words)
     .then(({ results }) => {
       if (results) {
@@ -253,6 +270,7 @@ function getPossibleAddress(words: string) {
     .catch((error) => {
       console.error(error);
     });
+  // [END woosmap_w3w_autocomplete_convertToAddress]
 }
 
 function w3wClickCallback(suggestion: What3WordsSuggestion): void {
@@ -283,6 +301,7 @@ function displayW3wSuggestion() {
   hideSection(subBuildingListContainer);
   hideSection(addressDetailsContainer);
 
+  // [START woosmap_w3w_autocomplete_displayW3wSuggestion]
   debouncedAutosuggestW3W(value)
     .then(({ suggestions }) => {
       clearSection(results);
@@ -311,9 +330,11 @@ function displayW3wSuggestion() {
     .catch((error) => {
       console.error(error);
     });
+  // [END woosmap_w3w_autocomplete_displayW3wSuggestion]
 }
 
 function initMap() {
+  // [START woosmap_w3w_autocomplete_initMap]
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
     center: {
       lat: 48.8534,
@@ -329,6 +350,7 @@ function initMap() {
       },
     ],
   });
+  // [END woosmap_w3w_autocomplete_initMap]
   debouncedAutosuggestW3W = debouncePromise(autosuggestW3W, 0);
   initUI();
 }

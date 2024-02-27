@@ -1,0 +1,67 @@
+/* [START woosmap_store_locator_widget_events] */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  height: 100%;
+  display: flex;
+}
+
+#sidebar {
+  flex-basis: 12rem;
+  flex-grow: 1;
+  max-width: 30rem;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+#map {
+  flex-basis: 70vw;
+  flex-grow: 5;
+  height: 100%;
+}
+
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+  height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.events {
+  font-family: "Droid Sans Mono", monospace;
+}
+
+.event {
+  transition: background-color 0.5s ease-out;
+  padding: 0.5em;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.active {
+  background-color: #ffdd00;
+  color: #000;
+}
+
+.inactive {
+  background-color: white;
+}
+
+/* [END woosmap_store_locator_widget_events] */

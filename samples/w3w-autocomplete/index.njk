@@ -1,0 +1,50 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+        <div class="addressDetails">
+            <div class="info">
+                <div class="words"></div>
+                <div class="nearest"></div>
+            </div>
+            <div class="options"></div>
+        </div>
+        <div id="autocomplete-container">
+            {% svgIcon 'search.svg' %}
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="your what3words (e.g. filled.count.soap)"
+                    autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+                {% svgIcon 'clear.svg' %}
+            </button>
+            <div id="all-results-container">
+                <div class="autosuggest-results-container">
+                    <div class="autosuggest-results-title">what3words results</div>
+                    <div class="autosuggest-results"></div>
+
+                    <div class="w3w-results-container">
+                        <div class="w3w-results"></div>
+                    </div>
+                </div>
+                <div class="address-list-container">
+                    <div class="autosuggest-results-title">
+                        Woosmap addresses results
+                    </div>
+                    <div id="address-suggestions" class="address-list"></div>
+                </div>
+                <div class="sub-building-list-container">
+                    <div class="autosuggest-results-title">
+                        ← Back to woosmap results
+                    </div>
+                    <div id="sub-building-suggestions" class="address-list"></div>
+                </div>
+            </div>
+            <ul id="suggestions-list"></ul>
+        </div>
+        <div id="map"></div>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

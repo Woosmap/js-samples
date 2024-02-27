@@ -1,7 +1,7 @@
 {
   "name": "store-locator-custom-filters",
   "description": "Samples for Woosmap Map JS API",
-  "version": "1.15.3",
+  "version": "1.16.0",
   "keywords": [
     "woosmap",
     "javascript",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/woosmap.map": "^1.4.7",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11"
+    "vite": "^5.0.12"
   },
   "dependencies": {}
 }

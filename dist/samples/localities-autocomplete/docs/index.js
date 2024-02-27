@@ -15,7 +15,7 @@ function initMap() {
   localitiesService = new window.woosmap.map.LocalitiesService();
   request = {
     input: "",
-    types: ["locality", "address", "postal_cde"],
+    types: ["locality", "address", "postal_code"],
   };
   debouncedLocalitiesAutocomplete = debouncePromise(
     localitiesService.autocomplete,
@@ -25,6 +25,7 @@ function initMap() {
 
 const inputElement = document.getElementById("autocomplete-input");
 const suggestionsList = document.getElementById("suggestions-list");
+const clearSearchBtn = document.getElementsByClassName("clear-searchButton")[0];
 
 if (inputElement && suggestionsList) {
   inputElement.addEventListener("input", handleAutocomplete);
@@ -39,6 +40,18 @@ if (inputElement && suggestionsList) {
   });
 }
 
+clearSearchBtn.addEventListener("click", () => {
+  inputElement.value = "";
+  suggestionsList.style.display = "none";
+  clearSearchBtn.style.display = "none";
+  if (marker) {
+    marker.setMap(null);
+    infoWindow.close();
+  }
+
+  inputElement.focus();
+});
+
 function handleAutocomplete() {
   if (inputElement && suggestionsList) {
     request.input = inputElement.value;
@@ -50,6 +63,7 @@ function handleAutocomplete() {
         );
     } else {
       suggestionsList.style.display = "none";
+      clearSearchBtn.style.display = "none";
     }
   }
 }
@@ -106,6 +120,7 @@ function displaySuggestions(localitiesPredictions) {
         suggestionsList.appendChild(li);
       });
       suggestionsList.style.display = "block";
+      clearSearchBtn.style.display = "block";
     } else {
       suggestionsList.style.display = "none";
     }

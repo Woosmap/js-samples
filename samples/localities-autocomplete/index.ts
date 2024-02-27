@@ -19,7 +19,7 @@ function initMap(): void {
 
   request = {
     input: "",
-    types: ["locality", "address", "postal_cde"],
+    types: ["locality", "address", "postal_code"],
   };
 
   debouncedLocalitiesAutocomplete = debouncePromise(

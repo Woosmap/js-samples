@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Store Locator Widget - Baidu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script src="https://webapp.woosmap.com/webapp.js"></script>
+
+    <script type="module" crossorigin>
+      (function () {
+        const r = document.createElement("link").relList;
+        if (r && r.supports && r.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          s(e);
+        new MutationObserver((e) => {
+          for (const t of e)
+            if (t.type === "childList")
+              for (const i of t.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && s(i);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function n(e) {
+          const t = {};
+          return (
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
+          );
+        }
+        function s(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const t = n(e);
+          fetch(e.href, t);
+        }
+      })();
+      const c = {
+        theme: { primary_color: "#00754a" },
+        maps: { provider: "baidu", apiKey: "oUQDfIp2b7qNxIuSaghaeip7" },
+        woosmapView: {
+          baiduMapStyle: { style: "light" },
+          initialCenter: { lat: 31.230780461545375, lng: 121.36283503342771 },
+          initialZoom: 13,
+          breakPoint: 14,
+          tileStyle: { color: "#00754a", size: 13, minSize: 6 },
+          style: {
+            default: {
+              icon: {
+                url: "https://images.woosmap.com/starbucks-marker.svg",
+                scaledSize: { height: 40, width: 34 },
+              },
+              selectedIcon: {
+                url: "https://images.woosmap.com/starbucks-marker-selected.svg",
+                scaledSize: { height: 50, width: 43 },
+              },
+            },
+          },
+        },
+      };
+      function a() {
+        return window.innerWidth < 500;
+      }
+      function l() {
+        const o = new window.WebApp(
+          "map",
+          "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
+        );
+        o.setConf(c), o.render(a());
+      }
+      l();
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>

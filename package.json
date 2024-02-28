@@ -1,7 +1,7 @@
 {
   "name": "@woosmap/js-samples",
   "description": "Samples for Woosmap Map JS API",
-  "version": "1.15.3",
+  "version": "1.18.0",
   "keywords": [
     "woosmap",
     "javascript",
@@ -35,12 +35,13 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-img": "^1.1.0",
     "@playwright/test": "^1.40.1",
     "@types/woosmap.map": "^1.4.7",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "chalk": "^4.1.2",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.5",
     "dts-minify": "^0.3.2",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
@@ -53,7 +54,7 @@
     "prettier": "^3.2.5",
     "sass": "^1.69.5",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11",
+    "vite": "^5.0.12",
     "lodash": "^4.17.21",
     "yaml": "^2.3.4"
   },

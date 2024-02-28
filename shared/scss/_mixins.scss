@@ -33,7 +33,7 @@
   background: $background;
   border: 0;
   border-radius: 4px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12), 0 3px 1px -2px rgba(0, 0, 0, .2);
   -webkit-transition: background .3s, color .3s;
   transition: background .3s, color .3s;
   box-sizing: border-box;
@@ -62,3 +62,32 @@
     text-decoration: none;
   }
 }
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+  @return if($index,
+          str-slice($string, 1, $index - 1) + $replace +
+        str-replace(str-slice($string, $index +
+        str-length($search)), $search, $replace),
+          $string);
+}
+
+@function hexToUrl($color) {
+  $newColor: str-replace($color, '#', '%23');
+  @return $newColor;
+}
+
+@mixin bg-marker($color) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='23' viewBox='0 0 16 23'%3E%3Cpath fill='#{hexToUrl($color)}' d='M7.904,22.449 C8.296,22.449 8.646,22.219 8.646,21.802 C8.646,16.597 15.808,13.584 15.808,7.904 C15.808,3.53874134 12.2692587,1.19949929e-24 7.904,1.19949929e-24 C3.53874134,1.19949929e-24 0,3.53874134 0,7.904 C0,13.583 7.162,16.597 7.162,21.802 C7.162,22.227 7.511,22.449 7.904,22.449 L7.904,22.449 Z M4.625,8.043 C4.625,6.23150602 6.09350602,4.763 7.905,4.763 C9.71649398,4.763 11.185,6.23150602 11.185,8.043 C11.185,9.85449398 9.71649398,11.323 7.905,11.323 C6.09350602,11.323 4.625,9.85449398 4.625,8.043 Z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@mixin bg-list($color) {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16"><path fill="#{hexToUrl($color)}" d="M0 15C0 14.4477153.44771525 14 1 14L19 14C19.5522847 14 20 14.4477153 20 15 20 15.5522847 19.5522847 16 19 16L1 16C.44771525 16 0 15.5522847 0 15M0 8C0 7.44771525.44771525 7 1 7L19 7C19.5522847 7 20 7.44771525 20 8 20 8.55228475 19.5522847 9 19 9L1 9C.44771525 9 0 8.55228475 0 8M0 1C0 .44771525.44771525 0 1 0L19 0C19.5522847 0 20 .44771525 20 1 20 1.55228475 19.5522847 2 19 2L1 2C.44771525 2 0 1.55228475 0 1"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+

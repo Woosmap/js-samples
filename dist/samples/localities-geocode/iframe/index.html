@@ -7,17 +7,17 @@
 
     <script type="module" crossorigin>
       (function () {
-        const n = document.createElement("link").relList;
-        if (n && n.supports && n.supports("modulepreload")) return;
+        const r = document.createElement("link").relList;
+        if (r && r.supports && r.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
           u(e);
         new MutationObserver((e) => {
           for (const o of e)
             if (o.type === "childList")
-              for (const a of o.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && u(a);
+              for (const d of o.addedNodes)
+                d.tagName === "LINK" && d.rel === "modulepreload" && u(d);
         }).observe(document, { childList: !0, subtree: !0 });
-        function p(e) {
+        function m(e) {
           const o = {};
           return (
             e.integrity && (o.integrity = e.integrity),
@@ -33,60 +33,67 @@
         function u(e) {
           if (e.ep) return;
           e.ep = !0;
-          const o = p(e);
+          const o = m(e);
           fetch(e.href, o);
         }
       })();
-      let i, c, d, f;
-      const r = {};
+      let a, i, c, p;
+      const s = {};
       function g() {
-        (i = new window.woosmap.map.Map(document.getElementById("map"), {
+        (a = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 12,
         })),
-          (d = new woosmap.map.InfoWindow({})),
-          (f = new woosmap.map.LocalitiesService()),
-          i.addListener("click", (t) => {
-            l(t.latlng);
+          (c = new woosmap.map.InfoWindow({})),
+          (p = new woosmap.map.LocalitiesService()),
+          a.addListener("click", (t) => {
+            f(t.latlng);
           });
       }
-      const s = document.getElementById("autocomplete-input"),
-        m = document.getElementById("submit-button");
-      s &&
-        s.addEventListener("keydown", (t) => {
-          t.key === "Enter" && l(null);
-        });
-      m && m.addEventListener("click", w);
-      function w() {
-        l(null);
-      }
-      function l(t) {
+      const n = document.getElementById("autocomplete-input"),
+        l = document.getElementsByClassName("clear-searchButton")[0];
+      n &&
+        (n.addEventListener("keydown", (t) => {
+          t.key === "Enter" && f(null);
+        }),
+        n.addEventListener("input", () => {
+          n.value !== ""
+            ? (l.style.display = "block")
+            : (l.style.display = "none");
+        }));
+      l.addEventListener("click", () => {
+        (n.value = ""),
+          (l.style.display = "none"),
+          i && (i.setMap(null), c.close()),
+          n.focus();
+      });
+      function f(t) {
         t
-          ? ((r.latLng = t), delete r.address)
-          : (s == null ? void 0 : s.value) !== "" &&
-            ((r.address = s.value), delete r.latLng),
-          (r.latLng || r.address) &&
-            f
-              .geocode(r)
-              .then((n) => h(n.results[0]))
-              .catch((n) => console.error("Error geocoding localities:", n));
+          ? ((s.latLng = t), delete s.address)
+          : (n == null ? void 0 : n.value) !== "" &&
+            ((s.address = n.value), delete s.latLng),
+          (s.latLng || s.address) &&
+            p
+              .geocode(s)
+              .then((r) => y(r.results[0]))
+              .catch((r) => console.error("Error geocoding localities:", r));
       }
-      function h(t) {
-        c && (c.setMap(null), d.close()),
+      function y(t) {
+        i && (i.setMap(null), c.close()),
           t != null &&
             t.geometry &&
-            ((c = new woosmap.map.Marker({
+            ((i = new woosmap.map.Marker({
               position: t.geometry.location,
               icon: {
                 url: "https://images.woosmap.com/dot-marker.png",
                 scaledSize: { height: 64, width: 46 },
               },
             })),
-            c.setMap(i),
-            d.setContent(`<span>${t.formatted_address}</span>`),
-            d.open(i, c),
-            i.setCenter(t.geometry.location),
-            i.setZoom(14));
+            i.setMap(a),
+            c.setContent(`<span>${t.formatted_address}</span>`),
+            c.open(a, i),
+            a.setCenter(t.geometry.location),
+            a.setZoom(14));
       }
       window.initMap = g;
     </script>
@@ -99,48 +106,81 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
       }
       #autocomplete-container {
-        display: inline-block;
+        display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
         z-index: 1;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0 12px;
+        max-width: 320px;
+        width: 100%;
+        height: 42px;
+        border: none;
+        box-sizing: border-box;
+        align-items: center;
+        cursor: text;
+        font-size: 15px;
+      }
+      #autocomplete-container .search-icon,
+      #autocomplete-container .clear-icon {
+        color: inherit;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+      }
+      #autocomplete-container .clear-icon {
+        transform: scale(1.3);
       }
       #autocomplete-input {
-        width: 300px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        text-overflow: ellipsis;
-      }
-      #suggestions-list {
-        position: absolute;
-        width: 320px;
-        top: 100%;
-        left: 0;
-        z-index: 1;
-        border: 1px solid #ccc;
-        border-top: none;
-        list-style: none;
-        margin: 0;
+        box-sizing: border-box;
         padding: 0;
+        height: 40px;
+        line-height: 24px;
+        vertical-align: top;
+        transition-property: color;
+        transition-duration: 0.3s;
+        width: 100%;
+        text-overflow: ellipsis;
+        background: transparent;
+        border-radius: 0;
+        border: 0;
+        margin: 0 8px;
+        outline: 0;
+        overflow: visible;
+        appearance: textfield;
+        font-size: 100%;
+      }
+      .clear-searchButton {
         display: none;
-        max-height: 225px;
-        overflow-y: auto;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        box-shadow: 0 4px 8px #0000001a;
-        background-color: #fff;
-      }
-      #suggestions-list li {
-        padding: 12px;
+        height: 18px;
+        width: 22px;
+        background: none;
+        border: none;
+        vertical-align: middle;
+        pointer-events: all;
         cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-      #suggestions-list li:hover {
-        background-color: #f2f2f2;
       }
       #app {
         height: 100%;
@@ -203,13 +243,25 @@
   <body>
     <div id="app">
       <div id="autocomplete-container">
+        <svg class="search-icon" viewBox="0 0 16 16">
+          <path
+            d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+
         <input
           type="text"
           id="autocomplete-input"
           placeholder="Geocode Localities..."
         />
-        <button class="btn" id="submit-button" type="button">
-          <span class="btnText" tabindex="-1">Search</span>
+        <button aria-label="Clear" class="clear-searchButton" type="button">
+          <svg class="clear-icon" viewBox="0 0 24 24">
+            <path
+              d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+            ></path>
+          </svg>
         </button>
       </div>
 

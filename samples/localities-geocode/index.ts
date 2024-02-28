@@ -24,9 +24,9 @@ function initMap() {
 const inputElement = document.getElementById(
   "autocomplete-input",
 ) as HTMLInputElement;
-const submitButton = document.getElementById(
-  "submit-button",
-) as HTMLButtonElement; // Add this line
+const clearSearchBtn = document.getElementsByClassName(
+  "clear-searchButton",
+)[0] as HTMLButtonElement;
 
 if (inputElement) {
   inputElement.addEventListener("keydown", (e) => {
@@ -34,15 +34,23 @@ if (inputElement) {
       handleGeocode(null);
     }
   });
+  inputElement.addEventListener("input", () => {
+    if (inputElement.value !== "") {
+      clearSearchBtn.style.display = "block";
+    } else {
+      clearSearchBtn.style.display = "none";
+    }
+  });
 }
-
-if (submitButton) {
-  submitButton.addEventListener("click", handleGeocodeFromSubmit);
-}
-
-function handleGeocodeFromSubmit() {
-  handleGeocode(null);
-}
+clearSearchBtn.addEventListener("click", () => {
+  inputElement.value = "";
+  clearSearchBtn.style.display = "none";
+  if (marker) {
+    marker.setMap(null);
+    infoWindow.close();
+  }
+  inputElement.focus();
+});
 
 function handleGeocode(latlng: woosmap.map.LatLngLiteral | null) {
   if (latlng) {

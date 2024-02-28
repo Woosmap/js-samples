@@ -10,12 +10,12 @@
         const n = document.createElement("link").relList;
         if (n && n.supports && n.supports("modulepreload")) return;
         for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          r(t);
+          l(t);
         new MutationObserver((t) => {
           for (const o of t)
             if (o.type === "childList")
-              for (const l of o.addedNodes)
-                l.tagName === "LINK" && l.rel === "modulepreload" && r(l);
+              for (const c of o.addedNodes)
+                c.tagName === "LINK" && c.rel === "modulepreload" && l(c);
         }).observe(document, { childList: !0, subtree: !0 });
         function s(t) {
           const o = {};
@@ -30,54 +30,62 @@
             o
           );
         }
-        function r(t) {
+        function l(t) {
           if (t.ep) return;
           t.ep = !0;
           const o = s(t);
           fetch(t.href, o);
         }
       })();
-      let p, a, m, g, u, y;
-      function h() {
-        (p = new window.woosmap.map.Map(document.getElementById("map"), {
+      let m, a, d, g, u, h;
+      function w() {
+        (m = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 4,
         })),
-          (m = new woosmap.map.InfoWindow({})),
+          (d = new woosmap.map.InfoWindow({})),
           (g = new window.woosmap.map.LocalitiesService()),
-          (u = { input: "", types: ["locality", "address", "postal_cde"] }),
-          (y = I(g.autocomplete, 0));
+          (u = { input: "", types: ["locality", "address", "postal_code"] }),
+          (h = b(g.autocomplete, 0));
       }
-      const c = document.getElementById("autocomplete-input"),
-        i = document.getElementById("suggestions-list");
-      c &&
+      const r = document.getElementById("autocomplete-input"),
+        i = document.getElementById("suggestions-list"),
+        f = document.getElementsByClassName("clear-searchButton")[0];
+      r &&
         i &&
-        (c.addEventListener("input", w),
-        c.addEventListener("keydown", (e) => {
+        (r.addEventListener("input", E),
+        r.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
             const n = i.querySelector("li");
             n && n.click();
           }
         }));
-      function w() {
-        c &&
+      f.addEventListener("click", () => {
+        (r.value = ""),
+          (i.style.display = "none"),
+          (f.style.display = "none"),
+          a && (a.setMap(null), d.close()),
+          r.focus();
+      });
+      function E() {
+        r &&
           i &&
-          ((u.input = c.value),
+          ((u.input = r.value),
           u.input
-            ? y(u)
-                .then((e) => v(e))
+            ? h(u)
+                .then((e) => M(e))
                 .catch((e) =>
                   console.error("Error autocomplete localities:", e),
                 )
-            : (i.style.display = "none"));
-      }
-      function E(e) {
-        g.getDetails({ publicId: e })
-          .then((n) => L(n.result))
-          .catch((n) => console.error("Error getting locality details:", n));
+            : ((i.style.display = "none"), (f.style.display = "none")));
       }
       function L(e) {
-        a && (a.setMap(null), m.close()),
+        g.getDetails({ publicId: e })
+          .then((n) => v(n.result))
+          .catch((n) => console.error("Error getting locality details:", n));
+      }
+      function v(e) {
+        a && (a.setMap(null), d.close()),
           e != null &&
             e.geometry &&
             ((a = new woosmap.map.Marker({
@@ -87,29 +95,30 @@
                 scaledSize: { height: 64, width: 46 },
               },
             })),
-            a.setMap(p),
-            m.setContent(`<span>${e.formatted_address}</span>`),
-            m.open(p, a),
-            p.flyTo({ center: e.geometry.location, zoom: 14 }));
+            a.setMap(m),
+            d.setContent(`<span>${e.formatted_address}</span>`),
+            d.open(m, a),
+            m.flyTo({ center: e.geometry.location, zoom: 14 }));
       }
-      function v(e) {
-        c &&
+      function M(e) {
+        r &&
           i &&
           ((i.innerHTML = ""),
           e.localities.length > 0 && u.input
             ? (e.localities.forEach((n) => {
-                var r;
+                var l;
                 const s = document.createElement("li");
-                (s.textContent = (r = n.description) != null ? r : ""),
+                (s.textContent = (l = n.description) != null ? l : ""),
                   s.addEventListener("click", () => {
                     var t;
-                    (c.value = (t = n.description) != null ? t : ""),
+                    (r.value = (t = n.description) != null ? t : ""),
                       (i.style.display = "none"),
-                      E(n.public_id);
+                      L(n.public_id);
                   }),
                   i.appendChild(s);
               }),
-              (i.style.display = "block"))
+              (i.style.display = "block"),
+              (f.style.display = "block"))
             : (i.style.display = "none"));
       }
       document.addEventListener("click", (e) => {
@@ -117,28 +126,28 @@
           i &&
           (i.style.display = "none");
       });
-      function I(e, n) {
+      function b(e, n) {
         let s = null,
-          r = null,
+          l = null,
           t = null;
         return function (...o) {
-          return new Promise((l, d) => {
+          return new Promise((c, p) => {
             s !== null && clearTimeout(s),
-              (r = l),
-              (t = d),
+              (l = c),
+              (t = p),
               (s = setTimeout(() => {
                 e(...o)
-                  .then((f) => {
-                    r === l && t === d && l(f);
+                  .then((y) => {
+                    l === c && t === p && c(y);
                   })
-                  .catch((f) => {
-                    r === l && t === d && d(f);
+                  .catch((y) => {
+                    l === c && t === p && p(y);
                   });
               }, n));
           });
         };
       }
-      window.initMap = h;
+      window.initMap = w;
     </script>
     <style>
       #map {
@@ -149,39 +158,100 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
       }
       #autocomplete-container {
-        display: inline-block;
+        display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
         z-index: 1;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0 12px;
+        max-width: 320px;
+        width: 100%;
+        height: 42px;
+        border: none;
+        box-sizing: border-box;
+        align-items: center;
+        cursor: text;
+        font-size: 15px;
+      }
+      #autocomplete-container .search-icon,
+      #autocomplete-container .clear-icon {
+        color: inherit;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+      }
+      #autocomplete-container .clear-icon {
+        transform: scale(1.3);
       }
       #autocomplete-input {
-        width: 300px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
+        box-sizing: border-box;
+        padding: 0;
+        height: 40px;
+        line-height: 24px;
+        vertical-align: top;
+        transition-property: color;
+        transition-duration: 0.3s;
+        width: 100%;
         text-overflow: ellipsis;
+        background: transparent;
+        border-radius: 0;
+        border: 0;
+        margin: 0 8px;
+        outline: 0;
+        overflow: visible;
+        appearance: textfield;
+        font-size: 100%;
+      }
+      .clear-searchButton {
+        display: none;
+        height: 18px;
+        width: 22px;
+        background: none;
+        border: none;
+        vertical-align: middle;
+        pointer-events: all;
+        cursor: pointer;
       }
       #suggestions-list {
+        border-radius: 12px;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        box-sizing: border-box;
         position: absolute;
-        width: 320px;
+        max-width: 320px;
+        width: 100%;
         top: 100%;
         left: 0;
         z-index: 1;
-        border: 1px solid #ccc;
-        border-top: none;
         list-style: none;
-        margin: 0;
+        margin: 5px 0 0;
         padding: 0;
         display: none;
         max-height: 225px;
         overflow-y: auto;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        box-shadow: 0 4px 8px #0000001a;
         background-color: #fff;
       }
       #suggestions-list li {
@@ -200,12 +270,27 @@
   <body>
     <div id="app">
       <div id="autocomplete-container">
+        <svg class="search-icon" viewBox="0 0 16 16">
+          <path
+            d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+
         <input
           type="text"
           id="autocomplete-input"
           placeholder="Search Localities..."
           autocomplete="off"
         />
+        <button aria-label="Clear" class="clear-searchButton" type="button">
+          <svg class="clear-icon" viewBox="0 0 24 24">
+            <path
+              d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+            ></path>
+          </svg>
+        </button>
         <ul id="suggestions-list"></ul>
       </div>
 

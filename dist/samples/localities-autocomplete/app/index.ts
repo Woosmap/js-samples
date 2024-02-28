@@ -18,7 +18,7 @@ function initMap(): void {
 
   request = {
     input: "",
-    types: ["locality", "address", "postal_cde"],
+    types: ["locality", "address", "postal_code"],
   };
 
   debouncedLocalitiesAutocomplete = debouncePromise(
@@ -33,6 +33,9 @@ const inputElement = document.getElementById(
 const suggestionsList = document.getElementById(
   "suggestions-list",
 ) as HTMLUListElement;
+const clearSearchBtn = document.getElementsByClassName(
+  "clear-searchButton",
+)[0] as HTMLButtonElement;
 if (inputElement && suggestionsList) {
   inputElement.addEventListener("input", handleAutocomplete);
   inputElement.addEventListener("keydown", (event) => {
@@ -44,6 +47,16 @@ if (inputElement && suggestionsList) {
     }
   });
 }
+clearSearchBtn.addEventListener("click", () => {
+  inputElement.value = "";
+  suggestionsList.style.display = "none";
+  clearSearchBtn.style.display = "none";
+  if (marker) {
+    marker.setMap(null);
+    infoWindow.close();
+  }
+  inputElement.focus();
+});
 
 function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
@@ -56,6 +69,7 @@ function handleAutocomplete(): void {
         );
     } else {
       suggestionsList.style.display = "none";
+      clearSearchBtn.style.display = "none";
     }
   }
 }
@@ -109,6 +123,7 @@ function displaySuggestions(
         suggestionsList.appendChild(li);
       });
       suggestionsList.style.display = "block";
+      clearSearchBtn.style.display = "block";
     } else {
       suggestionsList.style.display = "none";
     }
@@ -162,6 +177,7 @@ function debouncePromise<T, Args extends any[]>(
     });
   };
 }
+
 
 declare global {
   interface Window {

@@ -1,9 +1,7 @@
 {
-  "title": "Localties - Autocomplete Requests",
+  "title": "Localities - Autocomplete Requests",
   "description": "Autocomplete on locality and postal code types only",
-  "callback": "initMap",
   "tag": "localities_autocomplete_requests",
-  "target_lib": "localities",
   "name": "localities-autocomplete-requests",
   "pagination": {
     "data": "mode",

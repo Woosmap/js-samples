@@ -3,7 +3,7 @@ import { waitForWoosmapToLoad, failOnPageError } from "../utils";
 import fs from "fs";
 
 export const BROKEN_APP_SAMPLES = [
-  "store-locator", // Distance Matrix Service: You have exceeded your rate-limit for this API.
+  "store-locator-widget-baidu", // too long to load
 ];
 
 const samples = fs

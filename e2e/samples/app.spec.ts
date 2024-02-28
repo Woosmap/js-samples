@@ -1,9 +1,17 @@
 import { test } from "@playwright/test";
-import { waitForWoosmapToLoad, failOnPageError } from "../utils";
+import {
+  waitForWoosmapToLoad,
+  waitForAutocompleteFetch,
+  failOnPageError,
+} from "../utils";
 import fs from "fs";
 
 export const BROKEN_APP_SAMPLES = [
   "store-locator-widget-baidu", // too long to load
+];
+export const AUTOCOMPOLETE_WITHOUT_MAP_SAMPLES = [
+  "localities-api-autocomplete",
+  "localities-api-autocomplete-advanced",
 ];
 
 const samples = fs
@@ -24,12 +32,14 @@ test.describe.parallel("sample applications", () => {
           waitUntil: "networkidle",
         });
 
-        if (sample === "programmatic-load-button") {
-          await page.locator("button").click();
+        if (AUTOCOMPOLETE_WITHOUT_MAP_SAMPLES.includes(sample)) {
+          // wait for #suggestions-list li elements to be visible
+          await waitForAutocompleteFetch(page);
+        } else {
+          console.log(sample, "search with map");
+          // wait for woosmap.map to be loaded
+          await waitForWoosmapToLoad(page);
         }
-
-        // wait for woosmap.map to be loaded
-        await waitForWoosmapToLoad(page);
       });
     });
   });

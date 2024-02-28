@@ -1,0 +1,12 @@
+{
+  "title": "Localities Api - Autocomplete (Country restrictions, address type in suggestions)",
+  "description": "Localities Autocomplete requests on locality, postal code and address types in UK, FR, IT, SP and DE",
+  "tag": "localities_api_autocomplete_advanced",
+  "name": "localities-api-autocomplete-advanced",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

@@ -1,4 +1,4 @@
-// [START woosmap_store_locator_custom_filters]
+// [START woosmap_store_locator_widget_custom_filters]
 const availableServices = [
   { key: "WF", en: "Wireless Hotspot" },
   { key: "CD", en: "Mobile Payment" },
@@ -159,6 +159,6 @@ declare global {
     WebApp: new (elementId: string, projectKey: string) => any;
   }
 }
-// [END woosmap_store_locator_custom_filters]
+// [END woosmap_store_locator_widget_custom_filters]
 
 export {};

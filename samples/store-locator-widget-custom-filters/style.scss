@@ -1,6 +1,6 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
-/* [START woosmap_store_locator_custom_filters] */
+/* [START woosmap_store_locator_widget_custom_filters] */
 @include meta.load-css("../../shared/scss/_default.scss");
 
 button {
@@ -145,4 +145,4 @@ button {
   background-image: url("https://developers.woosmap.com/assets/images/countries/germany_2x.png");
 }
 
-/* [END woosmap_store_locator_custom_filters] */
+/* [END woosmap_store_locator_widget_custom_filters] */

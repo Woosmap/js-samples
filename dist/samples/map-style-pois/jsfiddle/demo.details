@@ -1,7 +1,0 @@
-name: Map Style Point of Interest
-authors:
-  - Woosmap
-tags:
-  - woosmap
-load_type: h
-description: Sample code for Woosmap Map JavaScript API

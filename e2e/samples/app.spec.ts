@@ -36,7 +36,6 @@ test.describe.parallel("sample applications", () => {
           // wait for #suggestions-list li elements to be visible
           await waitForAutocompleteFetch(page);
         } else {
-          console.log(sample, "search with map");
           // wait for woosmap.map to be loaded
           await waitForWoosmapToLoad(page);
         }

@@ -10,7 +10,7 @@ const data = {
   ),
   libraries: [],
   mode: ["jsfiddle", "docs", "app", "highlight"],
-  availableTypings: ["@types/woosmap.map"],
+  availableTypings: ["@types/woosmap.map", "@types/geojson"],
   devDependencies: ["@types/woosmap.map", "typescript", "vite"],
   dependencies: [],
   scripts: {

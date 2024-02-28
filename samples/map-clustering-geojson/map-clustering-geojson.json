@@ -1,0 +1,18 @@
+{
+  "title": "Map Clustering with GeoJSON",
+  "description": "This sample illustrates the usage of map clustering with GeoJSON data.",
+  "callback": "initMap",
+  "tag": "map_clustering_geojson",
+  "name": "map-clustering-geojson",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}",
+  "dependencies": [
+    "supercluster",
+    "@types/supercluster",
+    "@types/geojson"
+  ]
+}

@@ -9,7 +9,7 @@ import fs from "fs";
 export const BROKEN_APP_SAMPLES = [
   "store-locator-widget-baidu", // too long to load
 ];
-export const AUTOCOMPOLETE_WITHOUT_MAP_SAMPLES = [
+export const AUTOCOMPLETE_WITHOUT_MAP_SAMPLES = [
   "localities-api-autocomplete",
   "localities-api-autocomplete-advanced",
 ];
@@ -32,7 +32,7 @@ test.describe.parallel("sample applications", () => {
           waitUntil: "networkidle",
         });
 
-        if (AUTOCOMPOLETE_WITHOUT_MAP_SAMPLES.includes(sample)) {
+        if (AUTOCOMPLETE_WITHOUT_MAP_SAMPLES.includes(sample)) {
           // wait for #suggestions-list li elements to be visible
           await waitForAutocompleteFetch(page);
         } else {

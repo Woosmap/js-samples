@@ -1,0 +1,15 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_localities_api_autocomplete] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+
+#response-container {
+  margin-top: 70px;
+  padding: 10px;
+}
+.bold {
+  font-weight: 700;
+}
+/* [END woosmap_localities_api_autocomplete] */

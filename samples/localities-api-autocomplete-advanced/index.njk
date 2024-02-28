@@ -1,0 +1,22 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+        <div id="autocomplete-container">
+            {% svgIcon 'search.svg' %}
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search a locality or a postal code..."
+                    autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+                {% svgIcon 'clear.svg' %}
+            </button>
+            <ul id="suggestions-list"></ul>
+        </div>
+        <pre id="response-container"></pre>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}
+{% block api %}{% endblock %}

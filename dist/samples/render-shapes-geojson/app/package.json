@@ -1,7 +1,7 @@
 {
   "name": "render-shapes-geojson",
   "description": "Samples for Woosmap Map JS API",
-  "version": "1.17.1",
+  "version": "1.18.0",
   "keywords": [
     "woosmap",
     "javascript",

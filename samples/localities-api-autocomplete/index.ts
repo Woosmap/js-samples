@@ -1,6 +1,9 @@
 // [START woosmap_localities_api_autocomplete]
 const componentsRestriction = [];
 const woosmap_key = "YOUR_API_KEY";
+let debouncedAutocomplete: (
+  ...args: any[]
+) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
 
 const inputElement = document.getElementById(
   "autocomplete-input",
@@ -12,7 +15,7 @@ const clearSearchBtn = document.getElementsByClassName(
   "clear-searchButton",
 )[0] as HTMLButtonElement;
 const responseElement = document.getElementById(
-  "selected-locality",
+  "response-container",
 ) as HTMLElement;
 
 function init(): void {
@@ -34,6 +37,8 @@ function init(): void {
     responseElement.innerHTML = "";
     inputElement.focus();
   });
+
+  debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
 }
 
 function handleAutocomplete(): void {
@@ -45,14 +50,11 @@ function handleAutocomplete(): void {
     );
     const componentsArgs: string = components.join("|");
     if (input !== "") {
-      const debounceRequest = debounce(() => {
-        autocompleteAddress(input, componentsArgs, woosmap_key)
-          .then(({ localities }) => displaySuggestions(localities))
-          .catch((error) =>
-            console.error("Error autocomplete localities:", error),
-          );
-      }, 0);
-      debounceRequest();
+      debouncedAutocomplete(input, componentsArgs, woosmap_key)
+        .then(({ localities }) => displaySuggestions(localities))
+        .catch((error) =>
+          console.error("Error autocomplete localities:", error),
+        );
     }
   }
 }
@@ -157,41 +159,43 @@ function buildQueryString(params: object) {
   }
   return queryStringParts.join("&");
 }
-type FuncType = (...args: any[]) => any;
+type DebouncePromiseFunction<T, Args extends any[]> = (
+  ...args: Args
+) => Promise<T>;
 
-function debounce(func: FuncType, wait: number, immediate?: boolean): FuncType {
-  let timeout: NodeJS.Timeout | null;
+function debouncePromise<T, Args extends any[]>(
+  fn: (...args: Args) => Promise<T>,
+  delay: number,
+): DebouncePromiseFunction<T, Args> {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
+  let latestReject: ((reason?: any) => void) | null = null;
 
-  return function (this: any, ...args: any[]) {
-    const later = () => {
-      timeout = null;
-      if (!immediate) {
-        func.apply(this, args);
+  return function (...args: Args): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
       }
-    };
-
-    const callNow = immediate && !timeout;
-
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-
-    timeout = setTimeout(later, wait);
-
-    if (callNow) {
-      func.apply(this, args);
-    }
+      latestResolve = resolve;
+      latestReject = reject;
+      timeoutId = setTimeout(() => {
+        fn(...args)
+          .then((result) => {
+            if (latestResolve === resolve && latestReject === reject) {
+              resolve(result);
+            }
+          })
+          .catch((error) => {
+            if (latestResolve === resolve && latestReject === reject) {
+              reject(error);
+            }
+          });
+      }, delay);
+    });
   };
 }
 
 init();
-
-declare global {
-  interface Window {
-    init: () => void;
-  }
-}
-window.init = init;
 // [END woosmap_localities_api_autocomplete]
 
 export {};

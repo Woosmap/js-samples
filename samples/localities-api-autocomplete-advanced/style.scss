@@ -5,7 +5,7 @@
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
 
-#selected-locality {
+#response-container {
   margin-top: 70px;
   padding: 10px;
 }

@@ -1,4 +1,4 @@
-// [START woosmap_store_locator_custom_filters]
+// [START woosmap_store_locator_widget_custom_filters]
 const availableServices = [
   { key: "WF", en: "Wireless Hotspot" },
   { key: "CD", en: "Mobile Payment" },
@@ -146,4 +146,4 @@ function initStoreLocator() {
 }
 
 initStoreLocator();
-// [END woosmap_store_locator_custom_filters]
+// [END woosmap_store_locator_widget_custom_filters]

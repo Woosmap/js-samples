@@ -17,14 +17,12 @@ function initMap(): void {
     responsive: "desktop",
   };
 
-  const indoorRenderer = new woosmap.map.IndoorRenderer(conf);
+  indoorRenderer = new woosmap.map.IndoorRenderer(conf);
 
   indoorRenderer.setMap(map);
 
   // Indoor event that is triggered when the indoor venue is loaded.
   indoorRenderer.addListener("indoor_venue_loaded", (venue) => {
-    console.log("Venue: ", venue);
-
     indoorService = new window.woosmap.map.IndoorService();
 
     const request: woosmap.map.IndoorDirectionRequest = {
@@ -52,7 +50,6 @@ function initMap(): void {
 }
 const exitNavigation = () => {
   indoorNavigation.setMap(null);
-  indoorNavigation = null;
   indoorRenderer.setDirections(null);
 };
 const hideLoader = () => {

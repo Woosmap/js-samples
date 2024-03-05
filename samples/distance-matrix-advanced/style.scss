@@ -227,7 +227,7 @@ select {
 }
 
 .addLocation {
-  font-size: .8em;
+  font-size: .75em;
   display: flex;
   color: #222;
   cursor: pointer;
@@ -251,13 +251,13 @@ select {
 
 .sectionHeader {
   span {
-    font-size: .8em;
+    font-size: .85em;
     font-weight: 600;
-    text-transform: uppercase;
   }
 
   background: #f1f1f1;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #eeeeee;
   margin: 20px -10px 5px;

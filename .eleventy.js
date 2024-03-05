@@ -7,6 +7,7 @@ const stripRegionTags = require("./src/transforms/strip-region-tags");
 const yourAPIKey = require("./src/transforms/your-api-key");
 const format = require("./src/transforms/format");
 const minify = require("./src/transforms/minify");
+const Image = require("@11ty/eleventy-img");
 const fs = require("fs");
 const path = require("path");
 const vite = require("vite");
@@ -20,6 +21,16 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addTemplateFormats("scss");
   eleventyConfig.addExtension("scss", sass);
 
+  eleventyConfig.addNunjucksAsyncShortcode("svgIcon", async (filename) => {
+    const metadata = await Image(
+      `./src/_includes/assets/${filename}`,
+      {
+        formats: ["svg"],
+        dryRun: true,
+      },
+    );
+    return metadata.svg[0].buffer.toString();
+  });
   eleventyConfig.addTemplateFormats("ts");
   eleventyConfig.addExtension("ts", typescript);
   eleventyConfig.addTemplateFormats("tsx");

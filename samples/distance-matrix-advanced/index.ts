@@ -1,0 +1,261 @@
+// [START woosmap_distance_matrix_advanced]
+let map: woosmap.map.Map;
+let bounds: woosmap.map.LatLngBounds;
+let distanceService: woosmap.map.DistanceService;
+let distanceRequest: woosmap.map.distance.DistanceMatrixRequest;
+let markersArray: woosmap.map.Marker[] = [];
+let originsList: HTMLElement;
+let destinationsList: HTMLElement;
+const origins: woosmap.map.LatLngLiteral[] = [];
+const destinations: woosmap.map.LatLngLiteral[] = [];
+
+function createMarker(
+  position: woosmap.map.LatLngLiteral,
+  label: string,
+  url: string,
+): woosmap.map.Marker {
+  return new woosmap.map.Marker({
+    map,
+    position,
+    icon: {
+      url,
+      labelOrigin: new woosmap.map.Point(13, 15),
+      scaledSize: {
+        height: 38,
+        width: 26,
+      },
+    },
+    label: {
+      text: label,
+      color: "white",
+    },
+  });
+}
+
+function clearMarkers(): void {
+  for (const marker of markersArray) {
+    marker.setMap(null);
+  }
+  markersArray = [];
+}
+
+function displayMatrixMarkers(
+  origins: woosmap.map.LatLngLiteral[],
+  destinations: woosmap.map.LatLngLiteral[],
+): void {
+  clearMarkers();
+  origins.forEach((origin, index) => {
+    bounds.extend(origin);
+    markersArray.push(
+      createMarker(
+        origin,
+        (index + 1).toString(),
+        "https://images.woosmap.com/marker-blue.svg",
+      ),
+    );
+  });
+
+  destinations.forEach((destination, index) => {
+    bounds.extend(destination);
+    markersArray.push(
+      createMarker(
+        destination,
+        (index + 1).toString(),
+        "https://images.woosmap.com/marker-red.svg",
+      ),
+    );
+  });
+
+  map.fitBounds(bounds, { top: 70, bottom: 40, left: 50, right: 50 }, true);
+}
+
+function createDefaultRequest(): woosmap.map.distance.DistanceMatrixRequest {
+  const origin1: woosmap.map.LatLngLiteral = { lat: 45.4642, lng: 9.19 };
+  const origin2: woosmap.map.LatLngLiteral = { lat: 45.75, lng: 4.85 };
+  const destinationA: woosmap.map.LatLngLiteral = { lat: 42.6976, lng: 9.45 };
+  const destinationB: woosmap.map.LatLngLiteral = {
+    lat: 41.9028,
+    lng: 12.4964,
+  };
+  addLatLngToList(originsList, origin1);
+  origins.push(origin1);
+  addLatLngToList(originsList, origin2);
+  origins.push(origin2);
+  addLatLngToList(destinationsList, destinationA);
+  destinations.push(destinationA);
+  addLatLngToList(destinationsList, destinationB);
+  destinations.push(destinationB);
+  return {
+    origins,
+    destinations,
+    travelMode: woosmap.map.TravelMode.DRIVING,
+    unitSystem: woosmap.map.UnitSystem.METRIC,
+    avoidHighways: false,
+    avoidTolls: false,
+    elements: "duration_distance",
+  };
+}
+
+function addLatLngToList(
+  element: HTMLElement,
+  location: woosmap.map.LatLngLiteral,
+): void {
+  const locationElement = document.createElement("li");
+  locationElement.innerHTML = `<span>lat: ${location.lat.toFixed(4)}, lng: ${location.lng.toFixed(4)}<span>`;
+  const removeButton = document.createElement("button");
+  removeButton.classList.add("clear-searchButton");
+  removeButton.innerHTML =
+    '<svg class="clear-icon" viewBox="0 0 24 24"><path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path></svg> ';
+  removeButton.addEventListener("click", () => {
+    element.removeChild(locationElement);
+    if (element === originsList) {
+      origins.splice(origins.indexOf(location), 1);
+    } else {
+      destinations.splice(destinations.indexOf(location), 1);
+    }
+    calculateDistances();
+  });
+  locationElement.appendChild(removeButton);
+  element.appendChild(locationElement);
+}
+
+function handleResponse(
+  response: woosmap.map.distance.DistanceMatrixResponse,
+): void {
+  displayMatrixMarkers(
+    distanceRequest.origins as woosmap.map.LatLngLiteral[],
+    distanceRequest.destinations as woosmap.map.LatLngLiteral[],
+  );
+  createTable(response);
+}
+
+function createTable(response: woosmap.map.distance.DistanceMatrixResponse) {
+  let table =
+    "<table><thead><tr><th>From</th><th>To</th><th>Time</th><th>Distance</th></tr></thead><tbody>";
+
+  response.rows.forEach((row, fromIndex) => {
+    row.elements.forEach((element, toIndex) => {
+      if (element.status === "OK") {
+        table += `<tr><td><span>${fromIndex + 1}</span></td><td><span>${toIndex + 1}</span></td><td>${element.duration.text}</td><td>${element.distance.text}</td></tr>`;
+      }
+    });
+  });
+  table += "</tbody></table>";
+  const tableContainer = document.querySelector(
+    ".tableContainer",
+  ) as HTMLElement;
+  tableContainer.innerHTML = table;
+}
+
+function calculateDistances(): void {
+  //requestElement.innerText = JSON.stringify(distanceRequest, null, 2);
+  distanceService.getDistanceMatrix(distanceRequest).then(handleResponse);
+}
+
+function toggleTravelMode(travelMode: HTMLDivElement): void {
+  document
+    .querySelectorAll(".travelMode")
+    .forEach((el) => el.classList.remove("travelMode__selected"));
+  travelMode.classList.add("travelMode__selected");
+}
+
+function updateTravelModeButtons(): void {
+  document.querySelectorAll(".travelMode").forEach((el) =>
+    el.addEventListener("click", () => {
+      toggleTravelMode(el as HTMLDivElement);
+      calculateDistances();
+    }),
+  );
+}
+
+function updateAvoidance(): void {
+  document.querySelectorAll(".avoid").forEach((el) =>
+    el.addEventListener("click", () => {
+      const avoidHighways = document.getElementById(
+        "avoidHighways",
+      ) as HTMLInputElement;
+      const avoidTolls = document.getElementById(
+        "avoidTolls",
+      ) as HTMLInputElement;
+      const avoidFerries = document.getElementById(
+        "avoidFerries",
+      ) as HTMLInputElement;
+      distanceRequest.avoidHighways = avoidHighways.checked;
+      distanceRequest.avoidTolls = avoidTolls.checked;
+      distanceRequest.avoidFerries = avoidFerries.checked;
+      calculateDistances();
+    }),
+  );
+}
+
+function updateDistanceUnit(): void {
+  const distanceUnit = document.querySelector(
+    'input[name="distanceUnits"]',
+  ) as HTMLInputElement;
+  distanceUnit.addEventListener("change", () => {
+    distanceRequest.unitSystem = distanceUnit.value;
+    calculateDistances();
+  });
+}
+
+function registerAddButton(
+  selector: string,
+  list: HTMLElement,
+  locations: woosmap.map.LatLngLiteral[],
+): void {
+  const button = document.querySelector(selector) as HTMLElement;
+  button.addEventListener("click", () => {
+    if (button.classList.contains("addLocation__selected")) {
+      button.classList.remove("addLocation__selected");
+      document.getElementById("map")?.classList.remove("cursor-crosshair");
+      woosmap.map.event.clearListeners(map, "click");
+      return;
+    }
+    button.classList.add("addLocation__selected");
+    document.getElementById("map")?.classList.add("cursor-crosshair");
+    woosmap.map.event.addListenerOnce(map, "click", (e) => {
+      document.getElementById("map")?.classList.remove("cursor-crosshair");
+      button.classList.remove("addLocation__selected");
+      const location = e.latlng;
+      locations.push(location);
+      addLatLngToList(list, location);
+      calculateDistances();
+    });
+  });
+}
+
+function initUI(): void {
+  updateTravelModeButtons();
+  updateAvoidance();
+  updateDistanceUnit();
+  originsList = document.getElementById("origins") as HTMLElement;
+  destinationsList = document.getElementById("destinations") as HTMLElement;
+  registerAddButton(
+    ".addLocation__destinations",
+    destinationsList,
+    destinations,
+  );
+  registerAddButton(".addLocation__origins", originsList, origins);
+}
+
+function initMap(): void {
+  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    center: { lat: 45.53, lng: 2.4 },
+    zoom: 10,
+  });
+  distanceService = new woosmap.map.DistanceService();
+  bounds = new woosmap.map.LatLngBounds();
+  initUI();
+  distanceRequest = createDefaultRequest();
+  calculateDistances();
+}
+
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
+}
+window.initMap = initMap;
+// [END woosmap_distance_matrix_advanced]
+
+export {};

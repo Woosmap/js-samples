@@ -1,0 +1,44 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block external %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+    />
+{% endblock %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+        <div id="map"></div>
+        <div class="options">
+            <label class="bold" for="components-select">Components: </label>
+            <div id="active-restrictions">no active restricions...</div>
+            <div class="multiselect">
+            <div class="selectBox">
+                <button>Set country restriction...</button>
+            </div>
+            </div>
+            <label class="bold">Fields:</label>
+            <div>
+            <input type="checkbox" id="geometry" name="fields" value="geometry" />
+            <label for="geometry">Geometry <i>only</i></label>
+            </div>
+        </div>
+        <div class="addressDetails options"></div>
+        <div id="autocomplete-container">
+            {% svgIcon 'search.svg' %}
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search an Address..."
+                    autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+                {% svgIcon 'clear.svg' %}
+            </button>
+            <ul id="suggestions-list"></ul>
+        </div>
+        <div id="countries" class="options"></div>
+        <div id="bgOverlay"></div>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

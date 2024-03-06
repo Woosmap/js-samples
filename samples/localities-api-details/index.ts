@@ -4,17 +4,14 @@ const woosmap_key = "YOUR_API_KEY";
 let debouncedAutocomplete: (
   ...args: any[]
 ) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
-let inputElement: HTMLInputElement;
+let inputElement, geometry: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
-let multiSelect: HTMLDivElement;
-let countries: HTMLDivElement;
-let overlayCb: HTMLDivElement;
+let multiSelect, countries, overlayCb: HTMLDivElement;
 let map: woosmap.map.Map;
-let geometry: HTMLInputElement;
 let detailsPublicId: string;
 let markerAddress: woosmap.map.Marker;
-let detailsHTML: HTMLDivElement;
+let detailsHTML, addressDetailsContainer: HTMLElement;
 let componentExpanded = false;
 
 interface CountryComponent {
@@ -62,10 +59,10 @@ function createAddressMarker(
     markerAddress = new woosmap.map.Marker({
       position: addressDetail.geometry.location,
       icon: {
-        url: "https://images.woosmap.com/icons/pin-red.png",
+        url: "https://www.woosmap.com/images/marker-alt.png",
         scaledSize: {
-          height: 64,
-          width: 46,
+          height: 59,
+          width: 37,
         },
       },
     });
@@ -74,6 +71,51 @@ function createAddressMarker(
   }
 }
 
+function displaySection(section: HTMLElement, mode = "block"): void {
+  section.style.display = mode;
+}
+function fillAddressDetails(
+  addressDetails: woosmap.map.localities.LocalitiesDetailsResult,
+) {
+  const details: string[] = [];
+  detailsHTML.innerHTML = "";
+  detailsHTML.style.display = "block";
+  if (addressDetails.formatted_address) {
+    details.push(
+      `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${addressDetails.formatted_address}</span></p>`,
+    );
+  }
+  if (addressDetails.types && addressDetails.types[0]) {
+    details.push(
+      `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${addressDetails.types[0].replace("_", " ")}</span></p>`,
+    );
+  }
+  if (addressDetails.geometry) {
+    const location_type_string = addressDetails.geometry.accuracy;
+    if (location_type_string) {
+      details.push(
+        `<div class='option-detail'><div><span class='option-detail-label'>Location type :</span><span class='bold'>${location_type_string
+          .replace("_", " ")
+          .toLowerCase()}</span></div></div>`,
+      );
+    }
+    details.push(
+      `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${addressDetails.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${addressDetails.geometry.location.lng.toString()}</span></div></div>`,
+    );
+    if (addressDetails.address_components) {
+      const compoHtml = addressDetails.address_components
+        .map(
+          (compo) =>
+            `<p class='option-detail'><span class='option-detail-label'>${compo.types[0]}:</span> <span class='bold'>${compo.long_name}</span></p>`,
+        )
+        .join("");
+      details.push(
+        `<div class='address-components'><div class='title'>Address components</div><div>${compoHtml}</div>`,
+      );
+    }
+  }
+  detailsHTML.innerHTML = details.join("");
+}
 function init(): void {
   if (inputElement && suggestionsList) {
     inputElement.addEventListener("input", handleAutocomplete);
@@ -334,8 +376,8 @@ function requestDetailsAddress(public_id) {
   ].map((e) => e["value"]);
   getLocalitiesDetails(public_id, fields.join("|"), woosmap_key).then(
     (addressDetails: woosmap.map.localities.LocalitiesDetailsResponse) => {
-      displayAddressDetails(addressDetails.result);
-
+      fillAddressDetails(addressDetails.result);
+      displaySection(addressDetailsContainer);
       if (addressDetails) {
         createAddressMarker(addressDetails.result);
       }
@@ -432,10 +474,17 @@ document.addEventListener("DOMContentLoaded", () => {
   clearSearchBtn = document.getElementsByClassName(
     "clear-searchButton",
   )[0] as HTMLButtonElement;
+  addressDetailsContainer = document.querySelector(
+    ".addressDetails",
+  ) as HTMLElement;
+
   multiSelect = document.querySelector(".multiselect") as HTMLDivElement;
   countries = document.getElementById("countries") as HTMLDivElement;
   overlayCb = document.getElementById("bgOverlay") as HTMLDivElement;
   geometry = document.querySelector("input[name='fields']") as HTMLInputElement;
+  detailsHTML = document.querySelector(
+    ".addressDetails .addressOptions",
+  ) as HTMLElement;
   init();
   populateCountries();
   multiSelect.addEventListener(
@@ -450,7 +499,6 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     true,
   );
-
   geometry.addEventListener("click", (e) => {
     if (detailsPublicId) {
       requestDetailsAddress(detailsPublicId);

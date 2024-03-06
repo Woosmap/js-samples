@@ -2,7 +2,7 @@
 
 /* [START woosmap_distance_matrix_advanced] */
 @include meta.load-css("../../shared/scss/_sidebar.scss");
-
+@import "../../shared/scss/mixins.scss";
 
 #sidebar {
   flex-basis: 18rem;
@@ -18,7 +18,8 @@
 }
 
 .tableContainer {
-  max-height: 250px;
+  max-height: 35%;
+  min-height: 150px;
   overflow-y: auto;
   font-size: 13px;
 
@@ -66,10 +67,25 @@
       display: inline-block;
       width: 20px;
       height: 20px;
+      font-size: 80%;
+      font-weight: 600;
+      line-height: 14px;
     }
 
     td:first-child span {
       background-image: url('https://images.woosmap.com/marker-blue.svg');
+    }
+
+    td:first-child {
+      position: relative;
+
+      &:after {
+        position: absolute;
+        right: 0;
+        color: #222;
+        content: "→";
+        top: 12px;
+      }
     }
 
     td:nth-child(2) span {
@@ -279,7 +295,8 @@ select {
 
 .customCounter li {
   counter-increment: step-counter;
-  line-height: 15px;
+  line-height: 14px;
+  height: 22px;
   display: flex;
   align-items: center;
 
@@ -295,7 +312,9 @@ select {
   color: #fff;
   background-position: bottom;
   font-weight: 600;
-  padding: 5px 5px 7px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -333,6 +352,14 @@ select {
       cursor: crosshair !important;
     }
   }
+}
+
+#errorMessage {
+  color: #ff1744;
+  font-size: 12px;
+  max-width: 200px;
+  display: none;
+  @include map-panel($top: 0);
 }
 
 /* [END woosmap_distance_matrix_advanced] */

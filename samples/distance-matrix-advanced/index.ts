@@ -127,6 +127,7 @@ function handleResponse(
     distanceRequest.destinations as woosmap.map.LatLngLiteral[],
   );
   createTable(response);
+  displayOrHideError("");
 }
 
 function createTable(response: woosmap.map.distance.DistanceMatrixResponse) {
@@ -136,20 +137,45 @@ function createTable(response: woosmap.map.distance.DistanceMatrixResponse) {
   response.rows.forEach((row, fromIndex) => {
     row.elements.forEach((element, toIndex) => {
       if (element.status === "OK") {
-        table += `<tr><td><span>${fromIndex + 1}</span></td><td><span>${toIndex + 1}</span></td><td>${element.duration.text}</td><td>${element.distance.text}</td></tr>`;
+        const time = element.duration ? element.duration.text : "N/A";
+        const distance = element.distance ? element.distance.text : "N/A";
+        table += `<tr><td><span>${fromIndex + 1}</span></td><td><span>${toIndex + 1}</span></td><td>${time}</td><td>${distance}</td></tr>`;
       }
     });
   });
+
   table += "</tbody></table>";
+
   const tableContainer = document.querySelector(
     ".tableContainer",
   ) as HTMLElement;
   tableContainer.innerHTML = table;
+  tableContainer.style.display = "block";
+}
+
+function displayOrHideError(error: string) {
+  const errorElement = document.getElementById("errorMessage") as HTMLElement;
+  if (error === "") {
+    errorElement.style.display = "none";
+  } else {
+    errorElement.innerHTML = error;
+    errorElement.style.display = "block";
+    const tableContainer = document.querySelector(
+      ".tableContainer",
+    ) as HTMLElement;
+    tableContainer.innerHTML = "";
+    tableContainer.style.display = "none";
+  }
 }
 
 function calculateDistances(): void {
-  //requestElement.innerText = JSON.stringify(distanceRequest, null, 2);
-  distanceService.getDistanceMatrix(distanceRequest).then(handleResponse);
+  distanceService
+    .getDistanceMatrix(distanceRequest)
+    .then(handleResponse)
+    .catch((error) => {
+      console.error("Error calculating distances:", error);
+      displayOrHideError(error);
+    });
 }
 
 function toggleTravelMode(travelMode: HTMLDivElement): void {
@@ -163,6 +189,9 @@ function updateTravelModeButtons(): void {
   document.querySelectorAll(".travelMode").forEach((el) =>
     el.addEventListener("click", () => {
       toggleTravelMode(el as HTMLDivElement);
+      distanceRequest.travelMode = (el as HTMLDivElement).dataset.travelmode as
+        | woosmap.map.TravelMode
+        | undefined;
       calculateDistances();
     }),
   );
@@ -189,11 +218,101 @@ function updateAvoidance(): void {
 }
 
 function updateDistanceUnit(): void {
-  const distanceUnit = document.querySelector(
-    'input[name="distanceUnits"]',
+  document.querySelectorAll('input[name="distanceUnits"]').forEach((el) => {
+    el.addEventListener("change", () => {
+      distanceRequest.unitSystem = (el as HTMLInputElement).value as
+        | woosmap.map.UnitSystem
+        | undefined;
+      calculateDistances();
+    });
+  });
+}
+
+function updateMethod(): void {
+  document.querySelectorAll('input[name="method"]').forEach((el) => {
+    el.addEventListener("change", () => {
+      distanceRequest.method = (el as HTMLInputElement).value as
+        | "distance"
+        | "time"
+        | undefined;
+      calculateDistances();
+    });
+  });
+}
+
+function updateElements(): void {
+  document.querySelectorAll('input[name="elements"]').forEach((el) => {
+    el.addEventListener("change", () => {
+      distanceRequest.elements = (el as HTMLInputElement).value as
+        | "duration_distance"
+        | "distance"
+        | "duration"
+        | undefined;
+      calculateDistances();
+    });
+  });
+}
+
+function updateLanguage(): void {
+  const languageSelect = document.getElementById(
+    "language",
+  ) as HTMLSelectElement;
+  languageSelect.addEventListener("change", () => {
+    distanceRequest.language = languageSelect.value as string;
+    calculateDistances();
+  });
+}
+
+function isValidDate(date: Date): boolean {
+  return date.getTime && typeof date.getTime === "function";
+}
+
+function updateDepartureTime(): void {
+  const departureTimeElement = document.getElementById(
+    "departure-time",
   ) as HTMLInputElement;
-  distanceUnit.addEventListener("change", () => {
-    distanceRequest.unitSystem = distanceUnit.value;
+  const datetimeRadioButton = document.getElementById(
+    "datetime",
+  ) as HTMLInputElement;
+
+  if (!departureTimeElement) {
+    return;
+  }
+  departureTimeElement.disabled = true;
+  document.querySelectorAll('input[name="departureTime"]').forEach((el) => {
+    el.addEventListener("change", () => {
+      const selectedOption = (el as HTMLInputElement).value;
+      switch (selectedOption) {
+        case "empty":
+          delete distanceRequest.departureTime;
+          departureTimeElement.disabled = true;
+          break;
+        case "now":
+          distanceRequest.departureTime = "now";
+          departureTimeElement.disabled = true;
+          break;
+        case "datetime":
+          if (departureTimeElement.value) {
+            const newDate = new Date(departureTimeElement.value);
+            distanceRequest.departureTime = isValidDate(newDate)
+              ? newDate
+              : undefined;
+          } else {
+            distanceRequest.departureTime = undefined;
+          }
+          departureTimeElement.disabled = false;
+          break;
+      }
+      calculateDistances();
+    });
+  });
+
+  departureTimeElement.addEventListener("change", () => {
+    if (datetimeRadioButton) {
+      datetimeRadioButton.checked = true;
+    }
+    const newDate = new Date(departureTimeElement.value);
+    distanceRequest.departureTime = isValidDate(newDate) ? newDate : undefined;
     calculateDistances();
   });
 }
@@ -228,6 +347,10 @@ function initUI(): void {
   updateTravelModeButtons();
   updateAvoidance();
   updateDistanceUnit();
+  updateMethod();
+  updateElements();
+  updateDepartureTime();
+  updateLanguage();
   originsList = document.getElementById("origins") as HTMLElement;
   destinationsList = document.getElementById("destinations") as HTMLElement;
   registerAddButton(

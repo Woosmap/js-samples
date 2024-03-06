@@ -3,19 +3,10 @@ const woosmap_key = "YOUR_API_KEY";
 let debouncedAutocomplete: (
   ...args: any[]
 ) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
-
-const inputElement = document.getElementById(
-  "autocomplete-input",
-) as HTMLInputElement;
-const suggestionsList = document.getElementById(
-  "suggestions-list",
-) as HTMLUListElement;
-const clearSearchBtn = document.getElementsByClassName(
-  "clear-searchButton",
-)[0] as HTMLButtonElement;
-const responseElement = document.getElementById(
-  "response-container",
-) as HTMLElement;
+let inputElement: HTMLInputElement;
+let suggestionsList: HTMLUListElement;
+let clearSearchBtn: HTMLButtonElement;
+let responseElement: HTMLElement;
 
 function init(): void {
   if (inputElement && suggestionsList) {
@@ -33,7 +24,7 @@ function init(): void {
     inputElement.value = "";
     suggestionsList.style.display = "none";
     clearSearchBtn.style.display = "none";
-    responseElement.innerHTML = "";
+    responseElement.style.display = "none";
     inputElement.focus();
   });
   debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
@@ -53,9 +44,13 @@ function handleAutocomplete(): void {
         .catch((error) =>
           console.error("Error autocomplete localities:", error),
         );
+    } else {
+      suggestionsList.style.display = "none";
+      clearSearchBtn.style.display = "none";
     }
   }
 }
+
 function displaySuggestions(
   localitiesPredictions: woosmap.map.localities.LocalitiesPredictions[],
 ) {
@@ -79,6 +74,7 @@ function displaySuggestions(
     }
   }
 }
+
 function formatPredictionList(locality): string {
   const prediction = locality;
   const predictionClass = "no-viewpoint";
@@ -101,13 +97,16 @@ function formatPredictionList(locality): string {
 
   return html;
 }
+
 function displayLocalitiesResponse(
   selectedLocality: woosmap.map.localities.LocalitiesPredictions,
 ) {
   if (responseElement) {
     responseElement.innerHTML = `<code>${JSON.stringify(selectedLocality, null, 2)}</code>`;
+    responseElement.style.display = "block";
   }
 }
+
 function bold_matched_substring(string: string, matched_substrings: string[]) {
   matched_substrings = matched_substrings.reverse();
   for (const substring of matched_substrings) {
@@ -124,6 +123,7 @@ function bold_matched_substring(string: string, matched_substrings: string[]) {
   }
   return string;
 }
+
 function autocompleteAddress(
   input: string,
   components: string,
@@ -145,6 +145,7 @@ function autocompleteAddress(
     `https://api.woosmap.com/localities/autocomplete/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
+
 function buildQueryString(params: object) {
   const queryStringParts = [];
 
@@ -158,6 +159,7 @@ function buildQueryString(params: object) {
   }
   return queryStringParts.join("&");
 }
+
 type DebouncePromiseFunction<T, Args extends any[]> = (
   ...args: Args
 ) => Promise<T>;
@@ -194,13 +196,21 @@ function debouncePromise<T, Args extends any[]>(
   };
 }
 
-init();
+document.addEventListener("DOMContentLoaded", () => {
+  inputElement = document.getElementById(
+    "autocomplete-input",
+  ) as HTMLInputElement;
+  suggestionsList = document.getElementById(
+    "suggestions-list",
+  ) as HTMLUListElement;
+  clearSearchBtn = document.getElementsByClassName(
+    "clear-searchButton",
+  )[0] as HTMLButtonElement;
+  responseElement = document.getElementById(
+    "response-container",
+  ) as HTMLElement;
+  init();
+});
 
-declare global {
-  interface Window {
-    init: () => void;
-  }
-}
-window.init = init;
 
 export {};

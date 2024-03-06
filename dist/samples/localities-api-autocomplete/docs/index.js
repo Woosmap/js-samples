@@ -2,10 +2,10 @@
 const componentsRestriction = [];
 const woosmap_key = "YOUR_API_KEY";
 let debouncedAutocomplete;
-const inputElement = document.getElementById("autocomplete-input");
-const suggestionsList = document.getElementById("suggestions-list");
-const clearSearchBtn = document.getElementsByClassName("clear-searchButton")[0];
-const responseElement = document.getElementById("response-container");
+let inputElement;
+let suggestionsList;
+let clearSearchBtn;
+let responseElement;
 
 function init() {
   if (inputElement && suggestionsList) {
@@ -25,7 +25,7 @@ function init() {
     inputElement.value = "";
     suggestionsList.style.display = "none";
     clearSearchBtn.style.display = "none";
-    responseElement.innerHTML = "";
+    responseElement.style.display = "none";
     inputElement.focus();
   });
   debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
@@ -46,6 +46,9 @@ function handleAutocomplete() {
         .catch((error) =>
           console.error("Error autocomplete localities:", error),
         );
+    } else {
+      suggestionsList.style.display = "none";
+      clearSearchBtn.style.display = "none";
     }
   }
 }
@@ -107,6 +110,7 @@ function formatPredictionList(locality) {
 function displayLocalitiesResponse(selectedLocality) {
   if (responseElement) {
     responseElement.innerHTML = `<code>${JSON.stringify(selectedLocality, null, 2)}</code>`;
+    responseElement.style.display = "block";
   }
 }
 
@@ -186,5 +190,11 @@ function debouncePromise(fn, delay) {
   };
 }
 
-init();
+document.addEventListener("DOMContentLoaded", () => {
+  inputElement = document.getElementById("autocomplete-input");
+  suggestionsList = document.getElementById("suggestions-list");
+  clearSearchBtn = document.getElementsByClassName("clear-searchButton")[0];
+  responseElement = document.getElementById("response-container");
+  init();
+});
 // [END woosmap_localities_api_autocomplete]

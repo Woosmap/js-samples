@@ -412,38 +412,6 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
     map.panTo(geometry.location);
   }
 }
-function displayAddressDetails(
-  addressDetails: woosmap.map.localities.LocalitiesDetailsResult,
-) {
-  detailsHTML = document.querySelector(".addressDetails") as HTMLDivElement;
-  detailsHTML.innerHTML = "";
-  detailsHTML.style.display = "block";
-  if (addressDetails.formatted_address) {
-    detailsHTML.innerHTML += `<p>Description : <span class='bold'>${addressDetails.formatted_address}</span></p>`;
-  }
-  if (addressDetails.types[0]) {
-    detailsHTML.innerHTML += `<p>Type : <span class='bold'>${addressDetails.types[0].replace(
-      "_",
-      " ",
-    )}</span></p>`;
-  }
-  if (addressDetails.geometry) {
-    const location_type_string = addressDetails.geometry.accuracy;
-    if (location_type_string) {
-      detailsHTML.innerHTML += `<p>Location type : <span class='bold'>${location_type_string
-        .replace("_", " ")
-        .toLowerCase()}</span></p>`;
-    }
-    detailsHTML.innerHTML += `<p>Latitude : <span class='bold'>${addressDetails.geometry.location.lat.toString()}</span> <br>Longitude : <span class='bold'>${addressDetails.geometry.location.lng.toString()}</span></p>`;
-    if (addressDetails.address_components) {
-      let compoHtml = "";
-      for (const compo of addressDetails.address_components) {
-        compoHtml += `${compo.types[0]}: <span class='bold'>${compo.long_name}</span><br>`;
-      }
-      detailsHTML.innerHTML += `<b>Address components:</b><p>${compoHtml}</p>`;
-    }
-  }
-}
 // [START woosmap_w3w_autocomplete_localities_details_promise]
 function getLocalitiesDetails(
   publicId: string,

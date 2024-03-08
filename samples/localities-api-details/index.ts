@@ -59,7 +59,7 @@ function createAddressMarker(
     markerAddress = new woosmap.map.Marker({
       position: addressDetail.geometry.location,
       icon: {
-        url: "https://www.woosmap.com/images/marker-alt.png",
+        url: "https://www.woosmap.com/images/marker.png",
         scaledSize: {
           height: 59,
           width: 37,

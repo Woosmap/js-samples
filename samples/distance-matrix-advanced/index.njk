@@ -1,0 +1,177 @@
+{% extends '../../src/_includes/layout.njk' %}
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="container">
+        <div id="sidebar">
+            <div id="innerWrapper">
+                <div class="sectionHeader"><span>Travel mode</span></div>
+                <div id="travelModeContainer">
+                    <div class="travelModeSelector">
+                        <div data-travelmode="DRIVING" class="travelMode travelMode__selected">
+                            <button role="radio">
+                                <img alt="DRIVING" class="iconTravelMode iconTravelMode__DRIVING"
+                                     src="https://images.woosmap.com/directions/drive_black.png">
+                                <img alt="DRIVING" class="iconTravelMode iconTravelMode__DRIVING__selected"
+                                     src="https://images.woosmap.com/directions/drive_selected.png">
+                            </button>
+                        </div>
+                        <div data-travelmode="WALKING" class="travelMode">
+                            <button role="radio">
+                                <img alt="WALKING" class="iconTravelMode iconTravelMode__WALKING"
+                                     src="https://images.woosmap.com/directions/walk_black.png">
+                                <img alt="WALKING" class="iconTravelMode iconTravelMode__WALKING__selected"
+                                     src="https://images.woosmap.com/directions/walk_selected.png">
+                            </button>
+                        </div>
+                        <div data-travelmode="CYCLING" class="travelMode">
+                            <button role="radio">
+                                <img alt="CYCLING" class="iconTravelMode iconTravelMode__CYCLING"
+                                     src="https://images.woosmap.com/directions/bicycle_black.png">
+                                <img alt="CYCLING" class="iconTravelMode iconTravelMode__CYCLING__selected"
+                                     src="https://images.woosmap.com/directions/bicycle_selected.png">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sectionHeader"><span>Origins</span>
+                    <div aria-label="Add Origin"
+                         class="addLocation addLocation__origins">{% svgIcon 'add-location.svg' %}
+                        <div>Add origin</div>
+                    </div>
+                </div>
+                <div class="directionsOptions">
+                    <ol id="origins" class="customCounter customCounter__origins"></ol>
+                </div>
+                <div class="sectionHeader"><span>Destinations</span>
+                    <div aria-label="Add Destination"
+                         class="addLocation addLocation__destinations">{% svgIcon 'add-location.svg' %}
+                        <div>Add destination</div>
+                    </div>
+                </div>
+                <div class="directionsOptions">
+                    <ol id="destinations" class="customCounter customCounter__destinations"></ol>
+                </div>
+                <div class="sectionHeader"><span>Options</span></div>
+                <div class="directionsOptions">
+                    <div class="directionsOptions__list">
+                        <div class="directionsOptions__content"><span class="directionsOptions__header">Avoid</span>
+                            <div class="directionsOptions__input">
+                                <input class="avoid" id="avoidHighways" aria-label="Avoid highways" name="avoidParams"
+                                       type="checkbox"
+                                       value="highways">
+                                <label for="avoidHighways">Highways</label></div>
+                            <div class="directionsOptions__input">
+                                <input class="avoid" id="avoidTolls" aria-label="Avoid tolls" name="avoidParams"
+                                       type="checkbox"
+                                       value="tolls">
+                                <label for="avoidTolls">Tolls</label></div>
+                            <div class="directionsOptions__input">
+                                <input class="avoid" id="avoidFerries" aria-label="Avoid ferries" name="avoidParams"
+                                       type="checkbox"
+                                       value="ferries">
+                                <label for="avoidFerries">Ferries</label></div>
+                        </div>
+                    </div>
+                    <div class="directionsOptions__list">
+                        <div class="directionsOptions__content"><span
+                                    class="directionsOptions__header">Distance units</span>
+                            <div class="directionsOptions__input">
+                                <input id="unitkm" aria-label="Unit METRIC" name="distanceUnits" type="radio"
+                                       value="METRIC"
+                                       checked="">
+                                <label for="unitkm">km</label></div>
+                            <div class="directionsOptions__input">
+                                <input id="unitmiles" aria-label="Unit IMPERIAL" name="distanceUnits" type="radio"
+                                       value="IMPERIAL">
+                                <label for="unitmiles">miles</label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="directionsOptions">
+                    <div class="directionsOptions__list">
+                        <div class="directionsOptions__content"><span
+                                    class="directionsOptions__header">Elements</span>
+                            <div class="directionsOptions__input">
+                                <input id="duration" aria-label="Duration" name="elements" type="radio"
+                                       value="duration">
+                                <label for="duration">Duration</label>
+                            </div>
+                            <div class="directionsOptions__input">
+                                <input id="distance" aria-label="Distance" name="elements" type="radio"
+                                       value="distance">
+                                <label for="distance">Distance</label>
+                            </div>
+                            <div class="directionsOptions__input">
+                                <input id="durationdistance" aria-label="Duration & Distance"
+                                       name="elements"
+                                       type="radio" value="duration_distance"
+                                       checked="">
+                                <label for="durationdistance">All</label></div>
+                        </div>
+                    </div>
+                    <div class="directionsOptions__list">
+                        <div class="directionsOptions__content"><span
+                                    class="directionsOptions__header">Method</span>
+                            <div class="directionsOptions__input">
+                                <input id="fastest" aria-label="Fastest" name="method" type="radio" value="time"
+                                       checked="">
+                                <label for="fastest">fastest</label></div>
+                            <div class="directionsOptions__input">
+                                <input id="shortest" aria-label="shortest" name="method" type="radio"
+                                       value="distance">
+                                <label for="shortest">shortest</label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="directionsOptions">
+                    <div class="directionsOptions__list">
+                        <div class="directionsOptions__content"><span
+                                    class="directionsOptions__header">Departure time</span>
+                            <div class="directionsOptions__input">
+                                <input id="empty" aria-label="Empty" name="departureTime" type="radio"
+                                       value="empty" checked="">
+                                <label for="empty">Not Define</label></div>
+                            <div class="directionsOptions__input">
+                                <input id="now" aria-label="Now" name="departureTime" type="radio" value="now">
+                                <label for="now">Now</label></div>
+                            <div class="directionsOptions__input">
+                                <input id="datetime" aria-label="Datetime" name="departureTime" type="radio"
+                                       value="datetime">
+                                <input id="departure-time" name="departure-time" type="datetime-local"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="directionsOptions__list">
+                        <div class="directionsOptions__content"><span
+                                    class="directionsOptions__header">Language</span>
+                            <div class="directionsOptions__input">
+                                <select id="language">
+                                    <option value="en">English</option>
+                                    <option value="fr">French</option>
+                                    <option value="it">Italian</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="de">Deutsch</option>
+                                    <option value="nl">Dutch</option>
+                                    <option value="ja">Japanese</option>
+                                    <option value="zh">Chinese</option>
+                                    <option value="ru">Russian</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="mapContainer">
+            <div id="map"></div>
+            <div id="errorMessage"></div>
+            <div class="tableContainer">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

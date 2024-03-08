@@ -1,0 +1,13 @@
+{
+  "title": "Distance Matrix - Advanced",
+  "description": "Using the DistanceService to calculate distances and durations between multiple origins and destinations",
+  "callback": "initMap",
+  "tag": "distance_matrix_advanced",
+  "name": "distance-matrix-advanced",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

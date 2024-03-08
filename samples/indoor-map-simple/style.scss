@@ -5,20 +5,11 @@
 @import "../../shared/scss/mixins.scss";
 
 #app {
-    height: 100%;
+  height: 100%;
 }
 
-#loader {
-    @include loader();
-}
-
-.center {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
+.progress {
+  @include progress($top: 0);
 }
 
 /* [END woosmap_indoor_map_simple] */

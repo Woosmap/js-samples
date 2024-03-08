@@ -43,23 +43,17 @@ function initMap() {
           indoorDirectionsRequest,
           (result: woosmap.map.IndoorDirectionResult) => {
             indoorRenderer.setDirections(result);
+            hideLoader();
           },
         );
       }
-      hideLoader();
     },
   );
   indoorRenderer.setMap(map);
 }
+
 const hideLoader = () => {
-  const loader = document.querySelector("#loader") as HTMLDivElement;
-  const mapContainer = document.querySelector("#map") as HTMLDivElement;
-  if (loader) {
-    loader.style.display = "none";
-  }
-  if (mapContainer) {
-    mapContainer.style.visibility = "visible";
-  }
+  (document.querySelector(".progress") as HTMLElement).remove();
 };
 
 declare global {

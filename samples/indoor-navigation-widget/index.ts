@@ -48,19 +48,14 @@ function initMap(): void {
     });
   });
 }
+
 const exitNavigation = () => {
   indoorNavigation.setMap(null);
   indoorRenderer.setDirections(null);
 };
+
 const hideLoader = () => {
-  const loader = document.querySelector("#loader") as HTMLDivElement;
-  const mapContainer = document.querySelector("#map") as HTMLDivElement;
-  if (loader) {
-    loader.style.display = "none";
-  }
-  if (mapContainer) {
-    mapContainer.style.visibility = "visible";
-  }
+  (document.querySelector(".progress") as HTMLElement).remove();
 };
 
 declare global {

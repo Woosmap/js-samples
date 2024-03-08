@@ -64,14 +64,37 @@
     text-decoration: none;
   }
 }
-@mixin loader($width: 70px, $height:70px, $borderColor: #f3f3f3, $borderTopColor: #444444) {
-  border: 12px solid $borderColor;
-  border-radius: 50%;
-  border-top: 12px solid $borderTopColor;
-  width: $width;
+
+@mixin progress($height:3px, $top: null, $bottom: null) {
+  position: absolute;
+  top: $top;
+  bottom: $bottom;
   height: $height;
-  animation: spin 1s linear infinite;
+  z-index: 1;
+  background-color: #3D5AFE;
+  animation: progress 2s infinite;
+
+
+  @keyframes progress {
+    0% {
+      width: 0;
+      left: 0;
+    }
+    50% {
+      width: 100%;
+      left: 0;
+    }
+    75% {
+      width: 0;
+      left: 100%;
+    }
+    100% {
+      width: 0;
+      left: 100%;
+    }
+  }
 }
+
 @function str-replace($string, $search, $replace: '') {
   $index: str-index($string, $search);
   @return if($index,

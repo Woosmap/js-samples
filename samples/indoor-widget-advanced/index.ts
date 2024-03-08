@@ -4,7 +4,10 @@ let map: woosmap.map.Map;
 function initMap(): void {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
-    { center: { lat: 43.6066, lng: 3.9218 } },
+    {
+      center: { lat: 43.6066, lng: 3.9218 },
+      zoom: 5,
+    },
   );
 
   const conf: woosmap.map.IndoorRendererOptions = {
@@ -36,26 +39,13 @@ function initMap(): void {
     "indoor_venue_loaded",
     (venue: woosmap.map.Venue) => {
       console.log("Venue: ", venue);
-
-      map.fitBounds(
-        new woosmap.map.LatLngBounds(
-          { lat: 48.88115758013444, lng: 2.3562935123187856 },
-          { lat: 48.87945292784522, lng: 2.3539262034398405 },
-        ),
-      );
       hideLoader();
     },
   );
 }
+
 const hideLoader = () => {
-  const loader = document.querySelector("#loader") as HTMLDivElement;
-  const mapContainer = document.querySelector("#map") as HTMLDivElement;
-  if (loader) {
-    loader.style.display = "none";
-  }
-  if (mapContainer) {
-    mapContainer.style.visibility = "visible";
-  }
+  (document.querySelector(".progress") as HTMLElement).remove();
 };
 
 declare global {

@@ -1,4 +1,4 @@
-// [START woosmap_localities_details]
+// [START woosmap_localities_api_details]
 let componentsRestriction: CountryComponent[];
 const woosmap_key = "YOUR_API_KEY";
 let debouncedAutocomplete: (
@@ -23,6 +23,7 @@ export const isoCountries = [
   { id: "FR", text: "France" },
   { id: "GB", text: "United Kingdom" },
 ];
+
 function initMap(): void {
   // [START woosmap_add_map_instantiate_map]
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
@@ -42,6 +43,7 @@ function initMap(): void {
   });
   // [END woosmap_add_map_instantiate_map]
 }
+
 function resetMap() {
   map.setCenter({
     lat: 48.8534,
@@ -49,6 +51,7 @@ function resetMap() {
   });
   map.setZoom(5);
 }
+
 function createAddressMarker(
   addressDetail: woosmap.map.localities.LocalitiesDetailsResult,
 ) {
@@ -74,6 +77,7 @@ function createAddressMarker(
 function displaySection(section: HTMLElement, mode = "block"): void {
   section.style.display = mode;
 }
+
 function fillAddressDetails(
   addressDetails: woosmap.map.localities.LocalitiesDetailsResult,
 ) {
@@ -116,6 +120,7 @@ function fillAddressDetails(
   }
   detailsHTML.innerHTML = details.join("");
 }
+
 function init(): void {
   if (inputElement && suggestionsList) {
     inputElement.addEventListener("input", handleAutocomplete);
@@ -299,6 +304,7 @@ function debouncePromise<T, Args extends any[]>(
     });
   };
 }
+
 function populateCountries() {
   const countryList = isoCountries.map(
     ({ id, text }) =>
@@ -327,6 +333,7 @@ function populateCountries() {
     toggleCountry($countryElement);
   }
 }
+
 function toggleCountry(country: Element) {
   country.classList.toggle("active");
   componentsRestriction = [];
@@ -357,16 +364,19 @@ function toggleCountry(country: Element) {
         : "no active restricions...";
   }
 }
+
 function showCountriesList() {
   countries.style.display = "flex";
   overlayCb.style.display = "block";
   componentExpanded = true;
 }
+
 function hideCountriesList() {
   countries.style.display = "none";
   overlayCb.style.display = "none";
   componentExpanded = false;
 }
+
 function requestDetailsAddress(public_id) {
   detailsPublicId = public_id;
   const fields = [
@@ -384,6 +394,7 @@ function requestDetailsAddress(public_id) {
     },
   );
 }
+
 function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
   let geometry;
   if (addressDetail && addressDetail.geometry) {
@@ -412,7 +423,7 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
     map.panTo(geometry.location);
   }
 }
-// [START woosmap_w3w_autocomplete_localities_details_promise]
+
 function getLocalitiesDetails(
   publicId: string,
   fields: string,
@@ -430,7 +441,6 @@ function getLocalitiesDetails(
     `https://api.woosmap.com/localities/details/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
-// [END woosmap_w3w_autocomplete_localities_details_promise]
 
 document.addEventListener("DOMContentLoaded", () => {
   inputElement = document.getElementById(
@@ -480,6 +490,6 @@ declare global {
 }
 window.initMap = initMap;
 
-// [END woosmap_localities_details]
+// [END woosmap_localities_api_details]
 
 export {};

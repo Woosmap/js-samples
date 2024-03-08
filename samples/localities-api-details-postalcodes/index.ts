@@ -10,6 +10,7 @@ let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
 let markerAddress: woosmap.map.Marker;
 let detailsPublicId: string;
+
 function init(): void {
   if (inputElement && suggestionsList) {
     inputElement.addEventListener("input", handleAutocomplete);
@@ -34,6 +35,7 @@ function init(): void {
 
   debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
 }
+
 function initMap(): void {
   // [START woosmap_add_map_instantiate_map]
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
@@ -53,6 +55,7 @@ function initMap(): void {
   });
   // [END woosmap_add_map_instantiate_map]
 }
+
 function resetMap() {
   map.setCenter({
     lat: 48.8534,
@@ -60,6 +63,7 @@ function resetMap() {
   });
   map.setZoom(5);
 }
+
 function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
     const input = inputElement.value;
@@ -183,6 +187,7 @@ function buildQueryString(params: object) {
   }
   return queryStringParts.join("&");
 }
+
 function createAddressMarker(
   addressDetail: woosmap.map.localities.LocalitiesDetailsResult,
 ) {
@@ -204,6 +209,7 @@ function createAddressMarker(
     panMap(addressDetail);
   }
 }
+
 function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
   let geometry;
   if (addressDetail && addressDetail.geometry) {
@@ -232,6 +238,7 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
     map.panTo(geometry.location);
   }
 }
+
 function requestDetailsAddress(public_id) {
   detailsPublicId = public_id;
   getLocalitiesDetails(detailsPublicId).then(
@@ -245,6 +252,7 @@ function requestDetailsAddress(public_id) {
     },
   );
 }
+
 function populateAddressList(addresses) {
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
@@ -263,7 +271,7 @@ function populateAddressList(addresses) {
     }
   }
 }
-// [START woosmap_w3w_autocomplete_localities_details_promise]
+
 function getLocalitiesDetails(
   publicId: string,
 ): Promise<woosmap.map.localities.LocalitiesDetailsResponse> {
@@ -275,7 +283,7 @@ function getLocalitiesDetails(
     `https://api.woosmap.com/localities/details/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
-// [END woosmap_w3w_autocomplete_localities_details_promise]
+
 type DebouncePromiseFunction<T, Args extends any[]> = (
   ...args: Args
 ) => Promise<T>;

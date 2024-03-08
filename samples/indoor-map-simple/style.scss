@@ -1,0 +1,15 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_indoor_map_simple] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@import "../../shared/scss/mixins.scss";
+
+#app {
+  height: 100%;
+}
+
+.progress {
+  @include progress();
+}
+
+/* [END woosmap_indoor_map_simple] */

@@ -38,6 +38,7 @@ body {
   flex-direction: column;
   flex-basis: 70vw;
   flex-grow: 5;
+  position: relative;
 }
 
 .tableContainer {
@@ -333,5 +334,37 @@ select {
   padding: 5px;
   overflow: hidden;
   z-index: 1;
+}
+
+.linear-progress {
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  bottom: 0;
+  height: 4px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  animation: progress 1.5s infinite;
+  background: linear-gradient(to right, #3D5AFE, #3D5AFE);
+  transform: translateX(-100%);
+}
+
+@keyframes progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.linear-progress.hide {
+  display: none;
 }
 

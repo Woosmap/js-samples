@@ -9,44 +9,45 @@
       (function () {
         const n = document.createElement("link").relList;
         if (n && n.supports && n.supports("modulepreload")) return;
-        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
-          a(o);
-        new MutationObserver((o) => {
-          for (const i of o)
-            if (i.type === "childList")
-              for (const c of i.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && a(c);
+        for (const a of document.querySelectorAll('link[rel="modulepreload"]'))
+          o(a);
+        new MutationObserver((a) => {
+          for (const s of a)
+            if (s.type === "childList")
+              for (const r of s.addedNodes)
+                r.tagName === "LINK" && r.rel === "modulepreload" && o(r);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(o) {
-          const i = {};
+        function t(a) {
+          const s = {};
           return (
-            o.integrity && (i.integrity = o.integrity),
-            o.referrerPolicy && (i.referrerPolicy = o.referrerPolicy),
-            o.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
-              : o.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+            a.integrity && (s.integrity = a.integrity),
+            a.referrerPolicy && (s.referrerPolicy = a.referrerPolicy),
+            a.crossOrigin === "use-credentials"
+              ? (s.credentials = "include")
+              : a.crossOrigin === "anonymous"
+                ? (s.credentials = "omit")
+                : (s.credentials = "same-origin"),
+            s
           );
         }
-        function a(o) {
-          if (o.ep) return;
-          o.ep = !0;
-          const i = t(o);
-          fetch(o.href, i);
+        function o(a) {
+          if (a.ep) return;
+          a.ep = !0;
+          const s = t(a);
+          fetch(a.href, s);
         }
       })();
       let m,
-        h,
-        b,
-        s,
-        v = [],
-        p,
+        f,
+        T,
+        i,
+        h = [],
+        v,
         y;
       const d = [],
         l = [];
-      function L(e, n, t) {
+      let u = null;
+      function w(e, n, t) {
         return new woosmap.map.Marker({
           map: m,
           position: e,
@@ -58,94 +59,118 @@
           label: { text: n, color: "white" },
         });
       }
-      function T() {
-        for (const e of v) e.setMap(null);
-        v = [];
+      function _() {
+        for (const e of h) e.setMap(null);
+        h = [];
       }
-      function B(e, n) {
-        T(),
-          e.forEach((t, a) => {
-            h.extend(t),
-              v.push(
-                L(
+      function q(e, n) {
+        _(),
+          e.forEach((t, o) => {
+            f.extend(t),
+              h.push(
+                w(
                   t,
-                  (a + 1).toString(),
+                  (o + 1).toString(),
                   "https://images.woosmap.com/marker-blue.svg",
                 ),
               );
           }),
-          n.forEach((t, a) => {
-            h.extend(t),
-              v.push(
-                L(
+          n.forEach((t, o) => {
+            f.extend(t),
+              h.push(
+                w(
                   t,
-                  (a + 1).toString(),
+                  (o + 1).toString(),
                   "https://images.woosmap.com/marker-red.svg",
                 ),
               );
           }),
-          m.fitBounds(h, { top: 70, bottom: 40, left: 50, right: 50 }, !0);
+          m.fitBounds(f, { top: 70, bottom: 40, left: 50, right: 50 }, !0);
       }
-      function S() {
-        const e = { lat: 45.4642, lng: 9.19 },
-          n = { lat: 45.75, lng: 4.85 },
-          t = { lat: 42.6976, lng: 9.45 },
-          a = { lat: 41.9028, lng: 12.4964 };
-        return (
-          u(p, e),
-          d.push(e),
-          u(p, n),
-          d.push(n),
-          u(y, t),
-          l.push(t),
-          u(y, a),
-          l.push(a),
-          {
-            origins: d,
-            destinations: l,
-            travelMode: woosmap.map.TravelMode.DRIVING,
-            unitSystem: woosmap.map.UnitSystem.METRIC,
-            avoidHighways: !1,
-            avoidTolls: !1,
-            elements: "duration_distance",
-          }
-        );
+      function O() {
+        d.push({ lat: 51.6511, lng: -0.1615 }, { lat: 51.4269, lng: -0.0955 }),
+          l.push(
+            { lat: 51.4855, lng: -0.3179 },
+            { lat: 51.5146, lng: -0.0212 },
+          );
+        for (const e of d) L(v, e);
+        for (const e of l) L(y, e);
+        return {
+          origins: d,
+          destinations: l,
+          travelMode: woosmap.map.TravelMode.DRIVING,
+          unitSystem: woosmap.map.UnitSystem.METRIC,
+          avoidHighways: !1,
+          avoidTolls: !1,
+          elements: "duration_distance",
+        };
       }
-      function u(e, n) {
+      function L(e, n) {
         const t = document.createElement("li");
         t.innerHTML = `<span>lat: ${n.lat.toFixed(4)}, lng: ${n.lng.toFixed(4)}<span>`;
-        const a = document.createElement("button");
-        a.classList.add("clear-searchButton"),
-          (a.innerHTML =
+        const o = document.createElement("button");
+        o.classList.add("clear-searchButton"),
+          (o.innerHTML =
             '<svg class="clear-icon" viewBox="0 0 24 24"><path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path></svg> '),
-          a.addEventListener("click", () => {
+          o.addEventListener("click", () => {
             e.removeChild(t),
-              e === p ? d.splice(d.indexOf(n), 1) : l.splice(l.indexOf(n), 1),
-              r();
+              e === v ? d.splice(d.indexOf(n), 1) : l.splice(l.indexOf(n), 1),
+              c();
           }),
-          t.appendChild(a),
+          t.appendChild(o),
           e.appendChild(t);
       }
-      function k(e) {
-        B(s.origins, s.destinations), I(e), M("");
+      function A(e) {
+        q(i.origins, i.destinations), I(e), S(""), E();
       }
       function I(e) {
         let n =
           "<table><thead><tr><th>From</th><th>To</th><th>Time</th><th>Distance</th></tr></thead><tbody>";
-        e.rows.forEach((a, o) => {
-          a.elements.forEach((i, c) => {
-            if (i.status === "OK") {
-              const f = i.duration ? i.duration.text : "N/A",
-                g = i.distance ? i.distance.text : "N/A";
-              n += `<tr><td><span>${o + 1}</span></td><td><span>${c + 1}</span></td><td>${f}</td><td>${g}</td></tr>`;
+        e.rows.forEach((o, a) => {
+          o.elements.forEach((s, r) => {
+            if (s.status === "OK") {
+              const p = s.duration ? s.duration.text : "N/A",
+                g = `${d[a].lat},${d[a].lng}`,
+                k = `${l[r].lat},${l[r].lng}`,
+                B = s.distance ? s.distance.text : "N/A";
+              n += `<tr data-start=${g} data-end=${k}><td><span>${a + 1}</span></td><td><span>${r + 1}</span></td><td>${p}</td><td>${B}</td></tr>`;
             }
           });
         }),
           (n += "</tbody></table>");
         const t = document.querySelector(".tableContainer");
-        (t.innerHTML = n), (t.style.display = "block");
+        (t.innerHTML = n), (t.style.display = "block"), D(t);
       }
-      function M(e) {
+      function D(e) {
+        e.querySelectorAll("tr").forEach((t) => {
+          t.addEventListener("mouseover", () => {
+            var s, r;
+            const o =
+                (s = t.dataset.start) == null
+                  ? void 0
+                  : s.split(",").map(Number),
+              a =
+                (r = t.dataset.end) == null ? void 0 : r.split(",").map(Number);
+            u && u.setMap(null),
+              !(!o || !a) &&
+                ((u = new woosmap.map.Polyline({
+                  path: [
+                    { lat: o[0], lng: o[1] },
+                    { lat: a[0], lng: a[1] },
+                  ],
+                  geodesic: !0,
+                  strokeColor: "#252525",
+                  strokeOpacity: 1,
+                  strokeWeight: 2,
+                })),
+                u.setMap(m));
+          }),
+            t.addEventListener("mouseout", () => {
+              u && (u.setMap(null), (u = null));
+            });
+        });
+      }
+      function S(e) {
         const n = document.getElementById("errorMessage");
         if (e === "") n.style.display = "none";
         else {
@@ -154,72 +179,76 @@
           (t.innerHTML = ""), (t.style.display = "none");
         }
       }
-      function r() {
-        b.getDistanceMatrix(s)
-          .then(k)
-          .catch((e) => {
-            console.error("Error calculating distances:", e), M(e);
-          });
+      function E() {
+        document.querySelector(".linear-progress").classList.toggle("hide");
       }
-      function _(e) {
+      function c() {
+        E(),
+          T.getDistanceMatrix(i)
+            .then(A)
+            .catch((e) => {
+              console.error("Error calculating distances:", e), S(e), E();
+            });
+      }
+      function $(e) {
         document
           .querySelectorAll(".travelMode")
           .forEach((n) => n.classList.remove("travelMode__selected")),
           e.classList.add("travelMode__selected");
       }
-      function A() {
+      function H() {
         document.querySelectorAll(".travelMode").forEach((e) =>
           e.addEventListener("click", () => {
-            _(e), (s.travelMode = e.dataset.travelmode), r();
+            $(e), (i.travelMode = e.dataset.travelmode), c();
           }),
         );
       }
-      function O() {
+      function C() {
         document.querySelectorAll(".avoid").forEach((e) =>
           e.addEventListener("click", () => {
             const n = document.getElementById("avoidHighways"),
               t = document.getElementById("avoidTolls"),
-              a = document.getElementById("avoidFerries");
-            (s.avoidHighways = n.checked),
-              (s.avoidTolls = t.checked),
-              (s.avoidFerries = a.checked),
-              r();
+              o = document.getElementById("avoidFerries");
+            (i.avoidHighways = n.checked),
+              (i.avoidTolls = t.checked),
+              (i.avoidFerries = o.checked),
+              c();
           }),
         );
       }
-      function q() {
+      function x() {
         document
           .querySelectorAll('input[name="distanceUnits"]')
           .forEach((e) => {
             e.addEventListener("change", () => {
-              (s.unitSystem = e.value), r();
+              (i.unitSystem = e.value), c();
             });
           });
       }
-      function D() {
+      function N() {
         document.querySelectorAll('input[name="method"]').forEach((e) => {
           e.addEventListener("change", () => {
-            (s.method = e.value), r();
+            (i.method = e.value), c();
           });
         });
       }
-      function x() {
+      function R() {
         document.querySelectorAll('input[name="elements"]').forEach((e) => {
           e.addEventListener("change", () => {
-            (s.elements = e.value), r();
+            (i.elements = e.value), c();
           });
         });
       }
-      function H() {
+      function F() {
         const e = document.getElementById("language");
         e.addEventListener("change", () => {
-          (s.language = e.value), r();
+          (i.language = e.value), c();
         });
       }
-      function E(e) {
+      function b(e) {
         return e.getTime && typeof e.getTime == "function";
       }
-      function C() {
+      function P() {
         const e = document.getElementById("departure-time"),
           n = document.getElementById("datetime");
         e &&
@@ -230,77 +259,77 @@
               t.addEventListener("change", () => {
                 switch (t.value) {
                   case "empty":
-                    delete s.departureTime, (e.disabled = !0);
+                    delete i.departureTime, (e.disabled = !0);
                     break;
                   case "now":
-                    (s.departureTime = "now"), (e.disabled = !0);
+                    (i.departureTime = "now"), (e.disabled = !0);
                     break;
                   case "datetime":
                     if (e.value) {
-                      const o = new Date(e.value);
-                      s.departureTime = E(o) ? o : void 0;
-                    } else s.departureTime = void 0;
+                      const a = new Date(e.value);
+                      i.departureTime = b(a) ? a : void 0;
+                    } else i.departureTime = void 0;
                     e.disabled = !1;
                     break;
                 }
-                r();
+                c();
               });
             }),
           e.addEventListener("change", () => {
             n && (n.checked = !0);
             const t = new Date(e.value);
-            (s.departureTime = E(t) ? t : void 0), r();
+            (i.departureTime = b(t) ? t : void 0), c();
           }));
       }
-      function w(e, n, t) {
-        const a = document.querySelector(e);
-        a.addEventListener("click", () => {
-          var o, i;
-          if (a.classList.contains("addLocation__selected")) {
-            a.classList.remove("addLocation__selected"),
-              (o = document.getElementById("map")) == null ||
-                o.classList.remove("cursor-crosshair"),
+      function M(e, n, t) {
+        const o = document.querySelector(e);
+        o.addEventListener("click", () => {
+          var a, s;
+          if (o.classList.contains("addLocation__selected")) {
+            o.classList.remove("addLocation__selected"),
+              (a = document.getElementById("map")) == null ||
+                a.classList.remove("cursor-crosshair"),
               woosmap.map.event.clearListeners(m, "click");
             return;
           }
-          a.classList.add("addLocation__selected"),
-            (i = document.getElementById("map")) == null ||
-              i.classList.add("cursor-crosshair"),
-            woosmap.map.event.addListenerOnce(m, "click", (c) => {
+          o.classList.add("addLocation__selected"),
+            (s = document.getElementById("map")) == null ||
+              s.classList.add("cursor-crosshair"),
+            woosmap.map.event.addListenerOnce(m, "click", (r) => {
               var g;
               (g = document.getElementById("map")) == null ||
                 g.classList.remove("cursor-crosshair"),
-                a.classList.remove("addLocation__selected");
-              const f = c.latlng;
-              t.push(f), u(n, f), r();
+                o.classList.remove("addLocation__selected");
+              const p = r.latlng;
+              t.push(p), L(n, p), c();
             });
         });
       }
-      function F() {
-        A(),
-          O(),
-          q(),
-          D(),
-          x(),
+      function U() {
+        H(),
           C(),
-          H(),
-          (p = document.getElementById("origins")),
-          (y = document.getElementById("destinations")),
-          w(".addLocation__destinations", y, l),
-          w(".addLocation__origins", p, d);
-      }
-      function N() {
-        (m = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 45.53, lng: 2.4 },
-          zoom: 10,
-        })),
-          (b = new woosmap.map.DistanceService()),
-          (h = new woosmap.map.LatLngBounds()),
+          x(),
+          N(),
+          R(),
+          P(),
           F(),
-          (s = S()),
-          r();
+          (v = document.getElementById("origins")),
+          (y = document.getElementById("destinations")),
+          M(".addLocation__destinations", y, l),
+          M(".addLocation__origins", v, d);
       }
-      window.initMap = N;
+      function z() {
+        (m = new woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 51.4855, lng: -0.3179 },
+          zoom: 6,
+        })),
+          (T = new woosmap.map.DistanceService()),
+          (f = new woosmap.map.LatLngBounds()),
+          U(),
+          (i = O()),
+          c();
+      }
+      window.initMap = z;
     </script>
     <style>
       @charset "UTF-8";
@@ -352,6 +381,7 @@
         flex-direction: column;
         flex-basis: 70vw;
         flex-grow: 5;
+        position: relative;
       }
       .tableContainer {
         max-height: 35%;
@@ -655,6 +685,35 @@
         overflow: hidden;
         z-index: 1;
       }
+      .linear-progress {
+        position: absolute;
+        width: 100%;
+        z-index: 2;
+        bottom: 0;
+        height: 4px;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .progress {
+        height: 100%;
+        animation: progress 1.5s infinite;
+        background: linear-gradient(to right, #3d5afe, #3d5afe);
+        transform: translate(-100%);
+      }
+      @keyframes progress {
+        0% {
+          transform: translate(-100%);
+        }
+        50% {
+          transform: translate(0);
+        }
+        to {
+          transform: translate(100%);
+        }
+      }
+      .linear-progress.hide {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -954,6 +1013,9 @@
         </div>
       </div>
       <div id="mapContainer">
+        <div class="linear-progress hide">
+          <div class="progress"></div>
+        </div>
         <div id="map"></div>
         <div id="errorMessage"></div>
         <div class="tableContainer"></div>

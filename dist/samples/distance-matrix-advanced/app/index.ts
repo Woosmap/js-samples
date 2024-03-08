@@ -7,6 +7,7 @@ let originsList: HTMLElement;
 let destinationsList: HTMLElement;
 const origins: woosmap.map.LatLngLiteral[] = [];
 const destinations: woosmap.map.LatLngLiteral[] = [];
+let line: woosmap.map.Polyline | null = null;
 
 function createMarker(
   position: woosmap.map.LatLngLiteral,
@@ -69,21 +70,19 @@ function displayMatrixMarkers(
 }
 
 function createDefaultRequest(): woosmap.map.distance.DistanceMatrixRequest {
-  const origin1: woosmap.map.LatLngLiteral = { lat: 45.4642, lng: 9.19 };
-  const origin2: woosmap.map.LatLngLiteral = { lat: 45.75, lng: 4.85 };
-  const destinationA: woosmap.map.LatLngLiteral = { lat: 42.6976, lng: 9.45 };
-  const destinationB: woosmap.map.LatLngLiteral = {
-    lat: 41.9028,
-    lng: 12.4964,
-  };
-  addLatLngToList(originsList, origin1);
-  origins.push(origin1);
-  addLatLngToList(originsList, origin2);
-  origins.push(origin2);
-  addLatLngToList(destinationsList, destinationA);
-  destinations.push(destinationA);
-  addLatLngToList(destinationsList, destinationB);
-  destinations.push(destinationB);
+  origins.push({ lat: 51.6511, lng: -0.1615 }, { lat: 51.4269, lng: -0.0955 });
+  destinations.push(
+    { lat: 51.4855, lng: -0.3179 },
+    { lat: 51.5146, lng: -0.0212 },
+  );
+
+  for (const origin of origins) {
+    addLatLngToList(originsList, origin);
+  }
+  for (const destination of destinations) {
+    addLatLngToList(destinationsList, destination);
+  }
+
   return {
     origins,
     destinations,
@@ -127,6 +126,7 @@ function handleResponse(
   );
   createTable(response);
   displayOrHideError("");
+  toggleProgress();
 }
 
 function createTable(response: woosmap.map.distance.DistanceMatrixResponse) {
@@ -137,8 +137,10 @@ function createTable(response: woosmap.map.distance.DistanceMatrixResponse) {
     row.elements.forEach((element, toIndex) => {
       if (element.status === "OK") {
         const time = element.duration ? element.duration.text : "N/A";
+        const start = `${origins[fromIndex].lat},${origins[fromIndex].lng}`;
+        const end = `${destinations[toIndex].lat},${destinations[toIndex].lng}`;
         const distance = element.distance ? element.distance.text : "N/A";
-        table += `<tr><td><span>${fromIndex + 1}</span></td><td><span>${toIndex + 1}</span></td><td>${time}</td><td>${distance}</td></tr>`;
+        table += `<tr data-start=${start} data-end=${end}><td><span>${fromIndex + 1}</span></td><td><span>${toIndex + 1}</span></td><td>${time}</td><td>${distance}</td></tr>`;
       }
     });
   });
@@ -150,6 +152,40 @@ function createTable(response: woosmap.map.distance.DistanceMatrixResponse) {
   ) as HTMLElement;
   tableContainer.innerHTML = table;
   tableContainer.style.display = "block";
+  registerLineHighlight(tableContainer);
+}
+
+function registerLineHighlight(tableContainer: HTMLElement) {
+  const tableRows = tableContainer.querySelectorAll("tr");
+  tableRows.forEach((row) => {
+    row.addEventListener("mouseover", () => {
+      const start = row.dataset.start?.split(",").map(Number);
+      const end = row.dataset.end?.split(",").map(Number);
+      if (line) {
+        line.setMap(null);
+      }
+      if (!start || !end) {
+        return;
+      }
+      line = new woosmap.map.Polyline({
+        path: [
+          { lat: start[0], lng: start[1] },
+          { lat: end[0], lng: end[1] },
+        ],
+        geodesic: true,
+        strokeColor: "#252525",
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+      });
+      line.setMap(map);
+    });
+    row.addEventListener("mouseout", () => {
+      if (line) {
+        line.setMap(null);
+        line = null;
+      }
+    });
+  });
 }
 
 function displayOrHideError(error: string) {
@@ -167,13 +203,21 @@ function displayOrHideError(error: string) {
   }
 }
 
+function toggleProgress() {
+  (document.querySelector(".linear-progress") as HTMLElement).classList.toggle(
+    "hide",
+  );
+}
+
 function calculateDistances(): void {
+  toggleProgress();
   distanceService
     .getDistanceMatrix(distanceRequest)
     .then(handleResponse)
     .catch((error) => {
       console.error("Error calculating distances:", error);
       displayOrHideError(error);
+      toggleProgress();
     });
 }
 
@@ -362,8 +406,8 @@ function initUI(): void {
 
 function initMap(): void {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
-    center: { lat: 45.53, lng: 2.4 },
-    zoom: 10,
+    center: { lat: 51.4855, lng: -0.3179 },
+    zoom: 6,
   });
   distanceService = new woosmap.map.DistanceService();
   bounds = new woosmap.map.LatLngBounds();

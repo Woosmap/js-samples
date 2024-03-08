@@ -1,0 +1,968 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Distance Matrix - Advanced</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
+        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
+          a(o);
+        new MutationObserver((o) => {
+          for (const i of o)
+            if (i.type === "childList")
+              for (const c of i.addedNodes)
+                c.tagName === "LINK" && c.rel === "modulepreload" && a(c);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function t(o) {
+          const i = {};
+          return (
+            o.integrity && (i.integrity = o.integrity),
+            o.referrerPolicy && (i.referrerPolicy = o.referrerPolicy),
+            o.crossOrigin === "use-credentials"
+              ? (i.credentials = "include")
+              : o.crossOrigin === "anonymous"
+                ? (i.credentials = "omit")
+                : (i.credentials = "same-origin"),
+            i
+          );
+        }
+        function a(o) {
+          if (o.ep) return;
+          o.ep = !0;
+          const i = t(o);
+          fetch(o.href, i);
+        }
+      })();
+      let m,
+        h,
+        b,
+        s,
+        v = [],
+        p,
+        y;
+      const d = [],
+        l = [];
+      function L(e, n, t) {
+        return new woosmap.map.Marker({
+          map: m,
+          position: e,
+          icon: {
+            url: t,
+            labelOrigin: new woosmap.map.Point(13, 15),
+            scaledSize: { height: 38, width: 26 },
+          },
+          label: { text: n, color: "white" },
+        });
+      }
+      function T() {
+        for (const e of v) e.setMap(null);
+        v = [];
+      }
+      function B(e, n) {
+        T(),
+          e.forEach((t, a) => {
+            h.extend(t),
+              v.push(
+                L(
+                  t,
+                  (a + 1).toString(),
+                  "https://images.woosmap.com/marker-blue.svg",
+                ),
+              );
+          }),
+          n.forEach((t, a) => {
+            h.extend(t),
+              v.push(
+                L(
+                  t,
+                  (a + 1).toString(),
+                  "https://images.woosmap.com/marker-red.svg",
+                ),
+              );
+          }),
+          m.fitBounds(h, { top: 70, bottom: 40, left: 50, right: 50 }, !0);
+      }
+      function S() {
+        const e = { lat: 45.4642, lng: 9.19 },
+          n = { lat: 45.75, lng: 4.85 },
+          t = { lat: 42.6976, lng: 9.45 },
+          a = { lat: 41.9028, lng: 12.4964 };
+        return (
+          u(p, e),
+          d.push(e),
+          u(p, n),
+          d.push(n),
+          u(y, t),
+          l.push(t),
+          u(y, a),
+          l.push(a),
+          {
+            origins: d,
+            destinations: l,
+            travelMode: woosmap.map.TravelMode.DRIVING,
+            unitSystem: woosmap.map.UnitSystem.METRIC,
+            avoidHighways: !1,
+            avoidTolls: !1,
+            elements: "duration_distance",
+          }
+        );
+      }
+      function u(e, n) {
+        const t = document.createElement("li");
+        t.innerHTML = `<span>lat: ${n.lat.toFixed(4)}, lng: ${n.lng.toFixed(4)}<span>`;
+        const a = document.createElement("button");
+        a.classList.add("clear-searchButton"),
+          (a.innerHTML =
+            '<svg class="clear-icon" viewBox="0 0 24 24"><path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path></svg> '),
+          a.addEventListener("click", () => {
+            e.removeChild(t),
+              e === p ? d.splice(d.indexOf(n), 1) : l.splice(l.indexOf(n), 1),
+              r();
+          }),
+          t.appendChild(a),
+          e.appendChild(t);
+      }
+      function k(e) {
+        B(s.origins, s.destinations), I(e), M("");
+      }
+      function I(e) {
+        let n =
+          "<table><thead><tr><th>From</th><th>To</th><th>Time</th><th>Distance</th></tr></thead><tbody>";
+        e.rows.forEach((a, o) => {
+          a.elements.forEach((i, c) => {
+            if (i.status === "OK") {
+              const f = i.duration ? i.duration.text : "N/A",
+                g = i.distance ? i.distance.text : "N/A";
+              n += `<tr><td><span>${o + 1}</span></td><td><span>${c + 1}</span></td><td>${f}</td><td>${g}</td></tr>`;
+            }
+          });
+        }),
+          (n += "</tbody></table>");
+        const t = document.querySelector(".tableContainer");
+        (t.innerHTML = n), (t.style.display = "block");
+      }
+      function M(e) {
+        const n = document.getElementById("errorMessage");
+        if (e === "") n.style.display = "none";
+        else {
+          (n.innerHTML = e), (n.style.display = "block");
+          const t = document.querySelector(".tableContainer");
+          (t.innerHTML = ""), (t.style.display = "none");
+        }
+      }
+      function r() {
+        b.getDistanceMatrix(s)
+          .then(k)
+          .catch((e) => {
+            console.error("Error calculating distances:", e), M(e);
+          });
+      }
+      function _(e) {
+        document
+          .querySelectorAll(".travelMode")
+          .forEach((n) => n.classList.remove("travelMode__selected")),
+          e.classList.add("travelMode__selected");
+      }
+      function A() {
+        document.querySelectorAll(".travelMode").forEach((e) =>
+          e.addEventListener("click", () => {
+            _(e), (s.travelMode = e.dataset.travelmode), r();
+          }),
+        );
+      }
+      function O() {
+        document.querySelectorAll(".avoid").forEach((e) =>
+          e.addEventListener("click", () => {
+            const n = document.getElementById("avoidHighways"),
+              t = document.getElementById("avoidTolls"),
+              a = document.getElementById("avoidFerries");
+            (s.avoidHighways = n.checked),
+              (s.avoidTolls = t.checked),
+              (s.avoidFerries = a.checked),
+              r();
+          }),
+        );
+      }
+      function q() {
+        document
+          .querySelectorAll('input[name="distanceUnits"]')
+          .forEach((e) => {
+            e.addEventListener("change", () => {
+              (s.unitSystem = e.value), r();
+            });
+          });
+      }
+      function D() {
+        document.querySelectorAll('input[name="method"]').forEach((e) => {
+          e.addEventListener("change", () => {
+            (s.method = e.value), r();
+          });
+        });
+      }
+      function x() {
+        document.querySelectorAll('input[name="elements"]').forEach((e) => {
+          e.addEventListener("change", () => {
+            (s.elements = e.value), r();
+          });
+        });
+      }
+      function H() {
+        const e = document.getElementById("language");
+        e.addEventListener("change", () => {
+          (s.language = e.value), r();
+        });
+      }
+      function E(e) {
+        return e.getTime && typeof e.getTime == "function";
+      }
+      function C() {
+        const e = document.getElementById("departure-time"),
+          n = document.getElementById("datetime");
+        e &&
+          ((e.disabled = !0),
+          document
+            .querySelectorAll('input[name="departureTime"]')
+            .forEach((t) => {
+              t.addEventListener("change", () => {
+                switch (t.value) {
+                  case "empty":
+                    delete s.departureTime, (e.disabled = !0);
+                    break;
+                  case "now":
+                    (s.departureTime = "now"), (e.disabled = !0);
+                    break;
+                  case "datetime":
+                    if (e.value) {
+                      const o = new Date(e.value);
+                      s.departureTime = E(o) ? o : void 0;
+                    } else s.departureTime = void 0;
+                    e.disabled = !1;
+                    break;
+                }
+                r();
+              });
+            }),
+          e.addEventListener("change", () => {
+            n && (n.checked = !0);
+            const t = new Date(e.value);
+            (s.departureTime = E(t) ? t : void 0), r();
+          }));
+      }
+      function w(e, n, t) {
+        const a = document.querySelector(e);
+        a.addEventListener("click", () => {
+          var o, i;
+          if (a.classList.contains("addLocation__selected")) {
+            a.classList.remove("addLocation__selected"),
+              (o = document.getElementById("map")) == null ||
+                o.classList.remove("cursor-crosshair"),
+              woosmap.map.event.clearListeners(m, "click");
+            return;
+          }
+          a.classList.add("addLocation__selected"),
+            (i = document.getElementById("map")) == null ||
+              i.classList.add("cursor-crosshair"),
+            woosmap.map.event.addListenerOnce(m, "click", (c) => {
+              var g;
+              (g = document.getElementById("map")) == null ||
+                g.classList.remove("cursor-crosshair"),
+                a.classList.remove("addLocation__selected");
+              const f = c.latlng;
+              t.push(f), u(n, f), r();
+            });
+        });
+      }
+      function F() {
+        A(),
+          O(),
+          q(),
+          D(),
+          x(),
+          C(),
+          H(),
+          (p = document.getElementById("origins")),
+          (y = document.getElementById("destinations")),
+          w(".addLocation__destinations", y, l),
+          w(".addLocation__origins", p, d);
+      }
+      function N() {
+        (m = new woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 45.53, lng: 2.4 },
+          zoom: 10,
+        })),
+          (b = new woosmap.map.DistanceService()),
+          (h = new woosmap.map.LatLngBounds()),
+          F(),
+          (s = S()),
+          r();
+      }
+      window.initMap = N;
+    </script>
+    <style>
+      @charset "UTF-8";
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      #container {
+        height: 100%;
+        display: flex;
+      }
+      #sidebar {
+        flex-basis: 12rem;
+        flex-grow: 1;
+        max-width: 30rem;
+        height: 100%;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+      #map {
+        flex-basis: 70vw;
+        flex-grow: 5;
+        height: 100%;
+      }
+      #sidebar {
+        flex-basis: 18rem;
+        box-shadow: 0 -2px 4px #0000001f;
+        z-index: 1;
+      }
+      #mapContainer {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 70vw;
+        flex-grow: 5;
+      }
+      .tableContainer {
+        max-height: 35%;
+        min-height: 150px;
+        overflow-y: auto;
+        font-size: 13px;
+      }
+      .tableContainer table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      .tableContainer tr:nth-child(2n) {
+        background-color: #f5f5f5;
+      }
+      .tableContainer tr:nth-child(odd) {
+        background-color: #fff;
+      }
+      .tableContainer thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      .tableContainer th {
+        background: #eee;
+        font-weight: 700;
+      }
+      .tableContainer td {
+        white-space: nowrap;
+      }
+      .tableContainer th,
+      .tableContainer td {
+        text-align: center;
+        padding: 8px 16px;
+      }
+      .tableContainer tr td:first-child span,
+      .tableContainer tr td:nth-child(2) span {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        color: #fff;
+        text-align: center;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        font-size: 80%;
+        font-weight: 600;
+        line-height: 14px;
+      }
+      .tableContainer tr td:first-child span {
+        background-image: url(https://images.woosmap.com/marker-blue.svg);
+      }
+      .tableContainer tr td:first-child {
+        position: relative;
+      }
+      .tableContainer tr td:first-child:after {
+        position: absolute;
+        right: 0;
+        color: #222;
+        content: "→";
+        top: 12px;
+      }
+      .tableContainer tr td:nth-child(2) span {
+        background-image: url(https://images.woosmap.com/marker-red.svg);
+      }
+      #innerWrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+        overflow-y: auto;
+        padding: 0 10px 10px;
+      }
+      input,
+      select {
+        font-family: inherit;
+        font-size: 100%;
+        box-sizing: border-box;
+      }
+      .travelModeSelector {
+        display: flex;
+        align-content: flex-start;
+        justify-content: space-between;
+        max-width: 140px;
+        text-align: center;
+        height: 48px;
+      }
+      .travelModeSelector .travelMode {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        z-index: 0;
+      }
+      .travelModeSelector .travelMode button {
+        display: flex;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        font: inherit;
+        list-style: none;
+        margin: 0;
+        outline: 0;
+        overflow: visible;
+        padding: 0;
+        vertical-align: baseline;
+        position: relative;
+      }
+      .travelModeSelector .travelMode .iconTravelMode {
+        width: 24px;
+        height: 24px;
+        margin: 12px 9px 11px;
+      }
+      .travelModeSelector .travelMode .iconTravelMode__DRIVING,
+      .travelModeSelector .travelMode .iconTravelMode__WALKING,
+      .travelModeSelector .travelMode .iconTravelMode__CYCLING {
+        display: block;
+      }
+      .travelModeSelector .travelMode .iconTravelMode__DRIVING__selected,
+      .travelModeSelector .travelMode .iconTravelMode__WALKING__selected,
+      .travelModeSelector .travelMode .iconTravelMode__CYCLING__selected,
+      .travelMode__selected
+        .travelModeSelector
+        .travelMode
+        .iconTravelMode__DRIVING,
+      .travelMode__selected
+        .travelModeSelector
+        .travelMode
+        .iconTravelMode__WALKING,
+      .travelMode__selected
+        .travelModeSelector
+        .travelMode
+        .iconTravelMode__CYCLING {
+        display: none;
+      }
+      .travelModeSelector .travelMode__selected button {
+        cursor: default;
+      }
+      .travelModeSelector .travelMode__selected .iconTravelMode__DRIVING,
+      .travelModeSelector .travelMode__selected .iconTravelMode__WALKING,
+      .travelModeSelector .travelMode__selected .iconTravelMode__CYCLING {
+        display: none;
+      }
+      .travelModeSelector
+        .travelMode__selected
+        .iconTravelMode__DRIVING__selected,
+      .travelModeSelector
+        .travelMode__selected
+        .iconTravelMode__WALKING__selected,
+      .travelModeSelector
+        .travelMode__selected
+        .iconTravelMode__CYCLING__selected {
+        display: block;
+      }
+      .travelModeSelector .travelMode__selected:after {
+        background-color: #3d5afe;
+      }
+      .travelModeSelector .travelMode:after,
+      .travelModeSelector .travelMode button:after {
+        content: "";
+        border-radius: 100%;
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        margin: 6px 3px 5px;
+        height: 36px;
+        width: 36px;
+      }
+      .travelModeSelector .travelMode:hover button:after {
+        background-color: #3c40430a;
+      }
+      .directionsOptions {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        height: 100%;
+        background: #fff;
+        display: flex;
+        font-size: 13px;
+      }
+      .directionsOptions__list {
+        width: 50%;
+        height: 100%;
+      }
+      .directionsOptions__header {
+        font-weight: 600;
+        line-height: 24px;
+        display: flex;
+      }
+      .directionsOptions__input {
+        height: 24px;
+        display: flex;
+        align-items: baseline;
+      }
+      .directionsOptions__content {
+        padding: 10px 0;
+      }
+      .directionsOptions__content:first-child {
+        padding-top: 0;
+      }
+      .addLocation {
+        font-size: 0.75em;
+        display: flex;
+        color: #222;
+        cursor: pointer;
+      }
+      .addLocation:hover {
+        text-decoration: underline;
+      }
+      .addLocation div {
+        margin-left: 5px;
+      }
+      .addLocation__selected {
+        color: #3d5afe;
+      }
+      .addLocation__selected svg path {
+        fill: #3d5afe;
+      }
+      .sectionHeader {
+        background: #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #eeeeee;
+        margin: 20px -10px 5px;
+        padding: 5px 10px;
+        color: #222;
+      }
+      .sectionHeader span {
+        font-size: 0.85em;
+        font-weight: 600;
+      }
+      .sectionHeader:first-child {
+        margin-top: 0;
+      }
+      .customCounter {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        width: 100%;
+      }
+      .customCounter li {
+        counter-increment: step-counter;
+        line-height: 14px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+      }
+      .customCounter li span {
+        flex-grow: 1;
+      }
+      .customCounter li:before {
+        content: counter(step-counter);
+        margin-right: 5px;
+        font-size: 80%;
+        color: #fff;
+        background-position: bottom;
+        font-weight: 600;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      .customCounter__destinations li:before {
+        background-image: url(https://images.woosmap.com/marker-red.svg);
+      }
+      .customCounter__origins li:before {
+        background-image: url(https://images.woosmap.com/marker-blue.svg);
+      }
+      .clear-searchButton {
+        display: block;
+        height: 18px;
+        width: 22px;
+        background: none;
+        border: none;
+        vertical-align: middle;
+        pointer-events: all;
+        cursor: pointer;
+      }
+      .clear-searchButton .clear-icon {
+        color: inherit;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+      }
+      #map.cursor-crosshair .mapboxgl-canvas-container {
+        cursor: crosshair !important;
+      }
+      #errorMessage {
+        color: #ff1744;
+        font-size: 12px;
+        max-width: 200px;
+        display: none;
+        position: absolute;
+        top: 0;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="sidebar">
+        <div id="innerWrapper">
+          <div class="sectionHeader"><span>Travel mode</span></div>
+          <div id="travelModeContainer">
+            <div class="travelModeSelector">
+              <div
+                data-travelmode="DRIVING"
+                class="travelMode travelMode__selected"
+              >
+                <button role="radio">
+                  <img
+                    alt="DRIVING"
+                    class="iconTravelMode iconTravelMode__DRIVING"
+                    src="https://images.woosmap.com/directions/drive_black.png"
+                  />
+                  <img
+                    alt="DRIVING"
+                    class="iconTravelMode iconTravelMode__DRIVING__selected"
+                    src="https://images.woosmap.com/directions/drive_selected.png"
+                  />
+                </button>
+              </div>
+              <div data-travelmode="WALKING" class="travelMode">
+                <button role="radio">
+                  <img
+                    alt="WALKING"
+                    class="iconTravelMode iconTravelMode__WALKING"
+                    src="https://images.woosmap.com/directions/walk_black.png"
+                  />
+                  <img
+                    alt="WALKING"
+                    class="iconTravelMode iconTravelMode__WALKING__selected"
+                    src="https://images.woosmap.com/directions/walk_selected.png"
+                  />
+                </button>
+              </div>
+              <div data-travelmode="CYCLING" class="travelMode">
+                <button role="radio">
+                  <img
+                    alt="CYCLING"
+                    class="iconTravelMode iconTravelMode__CYCLING"
+                    src="https://images.woosmap.com/directions/bicycle_black.png"
+                  />
+                  <img
+                    alt="CYCLING"
+                    class="iconTravelMode iconTravelMode__CYCLING__selected"
+                    src="https://images.woosmap.com/directions/bicycle_selected.png"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="sectionHeader">
+            <span>Origins</span>
+            <div
+              aria-label="Add Origin"
+              class="addLocation addLocation__origins"
+            >
+              <svg
+                width="19"
+                height="14"
+                viewBox="0 0 19 14"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16,5 L16,2 L14,2 L14,5 L11,5 L11,7 L14,7 L14,10 L16,10 L16,7 L19,7 L19,5 L16,5 Z M4.21278471,13.2173279 C4.21344203,13.4210003 4.29852035,13.6152829 4.447752,13.7538931 C4.59698368,13.8925033 4.79700821,13.9630315 5.00017514,13.9486763 C5.20260653,13.9603467 5.40103075,13.8888849 5.54953735,13.7508253 C5.69804403,13.6127657 5.78376442,13.4200717 5.786865,13.2173279 C5.786865,11.8485015 6.73642703,10.7280113 7.74168082,9.54202199 C8.85201342,8.23203971 9.9998241,6.87722382 9.9998241,5.04184757 C10.0148585,3.24561164 9.06519921,1.57935055 7.51207057,0.676864524 C5.958942,-0.225621508 4.04105803,-0.225621508 2.48792942,0.676864524 C0.93480081,1.57935055 -0.0148585204,3.24561164 0.000175901018,5.04184757 C0.000175901018,6.87722382 1.14833685,8.23203971 2.25901969,9.54202199 C3.26322269,10.7280113 4.21278471,11.8485015 4.21278471,13.2173279 Z"
+                  fill="#787878"
+                />
+              </svg>
+              <div>Add origin</div>
+            </div>
+          </div>
+          <div class="directionsOptions">
+            <ol id="origins" class="customCounter customCounter__origins"></ol>
+          </div>
+          <div class="sectionHeader">
+            <span>Destinations</span>
+            <div
+              aria-label="Add Destination"
+              class="addLocation addLocation__destinations"
+            >
+              <svg
+                width="19"
+                height="14"
+                viewBox="0 0 19 14"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16,5 L16,2 L14,2 L14,5 L11,5 L11,7 L14,7 L14,10 L16,10 L16,7 L19,7 L19,5 L16,5 Z M4.21278471,13.2173279 C4.21344203,13.4210003 4.29852035,13.6152829 4.447752,13.7538931 C4.59698368,13.8925033 4.79700821,13.9630315 5.00017514,13.9486763 C5.20260653,13.9603467 5.40103075,13.8888849 5.54953735,13.7508253 C5.69804403,13.6127657 5.78376442,13.4200717 5.786865,13.2173279 C5.786865,11.8485015 6.73642703,10.7280113 7.74168082,9.54202199 C8.85201342,8.23203971 9.9998241,6.87722382 9.9998241,5.04184757 C10.0148585,3.24561164 9.06519921,1.57935055 7.51207057,0.676864524 C5.958942,-0.225621508 4.04105803,-0.225621508 2.48792942,0.676864524 C0.93480081,1.57935055 -0.0148585204,3.24561164 0.000175901018,5.04184757 C0.000175901018,6.87722382 1.14833685,8.23203971 2.25901969,9.54202199 C3.26322269,10.7280113 4.21278471,11.8485015 4.21278471,13.2173279 Z"
+                  fill="#787878"
+                />
+              </svg>
+              <div>Add destination</div>
+            </div>
+          </div>
+          <div class="directionsOptions">
+            <ol
+              id="destinations"
+              class="customCounter customCounter__destinations"
+            ></ol>
+          </div>
+          <div class="sectionHeader"><span>Options</span></div>
+          <div class="directionsOptions">
+            <div class="directionsOptions__list">
+              <div class="directionsOptions__content">
+                <span class="directionsOptions__header">Avoid</span>
+                <div class="directionsOptions__input">
+                  <input
+                    class="avoid"
+                    id="avoidHighways"
+                    aria-label="Avoid highways"
+                    name="avoidParams"
+                    type="checkbox"
+                    value="highways"
+                  />
+                  <label for="avoidHighways">Highways</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    class="avoid"
+                    id="avoidTolls"
+                    aria-label="Avoid tolls"
+                    name="avoidParams"
+                    type="checkbox"
+                    value="tolls"
+                  />
+                  <label for="avoidTolls">Tolls</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    class="avoid"
+                    id="avoidFerries"
+                    aria-label="Avoid ferries"
+                    name="avoidParams"
+                    type="checkbox"
+                    value="ferries"
+                  />
+                  <label for="avoidFerries">Ferries</label>
+                </div>
+              </div>
+            </div>
+            <div class="directionsOptions__list">
+              <div class="directionsOptions__content">
+                <span class="directionsOptions__header">Distance units</span>
+                <div class="directionsOptions__input">
+                  <input
+                    id="unitkm"
+                    aria-label="Unit METRIC"
+                    name="distanceUnits"
+                    type="radio"
+                    value="METRIC"
+                    checked=""
+                  />
+                  <label for="unitkm">km</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    id="unitmiles"
+                    aria-label="Unit IMPERIAL"
+                    name="distanceUnits"
+                    type="radio"
+                    value="IMPERIAL"
+                  />
+                  <label for="unitmiles">miles</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="directionsOptions">
+            <div class="directionsOptions__list">
+              <div class="directionsOptions__content">
+                <span class="directionsOptions__header">Elements</span>
+                <div class="directionsOptions__input">
+                  <input
+                    id="duration"
+                    aria-label="Duration"
+                    name="elements"
+                    type="radio"
+                    value="duration"
+                  />
+                  <label for="duration">Duration</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    id="distance"
+                    aria-label="Distance"
+                    name="elements"
+                    type="radio"
+                    value="distance"
+                  />
+                  <label for="distance">Distance</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    id="durationdistance"
+                    aria-label="Duration & Distance"
+                    name="elements"
+                    type="radio"
+                    value="duration_distance"
+                    checked=""
+                  />
+                  <label for="durationdistance">All</label>
+                </div>
+              </div>
+            </div>
+            <div class="directionsOptions__list">
+              <div class="directionsOptions__content">
+                <span class="directionsOptions__header">Method</span>
+                <div class="directionsOptions__input">
+                  <input
+                    id="fastest"
+                    aria-label="Fastest"
+                    name="method"
+                    type="radio"
+                    value="time"
+                    checked=""
+                  />
+                  <label for="fastest">fastest</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    id="shortest"
+                    aria-label="shortest"
+                    name="method"
+                    type="radio"
+                    value="distance"
+                  />
+                  <label for="shortest">shortest</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="directionsOptions">
+            <div class="directionsOptions__list">
+              <div class="directionsOptions__content">
+                <span class="directionsOptions__header">Departure time</span>
+                <div class="directionsOptions__input">
+                  <input
+                    id="empty"
+                    aria-label="Empty"
+                    name="departureTime"
+                    type="radio"
+                    value="empty"
+                    checked=""
+                  />
+                  <label for="empty">Not Define</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    id="now"
+                    aria-label="Now"
+                    name="departureTime"
+                    type="radio"
+                    value="now"
+                  />
+                  <label for="now">Now</label>
+                </div>
+                <div class="directionsOptions__input">
+                  <input
+                    id="datetime"
+                    aria-label="Datetime"
+                    name="departureTime"
+                    type="radio"
+                    value="datetime"
+                  />
+                  <input
+                    id="departure-time"
+                    name="departure-time"
+                    type="datetime-local"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="directionsOptions__list">
+              <div class="directionsOptions__content">
+                <span class="directionsOptions__header">Language</span>
+                <div class="directionsOptions__input">
+                  <select id="language">
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="it">Italian</option>
+                    <option value="es">Spanish</option>
+                    <option value="de">Deutsch</option>
+                    <option value="nl">Dutch</option>
+                    <option value="ja">Japanese</option>
+                    <option value="zh">Chinese</option>
+                    <option value="ru">Russian</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="mapContainer">
+        <div id="map"></div>
+        <div id="errorMessage"></div>
+        <div class="tableContainer"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

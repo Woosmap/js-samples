@@ -9,7 +9,7 @@
 }
 
 .progress {
-  @include progress($top: 0);
+  @include progress();
 }
 
 /* [END woosmap_indoor_directions_service] */

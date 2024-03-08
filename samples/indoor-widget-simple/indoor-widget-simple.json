@@ -1,0 +1,14 @@
+{
+  "title": "Indoor Widget",
+  "description": "The widget helps you to search for a POI, calculate the shortest path between 2 locations and discover the map through POI list grouped by level.",
+  "callback": "initMap",
+  "tag": "indoor_widget_simple",
+  "name": "indoor-widget-simple",
+  "libraries": "widgets",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

@@ -13,6 +13,7 @@
     .dropdown-button {
       background-color: #e8ebee;
       border: 1px solid #e8ebee;
+
       svg {
         transform: matrix(-1, 0, 0, -1, 0, 0)
       }
@@ -34,6 +35,11 @@
     &:hover {
       background-color: #e8ebee;
       border: 1px solid #e8ebee;
+    }
+
+    strong {
+      font-size: .9em;
+      opacity: .9;
     }
 
     svg {

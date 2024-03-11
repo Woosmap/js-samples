@@ -1,6 +1,7 @@
 // [START woosmap_localities_api_details_postalcodes]
-const componentsRestriction = [];
 const woosmap_key = "YOUR_API_KEY";
+const countryRestrictions = ["GB", "JE", "IM", "GG"];
+const types = ["postal_code"];
 let map: woosmap.map.Map;
 let debouncedAutocomplete: (
   ...args: any[]
@@ -9,7 +10,6 @@ let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
 let markerAddress: woosmap.map.Marker;
-let detailsPublicId: string;
 
 function init(): void {
   if (inputElement && suggestionsList) {
@@ -29,15 +29,12 @@ function init(): void {
     clearSearchBtn.style.display = "none";
     inputElement.focus();
     markerAddress.setMap(null);
-    resetMap();
-    detailsPublicId = "";
   });
 
   debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
 }
 
 function initMap(): void {
-  // [START woosmap_add_map_instantiate_map]
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
     center: {
       lat: 48.8534,
@@ -53,27 +50,15 @@ function initMap(): void {
       },
     ],
   });
-  // [END woosmap_add_map_instantiate_map]
-}
-
-function resetMap() {
-  map.setCenter({
-    lat: 48.8534,
-    lng: 2.3488,
-  });
-  map.setZoom(5);
 }
 
 function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
     const input = inputElement.value;
     input.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
-    const components: string[] = componentsRestriction.map(
-      ({ id }) => `country:${id}`,
-    );
-    const componentsArgs: string = components.join("|");
+
     if (input !== "") {
-      debouncedAutocomplete(input, componentsArgs, woosmap_key)
+      debouncedAutocomplete(input)
         .then(({ localities }) => displaySuggestions(localities))
         .catch((error) =>
           console.error("Error autocomplete localities:", error),
@@ -109,33 +94,31 @@ function displaySuggestions(
   }
 }
 
-function formatPredictionList(locality): string {
-  const prediction = locality;
-  let predictionClass = "no-viewpoint";
-  const matched_substrings = prediction.matched_substrings;
-  let formatted_name = "";
-  if (
-    prediction.matched_substrings &&
-    prediction.matched_substrings.description
-  ) {
-    formatted_name = bold_matched_substring(
-      prediction["description"],
-      matched_substrings.description,
-    );
-  } else {
-    formatted_name = prediction["description"];
-  }
-  const addresses = prediction["has_addresses"]
+function formatPredictionList(
+  locality: woosmap.map.localities.LocalitiesPredictions,
+): string {
+  const formattedName =
+    locality.matched_substrings && locality.matched_substrings.description
+      ? bold_matched_substring(
+          locality.description as string,
+          locality.matched_substrings.description,
+        )
+      : locality.description;
+
+  const addresses = locality.has_addresses
     ? `<span class='light'>- view addresses</span>`
     : "";
-  predictionClass = prediction["has_addresses"] ? `prediction-expandable` : "";
-  let html = "";
-  html += `<div class="prediction ${predictionClass}">${formatted_name} ${addresses}</div>`;
+  const predictionClass = locality.has_addresses
+    ? `prediction-expandable`
+    : "no-viewpoint";
 
-  return html;
+  return `<div class="prediction ${predictionClass}">${formattedName} ${addresses}</div>`;
 }
 
-function bold_matched_substring(string: string, matched_substrings: string[]) {
+function bold_matched_substring(
+  string: string,
+  matched_substrings: woosmap.map.AutocompleteMatchedSubstring[],
+) {
   matched_substrings = matched_substrings.reverse();
   for (const substring of matched_substrings) {
     const char = string.substring(
@@ -154,21 +137,15 @@ function bold_matched_substring(string: string, matched_substrings: string[]) {
 
 function autocompleteAddress(
   input: string,
-  components: string,
-  woosmap_key: string,
 ): Promise<woosmap.map.localities.LocalitiesAutocompleteResponse> {
   const args = {
     key: woosmap_key,
     input,
-    types: "postal_code",
-    components: "country:gb|country:je|country:im|country:gg",
   };
-
-  if (components !== "") {
-    if (args["components"]) {
-      args["components"] = components;
-    }
-  }
+  args["components"] = countryRestrictions
+    .map((country) => `country:${country}`)
+    .join("|");
+  args["types"] = types.join("|");
   return fetch(
     `https://api.woosmap.com/localities/autocomplete/?${buildQueryString(args)}`,
   ).then((response) => response.json());
@@ -198,7 +175,7 @@ function createAddressMarker(
     markerAddress = new woosmap.map.Marker({
       position: addressDetail.geometry.location,
       icon: {
-        url: "https://www.woosmap.com/images/marker.png",
+        url: "https://images.woosmap.com/marker.png",
         scaledSize: {
           height: 59,
           width: 37,
@@ -239,9 +216,8 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
   }
 }
 
-function requestDetailsAddress(public_id) {
-  detailsPublicId = public_id;
-  getLocalitiesDetails(detailsPublicId).then(
+function requestDetailsAddress(public_id: string) {
+  getLocalitiesDetails(public_id).then(
     (addressDetails: woosmap.map.localities.LocalitiesDetailsResponse) => {
       if (addressDetails.result["addresses"]) {
         populateAddressList(addressDetails.result["addresses"]);
@@ -276,8 +252,8 @@ function getLocalitiesDetails(
   publicId: string,
 ): Promise<woosmap.map.localities.LocalitiesDetailsResponse> {
   const args = {
-    key: woosmap_key,
     public_id: publicId,
+    key: woosmap_key,
   };
   return fetch(
     `https://api.woosmap.com/localities/details/?${buildQueryString(args)}`,

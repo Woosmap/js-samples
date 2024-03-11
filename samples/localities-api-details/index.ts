@@ -1,31 +1,19 @@
 // [START woosmap_localities_api_details]
-let componentsRestriction: CountryComponent[];
+const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
+  { country: [] };
 const woosmap_key = "YOUR_API_KEY";
 let debouncedAutocomplete: (
   ...args: any[]
 ) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
-let inputElement, geometry: HTMLInputElement;
+let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
-let multiSelect, countries, overlayCb: HTMLDivElement;
 let map: woosmap.map.Map;
-let detailsPublicId: string;
 let markerAddress: woosmap.map.Marker;
-let detailsHTML, addressDetailsContainer: HTMLElement;
-let componentExpanded = false;
-
-interface CountryComponent {
-  id: string | undefined;
-  text: string | undefined;
-}
-
-export const isoCountries = [
-  { id: "FR", text: "France" },
-  { id: "GB", text: "United Kingdom" },
-];
+let detailsHTML: HTMLElement;
+let addressDetailsContainer: HTMLElement;
 
 function initMap(): void {
-  // [START woosmap_add_map_instantiate_map]
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
     center: {
       lat: 48.8534,
@@ -41,15 +29,8 @@ function initMap(): void {
       },
     ],
   });
-  // [END woosmap_add_map_instantiate_map]
-}
-
-function resetMap() {
-  map.setCenter({
-    lat: 48.8534,
-    lng: 2.3488,
-  });
-  map.setZoom(5);
+  init();
+  manageCountrySelector();
 }
 
 function createAddressMarker(
@@ -62,7 +43,7 @@ function createAddressMarker(
     markerAddress = new woosmap.map.Marker({
       position: addressDetail.geometry.location,
       icon: {
-        url: "https://www.woosmap.com/images/marker.png",
+        url: "https://images.woosmap.com/marker.png",
         scaledSize: {
           height: 59,
           width: 37,
@@ -122,6 +103,21 @@ function fillAddressDetails(
 }
 
 function init(): void {
+  inputElement = document.getElementById(
+    "autocomplete-input",
+  ) as HTMLInputElement;
+  suggestionsList = document.getElementById(
+    "suggestions-list",
+  ) as HTMLUListElement;
+  clearSearchBtn = document.getElementsByClassName(
+    "clear-searchButton",
+  )[0] as HTMLButtonElement;
+  addressDetailsContainer = document.querySelector(
+    ".addressDetails",
+  ) as HTMLElement;
+  detailsHTML = document.querySelector(
+    ".addressDetails .addressOptions",
+  ) as HTMLElement;
   if (inputElement && suggestionsList) {
     inputElement.addEventListener("input", handleAutocomplete);
     inputElement.addEventListener("keydown", (event) => {
@@ -139,10 +135,7 @@ function init(): void {
     clearSearchBtn.style.display = "none";
     detailsHTML.style.display = "none";
     inputElement.focus();
-    geometry.checked = false;
     markerAddress.setMap(null);
-    resetMap();
-    detailsPublicId = "";
   });
 
   debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
@@ -150,12 +143,11 @@ function init(): void {
 
 function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
-    const input = inputElement.value;
-    input.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
-    const components: string[] = componentsRestriction.map(
-      ({ id }) => `country:${id}`,
-    );
-    const componentsArgs: string = components.join("|");
+    let input = inputElement.value;
+    input = input.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
+    const componentsArgs: string = (componentsRestriction.country as string[])
+      .map((country) => `country:${country}`)
+      .join("|");
     if (input !== "") {
       debouncedAutocomplete(input, componentsArgs, woosmap_key)
         .then(({ localities }) => displaySuggestions(localities))
@@ -236,13 +228,12 @@ function bold_matched_substring(string: string, matched_substrings: string[]) {
 function autocompleteAddress(
   input: string,
   components: string,
-  woosmap_key: string,
 ): Promise<woosmap.map.localities.LocalitiesAutocompleteResponse> {
   const args = {
     key: woosmap_key,
     input,
     no_deprecated_fields: "true",
-    types: "address",
+    types: "locality|address",
     components,
   };
   if (components !== "") {
@@ -305,86 +296,88 @@ function debouncePromise<T, Args extends any[]>(
   };
 }
 
-function populateCountries() {
-  const countryList = isoCountries.map(
-    ({ id, text }) =>
-      `<div class="country" data-countrycode="${id}" data-countrytext="${text}"><span class="flag-icon flag-icon-${id.toLowerCase()}"></span><span class="flag-text">${text}</span><div class='active-icon-wrapper'></div></div>`,
+function manageCountrySelector() {
+  const countryElements = document.querySelectorAll(".country");
+  countryElements.forEach((countryElement: Element) =>
+    countryElement.addEventListener("click", () => {
+      toggleCountry(countryElement);
+    }),
   );
-  countries.innerHTML = countryList.join("");
-  countries.insertAdjacentHTML(
-    "beforeend",
-    "<button id='btnRestrict'>Apply restrictions</button>",
-  );
-  const $btnRestrictElement = document.querySelector("#btnRestrict");
-  if ($btnRestrictElement) {
-    $btnRestrictElement.addEventListener("click", (e) => {
-      hideCountriesList();
-      handleAutocomplete();
-    });
-  }
 
-  document.querySelectorAll(".country").forEach((country) => {
-    country.addEventListener("click", (e) => {
-      toggleCountry(country);
+  const dropdownButtons = document.querySelectorAll(
+    ".dropdown .dropdown-button",
+  );
+  dropdownButtons.forEach((button: Element) =>
+    button.addEventListener("click", toggleDropdown),
+  );
+
+  // Hide dropdowns when clicking outside
+  const dropdowns = document.querySelectorAll(".dropdown");
+  document.addEventListener("click", (event: Event) => {
+    dropdowns.forEach((dropdown: Element) => {
+      if (!dropdown.contains(event.target as Node)) {
+        hideDropdown(dropdown);
+      }
     });
   });
-  const $countryElement = document.querySelector(".country");
-  if ($countryElement) {
-    toggleCountry($countryElement);
+}
+
+function toggleDropdown(event: Event) {
+  event.stopPropagation();
+  const dropdown = (event.target as Element).closest(".dropdown");
+  if (dropdown) {
+    if (dropdown.classList.contains("active")) {
+      hideDropdown(dropdown);
+    } else {
+      showDropdown(dropdown);
+    }
   }
+}
+
+function hideDropdown(dropdown: Element) {
+  const dropdownContent = dropdown.querySelector(
+    ".dropdown-content",
+  ) as HTMLElement;
+  dropdownContent?.classList.remove("visible");
+  dropdown.classList.remove("active");
+}
+
+function showDropdown(dropdown: Element) {
+  const dropdownContent = dropdown.querySelector(
+    ".dropdown-content",
+  ) as HTMLElement;
+  dropdownContent?.classList.add("visible");
+  dropdown.classList.add("active");
 }
 
 function toggleCountry(country: Element) {
-  country.classList.toggle("active");
-  componentsRestriction = [];
-  document
-    .querySelectorAll(".country.active")
-    .forEach(
-      (element: Element, index: number, nodeList: NodeListOf<Element>) => {
-        const dataset = (element as HTMLElement).dataset;
-        if (dataset) {
-          componentsRestriction.push({
-            id: dataset.countrycode,
-            text: dataset.countrytext,
-          });
-        }
-      },
-    );
-  const activeCountryList = componentsRestriction.map(
-    ({ id, text }) =>
-      `<div class="country"><span class="flag-icon flag-icon-${id && id.toLowerCase()}"></span><span class="flag-text">${text}</span></div>`,
-  );
-  const $activeRestrictionsElement = document.querySelector(
-    "#active-restrictions",
-  );
-  if ($activeRestrictionsElement) {
-    $activeRestrictionsElement.innerHTML =
-      activeCountryList.length > 0
-        ? activeCountryList.join("")
-        : "no active restricions...";
+  const isActive = country.classList.toggle("active");
+  const countryCode = (country as HTMLElement).dataset.countrycode;
+
+  if (countryCode) {
+    if (isActive) {
+      componentsRestriction.country = [
+        ...(componentsRestriction.country as string[]),
+        countryCode,
+      ];
+    } else {
+      componentsRestriction.country = (
+        componentsRestriction.country as string[]
+      ).filter((code) => code !== countryCode);
+    }
+    handleAutocomplete();
+  }
+  const dropdownText = document.querySelector(
+    ".dropdown-button span",
+  ) as HTMLElement;
+  dropdownText.textContent = `Select Countries (${(componentsRestriction.country as string[]).join(", ")})`;
+  if (componentsRestriction.country.length === 0) {
+    dropdownText.textContent = dropdownText.textContent = "Select Countries";
   }
 }
 
-function showCountriesList() {
-  countries.style.display = "flex";
-  overlayCb.style.display = "block";
-  componentExpanded = true;
-}
-
-function hideCountriesList() {
-  countries.style.display = "none";
-  overlayCb.style.display = "none";
-  componentExpanded = false;
-}
-
-function requestDetailsAddress(public_id) {
-  detailsPublicId = public_id;
-  const fields = [
-    ...(document.querySelectorAll(
-      'input[name="fields"]:checked',
-    ) as NodeListOf<Element>),
-  ].map((e) => e["value"]);
-  getLocalitiesDetails(public_id, fields.join("|"), woosmap_key).then(
+function requestDetailsAddress(public_id: string) {
+  getLocalitiesDetails(public_id).then(
     (addressDetails: woosmap.map.localities.LocalitiesDetailsResponse) => {
       fillAddressDetails(addressDetails.result);
       displaySection(addressDetailsContainer);
@@ -426,63 +419,16 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
 
 function getLocalitiesDetails(
   publicId: string,
-  fields: string,
-  woosmap_key: string,
 ): Promise<woosmap.map.localities.LocalitiesDetailsResponse> {
   const args = {
     key: woosmap_key,
     public_id: publicId,
   };
-
-  if (fields) {
-    args["fields"] = fields;
-  }
   return fetch(
     `https://api.woosmap.com/localities/details/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  inputElement = document.getElementById(
-    "autocomplete-input",
-  ) as HTMLInputElement;
-  suggestionsList = document.getElementById(
-    "suggestions-list",
-  ) as HTMLUListElement;
-  clearSearchBtn = document.getElementsByClassName(
-    "clear-searchButton",
-  )[0] as HTMLButtonElement;
-  addressDetailsContainer = document.querySelector(
-    ".addressDetails",
-  ) as HTMLElement;
-
-  multiSelect = document.querySelector(".multiselect") as HTMLDivElement;
-  countries = document.getElementById("countries") as HTMLDivElement;
-  overlayCb = document.getElementById("bgOverlay") as HTMLDivElement;
-  geometry = document.querySelector("input[name='fields']") as HTMLInputElement;
-  detailsHTML = document.querySelector(
-    ".addressDetails .addressOptions",
-  ) as HTMLElement;
-  init();
-  populateCountries();
-  multiSelect.addEventListener(
-    "click",
-    (e) => {
-      if (!componentExpanded) {
-        showCountriesList();
-      } else {
-        hideCountriesList();
-      }
-      e.stopPropagation();
-    },
-    true,
-  );
-  geometry.addEventListener("click", (e) => {
-    if (detailsPublicId) {
-      requestDetailsAddress(detailsPublicId);
-    }
-  });
-});
 declare global {
   interface Window {
     initMap: () => void;

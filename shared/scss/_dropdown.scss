@@ -1,0 +1,103 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  ul {
+    display: block;
+    list-style: none;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  &.active {
+    .dropdown-button {
+      background-color: #e8ebee;
+      border: 1px solid #e8ebee;
+      svg {
+        transform: matrix(-1, 0, 0, -1, 0, 0)
+      }
+    }
+  }
+
+
+  .dropdown-button {
+    cursor: pointer;
+    border: 1px solid #f9fbfd;
+    background-color: #f9fbfd;
+    box-shadow: 0 2px 4px #0003, 0 -1px #00000005;
+    font-weight: 400;
+    height: 42px;
+    padding: 0 9px;
+    font-size: 14px;
+    border-radius: 12px;
+
+    &:hover {
+      background-color: #e8ebee;
+      border: 1px solid #e8ebee;
+    }
+
+    svg {
+      height: 0.75rem;
+      width: 0.75rem;
+      margin-left: 0.5rem;
+      margin-top: -0.125rem;
+      transition-duration: .1s;
+      transition-property: transform;
+      vertical-align: middle;
+      transition-timing-function: cubic-bezier(.07, .49, 0, 1.05);
+      fill: #1D1D1D;
+      display: inline;
+      padding-top: 0;
+    }
+  }
+
+  .dropdown-menuitem {
+    color: #1D1D1D;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+    position: relative;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e8ebee;
+    }
+
+    &.divider {
+      border-top: 1px solid #e8ebee;
+    }
+  }
+
+  .dropdown-content {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    min-width: 160px;
+    overflow: hidden;
+    top: 100%;
+    z-index: 999;
+
+    &.visible {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .dropdown-menu {
+    background-clip: padding-box;
+    background-color: #FFF;
+    color: #1D1D1D;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(6, 11, 16, 0.2) 0 16px 24px 0, rgba(6, 11, 16, 0.3) 0 6px 30px 0, rgba(6, 11, 16, 0.4) 0 8px 10px 0;
+    left: 0;
+    margin-top: 1px;
+    min-width: 13rem;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+}

@@ -298,11 +298,19 @@ function debouncePromise<T, Args extends any[]>(
 
 function manageCountrySelector() {
   const countryElements = document.querySelectorAll(".country");
-  countryElements.forEach((countryElement: Element) =>
+  countryElements.forEach((countryElement: Element) => {
     countryElement.addEventListener("click", () => {
       toggleCountry(countryElement);
-    }),
-  );
+    });
+    if (countryElement.classList.contains("active")) {
+      const countryCode = (countryElement as HTMLElement).dataset
+        .countrycode as string;
+      componentsRestriction.country = [
+        ...(componentsRestriction.country as string[]),
+        countryCode,
+      ];
+    }
+  });
 
   const dropdownButtons = document.querySelectorAll(
     ".dropdown .dropdown-button",
@@ -365,14 +373,19 @@ function toggleCountry(country: Element) {
         componentsRestriction.country as string[]
       ).filter((code) => code !== countryCode);
     }
+    updateCountrySelectorText();
     handleAutocomplete();
   }
+}
+
+function updateCountrySelectorText() {
   const dropdownText = document.querySelector(
     ".dropdown-button span",
   ) as HTMLElement;
-  dropdownText.textContent = `Select Countries (${(componentsRestriction.country as string[]).join(", ")})`;
-  if (componentsRestriction.country.length === 0) {
-    dropdownText.textContent = dropdownText.textContent = "Select Countries";
+  if (componentsRestriction.country.length > 0) {
+    dropdownText.innerHTML = `Selected countries: <strong>${(componentsRestriction.country as string[]).join("</strong>, <strong>")}</strong>`;
+  } else {
+    dropdownText.textContent = "Select countries";
   }
 }
 

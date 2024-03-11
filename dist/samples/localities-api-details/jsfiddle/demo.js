@@ -290,11 +290,19 @@ function debouncePromise(fn, delay) {
 function manageCountrySelector() {
   const countryElements = document.querySelectorAll(".country");
 
-  countryElements.forEach((countryElement) =>
+  countryElements.forEach((countryElement) => {
     countryElement.addEventListener("click", () => {
       toggleCountry(countryElement);
-    }),
-  );
+    });
+    if (countryElement.classList.contains("active")) {
+      const countryCode = countryElement.dataset.countrycode;
+
+      componentsRestriction.country = [
+        ...componentsRestriction.country,
+        countryCode,
+      ];
+    }
+  });
 
   const dropdownButtons = document.querySelectorAll(
     ".dropdown .dropdown-button",
@@ -364,14 +372,18 @@ function toggleCountry(country) {
       );
     }
 
+    updateCountrySelectorText();
     handleAutocomplete();
   }
+}
 
+function updateCountrySelectorText() {
   const dropdownText = document.querySelector(".dropdown-button span");
 
-  dropdownText.textContent = `Select Countries (${componentsRestriction.country.join(", ")})`;
-  if (componentsRestriction.country.length === 0) {
-    dropdownText.textContent = dropdownText.textContent = "Select Countries";
+  if (componentsRestriction.country.length > 0) {
+    dropdownText.innerHTML = `Selected countries: <strong>${componentsRestriction.country.join("</strong>, <strong>")}</strong>`;
+  } else {
+    dropdownText.textContent = "Select countries";
   }
 }
 

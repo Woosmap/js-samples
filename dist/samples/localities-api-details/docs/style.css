@@ -147,6 +147,11 @@ body {
   border: 1px solid #e8ebee;
 }
 
+.dropdown .dropdown-button strong {
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
 .dropdown .dropdown-button svg {
   height: 0.75rem;
   width: 0.75rem;

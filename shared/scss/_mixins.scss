@@ -29,7 +29,7 @@
   z-index: 1;
 }
 
-@mixin button($background:#fff, $color:#202124, $hover: darken($background, 10%), $display: flex, $position: relative, $height: 32px) {
+@mixin button($background: #fff, $color: #202124, $hover: darken($background, 10%), $display: flex, $position: relative, $height: 32px) {
   background: $background;
   border: 0;
   border-radius: 4px;
@@ -46,6 +46,7 @@
   padding: 0 15px;
   position: $position;
   align-items: center;
+
   &:hover {
     background: $hover;
   }
@@ -58,8 +59,31 @@
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.25rem;
+
   &:hover {
     text-decoration: none;
+  }
+}
+
+@mixin progress($width: 70px, $height:70px, $borderColor: #f3f3f3, $borderTopColor: #444444) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  .spinner {
+    border: 10px solid $borderColor;
+    border-top: 10px solid $borderTopColor;
+    border-radius: 50%;
+    width: $width;
+    height: $height;
+    animation: spin 1s linear infinite;
   }
 }
 

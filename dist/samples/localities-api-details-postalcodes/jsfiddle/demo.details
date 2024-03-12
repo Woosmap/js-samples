@@ -1,0 +1,7 @@
+name: Localities Api - Details (Autocomplete on postal codes with addresses)
+authors:
+  - Woosmap
+tags:
+  - woosmap
+load_type: h
+description: Sample code for Woosmap Map JavaScript API

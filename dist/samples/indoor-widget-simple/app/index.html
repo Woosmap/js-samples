@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Indoor Widget</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="progress">
+        <div class="spinner"></div>
+      </div>
+      <!--The div element for the map -->
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap&libraries=widgets"
+      defer
+    ></script>
+  </body>
+</html>

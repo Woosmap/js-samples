@@ -22,13 +22,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addExtension("scss", sass);
 
   eleventyConfig.addNunjucksAsyncShortcode("svgIcon", async (filename) => {
-    const metadata = await Image(
-      `./src/_includes/assets/${filename}`,
-      {
-        formats: ["svg"],
-        dryRun: true,
-      },
-    );
+    const metadata = await Image(`./src/_includes/assets/${filename}`, {
+      formats: ["svg"],
+      dryRun: true,
+    });
     return metadata.svg[0].buffer.toString();
   });
   eleventyConfig.addTemplateFormats("ts");

@@ -120,7 +120,7 @@ function createAddressMarker(addressDetail) {
   marker = new woosmap.map.Marker({
     position: addressDetail.geometry.location,
     icon: {
-      url: "https://www.woosmap.com/images/marker-alt.png",
+      url: "https://images.woosmap.com/marker-alt.png",
       scaledSize: {
         height: 59,
         width: 37,

@@ -3,7 +3,6 @@ let map;
 let indoorRenderer;
 let indoorNavigation;
 let indoorService;
-// [START woosmap_indoor_navigation_widegt]
 let venue;
 
 function initMap() {
@@ -58,4 +57,4 @@ const hideLoader = () => {
 };
 
 window.initMap = initMap;
-// [END woosmap_indoor_navigation_widegt]
+// [END woosmap_indoor_navigation_widget]

@@ -1,6 +1,7 @@
 {
   "title": "Indoor Widget - Explore more widget configuration options",
   "description": "Indoor Widget provides you a first integration that simplify integration of Woosmap Indoor Map in your web application.",
+  "category": "Indoor Maps",
   "callback": "initMap",
   "tag": "indoor_widget_advanced",
   "name": "indoor-widget-advanced",

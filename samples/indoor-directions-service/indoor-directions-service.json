@@ -1,6 +1,7 @@
 {
   "title": "Indoor Directions Service",
   "description": "Use the IndoorService class to calculate the shortest route between 2 locations and display the route on an indoor map",
+  "category": "Indoor Maps",
   "callback": "initMap",
   "tag": "indoor_directions_service",
   "name": "indoor-directions-service",

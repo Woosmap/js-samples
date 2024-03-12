@@ -1,6 +1,7 @@
 {
   "title": "Handling Events",
   "description": "Sample combining map events with marker events",
+  "category": "Events",
   "callback": "initMap",
   "libraries": [],
   "tag": "event_simple",

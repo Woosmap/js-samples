@@ -1,6 +1,7 @@
 {
   "title": "Marker Label",
   "description": "A Marker Label is a maker with a text label drawn inside it.",
+  "category": "Markers",
   "callback": "initMap",
   "libraries": [],
   "tag": "marker_label",

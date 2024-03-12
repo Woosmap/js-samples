@@ -1,6 +1,7 @@
 {
   "title": "InfoWindow Simple",
   "description": "A basic InfoWindow opened at London",
+  "category": "Map Basics",
   "callback": "initMap",
   "tag": "infowindow_simple",
   "name": "infowindow-simple",

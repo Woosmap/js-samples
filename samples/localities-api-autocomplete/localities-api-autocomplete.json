@@ -1,6 +1,7 @@
 {
   "title": "Localities Api - Autocomplete Requests",
-  "description": "The Localities Autocomplete endpoint provides worldwide suggestions for text-based geographic searches. ",
+  "description": "The Localities Autocomplete endpoint provides worldwide suggestions for text-based geographic searches.",
+  "category": "Localities",
   "tag": "localities_api_autocomplete",
   "name": "localities-api-autocomplete",
   "pagination": {

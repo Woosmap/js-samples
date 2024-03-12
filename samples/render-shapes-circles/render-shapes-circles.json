@@ -1,6 +1,7 @@
 {
   "title": "Render Shapes - Circles",
   "description": "Display and style geospatial data like circles or any GeoJSON data.",
+  "category": "Rendering Shapes",
   "callback": "initMap",
   "tag": "render_shapes_circles",
   "name": "render-shapes-circles",

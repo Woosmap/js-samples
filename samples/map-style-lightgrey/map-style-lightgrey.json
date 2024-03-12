@@ -1,6 +1,7 @@
 {
   "title": "Map Style Light Grey",
   "description": "Map style useful to display overlays and highlight particular components.",
+  "category": "Map Styles",
   "callback": "initMap",
   "tag": "map_style_lightgrey",
   "name": "map-style-lightgrey",

@@ -1,6 +1,7 @@
 {
   "title": "Localities Geocode",
   "description": "Use the LocalitiesService to geocode addresses and reverse geocode locations.",
+  "category": "Localities",
   "callback": "initMap",
   "tag": "localities_geocode",
   "name": "localities-geocode",

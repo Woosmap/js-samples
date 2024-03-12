@@ -1,6 +1,7 @@
 {
   "title": "Marker Simple",
   "description": "Adding a simple marker on the center of the map",
+  "category": "Markers",
   "callback": "initMap",
   "libraries": [],
   "tag": "marker_simple",

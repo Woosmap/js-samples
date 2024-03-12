@@ -1,6 +1,7 @@
 {
   "title": "Store Locator Widget - Events",
   "description": "Listen to advanced user events and customize your widget with your own style.",
+  "category": "Store Locator Widget",
   "tag": "store_locator_widget_events",
   "name": "store-locator-widget-events",
   "pagination": {

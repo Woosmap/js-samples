@@ -1,6 +1,7 @@
 {
   "title": "Map Events",
   "description": "Handling map events triggered by user interaction",
+  "category": "Events",
   "callback": "initMap",
   "libraries": [],
   "tag": "map_events",

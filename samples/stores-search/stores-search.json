@@ -1,6 +1,7 @@
 {
   "title": "Stores Search",
   "description": "Using the StoresService to search and autocomplete on stores.",
+  "category": "Services",
   "callback": "initMap",
   "tag": "stores_search",
   "name": "stores-search",

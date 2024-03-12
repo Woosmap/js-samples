@@ -1,6 +1,7 @@
 {
   "title": "Stores Overlay",
   "description": "Display and Style Stores on a Map",
+  "category": "Stores Overlay",
   "callback": "initMap",
   "libraries": [],
   "tag": "stores_overlay",

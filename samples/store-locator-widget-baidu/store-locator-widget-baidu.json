@@ -1,6 +1,7 @@
 {
   "title": "Store Locator Widget - Baidu",
   "description": "Woosmap Store Locator Widget displaying store on Baidu Map",
+  "category": "Store Locator Widget",
   "tag": "store_locator_widget_baidu",
   "name": "store-locator-widget-baidu",
   "pagination": {

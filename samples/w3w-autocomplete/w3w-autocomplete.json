@@ -1,6 +1,7 @@
 {
   "title": "Woosmap for What3Words",
   "description": "Convert a What3Words address to a street address and pick a suggested location",
+  "category": "Services",
   "callback": "initMap",
   "tag": "w3w_autocomplete",
   "name": "w3w-autocomplete",

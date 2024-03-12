@@ -1,6 +1,7 @@
 {
   "title": "Map Style Retro",
   "description": "Map style with colors inspired from old paper maps.",
+  "category": "Map Styles",
   "callback": "initMap",
   "tag": "map_style_retro",
   "name": "map-style-retro",

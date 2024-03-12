@@ -1,6 +1,7 @@
 {
   "title": "Marker Click Event",
   "description": "Listen to this event to get the marker associated attributes.",
+  "category": "Markers",
   "callback": "initMap",
   "libraries": [],
   "tag": "marker_click_event",

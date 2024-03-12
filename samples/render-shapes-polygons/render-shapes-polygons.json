@@ -1,6 +1,7 @@
 {
   "title": "Render Shapes - Polygons",
   "description": "Display and style geospatial data like polygons or any GeoJSON data.",
+  "category": "Rendering Shapes",
   "callback": "initMap",
   "tag": "render_shapes_polygons",
   "name": "render-shapes-polygons",

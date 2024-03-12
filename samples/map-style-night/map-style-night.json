@@ -1,6 +1,7 @@
 {
   "title": "Map Style Transit By Night",
   "description": "Map style useful for giving directions in low-light conditions.",
+  "category": "Map Styles",
   "callback": "initMap",
   "tag": "map_style_night",
   "name": "map-style-night",

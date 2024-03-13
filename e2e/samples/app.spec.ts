@@ -12,6 +12,7 @@ export const BROKEN_APP_SAMPLES = [
 export const AUTOCOMPLETE_WITHOUT_MAP_SAMPLES = [
   "localities-api-autocomplete",
   "localities-api-autocomplete-advanced",
+  "localities-js-api",
 ];
 
 const samples = fs

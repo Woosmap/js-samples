@@ -9,9 +9,12 @@ export async function waitForWoosmapToLoad(page: Page): Promise<void> {
 
 export async function waitForAutocompleteFetch(page: Page): Promise<void> {
   await page.fill("#autocomplete-input", "Paris");
-  await page.waitForSelector(`//ul[@id='suggestions-list']/li`, {
-    state: "visible",
-  });
+  await Promise.race([
+    page.waitForSelector(".localities-container", { state: "visible" }),
+    page.waitForSelector('//ul[@id="suggestions-list"]/li', {
+      state: "visible",
+    }),
+  ]);
 }
 
 export const failOnPageError = (page: Page): void => {

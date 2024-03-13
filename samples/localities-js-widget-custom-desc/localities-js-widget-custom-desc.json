@@ -1,0 +1,13 @@
+{
+  "title": "Localities JS Widget - custom description",
+  "description": "Localities JS Widget with custom description to easily embed a searchbar in your web page. This example shows how to customize the description of autocomplete suggestions.",
+  "category": "Localities",
+  "tag": "localities_js_widget_custom_desc",
+  "name": "localities-js-widget-custom-desc",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

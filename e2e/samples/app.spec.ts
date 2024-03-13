@@ -13,6 +13,8 @@ export const AUTOCOMPLETE_WITHOUT_MAP_SAMPLES = [
   "localities-api-autocomplete",
   "localities-api-autocomplete-advanced",
   "localities-js-api",
+  "localities-js-widget",
+  "localities-js-widget-custom-desc",
 ];
 
 const samples = fs

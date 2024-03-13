@@ -155,6 +155,5 @@ declare global {
     };
   }
 }
-// [END woosmap_localities_js_api
 
 export {};

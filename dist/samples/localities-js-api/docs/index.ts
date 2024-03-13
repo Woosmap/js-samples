@@ -156,6 +156,6 @@ declare global {
     };
   }
 }
-// [END woosmap_localities_js_api
+// [END woosmap_localities_js_api]
 
 export {};

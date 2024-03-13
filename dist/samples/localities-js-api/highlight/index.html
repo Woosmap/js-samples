@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities JS API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script src="https://sdk.woosmap.com/localities/localities.2.0.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div id="autocomplete-container">
+        <svg class="search-icon" viewBox="0 0 16 16">
+          <path
+            d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Search a locality or a postal code..."
+          autocomplete="off"
+        />
+        <button aria-label="Clear" class="clear-searchButton" type="button">
+          <svg class="clear-icon" viewBox="0 0 24 24">
+            <path
+              d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+            ></path>
+          </svg>
+        </button>
+        <ul id="suggestions-list"></ul>
+      </div>
+      <pre id="response-container"></pre>
+    </div>
+  </body>
+</html>

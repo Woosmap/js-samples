@@ -223,7 +223,7 @@ body {
 
 body {
   background-color: #eee;
-  overflow: auto;
+  overflow-y: hidden;
 }
 
 .bold {

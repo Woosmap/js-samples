@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities JS Widget</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script src="https://sdk.woosmap.com/localities/localitieswidget.2.0.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4"></script>
+    <link
+      rel="stylesheet"
+      href="https://sdk.woosmap.com/localities/style.2.0.css"
+    />
+
+    <!-- jsFiddle will insert css and js -->
+  </head>
+  <body>
+    <div id="app">
+      <div id="autocomplete-container">
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Search a locality or a postal code..."
+          autocomplete="off"
+        />
+      </div>
+      <pre id="response-container"></pre>
+    </div>
+  </body>
+</html>

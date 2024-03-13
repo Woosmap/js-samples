@@ -1,0 +1,21 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block external %}
+    <script src="https://sdk.woosmap.com/localities/localitieswidget.2.0.js?key={{ WOOSMAP_PUBLIC_API_KEY }}"></script>
+    <link rel="stylesheet" href="https://sdk.woosmap.com/localities/style.2.0.css"/>
+{% endblock %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+        <div id="autocomplete-container">
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search a locality or a postal code..."
+                    autocomplete="off"
+            />
+        </div>
+        <pre id="response-container"></pre>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}
+{% block api %}{% endblock %}

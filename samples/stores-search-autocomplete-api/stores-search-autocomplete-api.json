@@ -1,0 +1,14 @@
+{
+  "title": "Stores Search Autocomplete API",
+  "description": "This example shows how to use the Stores Search Autocomplete API to search for stores based on their localized names.",
+  "category": "Services",
+  "WOOSMAP_PUBLIC_API_KEY": "woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae",
+  "tag": "stores_search_autocomplete_api",
+  "name": "stores-search-autocomplete-api",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

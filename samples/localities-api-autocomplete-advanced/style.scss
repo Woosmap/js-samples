@@ -4,28 +4,6 @@
 @include meta.load-css("../../shared/scss/_default.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
-
-body {
-  background-color: #eee;
-  overflow-y: hidden;
-}
-
-pre {
-  display: none;
-  margin: 70px 10px;
-  max-height: calc(100vh - 110px);
-  padding: 10px;
-  border: 3px solid #c8c8c8;
-  background-color: white;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  overflow-x: auto;
-  font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
-}
-
-
-.bold {
-  font-weight: 700;
-}
+@include meta.load-css("../../shared/scss/_autocomplete_without_map.scss");
 
 /* [END woosmap_localities_api_autocomplete_advanced] */

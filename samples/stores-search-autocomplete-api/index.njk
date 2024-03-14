@@ -2,9 +2,9 @@
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
-        <p class="title">Autocomplete input with Woosmap Localities API</p>
+        <p class="title">Autocomplete input for Stores Search Autocomplete API</p>
         <p class="note">
-            <em>Restrictions on "locality|postal_code|address", country "fr|gb|it|es|de"</em>
+            <em>Search stores based on localized names.</em>
         </p>
         <div class="search-container">
             <div id="autocomplete-container">
@@ -12,7 +12,7 @@
                 <input
                         type="text"
                         id="autocomplete-input"
-                        placeholder="Search a locality or a postal code..."
+                        placeholder="Search a store..."
                         autocomplete="off"
                 />
                 <button aria-label="Clear" class="clear-searchButton" type="button">

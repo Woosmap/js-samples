@@ -1,10 +1,13 @@
 {% extends '../../src/_includes/layout.njk' %}
+{% block external %}
+    <script src="https://sdk.woosmap.com/multisearch/multisearch.js"></script>
+{% endblock %}
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
-        <p class="title">Autocomplete input with Woosmap Localities API</p>
+        <p class="title">Autocomplete input with Woosmap MultiSearch JS API</p>
         <p class="note">
-            <em>Restrictions on "locality|postal_code|address", country "fr|gb|it|es|de"</em>
+            <em>Search Localities on types `locality|postal_code|address`, fallback to Google Places.</em>
         </p>
         <div class="search-container">
             <div id="autocomplete-container">

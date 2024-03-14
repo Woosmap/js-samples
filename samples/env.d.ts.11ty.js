@@ -11,18 +11,27 @@ module.exports = {
     };
   },
 
-  render() {
-    return `/// <reference types="vite/client" />
+  render({ sample }) {
+    let output = `/// <reference types="vite/client" />
 
 /**
  *  @external https://vitejs.dev/guide/env-and-mode.html
  */
 interface ImportMetaEnv {
-    readonly VITE_WOOSMAP_PUBLIC_API_KEY: string
+    readonly VITE_WOOSMAP_PUBLIC_API_KEY: string`;
+
+    if (sample.data.GOOGLE_API_KEY) {
+      output += `
+    readonly VITE_GOOGLE_API_KEY: string`;
+    }
+
+    output += `
 }
 
 interface ImportMeta {
     readonly env: ImportMetaEnv
 }`;
+
+    return output;
   },
 };

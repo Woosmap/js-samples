@@ -94,7 +94,6 @@ body {
   margin: 5px 0 0;
   padding: 0;
   display: none;
-  max-height: 225px;
   overflow-y: auto;
   background-color: #fff;
 }
@@ -111,24 +110,51 @@ body {
 
 body {
   background-color: #eee;
-  overflow-y: hidden;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+  padding: 10px;
+}
+
+.search-container {
+  position: relative;
+  min-height: 45px;
+}
+
+.search-container #autocomplete-container {
+  top: 0;
+  left: 0;
 }
 
 pre {
   display: none;
-  margin: 70px 10px;
-  max-height: calc(100vh - 110px);
+  margin-top: 10px;
   padding: 10px;
   border: 3px solid #c8c8c8;
   background-color: white;
   border-radius: 8px;
-  white-space: pre-wrap;
+  overflow-y: auto;
   overflow-x: auto;
   font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
 }
 
 .bold {
   font-weight: 700;
+}
+
+.title {
+  margin-block-end: 0;
+  font-weight: 500;
+}
+
+.note {
+  margin-block-start: 4px;
+  font-size: 13px;
 }
 
 /* [END woosmap_localities_api_autocomplete_advanced] */

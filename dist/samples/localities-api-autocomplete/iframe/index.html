@@ -266,7 +266,6 @@
         margin: 5px 0 0;
         padding: 0;
         display: none;
-        max-height: 225px;
         overflow-y: auto;
         background-color: #fff;
       }
@@ -280,17 +279,31 @@
       }
       body {
         background-color: #eee;
-        overflow-y: hidden;
+        overflow: hidden;
+      }
+      #app {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        height: 100vh;
+        padding: 10px;
+      }
+      .search-container {
+        position: relative;
+        min-height: 45px;
+      }
+      .search-container #autocomplete-container {
+        top: 0;
+        left: 0;
       }
       pre {
         display: none;
-        margin: 70px 10px;
-        max-height: calc(100vh - 110px);
+        margin-top: 10px;
         padding: 10px;
         border: 3px solid #c8c8c8;
         background-color: #fff;
         border-radius: 8px;
-        white-space: pre-wrap;
+        overflow-y: auto;
         overflow-x: auto;
         font-family:
           Consolas,
@@ -310,33 +323,47 @@
       .bold {
         font-weight: 700;
       }
+      .title {
+        margin-block-end: 0;
+        font-weight: 500;
+      }
+      .note {
+        margin-block-start: 4px;
+        font-size: 13px;
+      }
     </style>
   </head>
   <body>
     <div id="app">
-      <div id="autocomplete-container">
-        <svg class="search-icon" viewBox="0 0 16 16">
-          <path
-            d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-
-        <input
-          type="text"
-          id="autocomplete-input"
-          placeholder="Search a locality or a postal code..."
-          autocomplete="off"
-        />
-        <button aria-label="Clear" class="clear-searchButton" type="button">
-          <svg class="clear-icon" viewBox="0 0 24 24">
+      <p class="title">Autocomplete input with Woosmap Localities API</p>
+      <p class="note">
+        <em>Restrictions on types "locality|postal_code"</em>
+      </p>
+      <div class="search-container">
+        <div id="autocomplete-container">
+          <svg class="search-icon" viewBox="0 0 16 16">
             <path
-              d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+              d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
             ></path>
           </svg>
-        </button>
-        <ul id="suggestions-list"></ul>
+
+          <input
+            type="text"
+            id="autocomplete-input"
+            placeholder="Search a locality or a postal code..."
+            autocomplete="off"
+          />
+          <button aria-label="Clear" class="clear-searchButton" type="button">
+            <svg class="clear-icon" viewBox="0 0 24 24">
+              <path
+                d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+              ></path>
+            </svg>
+          </button>
+          <ul id="suggestions-list"></ul>
+        </div>
       </div>
       <pre id="response-container"></pre>
     </div>

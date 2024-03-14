@@ -56,7 +56,6 @@ function handleAutocomplete(): void {
 function displaySuggestions({
   localities,
 }: woosmap.map.localities.LocalitiesAutocompleteResponse) {
-  console.log(localities)
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
     if (localities.length > 0) {

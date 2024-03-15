@@ -75,7 +75,7 @@ function displayUserData(position: GeoLocationResponse) {
   const html: string[] = [];
   if (position.latitude) {
     html.push(
-      `<p><span class="geolocsuccess">Device Location</span></p><p>Latitude: <strong>${position.latitude}</strong></p><p>Longitude: <strong>${position.longitude}</strong></p><p>Accuracy: <strong>${position.accuracy}km</strong></p>`,
+      `<p><span class="title">Device Location</span></p><p>Latitude: <strong>${position.latitude}</strong></p><p>Longitude: <strong>${position.longitude}</strong></p><p>Accuracy: <strong>${position.accuracy}km</strong></p>`,
     );
   }
   if (position.city) {

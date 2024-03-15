@@ -1,0 +1,27 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div
+        class="flex space-between"
+        style="
+          background: url('https://developers.woosmap.com/assets/images/woman-coffee.jpg')
+            no-repeat;
+          background-size: contain;
+          min-height: 250px;
+        "
+      >
+        <div style="text-align: right; padding: 1em;">
+          <strong>Take a little Coffee Break</strong>
+          <div>
+            <div id="recommendation-placeholder">
+              <img
+                src="https://developers.woosmap.com/assets/images/loader.svg"
+                alt="loader"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}
+{% block api %}{% endblock %}

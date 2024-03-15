@@ -3,7 +3,6 @@
 /* [START woosmap_geolocation_api] */
 @include meta.load-css("../../shared/scss/_default.scss");
 
-/* [END woosmap_geolocation_api] */
 #info {
     max-width: 300px;
     position: absolute;
@@ -19,8 +18,9 @@
     font-size: 12px;
     display: none;
 }
-.geolocsuccess {
+.title {
     font-size: 14px;
     color: #3d5afe;
     font-weight: 600;
 }
+/* [END woosmap_geolocation_api] */

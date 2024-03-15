@@ -1,6 +1,6 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
-/* [START woosmap_multisearch_js_api] */
+/* [START woosmap_multisearch_map_simple] */
 @include meta.load-css("../../shared/scss/_default.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
@@ -29,10 +29,10 @@
   }
 
   &.localities:after {
-    margin: 0 3px 3px;
+    margin: 0 6px 3px;
     height: 16px;
     background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
   }
 }
 
-/* [END woosmap_multisearch_js_api] */
+/* [END woosmap_multisearch_map_simple] */

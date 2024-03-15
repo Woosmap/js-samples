@@ -8,6 +8,10 @@ module.exports = function (content, outputPath) {
       /"YOUR_API_KEY"/g,
       "import.meta.env.VITE_WOOSMAP_PUBLIC_API_KEY!",
     );
+    content = content.replace(
+      /"YOUR_GOOGLE_API_KEY"/g,
+      "import.meta.env.VITE_GOOGLE_API_KEY!",
+    );
   }
   return content;
 };

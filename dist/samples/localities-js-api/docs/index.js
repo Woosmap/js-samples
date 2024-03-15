@@ -56,7 +56,6 @@ function handleAutocomplete() {
 }
 
 function displaySuggestions({ localities }) {
-  console.log(localities);
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
     if (localities.length > 0) {

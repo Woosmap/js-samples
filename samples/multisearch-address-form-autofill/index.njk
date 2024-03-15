@@ -1,0 +1,56 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block external %}
+    <script src="https://sdk.woosmap.com/multisearch/multisearch.js"></script>
+{% endblock %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="form-wrapper">
+        <p class="title">
+            Autofill address form with Woosmap Multisearch <em>(GB)</em>
+        </p>
+        <p class="note">
+            <em>Input an address in "Deliver to" field to autofill the form</em>
+        </p>
+        <form id="address-form" action="" method="get" autocomplete="off">
+            <div class="full-field">
+                <label class="form-label" for="autocomplete-input">Deliver to*</label>
+                <div id="autocomplete-container" class="input-wrapper">
+                    {% svgIcon 'search.svg' %}
+                    <input
+                            type="text"
+                            id="autocomplete-input"
+                            name="autocomplete-input"
+                            placeholder="Search an address..."
+                            autocomplete="off"
+                    />
+                    <button aria-label="Clear" class="clear-searchButton" type="button">
+                        {% svgIcon 'clear.svg' %}
+                    </button>
+                    <ul id="suggestions-list"></ul>
+                </div>
+            </div>
+            <div class="full-field">
+                <label class="form-label" for="address2">Apartment, unit, suite, or floor #</label>
+                <div class="input-wrapper"><input id="address2" name="address2"/></div>
+            </div>
+            <div class="full-field">
+                <label class="form-label" for="locality">City*</label>
+                <div class="input-wrapper"><input id="locality" name="locality" required/></div>
+            </div>
+            <div class="field-left">
+                <label class="form-label" for="state">State/Province*</label>
+                <div class="input-wrapper"><input id="state" name="state" required/></div>
+            </div>
+            <div class="field-right">
+                <label class="form-label" for="postcode">Postal code*</label>
+                <div class="input-wrapper"><input id="postcode" name="postcode" required/></div>
+            </div>
+            <div class="full-field">
+                <label class="form-label" for="country">Country/Region*</label>
+                <div class="input-wrapper"><input id="country" name="country" required/></div>
+            </div>
+        </form>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}
+{% block api %}{% endblock %}

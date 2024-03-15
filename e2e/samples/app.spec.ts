@@ -16,6 +16,7 @@ export const AUTOCOMPLETE_WITHOUT_MAP_SAMPLES = [
   "localities-js-widget",
   "localities-js-widget-custom-desc",
   "multisearch-js-api",
+  "multisearch-address-form-autofill",
   "stores-search-autocomplete-api",
 ];
 

@@ -1,0 +1,116 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_multisearch_address_form_autofill] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+
+body {
+  background-color: #eee;
+}
+
+.title {
+  margin-block-end: 0;
+  font-weight: 500;
+}
+
+.note {
+  margin-block-start: 4px;
+  font-size: 13px;
+}
+
+#form-wrapper {
+  padding: 15px;
+}
+
+#autocomplete-container {
+  position: relative;
+  left: 0;
+  top: 0;
+  max-width: 100%;
+  border: 1px solid #686868;
+  background: #FFF;
+  box-shadow: none;
+  border-radius: 3px;
+}
+
+#suggestions-list {
+  max-width: 100%;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+
+.input-wrapper {
+  margin-top: 5px;
+  border: 1px solid #686868;
+  background: #FFF;
+  border-radius: 3px;
+  height: 40px;
+
+  input {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    outline: 0;
+    padding: 12px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: none;
+    font-size: 15px;
+  }
+}
+
+.form-label {
+  width: 100%;
+  padding: 0.5em 0;
+}
+
+.full-field {
+  flex: 400px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.field-left {
+  flex: 1 150px;
+  margin: 15px 15px 15px 0px;
+}
+
+.field-right {
+  flex: 1 150px;
+  margin: 15px 0px 15px 15px;
+}
+
+#suggestions-list {
+  &:after {
+    content: "";
+    box-sizing: border-box;
+    text-align: right;
+    display: block;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &.places:after {
+    padding: 1px 1px 1px 0;
+    height: 18px;
+    background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+    background-size: 120px 14px;
+  }
+
+  &.localities:after {
+    margin: 0 3px 3px;
+    height: 16px;
+    background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+  }
+}
+
+/* [END woosmap_multisearch_address_form_autofill] */

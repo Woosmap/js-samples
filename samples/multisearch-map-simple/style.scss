@@ -1,0 +1,38 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_multisearch_js_api] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+
+
+#app {
+  height: 100%;
+}
+
+#suggestions-list {
+  &:after {
+    content: "";
+    box-sizing: border-box;
+    text-align: right;
+    display: block;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &.places:after {
+    padding: 1px 1px 1px 0;
+    height: 18px;
+    background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+    background-size: 120px 14px;
+  }
+
+  &.localities:after {
+    margin: 0 3px 3px;
+    height: 16px;
+    background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+  }
+}
+
+/* [END woosmap_multisearch_js_api] */

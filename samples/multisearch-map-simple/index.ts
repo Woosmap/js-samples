@@ -4,9 +4,9 @@ const searchOptions = {
   debounceTime: 0,
   localities: {
     key: "YOUR_API_KEY",
-    fallbackBreakpoint: 0.5,
     params: {
       types: ["locality", "postal_code", "address"],
+      language: "en",
     },
   },
   places: {
@@ -14,16 +14,26 @@ const searchOptions = {
     params: {
       types: ["address"],
     },
-    minInputLength: 6,
+    minInputLength: 5,
   },
 };
 let multiSearch;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
-let responseElement: HTMLElement;
+let map: woosmap.map.Map;
+let marker: woosmap.map.Marker;
 
-function init(): void {
+function initSearch(): void {
+  inputElement = document.getElementById(
+    "autocomplete-input",
+  ) as HTMLInputElement;
+  suggestionsList = document.getElementById(
+    "suggestions-list",
+  ) as HTMLUListElement;
+  clearSearchBtn = document.getElementsByClassName(
+    "clear-searchButton",
+  )[0] as HTMLButtonElement;
   if (inputElement && suggestionsList) {
     inputElement.addEventListener("input", handleAutocomplete);
     inputElement.addEventListener("keydown", (event) => {
@@ -39,12 +49,25 @@ function init(): void {
     inputElement.value = "";
     suggestionsList.style.display = "none";
     clearSearchBtn.style.display = "none";
-    responseElement.style.display = "none";
+    if (marker) {
+      marker.setMap(null);
+    }
     inputElement.focus();
   });
 
   // @ts-ignore
   multiSearch = window.woosmap.multisearch(searchOptions);
+}
+
+function initMap(): void {
+  map = new window.woosmap.map.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      center: { lat: 51.50940214, lng: -0.133012 },
+      zoom: 4,
+    },
+  );
+  initSearch();
 }
 
 function handleAutocomplete(): void {
@@ -76,7 +99,7 @@ function displaySuggestions(results) {
           multiSearch
             .detailsMulti({ id: result.id, api: result.api })
             .then((details) => {
-              displayMultiSearchResponse(details);
+              displayLocality(details);
             });
         });
         suggestionsList.appendChild(li);
@@ -98,10 +121,23 @@ function formatPredictionList(result): string {
   return html;
 }
 
-function displayMultiSearchResponse(selectedResult) {
-  if (responseElement) {
-    responseElement.innerHTML = `<code>${JSON.stringify(selectedResult, null, 2)}</code>`;
-    responseElement.style.display = "block";
+function displayLocality(result) {
+  if (marker) {
+    marker.setMap(null);
+  }
+  if (result?.geometry) {
+    marker = new woosmap.map.Marker({
+      position: result.geometry.location,
+      icon: {
+        url: "https://images.woosmap.com/marker.png",
+        scaledSize: {
+          height: 50,
+          width: 32,
+        },
+      },
+    });
+    marker.setMap(map);
+    map.flyTo({ center: result.geometry.location, zoom: 14 });
   }
 }
 
@@ -116,33 +152,12 @@ document.addEventListener("click", (event) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  inputElement = document.getElementById(
-    "autocomplete-input",
-  ) as HTMLInputElement;
-  suggestionsList = document.getElementById(
-    "suggestions-list",
-  ) as HTMLUListElement;
-  clearSearchBtn = document.getElementsByClassName(
-    "clear-searchButton",
-  )[0] as HTMLButtonElement;
-  responseElement = document.getElementById(
-    "response-container",
-  ) as HTMLElement;
-  init();
-});
-
 declare global {
   interface Window {
-    // currently, the MultiSearch JS API typings are not exported, so we use `any` here
-    // @ts-ignore
-    woosmap: {
-      localities: {
-        multisearch: (defaultSearchOptions: any) => any;
-      };
-    };
+    initMap: () => void;
   }
 }
+window.initMap = initMap;
 // [END woosmap_multisearch_js_api]
 
 export {};

@@ -172,6 +172,17 @@ function displayMultiSearchResponse(result) {
 }
 // [END woosmap_multisearch_address_form_autofill_display]
 
+document.addEventListener("click", (event) => {
+  const targetElement = event.target as Element;
+  const isClickInsideAutocomplete = targetElement.closest(
+    "#autocomplete-container",
+  );
+
+  if (!isClickInsideAutocomplete && suggestionsList) {
+    suggestionsList.style.display = "none";
+  }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   inputElement = document.getElementById(
     "autocomplete-input",

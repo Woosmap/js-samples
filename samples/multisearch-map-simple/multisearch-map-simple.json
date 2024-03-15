@@ -1,0 +1,15 @@
+{
+  "title": "MultiSearch Map Simple",
+  "description": "This example shows how to use the MultiSearch JS API and Map JS API to create a simple map with a search box.",
+  "category": "Localities",
+  "GOOGLE_API_KEY": "AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA",
+  "tag": "multisearch_map_simple",
+  "name": "multisearch-map-simple",
+  "callback": "initMap",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

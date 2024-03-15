@@ -15,6 +15,7 @@ export const AUTOCOMPLETE_WITHOUT_MAP_SAMPLES = [
   "localities-js-api",
   "localities-js-widget",
   "localities-js-widget-custom-desc",
+  "geolocation-nearby-stores",
 ];
 
 const samples = fs

@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Geolocation Api</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const e = document.createElement("link").relList;
+        if (e && e.supports && e.supports("modulepreload")) return;
+        for (const s of document.querySelectorAll('link[rel="modulepreload"]'))
+          r(s);
+        new MutationObserver((s) => {
+          for (const t of s)
+            if (t.type === "childList")
+              for (const i of t.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && r(i);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function n(s) {
+          const t = {};
+          return (
+            s.integrity && (t.integrity = s.integrity),
+            s.referrerPolicy && (t.referrerPolicy = s.referrerPolicy),
+            s.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : s.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
+          );
+        }
+        function r(s) {
+          if (s.ep) return;
+          s.ep = !0;
+          const t = n(s);
+          fetch(s.href, t);
+        }
+      })();
+      let l;
+      const f = "woos-48c80350-88aa-333e-835a-07f4b658a9a4";
+      function c() {
+        fetch(`https://api.woosmap.com/geolocation/position/?key=${f}`)
+          .then((o) => o.json())
+          .then((o) => {
+            p(o), u(o);
+          });
+      }
+      function p({ latitude: o, accuracy: e, longitude: n, viewport: r }) {
+        const s = { lat: o, lng: n };
+        let t = 12;
+        if (
+          (e > 200
+            ? (t = 4)
+            : e > 50
+              ? (t = 5)
+              : e > 25
+                ? (t = 8)
+                : e > 10
+                  ? (t = 9)
+                  : e > 5
+                    ? (t = 10)
+                    : e > 1 && (t = 11),
+          (l = new woosmap.map.Map(document.getElementById("map"), {
+            center: s,
+            zoom: t,
+          })),
+          r)
+        ) {
+          const a = {
+            east: r.northeast.lng,
+            south: r.southwest.lat,
+            north: r.northeast.lat,
+            west: r.southwest.lng,
+          };
+          l.fitBounds(a), m(a);
+        }
+        new woosmap.map.Marker({
+          position: s,
+          icon: { url: "https://images.woosmap.com/user-position-small.png" },
+        }).setMap(l);
+      }
+      function u(o) {
+        const e = [];
+        e.push(d(o));
+        const n = document.getElementById("response");
+        n && ((n.innerHTML = e.join("")), (n.style.display = "block"));
+      }
+      function d(o) {
+        return (
+          typeof o != "string" && (o = JSON.stringify(o, void 0, 2)),
+          (o = o
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")),
+          o.replace(
+            /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\\-]?\d+)?)/g,
+            (e) => {
+              let n = "number";
+              return (
+                /^"/.test(e)
+                  ? /:$/.test(e)
+                    ? (n = "key")
+                    : (n = "string")
+                  : /true|false/.test(e)
+                    ? (n = "boolean")
+                    : /null/.test(e) && (n = "null"),
+                '<span class="' + n + '">' + e + "</span>"
+              );
+            },
+          )
+        );
+      }
+      function m(o) {
+        new woosmap.map.Rectangle({
+          bounds: o,
+          strokeColor: "#b71c1c",
+          strokeOpacity: 0.5,
+          strokeWeight: 2,
+          fillColor: "#b71c1c",
+          fillOpacity: 0.2,
+        }).setMap(l);
+      }
+      window.initMap = c;
+    </script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      #container {
+        height: 100%;
+        display: flex;
+      }
+      #sidebar {
+        flex-basis: 12rem;
+        flex-grow: 1;
+        max-width: 30rem;
+        height: 100%;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+      #map {
+        flex-basis: 70vw;
+        flex-grow: 5;
+        height: 100%;
+      }
+      #sidebar {
+        padding: 5px;
+        flex-basis: 25rem;
+      }
+      pre .string {
+        color: green;
+      }
+      pre .number {
+        color: #f0f;
+      }
+      pre .boolean {
+        color: #00f;
+      }
+      pre .null {
+        color: #f0f;
+      }
+      pre .key {
+        color: #1d1d1d;
+      }
+    </style>
+  </head>
+  <body>
+    <!--The div element for the map -->
+    <div id="container">
+      <div id="sidebar">
+        <strong>Geolocation API Response</strong>
+        <pre id="response"></pre>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

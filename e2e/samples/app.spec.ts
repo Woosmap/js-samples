@@ -8,6 +8,7 @@ import fs from "fs";
 
 export const BROKEN_APP_SAMPLES = [
   "store-locator-widget-baidu", // too long to load
+  "geolocation-nearby-stores",
 ];
 export const AUTOCOMPLETE_WITHOUT_MAP_SAMPLES = [
   "localities-api-autocomplete",

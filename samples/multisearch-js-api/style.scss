@@ -29,6 +29,10 @@
     height: 16px;
     background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
   }
+
+  .no-result {
+    opacity: .6;
+  }
 }
 
 /* [END woosmap_multisearch_js_api] */

@@ -34,10 +34,6 @@ body {
   border-radius: 3px;
 }
 
-#suggestions-list {
-  max-width: 100%;
-}
-
 form {
   display: flex;
   flex-wrap: wrap;
@@ -89,6 +85,8 @@ form {
 }
 
 #suggestions-list {
+  max-width: 100%;
+
   &:after {
     content: "";
     box-sizing: border-box;
@@ -110,6 +108,10 @@ form {
     margin: 0 6px 3px;
     height: 16px;
     background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+  }
+
+  .no-result {
+    opacity: .6;
   }
 }
 

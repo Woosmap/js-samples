@@ -18,9 +18,31 @@
     font-size: 12px;
     display: none;
 }
+
 .title {
     font-size: 14px;
     color: #3d5afe;
     font-weight: 600;
 }
+
+.string {
+    color: green;
+}
+
+.number {
+    color: magenta;
+}
+
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: #1D1D1D;
+}
+
 /* [END woosmap_geolocation_api] */

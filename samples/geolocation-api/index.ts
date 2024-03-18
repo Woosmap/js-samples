@@ -27,7 +27,7 @@ function initMap(): void {
     })
     .then((position: GeoLocationResponse) => {
       renderUserLocationOnMap(position);
-      displayUserData(position);
+      displayGeolocationResponse(position);
     });
 }
 function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
@@ -61,8 +61,8 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
       west: viewport.southwest.lng,
     };
     map.fitBounds(bounds);
+    plotBoundary(bounds);
   }
-
   const marker = new woosmap.map.Marker({
     position: userPosition,
     icon: {
@@ -71,33 +71,54 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
   });
   marker.setMap(map);
 }
-function displayUserData(position: GeoLocationResponse) {
+function displayGeolocationResponse(position: GeoLocationResponse) {
   const html: string[] = [];
-  if (position.latitude) {
-    html.push(
-      `<p><span class="title">Device Location</span></p><p>Latitude: <strong>${position.latitude}</strong></p><p>Longitude: <strong>${position.longitude}</strong></p><p>Accuracy: <strong>${position.accuracy}km</strong></p>`,
-    );
-  }
-  if (position.city) {
-    html.push(`<p>City : <strong>${position.city}</strong></p>`);
-  }
-  if (position.region_state) {
-    html.push(`<p>Region : <strong>${position.region_state}</strong></p>`);
-  }
-  if (position.country_name) {
-    html.push(`<p>Country : <strong>${position.country_name}</strong></p>`);
-  }
-
-  if (position.continent) {
-    html.push(`<p>Continent : <strong>${position.continent}</strong></p><br/>`);
-  }
+  html.push(syntaxHighlight(position));
   const $infoContainer = document.getElementById("info") as HTMLElement;
   if ($infoContainer) {
     $infoContainer.innerHTML = html.join("");
     $infoContainer.style.display = "block";
   }
 }
-
+function syntaxHighlight(json): string {
+  if (typeof json != "string") {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  console.log(json);
+  json = json
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return json.replace(
+    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\\-]?\d+)?)/g,
+    (match) => {
+      let cls = "number";
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = "key";
+        } else {
+          cls = "string";
+        }
+      } else if (/true|false/.test(match)) {
+        cls = "boolean";
+      } else if (/null/.test(match)) {
+        cls = "null";
+      }
+      return '<span class="' + cls + '">' + match + "</span>";
+    },
+  );
+}
+function plotBoundary(bounds: woosmap.map.LatLngBoundsLiteral): void {
+  const rectangle = new woosmap.map.Rectangle({
+    bounds,
+    strokeColor: "#b71c1c",
+    strokeOpacity: 0.5,
+    strokeWeight: 2,
+    fillColor: "#b71c1c",
+    fillOpacity: 0.2,
+  });
+  rectangle.setMap(map);
+}
 declare global {
   interface Window {
     initMap: () => void;

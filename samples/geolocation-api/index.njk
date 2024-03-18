@@ -2,7 +2,12 @@
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <!--The div element for the map -->
-    <div id="map"></div>
-    <div id="info"></div>
+    <div id="container">
+        <div id="sidebar">
+            <strong>Geolocation API Response</strong>
+            <pre id="response"></pre>
+        </div>
+        <div id="map"></div>
+    </div>
     <!-- [END woosmap_{{ tag }}_div] -->
 {% endblock %}

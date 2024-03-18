@@ -15,6 +15,7 @@ interface GeoLocationResponse {
   viewport: Bounds;
   city: string;
 }
+
 interface Bounds {
   northeast: woosmap.map.LatLngLiteral;
   southwest: woosmap.map.LatLngLiteral;
@@ -30,6 +31,7 @@ function initMap(): void {
       displayGeolocationResponse(position);
     });
 }
+
 function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
   const userPosition: woosmap.map.LatLngLiteral = {
     lat: latitude,
@@ -71,20 +73,21 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
   });
   marker.setMap(map);
 }
+
 function displayGeolocationResponse(position: GeoLocationResponse) {
   const html: string[] = [];
   html.push(syntaxHighlight(position));
-  const $infoContainer = document.getElementById("info") as HTMLElement;
+  const $infoContainer = document.getElementById("response") as HTMLElement;
   if ($infoContainer) {
     $infoContainer.innerHTML = html.join("");
     $infoContainer.style.display = "block";
   }
 }
+
 function syntaxHighlight(json): string {
   if (typeof json != "string") {
     json = JSON.stringify(json, undefined, 2);
   }
-  console.log(json);
   json = json
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -108,6 +111,7 @@ function syntaxHighlight(json): string {
     },
   );
 }
+
 function plotBoundary(bounds: woosmap.map.LatLngBoundsLiteral): void {
   const rectangle = new woosmap.map.Rectangle({
     bounds,
@@ -119,6 +123,7 @@ function plotBoundary(bounds: woosmap.map.LatLngBoundsLiteral): void {
   });
   rectangle.setMap(map);
 }
+
 declare global {
   interface Window {
     initMap: () => void;

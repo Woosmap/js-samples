@@ -1,48 +1,33 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
 /* [START woosmap_geolocation_api] */
-@include meta.load-css("../../shared/scss/_default.scss");
-
-#info {
-    max-width: 300px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    border-radius: 3px;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    padding: 5px;
-    overflow: hidden;
-    z-index: 1;
-    font-size: 12px;
-    display: none;
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+#sidebar {
+  padding: 5px;
+  flex-basis: 25rem;
 }
 
-.title {
-    font-size: 14px;
-    color: #3d5afe;
-    font-weight: 600;
-}
-
-.string {
+pre {
+  .string {
     color: green;
-}
+  }
 
-.number {
+  .number {
     color: magenta;
-}
+  }
 
-.boolean {
+  .boolean {
     color: blue;
-}
+  }
 
-.null {
+  .null {
     color: magenta;
+  }
+
+  .key {
+    color: #1D1D1D;
+  }
 }
 
-.key {
-    color: #1D1D1D;
-}
 
 /* [END woosmap_geolocation_api] */

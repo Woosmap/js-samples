@@ -1,0 +1,33 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_geolocation_api] */
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+#sidebar {
+  padding: 5px;
+  flex-basis: 25rem;
+}
+
+pre {
+  .string {
+    color: green;
+  }
+
+  .number {
+    color: magenta;
+  }
+
+  .boolean {
+    color: blue;
+  }
+
+  .null {
+    color: magenta;
+  }
+
+  .key {
+    color: #1D1D1D;
+  }
+}
+
+
+/* [END woosmap_geolocation_api] */

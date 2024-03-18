@@ -1,0 +1,13 @@
+{
+  "title": "Stores Nearby Geolocation",
+  "description": "Search stores nearby a user’s device based on its ip address",
+  "category": "Geolocation",
+  "tag": "geolocation_nearby_stores",
+  "name": "geolocation-nearby-stores",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

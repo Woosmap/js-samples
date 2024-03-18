@@ -11,32 +11,32 @@
       (function () {
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          l(e);
-        new MutationObserver((e) => {
-          for (const i of e)
-            if (i.type === "childList")
-              for (const d of i.addedNodes)
-                d.tagName === "LINK" && d.rel === "modulepreload" && l(d);
+        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
+          c(n);
+        new MutationObserver((n) => {
+          for (const o of n)
+            if (o.type === "childList")
+              for (const d of o.addedNodes)
+                d.tagName === "LINK" && d.rel === "modulepreload" && c(d);
         }).observe(document, { childList: !0, subtree: !0 });
-        function r(e) {
-          const i = {};
+        function l(n) {
+          const o = {};
           return (
-            e.integrity && (i.integrity = e.integrity),
-            e.referrerPolicy && (i.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+            n.integrity && (o.integrity = n.integrity),
+            n.referrerPolicy && (o.referrerPolicy = n.referrerPolicy),
+            n.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : n.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
           );
         }
-        function l(e) {
-          if (e.ep) return;
-          e.ep = !0;
-          const i = r(e);
-          fetch(e.href, i);
+        function c(n) {
+          if (n.ep) return;
+          n.ep = !0;
+          const o = l(n);
+          fetch(n.href, o);
         }
       })();
       const u = {
@@ -53,79 +53,92 @@
           minInputLength: 6,
         },
       };
-      let p, s, o, a, c;
-      function y() {
+      let p, s, i, a, r;
+      function m() {
         s &&
-          o &&
+          i &&
           (s.addEventListener("input", f),
-          s.addEventListener("keydown", (n) => {
-            if (n.key === "Enter") {
-              const t = o.querySelector("li");
+          s.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              const t = i.querySelector("li");
               t && t.click();
             }
           })),
           a.addEventListener("click", () => {
             (s.value = ""),
-              (o.style.display = "none"),
+              (i.style.display = "none"),
               (a.style.display = "none"),
-              (c.style.display = "none"),
+              (r.style.display = "none"),
               s.focus();
           }),
           (p = window.woosmap.multisearch(u));
       }
       function f() {
-        if (s && o) {
-          const n = s.value;
-          n.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
-            n !== ""
-              ? p.autocompleteMulti(n).then(
-                  (t) => m(t),
+        if (s && i) {
+          const e = s.value;
+          e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+            e !== ""
+              ? p.autocompleteMulti(e).then(
+                  (t) => g(t),
                   (t) => console.error(`Error autocomplete localities: ${t}`),
                 )
-              : ((o.style.display = "none"), (a.style.display = "none"));
+              : ((i.style.display = "none"), (a.style.display = "none"));
         }
       }
-      function m(n) {
+      function y() {
+        const e = document.createElement("li");
+        (e.innerHTML =
+          "<div class='prediction no-result'>No results found...</div>"),
+          i.appendChild(e),
+          (i.className = ""),
+          (i.style.display = "block");
+      }
+      function g(e) {
         s &&
-          o &&
-          ((o.innerHTML = ""),
-          n.length > 0
-            ? (n.forEach((t) => {
-                var l;
-                const r = document.createElement("li");
-                (r.innerHTML = (l = h(t)) != null ? l : ""),
-                  r.addEventListener("click", () => {
-                    var e;
-                    (s.value = (e = t.description) != null ? e : ""),
-                      (o.style.display = "none"),
-                      p.detailsMulti({ id: t.id, api: t.api }).then((i) => {
-                        g(i);
+          i &&
+          ((i.innerHTML = ""),
+          e.length > 0
+            ? (e.forEach((t) => {
+                var c;
+                const l = document.createElement("li");
+                (l.innerHTML = (c = h(t)) != null ? c : ""),
+                  l.addEventListener("click", () => {
+                    var n;
+                    (s.value = (n = t.description) != null ? n : ""),
+                      (i.style.display = "none"),
+                      p.detailsMulti({ id: t.id, api: t.api }).then((o) => {
+                        E(o);
                       });
                   }),
-                  o.appendChild(r);
+                  i.appendChild(l);
               }),
-              (o.className = n[0].api),
-              (o.style.display = "block"),
+              (i.className = e[0].api),
+              (i.style.display = "block"),
               (a.style.display = "block"))
-            : (o.style.display = "none"));
+            : y());
       }
-      function h(n) {
+      function h(e) {
         const t = "no-viewpoint",
-          r = n.highlight;
-        let l = "";
-        return (l += `<div class="prediction ${t}">${r}</div>`), l;
+          l = e.highlight;
+        let c = "";
+        return (c += `<div class="prediction ${t}">${l}</div>`), c;
       }
-      function g(n) {
-        c &&
-          ((c.innerHTML = `<code>${JSON.stringify(n, null, 2)}</code>`),
-          (c.style.display = "block"));
+      function E(e) {
+        r &&
+          ((r.innerHTML = `<code>${JSON.stringify(e, null, 2)}</code>`),
+          (r.style.display = "block"));
       }
+      document.addEventListener("click", (e) => {
+        !e.target.closest("#autocomplete-container") &&
+          i &&
+          (i.style.display = "none");
+      });
       document.addEventListener("DOMContentLoaded", () => {
         (s = document.getElementById("autocomplete-input")),
-          (o = document.getElementById("suggestions-list")),
+          (i = document.getElementById("suggestions-list")),
           (a = document.getElementsByClassName("clear-searchButton")[0]),
-          (c = document.getElementById("response-container")),
-          y();
+          (r = document.getElementById("response-container")),
+          m();
       });
     </script>
     <style>
@@ -226,6 +239,7 @@
         left: 0;
         z-index: 1;
         list-style: none;
+        max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
         display: none;
@@ -262,6 +276,7 @@
       pre {
         display: none;
         margin-top: 10px;
+        margin-bottom: 20px;
         padding: 10px;
         border: 3px solid #c8c8c8;
         background-color: #fff;
@@ -310,9 +325,12 @@
         background-size: 120px 14px;
       }
       #suggestions-list.localities:after {
-        margin: 0 3px 3px;
+        margin: 0 6px 3px;
         height: 16px;
         background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+      }
+      #suggestions-list .no-result {
+        opacity: 0.6;
       }
     </style>
   </head>

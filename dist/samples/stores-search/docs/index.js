@@ -189,8 +189,11 @@ function displayStoresAndLocation(stores, latlng) {
     activeLocation = new woosmap.map.Marker({
       position: latlng,
       icon: {
-        url: "https://images.woosmap.com/dot-marker.png",
-        scaledSize: { height: 64, width: 46 },
+        url: "https://images.woosmap.com/marker.png",
+        scaledSize: {
+          height: 50,
+          width: 32,
+        },
       },
     });
 

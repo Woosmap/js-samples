@@ -37,15 +37,15 @@
           fetch(t.href, o);
         }
       })();
-      let m, a, d, g, u, h;
+      let m, a, u, g, d, h;
       function w() {
         (m = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 4,
         })),
-          (d = new woosmap.map.InfoWindow({})),
+          (u = new woosmap.map.InfoWindow({})),
           (g = new window.woosmap.map.LocalitiesService()),
-          (u = { input: "", types: ["locality", "address", "postal_code"] }),
+          (d = { input: "", types: ["locality", "address", "postal_code"] }),
           (h = b(g.autocomplete, 0));
       }
       const r = document.getElementById("autocomplete-input"),
@@ -64,15 +64,15 @@
         (r.value = ""),
           (i.style.display = "none"),
           (f.style.display = "none"),
-          a && (a.setMap(null), d.close()),
+          a && (a.setMap(null), u.close()),
           r.focus();
       });
       function E() {
         r &&
           i &&
-          ((u.input = r.value),
-          u.input
-            ? h(u)
+          ((d.input = r.value),
+          d.input
+            ? h(d)
                 .then((e) => M(e))
                 .catch((e) =>
                   console.error("Error autocomplete localities:", e),
@@ -85,26 +85,26 @@
           .catch((n) => console.error("Error getting locality details:", n));
       }
       function v(e) {
-        a && (a.setMap(null), d.close()),
+        a && (a.setMap(null), u.close()),
           e != null &&
             e.geometry &&
             ((a = new woosmap.map.Marker({
               position: e.geometry.location,
               icon: {
-                url: "https://images.woosmap.com/dot-marker.png",
-                scaledSize: { height: 64, width: 46 },
+                url: "https://images.woosmap.com/marker.png",
+                scaledSize: { height: 50, width: 32 },
               },
             })),
             a.setMap(m),
-            d.setContent(`<span>${e.formatted_address}</span>`),
-            d.open(m, a),
+            u.setContent(`<span>${e.formatted_address}</span>`),
+            u.open(m, a),
             m.flyTo({ center: e.geometry.location, zoom: 14 }));
       }
       function M(e) {
         r &&
           i &&
           ((i.innerHTML = ""),
-          e.localities.length > 0 && u.input
+          e.localities.length > 0 && d.input
             ? (e.localities.forEach((n) => {
                 var l;
                 const s = document.createElement("li");
@@ -247,6 +247,7 @@
         left: 0;
         z-index: 1;
         list-style: none;
+        max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
         display: none;

@@ -64,6 +64,15 @@ function handleAutocomplete() {
   }
 }
 
+function handleNoResults() {
+  const li = document.createElement("li");
+
+  li.innerHTML = "<div class='prediction no-result'>No results found...</div>";
+  suggestionsList.appendChild(li);
+  suggestionsList.className = "";
+  suggestionsList.style.display = "block";
+}
+
 function displaySuggestions(results) {
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
@@ -94,7 +103,7 @@ function displaySuggestions(results) {
       suggestionsList.style.display = "block";
       clearSearchBtn.style.display = "block";
     } else {
-      suggestionsList.style.display = "none";
+      handleNoResults();
     }
   }
 }
@@ -115,6 +124,16 @@ function displayMultiSearchResponse(selectedResult) {
   }
 }
 
+document.addEventListener("click", (event) => {
+  const targetElement = event.target;
+  const isClickInsideAutocomplete = targetElement.closest(
+    "#autocomplete-container",
+  );
+
+  if (!isClickInsideAutocomplete && suggestionsList) {
+    suggestionsList.style.display = "none";
+  }
+});
 document.addEventListener("DOMContentLoaded", () => {
   inputElement = document.getElementById("autocomplete-input");
   suggestionsList = document.getElementById("suggestions-list");

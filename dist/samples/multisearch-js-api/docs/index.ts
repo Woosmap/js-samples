@@ -63,6 +63,14 @@ function handleAutocomplete(): void {
   }
 }
 
+function handleNoResults(): void {
+  const li = document.createElement("li");
+  li.innerHTML = "<div class='prediction no-result'>No results found...</div>";
+  suggestionsList.appendChild(li);
+  suggestionsList.className = "";
+  suggestionsList.style.display = "block";
+}
+
 function displaySuggestions(results) {
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
@@ -85,7 +93,7 @@ function displaySuggestions(results) {
       suggestionsList.style.display = "block";
       clearSearchBtn.style.display = "block";
     } else {
-      suggestionsList.style.display = "none";
+      handleNoResults();
     }
   }
 }
@@ -104,6 +112,17 @@ function displayMultiSearchResponse(selectedResult) {
     responseElement.style.display = "block";
   }
 }
+
+document.addEventListener("click", (event) => {
+  const targetElement = event.target as Element;
+  const isClickInsideAutocomplete = targetElement.closest(
+    "#autocomplete-container",
+  );
+
+  if (!isClickInsideAutocomplete && suggestionsList) {
+    suggestionsList.style.display = "none";
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   inputElement = document.getElementById(

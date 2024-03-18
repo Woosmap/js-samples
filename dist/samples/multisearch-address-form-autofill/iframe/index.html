@@ -1,0 +1,475 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MultiSearch Autofill Address Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script src="https://sdk.woosmap.com/multisearch/multisearch.js"></script>
+
+    <script type="module" crossorigin>
+      (function () {
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          l(e);
+        new MutationObserver((e) => {
+          for (const i of e)
+            if (i.type === "childList")
+              for (const d of i.addedNodes)
+                d.tagName === "LINK" && d.rel === "modulepreload" && l(d);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function s(e) {
+          const i = {};
+          return (
+            e.integrity && (i.integrity = e.integrity),
+            e.referrerPolicy && (i.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (i.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (i.credentials = "omit")
+                : (i.credentials = "same-origin"),
+            i
+          );
+        }
+        function l(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const i = s(e);
+          fetch(e.href, i);
+        }
+      })();
+      const g = {
+        apiOrder: ["localities", "places"],
+        debounceTime: 0,
+        localities: {
+          key: "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
+          fallbackBreakpoint: 0.4,
+          params: {
+            components: { country: ["gb"] },
+            language: "en",
+            types: ["address"],
+          },
+        },
+        places: {
+          key: "AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA",
+          params: {
+            types: ["address"],
+            components: { country: ["gb"] },
+            language: "en",
+          },
+        },
+      };
+      let u, a, o, c, p, m, y, r, f;
+      function h() {
+        a &&
+          o &&
+          (a.addEventListener("input", v),
+          a.addEventListener("keydown", (n) => {
+            if (n.key === "Enter") {
+              const t = o.querySelector("li");
+              t && t.click();
+            }
+          })),
+          c.addEventListener("click", () => {
+            (a.value = ""),
+              (o.style.display = "none"),
+              (c.style.display = "none"),
+              (p.value = ""),
+              (m.value = ""),
+              (y.value = ""),
+              (r.value = ""),
+              (f.value = ""),
+              a.focus();
+          }),
+          (u = window.woosmap.multisearch(g));
+      }
+      function v() {
+        if (a && o) {
+          const n = a.value;
+          n.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+            n !== ""
+              ? u.autocompleteMulti(n).then(
+                  (t) => k(t),
+                  (t) => console.error(`Error autocomplete localities: ${t}`),
+                )
+              : ((o.style.display = "none"), (c.style.display = "none"));
+        }
+      }
+      function b() {
+        const n = document.createElement("li");
+        (n.innerHTML =
+          "<div class='prediction no-result'>No results found...</div>"),
+          o.appendChild(n),
+          (o.className = ""),
+          (o.style.display = "block");
+      }
+      function k(n) {
+        a &&
+          o &&
+          ((o.innerHTML = ""),
+          n.length > 0
+            ? (n.forEach((t) => {
+                var l;
+                const s = document.createElement("li");
+                (s.innerHTML = (l = E(t)) != null ? l : ""),
+                  s.addEventListener("click", () => {
+                    (o.style.display = "none"),
+                      u.detailsMulti({ id: t.id, api: t.api }).then((e) => {
+                        L(e);
+                      });
+                  }),
+                  o.appendChild(s);
+              }),
+              (o.className = n[0].api),
+              (o.style.display = "block"),
+              (c.style.display = "block"))
+            : b());
+      }
+      function E(n) {
+        const t = "no-viewpoint",
+          s = n.highlight;
+        let l = "";
+        return (l += `<div class="prediction ${t}">${s}</div>`), l;
+      }
+      function L(n) {
+        let t = "",
+          s = "",
+          l = "";
+        for (const e of n.item.address_components)
+          switch (e.types[0]) {
+            case "street_number": {
+              t = `${e.long_name} ${t}`;
+              break;
+            }
+            case "route": {
+              t += e.short_name;
+              break;
+            }
+            case "postal_code": {
+              l = `${e.long_name}${l}`;
+              break;
+            }
+            case "postal_code_suffix": {
+              l = `${l}-${e.long_name}`;
+              break;
+            }
+            case "locality":
+              y.value = e.long_name;
+              break;
+            case "state": {
+              r.value = e.long_name;
+              break;
+            }
+            case "administrative_area_level_1": {
+              r.value = e.long_name;
+              break;
+            }
+            case "country": {
+              f.value = e.long_name;
+              break;
+            }
+            case "premise": {
+              s = e.long_name;
+              break;
+            }
+          }
+        l && (m.value = l), t && (a.value = t), s && (p.value = s);
+      }
+      document.addEventListener("click", (n) => {
+        !n.target.closest("#autocomplete-container") &&
+          o &&
+          (o.style.display = "none");
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        (a = document.getElementById("autocomplete-input")),
+          (o = document.getElementById("suggestions-list")),
+          (c = document.getElementsByClassName("clear-searchButton")[0]),
+          (p = document.querySelector("#address2")),
+          (m = document.querySelector("#postcode")),
+          (y = document.querySelector("#locality")),
+          (r = document.querySelector("#state")),
+          (f = document.querySelector("#country")),
+          h();
+      });
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      #autocomplete-container {
+        display: flex;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0 12px;
+        max-width: 320px;
+        width: 100%;
+        height: 42px;
+        border: none;
+        box-sizing: border-box;
+        align-items: center;
+        cursor: text;
+        font-size: 15px;
+      }
+      #autocomplete-container .search-icon,
+      #autocomplete-container .clear-icon {
+        color: inherit;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+      }
+      #autocomplete-container .clear-icon {
+        transform: scale(1.3);
+      }
+      #autocomplete-input {
+        box-sizing: border-box;
+        padding: 0;
+        height: 40px;
+        line-height: 24px;
+        vertical-align: top;
+        transition-property: color;
+        transition-duration: 0.3s;
+        width: 100%;
+        text-overflow: ellipsis;
+        background: transparent;
+        border-radius: 0;
+        border: 0;
+        margin: 0 8px;
+        outline: 0;
+        overflow: visible;
+        appearance: textfield;
+        font-size: 100%;
+      }
+      .clear-searchButton {
+        display: none;
+        height: 18px;
+        width: 22px;
+        background: none;
+        border: none;
+        vertical-align: middle;
+        pointer-events: all;
+        cursor: pointer;
+      }
+      #suggestions-list {
+        border-radius: 12px;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        box-sizing: border-box;
+        position: absolute;
+        max-width: 320px;
+        width: 100%;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        list-style: none;
+        max-height: 80vh;
+        margin: 5px 0 0;
+        padding: 0;
+        display: none;
+        overflow-y: auto;
+        background-color: #fff;
+      }
+      #suggestions-list li {
+        padding: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #suggestions-list li:hover {
+        background-color: #f2f2f2;
+      }
+      body {
+        background-color: #eee;
+      }
+      .title {
+        margin-block-end: 0;
+        font-weight: 500;
+      }
+      .note {
+        margin-block-start: 4px;
+        font-size: 13px;
+      }
+      #form-wrapper {
+        padding: 15px;
+      }
+      #autocomplete-container {
+        position: relative;
+        left: 0;
+        top: 0;
+        max-width: 100%;
+        border: 1px solid #686868;
+        background: #fff;
+        box-shadow: none;
+        border-radius: 3px;
+      }
+      form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        max-width: 400px;
+        box-sizing: border-box;
+      }
+      .input-wrapper {
+        margin-top: 5px;
+        border: 1px solid #686868;
+        background: #fff;
+        border-radius: 3px;
+        height: 40px;
+      }
+      .input-wrapper input {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        outline: 0;
+        padding: 12px;
+        box-sizing: border-box;
+        border-radius: 3px;
+        border: none;
+        font-size: 15px;
+      }
+      .form-label {
+        width: 100%;
+        padding: 0.5em 0;
+      }
+      .full-field {
+        flex: 400px;
+        margin: 12px 0;
+        position: relative;
+      }
+      .field-left {
+        flex: 1 150px;
+        margin: 15px 15px 15px 0;
+      }
+      .field-right {
+        flex: 1 150px;
+        margin: 15px 0 15px 15px;
+      }
+      #suggestions-list {
+        max-width: 100%;
+      }
+      #suggestions-list:after {
+        content: "";
+        box-sizing: border-box;
+        text-align: right;
+        display: block;
+        background-position: right;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+      #suggestions-list.places:after {
+        padding: 1px 1px 1px 0;
+        height: 18px;
+        background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+        background-size: 120px 14px;
+      }
+      #suggestions-list.localities:after {
+        margin: 0 6px 3px;
+        height: 16px;
+        background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+      }
+      #suggestions-list .no-result {
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="form-wrapper">
+      <p class="title">
+        Autofill address form with Woosmap Multisearch <em>(GB)</em>
+      </p>
+      <p class="note">
+        <em>Input an address in "Deliver to" field to autofill the form</em>
+      </p>
+      <form id="address-form" action="" method="get" autocomplete="off">
+        <div class="full-field">
+          <label class="form-label" for="autocomplete-input">Deliver to*</label>
+          <div id="autocomplete-container" class="input-wrapper">
+            <svg class="search-icon" viewBox="0 0 16 16">
+              <path
+                d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+
+            <input
+              type="text"
+              id="autocomplete-input"
+              name="autocomplete-input"
+              placeholder="Search an address..."
+              autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+              <svg class="clear-icon" viewBox="0 0 24 24">
+                <path
+                  d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+                ></path>
+              </svg>
+            </button>
+            <ul id="suggestions-list"></ul>
+          </div>
+        </div>
+        <div class="full-field">
+          <label class="form-label" for="address2"
+            >Apartment, unit, suite, or floor #</label
+          >
+          <div class="input-wrapper">
+            <input id="address2" name="address2" />
+          </div>
+        </div>
+        <div class="full-field">
+          <label class="form-label" for="locality">City*</label>
+          <div class="input-wrapper">
+            <input id="locality" name="locality" required />
+          </div>
+        </div>
+        <div class="field-left">
+          <label class="form-label" for="state">State/Province*</label>
+          <div class="input-wrapper">
+            <input id="state" name="state" required />
+          </div>
+        </div>
+        <div class="field-right">
+          <label class="form-label" for="postcode">Postal code*</label>
+          <div class="input-wrapper">
+            <input id="postcode" name="postcode" required />
+          </div>
+        </div>
+        <div class="full-field">
+          <label class="form-label" for="country">Country/Region*</label>
+          <div class="input-wrapper">
+            <input id="country" name="country" required />
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

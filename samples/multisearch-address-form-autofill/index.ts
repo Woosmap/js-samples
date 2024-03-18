@@ -1,27 +1,38 @@
-// [START woosmap_multisearch_js_api]
+// [START woosmap_multisearch_address_form_autofill]
 const searchOptions = {
   apiOrder: ["localities", "places"],
   debounceTime: 0,
   localities: {
     key: "YOUR_API_KEY",
-    fallbackBreakpoint: 0.5,
+    fallbackBreakpoint: 0.4,
     params: {
-      types: ["locality", "postal_code", "address"],
+      components: {
+        country: ["gb"],
+      },
+      language: "en",
+      types: ["address"],
     },
   },
   places: {
     key: "YOUR_GOOGLE_API_KEY",
     params: {
       types: ["address"],
+      components: {
+        country: ["gb"],
+      },
+      language: "en",
     },
-    minInputLength: 6,
   },
 };
 let multiSearch;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
-let responseElement: HTMLElement;
+let address2Field: HTMLInputElement;
+let postalField: HTMLInputElement;
+let localityField: HTMLInputElement;
+let stateField: HTMLInputElement;
+let countryField: HTMLInputElement;
 
 function init(): void {
   if (inputElement && suggestionsList) {
@@ -39,7 +50,11 @@ function init(): void {
     inputElement.value = "";
     suggestionsList.style.display = "none";
     clearSearchBtn.style.display = "none";
-    responseElement.style.display = "none";
+    address2Field.value = "";
+    postalField.value = "";
+    localityField.value = "";
+    stateField.value = "";
+    countryField.value = "";
     inputElement.focus();
   });
 
@@ -79,7 +94,6 @@ function displaySuggestions(results) {
         const li = document.createElement("li");
         li.innerHTML = formatPredictionList(result) ?? "";
         li.addEventListener("click", () => {
-          inputElement.value = result.description ?? "";
           suggestionsList.style.display = "none";
           multiSearch
             .detailsMulti({ id: result.id, api: result.api })
@@ -106,12 +120,65 @@ function formatPredictionList(result): string {
   return html;
 }
 
-function displayMultiSearchResponse(selectedResult) {
-  if (responseElement) {
-    responseElement.innerHTML = `<code>${JSON.stringify(selectedResult, null, 2)}</code>`;
-    responseElement.style.display = "block";
+// [START woosmap_multisearch_address_form_autofill_display]
+function displayMultiSearchResponse(result) {
+  let shippingAddress = "";
+  let shippingAddress2 = "";
+  let postcode = "";
+  for (const component of result.item.address_components) {
+    const componentType = component.types[0];
+    switch (componentType) {
+      case "street_number": {
+        shippingAddress = `${component.long_name} ${shippingAddress}`;
+        break;
+      }
+      case "route": {
+        shippingAddress += component.short_name;
+        break;
+      }
+      case "postal_code": {
+        postcode = `${component.long_name}${postcode}`;
+        break;
+      }
+      case "postal_code_suffix": {
+        postcode = `${postcode}-${component.long_name}`;
+        break;
+      }
+      case "locality":
+        localityField.value = component.long_name;
+        break;
+
+      case "state": {
+        stateField.value = component.long_name;
+        break;
+      }
+      case "administrative_area_level_1": {
+        stateField.value = component.long_name;
+        break;
+      }
+      case "country": {
+        countryField.value = component.long_name;
+        break;
+      }
+      case "premise": {
+        shippingAddress2 = component.long_name;
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  if (postcode) {
+    postalField.value = postcode;
+  }
+  if (shippingAddress) {
+    inputElement.value = shippingAddress;
+  }
+  if (shippingAddress2) {
+    address2Field.value = shippingAddress2;
   }
 }
+// [END woosmap_multisearch_address_form_autofill_display]
 
 document.addEventListener("click", (event) => {
   const targetElement = event.target as Element;
@@ -134,9 +201,11 @@ document.addEventListener("DOMContentLoaded", () => {
   clearSearchBtn = document.getElementsByClassName(
     "clear-searchButton",
   )[0] as HTMLButtonElement;
-  responseElement = document.getElementById(
-    "response-container",
-  ) as HTMLElement;
+  address2Field = document.querySelector("#address2") as HTMLInputElement;
+  postalField = document.querySelector("#postcode") as HTMLInputElement;
+  localityField = document.querySelector("#locality") as HTMLInputElement;
+  stateField = document.querySelector("#state") as HTMLInputElement;
+  countryField = document.querySelector("#country") as HTMLInputElement;
   init();
 });
 
@@ -151,6 +220,6 @@ declare global {
     };
   }
 }
-// [END woosmap_multisearch_js_api]
+// [END woosmap_multisearch_address_form_autofill]
 
 export {};

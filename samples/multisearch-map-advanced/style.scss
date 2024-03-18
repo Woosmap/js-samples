@@ -1,0 +1,82 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_multisearch_map_advanced] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+
+
+#app {
+  height: 100%;
+}
+
+#suggestions-list {
+  li {
+    display: flex;
+    align-items: center;
+
+    .api-icon {
+      height: 20px;
+      width: 20px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      padding-right: 7px;
+    }
+
+    &.store-api {
+      .api-icon {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z' fill='%23b2b2b2' /%3E%3C/svg%3E")
+      }
+    }
+
+    &.localities-api, &.places-api {
+      .api-icon {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' fill='%23b2b2b2' /%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E")
+      }
+    }
+
+    .no-result {
+      opacity: .6;
+    }
+  }
+
+  &:after {
+    content: "";
+    box-sizing: border-box;
+    text-align: right;
+    display: block;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &.places:after {
+    padding: 1px 1px 1px 0;
+    height: 18px;
+    background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+    background-size: 120px 14px;
+  }
+
+  &.localities:after, &.store:after {
+    margin: 0 6px 3px;
+    height: 16px;
+    background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+  }
+}
+
+.info-content {
+  max-width: 300px;
+  height: 100%;
+
+  p {
+    margin: 3px 0;
+  }
+
+  code {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+}
+
+/* [END woosmap_multisearch_map_advanced] */

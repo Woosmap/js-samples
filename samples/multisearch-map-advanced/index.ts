@@ -1,29 +1,54 @@
-// [START woosmap_multisearch_js_api]
+// [START woosmap_multisearch_map_advanced]
 const searchOptions = {
-  apiOrder: ["localities", "places"],
-  debounceTime: 0,
+  apiOrder: ["store", "localities", "places"],
+  debounceTime: 100,
   localities: {
     key: "YOUR_API_KEY",
-    fallbackBreakpoint: 0.5,
+    fallbackBreakpoint: 0.4,
     params: {
+      components: {
+        country: ["gb", "fr", "de"],
+      },
+      language: "en",
       types: ["locality", "postal_code", "address"],
+    },
+  },
+  store: {
+    key: "YOUR_API_KEY",
+    fallbackBreakpoint: false,
+    params: {
+      query: "type:bose_store",
     },
   },
   places: {
     key: "YOUR_GOOGLE_API_KEY",
+    fallbackBreakpoint: 1,
+    minInputLength: 10,
     params: {
-      types: ["address"],
+      components: {
+        country: ["gb", "fr", "de"],
+      },
     },
-    minInputLength: 6,
   },
 };
 let multiSearch;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
-let responseElement: HTMLElement;
+let map: woosmap.map.Map;
+let marker: woosmap.map.Marker;
+let infoWindow: woosmap.map.InfoWindow;
 
-function init(): void {
+function initSearch(): void {
+  inputElement = document.getElementById(
+    "autocomplete-input",
+  ) as HTMLInputElement;
+  suggestionsList = document.getElementById(
+    "suggestions-list",
+  ) as HTMLUListElement;
+  clearSearchBtn = document.getElementsByClassName(
+    "clear-searchButton",
+  )[0] as HTMLButtonElement;
   if (inputElement && suggestionsList) {
     inputElement.addEventListener("input", handleAutocomplete);
     inputElement.addEventListener("keydown", (event) => {
@@ -39,12 +64,29 @@ function init(): void {
     inputElement.value = "";
     suggestionsList.style.display = "none";
     clearSearchBtn.style.display = "none";
-    responseElement.style.display = "none";
+    if (marker) {
+      marker.setMap(null);
+    }
+    if (infoWindow) {
+      infoWindow.close();
+    }
     inputElement.focus();
   });
 
   // @ts-ignore
   multiSearch = window.woosmap.multisearch(searchOptions);
+}
+
+function initMap(): void {
+  map = new window.woosmap.map.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      center: { lat: 51.50940214, lng: -0.133012 },
+      zoom: 4,
+    },
+  );
+  infoWindow = new woosmap.map.InfoWindow({});
+  initSearch();
 }
 
 function handleAutocomplete(): void {
@@ -77,6 +119,7 @@ function displaySuggestions(results) {
     if (results.length > 0) {
       results.forEach((result) => {
         const li = document.createElement("li");
+        li.className = `${result.api}-api`;
         li.innerHTML = formatPredictionList(result) ?? "";
         li.addEventListener("click", () => {
           inputElement.value = result.description ?? "";
@@ -84,7 +127,7 @@ function displaySuggestions(results) {
           multiSearch
             .detailsMulti({ id: result.id, api: result.api })
             .then((details) => {
-              displayMultiSearchResponse(details);
+              displayLocality(details, result.api);
             });
         });
         suggestionsList.appendChild(li);
@@ -102,14 +145,57 @@ function formatPredictionList(result): string {
   const predictionClass = "no-viewpoint";
   const formatted_name = result.highlight;
   let html = "";
-  html += `<div class="prediction ${predictionClass}">${formatted_name}</div>`;
+  html += `<div class="api-icon"></div><div class="prediction ${predictionClass}">${formatted_name}</div>`;
   return html;
 }
 
-function displayMultiSearchResponse(selectedResult) {
-  if (responseElement) {
-    responseElement.innerHTML = `<code>${JSON.stringify(selectedResult, null, 2)}</code>`;
-    responseElement.style.display = "block";
+function createMarker(result) {
+  return new woosmap.map.Marker({
+    position: result.geometry.location,
+    icon: {
+      url: "https://images.woosmap.com/marker.png",
+      scaledSize: {
+        height: 50,
+        width: 32,
+      },
+    },
+  });
+}
+
+function createInfoWindowHTML(result, apiName: string) {
+  let addressComponentsHTML = "";
+  if (result.address_components) {
+    result.address_components.forEach((component) => {
+      addressComponentsHTML += `<p>${component.long_name} (${component.short_name})</p>`;
+    });
+  }
+  return `<div class="info-content">${apiName ? `<div>api: <strong>${apiName}</strong></div>` : ""}
+      ${result.name ? `<p>${result.name}</p>` : ""}
+      ${result.formatted_address ? `<p>${result.formatted_address}</p>` : ""}
+      ${addressComponentsHTML}</div>`;
+}
+
+function displayLocality(result, apiName: string) {
+  if (marker) {
+    marker.setMap(null);
+  }
+  if (infoWindow) {
+    infoWindow.close();
+  }
+  if (result?.geometry) {
+    marker = createMarker(result);
+    marker.setMap(map);
+    const infoWindowHTML = createInfoWindowHTML(result, apiName);
+    infoWindow.setOffset(new woosmap.map.Point(0, -50));
+    infoWindow.setContent(infoWindowHTML);
+    marker.addListener("click", () => {
+      infoWindow.open(map, marker.getPosition());
+    });
+    map.setCenter(result.geometry.location, { top: 150 });
+    map.setZoom(14);
+    woosmap.map.event.addListenerOnce(map, "idle", () => {
+      infoWindow.open(map, marker.position);
+    });
   }
 }
 
@@ -124,33 +210,12 @@ document.addEventListener("click", (event) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  inputElement = document.getElementById(
-    "autocomplete-input",
-  ) as HTMLInputElement;
-  suggestionsList = document.getElementById(
-    "suggestions-list",
-  ) as HTMLUListElement;
-  clearSearchBtn = document.getElementsByClassName(
-    "clear-searchButton",
-  )[0] as HTMLButtonElement;
-  responseElement = document.getElementById(
-    "response-container",
-  ) as HTMLElement;
-  init();
-});
-
 declare global {
   interface Window {
-    // currently, the MultiSearch JS API typings are not exported, so we use `any` here
-    // @ts-ignore
-    woosmap: {
-      localities: {
-        multisearch: (defaultSearchOptions: any) => any;
-      };
-    };
+    initMap: () => void;
   }
 }
-// [END woosmap_multisearch_js_api]
+window.initMap = initMap;
+// [END woosmap_multisearch_map_advanced]
 
 export {};

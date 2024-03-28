@@ -1,0 +1,75 @@
+{% extends '../../src/_includes/layout.njk' %}
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="container">
+        <div id="sidebar">
+            <div id="innerWrapper">
+                <div class="sectionHeader"><span>Origin</span>
+                    <div aria-label="Set Origin"
+                         class="addLocation addLocation__origins">{% svgIcon 'location.svg' %}
+                        <div>Set origin</div>
+                    </div>
+                </div>
+                <div class="transitOptions">
+                    <ol id="origin" class="customCounter customCounter__origin"></ol>
+                </div>
+                <div class="sectionHeader"><span>Destination</span>
+                    <div aria-label="Set Destination"
+                         class="addLocation addLocation__destinations">{% svgIcon 'location.svg' %}
+                        <div>Set destination</div>
+                    </div>
+                </div>
+                <div class="transitOptions">
+                    <ol id="destination" class="customCounter customCounter__destination"></ol>
+                </div>
+                <div class="sectionHeader"><span>Options</span></div>
+                <div class="transitOptions">
+                    <div class="transitOptions__list">
+                        <div class="transitOptions__content"><span
+                                    class="transitOptions__header">Departure time</span>
+                            <div class="transitOptions__input">
+                                <input id="empty" aria-label="Empty" name="departureTime" type="radio"
+                                       value="empty" checked="">
+                                <label for="empty">Not Define (now)</label></div>
+                            <div class="transitOptions__input">
+                                <input id="datetime" aria-label="Datetime" name="departureTime" type="radio"
+                                       value="datetime">
+                                <input id="departureTime-time" name="departure-time" type="datetime-local"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="transitOptions">
+                    <div class="transitOptions__list">
+                        <div class="transitOptions__content"><span
+                                    class="transitOptions__header">Arrival time</span>
+                            <div class="transitOptions__input">
+                                <input id="empty" aria-label="Empty" name="arrivalTime" type="radio"
+                                       value="empty" checked="">
+                                <label for="empty">Not Define</label></div>
+                            <div class="transitOptions__input">
+                                <input id="datetime" aria-label="Datetime" name="arrivalTime" type="radio"
+                                       value="datetime">
+                                <input id="arrivalTime-time" name="arrival-time" type="datetime-local" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="mapContainer">
+            <div class="linear-progress hide">
+                <div class="progress"></div>
+            </div>
+            <div id="map"></div>
+            <div id="infoMessage">Drag markers to update route</div>
+            <div class="tableContainer">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

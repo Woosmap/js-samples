@@ -1,0 +1,14 @@
+{
+  "title": "Transit Service - Advanced",
+  "description": "Using the Transit Service to get the direction by public transport between an origin and a destination.",
+  "category": "Services",
+  "callback": "initMap",
+  "tag": "transit_advanced",
+  "name": "transit-advanced",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

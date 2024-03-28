@@ -336,7 +336,6 @@ function initMap(): void {
   transitRenderer = new woosmap.map.TransitRenderer({});
   //@ts-ignore
   transitRenderer.setMap(map);
-  bounds = new woosmap.map.LatLngBounds();
   originContainer = document.getElementById("origin") as HTMLElement;
   destinationContainer = document.getElementById("destination") as HTMLElement;
   transitRequest = createDefaultRequest();

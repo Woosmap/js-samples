@@ -17,20 +17,13 @@ function setQuery() {
 
   if (type !== "all" && tag !== "all") {
     query = new woosmap.map.query.Query(
-      [
-        new woosmap.map.query.Field("type", type),
-        new woosmap.map.query.Field("tag", tag),
-      ],
+      [woosmap.map.query.F("type", type), woosmap.map.query.F("tag", tag)],
       clause,
     );
   } else if (type !== "all") {
-    query = new woosmap.map.query.Query([
-      new woosmap.map.query.Field("type", type),
-    ]);
+    query = new woosmap.map.query.Query([woosmap.map.query.F("type", type)]);
   } else if (tag !== "all") {
-    query = new woosmap.map.query.Query([
-      new woosmap.map.query.Field("tag", tag),
-    ]);
+    query = new woosmap.map.query.Query([woosmap.map.query.F("tag", tag)]);
   } else {
     query = new woosmap.map.query.Query([]);
   }

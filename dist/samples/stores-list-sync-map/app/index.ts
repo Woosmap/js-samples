@@ -199,21 +199,37 @@ function handleSearchResults(originalLatLng: woosmap.map.LatLngLiteral) {
   }
 }
 
-function selectStoreOnList(storeId: string) {
+function selectStoreOnList(storeId?: string) {
   const storeList = document.querySelector(".stores-list");
   if (storeList) {
-    const storeElement = Array.from(storeList.children).find(
-      (child) => child.getAttribute("data-store-id") == storeId,
-    );
-    if (storeElement) {
+    if (storeId) {
+      const storeElement = Array.from(storeList.children).find(
+        (child) => child.getAttribute("data-store-id") == storeId,
+      );
+      if (storeElement) {
+        Array.from(storeList.children).forEach((child) =>
+          child.classList.remove("active"),
+        );
+        storeElement.scrollIntoView();
+        storeElement.classList.add("active");
+      }
+    } else {
       Array.from(storeList.children).forEach((child) =>
         child.classList.remove("active"),
       );
-      storeElement.scrollIntoView();
-      storeElement.classList.add("active");
     }
   }
 }
+
+// Debounce function
+function debounce(func: (...args: any[]) => void, wait: number) {
+  let timeout: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
+
 function initMap() {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
@@ -221,16 +237,26 @@ function initMap() {
   );
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
-  map.addListener("bounds_changed", () => {
-    const bounds = map.getBounds();
-    visibleStores = filterStoresByBounds(allStores, bounds);
-    displayListStores(visibleStores);
-  });
+  map.addListener(
+    "bounds_changed",
+    debounce(() => {
+      const bounds = map.getBounds();
+      visibleStores = filterStoresByBounds(allStores, bounds);
+      displayListStores(visibleStores);
+    }, 30),
+  );
   window.woosmap.map.event.addListener(
     map,
     "store_selected",
     (store: woosmap.map.stores.StoreResponse) => {
       selectStoreOnList(store.properties.store_id);
+    },
+  );
+  window.woosmap.map.event.addListener(
+    map,
+    "store_unselected",
+    (store: woosmap.map.stores.StoreResponse) => {
+      selectStoreOnList();
     },
   );
 

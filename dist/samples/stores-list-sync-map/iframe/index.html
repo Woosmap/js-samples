@@ -9,42 +9,42 @@
       (function () {
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
-        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(o);
-        new MutationObserver((o) => {
-          for (const n of o)
+        for (const r of document.querySelectorAll('link[rel="modulepreload"]'))
+          s(r);
+        new MutationObserver((r) => {
+          for (const n of r)
             if (n.type === "childList")
               for (const a of n.addedNodes)
                 a.tagName === "LINK" && a.rel === "modulepreload" && s(a);
         }).observe(document, { childList: !0, subtree: !0 });
-        function r(o) {
+        function o(r) {
           const n = {};
           return (
-            o.integrity && (n.integrity = o.integrity),
-            o.referrerPolicy && (n.referrerPolicy = o.referrerPolicy),
-            o.crossOrigin === "use-credentials"
+            r.integrity && (n.integrity = r.integrity),
+            r.referrerPolicy && (n.referrerPolicy = r.referrerPolicy),
+            r.crossOrigin === "use-credentials"
               ? (n.credentials = "include")
-              : o.crossOrigin === "anonymous"
+              : r.crossOrigin === "anonymous"
                 ? (n.credentials = "omit")
                 : (n.credentials = "same-origin"),
             n
           );
         }
-        function s(o) {
-          if (o.ep) return;
-          o.ep = !0;
-          const n = r(o);
-          fetch(o.href, n);
+        function s(r) {
+          if (r.ep) return;
+          r.ep = !0;
+          const n = o(r);
+          fetch(r.href, n);
         }
       })();
       let i,
         c = null,
         d,
         g,
-        h,
+        v,
         u = [],
         m = [];
-      const v = {
+      const w = {
           breakPoint: 14,
           rules: [],
           default: {
@@ -55,7 +55,7 @@
             selectedIcon: { url: "https://images.woosmap.com/marker-red.svg" },
           },
         },
-        w = {
+        S = {
           zoom: 5,
           center: { lat: 46.5, lng: 1.4 },
           styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }],
@@ -64,66 +64,66 @@
         p = document.getElementById("submit-button");
       l &&
         p &&
-        (l.addEventListener("keydown", S), p.addEventListener("click", L));
-      function S(e) {
+        (l.addEventListener("keydown", L), p.addEventListener("click", b));
+      function L(e) {
         e.key === "Enter" && y(null);
       }
-      function L() {
+      function b() {
         y(null);
       }
-      function b(e, t) {
-        return e.filter((r) =>
+      function E(e, t) {
+        return e.filter((o) =>
           t
             ? t.contains({
-                lat: r.geometry.coordinates[1],
-                lng: r.geometry.coordinates[0],
+                lat: o.geometry.coordinates[1],
+                lng: o.geometry.coordinates[0],
               })
             : !1,
         );
       }
-      function E() {
+      function M() {
         const e = [],
           t = { storesByPage: 300 };
-        function r(s) {
+        function o(s) {
           return (
             s && (t.page = s),
             g
               .search(t)
               .then(
-                (o) => (
-                  e.push(...o.features),
-                  t.page === o.pagination.pageCount
+                (r) => (
+                  e.push(...r.features),
+                  t.page === r.pagination.pageCount
                     ? e
-                    : r(o.pagination.page + 1)
+                    : o(r.pagination.page + 1)
                 ),
               )
-              .catch((o) => {
-                throw (console.error(o), new Error("Error getting all stores"));
+              .catch((r) => {
+                throw (console.error(r), new Error("Error getting all stores"));
               })
           );
         }
-        return r();
+        return o();
       }
       function f(e) {
-        const t = e.map(M),
-          r = document.querySelector(".stores-list");
-        r &&
-          ((r.innerHTML = `<p style="padding: 0 0.8rem; font-size: 17px">Results: <strong>${e.length}</strong> stores in bounds</p>`),
-          (r.innerHTML += t.join(""))),
-          O(e);
+        const t = e.map(O),
+          o = document.querySelector(".stores-list");
+        o &&
+          ((o.innerHTML = `<p style="padding: 0 0.8rem; font-size: 17px">Results: <strong>${e.length}</strong> stores in bounds</p>`),
+          (o.innerHTML += t.join(""))),
+          $(e);
       }
-      function M(e, t) {
-        const { name: r, address: s, contact: o } = e.properties,
-          n = o.phone
-            ? `<div class='store-contact'><a href='tel:${o.phone}'>${o.phone}</a></div>`
+      function O(e, t) {
+        const { name: o, address: s, contact: r } = e.properties,
+          n = r.phone
+            ? `<div class='store-contact'><a href='tel:${r.phone}'>${r.phone}</a></div>`
             : "",
-          a = o.website
-            ? `<div class='store-website'><a href='${o.website}' target="_blank">go to website</a></div>`
+          a = r.website
+            ? `<div class='store-website'><a href='${r.website}' target="_blank">go to website</a></div>`
             : "";
         return `
     <div class='controls summary-store-card' data-index=${t} data-store-id="${e.properties.store_id}">
       <div>
-        <div><strong>${r}</strong></div>
+        <div><strong>${o}</strong></div>
         <div>
           <div class='store-address'>${(s && s.lines && s.lines.join(", ")) || "Address not available"}</div>
           ${n}
@@ -132,39 +132,39 @@
       </div>
     </div>`;
       }
-      function O(e) {
+      function $(e) {
         document.querySelectorAll(".summary-store-card").forEach((t) => {
           t.addEventListener("click", () => {
             d.setSelection(e[t.dataset.index]);
-            const r = document.querySelector(".stores-list");
-            r &&
-              (Array.from(r.children).forEach((s) =>
+            const o = document.querySelector(".stores-list");
+            o &&
+              (Array.from(o.children).forEach((s) =>
                 s.classList.remove("active"),
               ),
               t.classList.add("active"));
           });
         });
       }
-      function $(e) {
+      function A(e) {
         return l ? (e ? { latLng: e } : { address: l.value }) : null;
       }
       function y(e) {
-        const t = $(e);
+        const t = A(e);
         t &&
-          h
+          v
             .geocode(t)
-            .then((r) => q(r))
-            .catch(I);
+            .then((o) => q(o))
+            .catch(P);
       }
       function q(e) {
-        var r, s;
+        var o, s;
         const t =
-          (s = (r = e.results[0]) == null ? void 0 : r.geometry) == null
+          (s = (o = e.results[0]) == null ? void 0 : o.geometry) == null
             ? void 0
             : s.location;
-        t && A(t);
+        t && B(t);
       }
-      function A(e) {
+      function B(e) {
         c && c.setMap(null),
           e &&
             ((c = new woosmap.map.Marker({
@@ -178,38 +178,52 @@
             i.setCenter(e),
             i.setZoom(8));
       }
-      function B(e) {
+      function h(e) {
         const t = document.querySelector(".stores-list");
-        if (t) {
-          const r = Array.from(t.children).find(
-            (s) => s.getAttribute("data-store-id") == e,
-          );
-          r &&
-            (Array.from(t.children).forEach((s) =>
-              s.classList.remove("active"),
-            ),
-            r.scrollIntoView(),
-            r.classList.add("active"));
-        }
+        if (t)
+          if (e) {
+            const o = Array.from(t.children).find(
+              (s) => s.getAttribute("data-store-id") == e,
+            );
+            o &&
+              (Array.from(t.children).forEach((s) =>
+                s.classList.remove("active"),
+              ),
+              o.scrollIntoView(),
+              o.classList.add("active"));
+          } else
+            Array.from(t.children).forEach((o) => o.classList.remove("active"));
+      }
+      function T(e, t) {
+        let o;
+        return (...s) => {
+          clearTimeout(o), (o = setTimeout(() => e(...s), t));
+        };
       }
       function k() {
-        (i = new window.woosmap.map.Map(document.getElementById("map"), w)),
-          (d = new woosmap.map.StoresOverlay(v)),
+        (i = new window.woosmap.map.Map(document.getElementById("map"), S)),
+          (d = new woosmap.map.StoresOverlay(w)),
           d.setMap(i),
-          i.addListener("bounds_changed", () => {
-            const e = i.getBounds();
-            (u = b(m, e)), f(u);
-          }),
+          i.addListener(
+            "bounds_changed",
+            T(() => {
+              const e = i.getBounds();
+              (u = E(m, e)), f(u);
+            }, 30),
+          ),
           window.woosmap.map.event.addListener(i, "store_selected", (e) => {
-            B(e.properties.store_id);
+            h(e.properties.store_id);
+          }),
+          window.woosmap.map.event.addListener(i, "store_unselected", (e) => {
+            h();
           }),
           (g = new woosmap.map.StoresService()),
-          (h = new woosmap.map.LocalitiesService()),
-          E().then((e) => {
+          (v = new woosmap.map.LocalitiesService()),
+          M().then((e) => {
             (m = e), f(e);
           });
       }
-      function I(e) {
+      function P(e) {
         console.error("Error:", e);
       }
       window.initMap = k;

@@ -196,32 +196,54 @@ function selectStoreOnList(storeId) {
   const storeList = document.querySelector(".stores-list");
 
   if (storeList) {
-    const storeElement = Array.from(storeList.children).find(
-      (child) => child.getAttribute("data-store-id") == storeId,
-    );
+    if (storeId) {
+      const storeElement = Array.from(storeList.children).find(
+        (child) => child.getAttribute("data-store-id") == storeId,
+      );
 
-    if (storeElement) {
+      if (storeElement) {
+        Array.from(storeList.children).forEach((child) =>
+          child.classList.remove("active"),
+        );
+        storeElement.scrollIntoView();
+        storeElement.classList.add("active");
+      }
+    } else {
       Array.from(storeList.children).forEach((child) =>
         child.classList.remove("active"),
       );
-      storeElement.scrollIntoView();
-      storeElement.classList.add("active");
     }
   }
+}
+
+// Debounce function
+function debounce(func, wait) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
 }
 
 function initMap() {
   map = new window.woosmap.map.Map(document.getElementById("map"), mapOptions);
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
-  map.addListener("bounds_changed", () => {
-    const bounds = map.getBounds();
+  map.addListener(
+    "bounds_changed",
+    debounce(() => {
+      const bounds = map.getBounds();
 
-    visibleStores = filterStoresByBounds(allStores, bounds);
-    displayListStores(visibleStores);
-  });
+      visibleStores = filterStoresByBounds(allStores, bounds);
+      displayListStores(visibleStores);
+    }, 30),
+  );
   window.woosmap.map.event.addListener(map, "store_selected", (store) => {
     selectStoreOnList(store.properties.store_id);
+  });
+  window.woosmap.map.event.addListener(map, "store_unselected", (store) => {
+    selectStoreOnList();
   });
   storesService = new woosmap.map.StoresService();
   localitiesService = new woosmap.map.LocalitiesService();

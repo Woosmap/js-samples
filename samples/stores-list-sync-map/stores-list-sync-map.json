@@ -1,6 +1,6 @@
 {
-  "title": "Stores List Sync Map",
-  "description": "Get all stores recursively. Synchronise store list with map display using map bounds and contains method",
+  "title": "Store List",
+  "description": "Get all stores recursively. Synchronise the store list with the map display using map bounds and contains method",
   "category": "Services",
   "callback": "initMap",
   "WOOSMAP_PUBLIC_API_KEY": "woos-5b16337d-8364-303a-854d-86f87b480aa5",

@@ -246,7 +246,7 @@ function initMap() {
       const bounds = map.getBounds();
       visibleStores = filterStoresByBounds(allStores, bounds);
       displayListStores(visibleStores);
-    }, 30),
+    }, 50),
   );
   window.woosmap.map.event.addListener(
     map,

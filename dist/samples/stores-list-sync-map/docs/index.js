@@ -240,7 +240,7 @@ function initMap() {
 
       visibleStores = filterStoresByBounds(allStores, bounds);
       displayListStores(visibleStores);
-    }, 30),
+    }, 50),
   );
   window.woosmap.map.event.addListener(map, "store_selected", (store) => {
     selectStoreOnList(store.properties.store_id);

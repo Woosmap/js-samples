@@ -1,5 +1,5 @@
 {
-  "title": "Store List",
+  "title": "Stores List",
   "description": "Get all stores recursively. Synchronise the store list with the map display using map bounds and contains method",
   "category": "Services",
   "callback": "initMap",

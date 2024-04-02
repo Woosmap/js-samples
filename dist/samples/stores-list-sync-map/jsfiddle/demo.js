@@ -204,7 +204,7 @@ function selectStoreOnList(storeId) {
         Array.from(storeList.children).forEach((child) =>
           child.classList.remove("active"),
         );
-        storeElement.scrollIntoView();
+        storeElement.scrollIntoView({ block: "nearest" });
         storeElement.classList.add("active");
       }
     } else {
@@ -241,7 +241,7 @@ function initMap() {
   window.woosmap.map.event.addListener(map, "store_selected", (store) => {
     selectStoreOnList(store.properties.store_id);
   });
-  window.woosmap.map.event.addListener(map, "store_unselected", (store) => {
+  window.woosmap.map.event.addListener(map, "store_unselected", () => {
     selectStoreOnList();
   });
   storesService = new woosmap.map.StoresService();

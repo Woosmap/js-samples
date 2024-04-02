@@ -189,7 +189,7 @@
               (Array.from(t.children).forEach((s) =>
                 s.classList.remove("active"),
               ),
-              o.scrollIntoView(),
+              o.scrollIntoView({ block: "nearest" }),
               o.classList.add("active"));
           } else
             Array.from(t.children).forEach((o) => o.classList.remove("active"));
@@ -214,7 +214,7 @@
           window.woosmap.map.event.addListener(i, "store_selected", (e) => {
             h(e.properties.store_id);
           }),
-          window.woosmap.map.event.addListener(i, "store_unselected", (e) => {
+          window.woosmap.map.event.addListener(i, "store_unselected", () => {
             h();
           }),
           (g = new woosmap.map.StoresService()),

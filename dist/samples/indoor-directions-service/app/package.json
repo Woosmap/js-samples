@@ -1,7 +1,7 @@
 {
   "name": "indoor-directions-service",
   "description": "Samples for Woosmap Map JS API",
-  "version": "1.28.1",
+  "version": "1.28.2",
   "keywords": [
     "woosmap",
     "javascript",

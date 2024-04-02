@@ -1,0 +1,29 @@
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="container">
+        <div class="search-panel" id="sidebar">
+          <div id="search-container">
+            <h3>Search Stores Nearby</h3>
+            <div id="search-input-container">
+              <input
+                type="text"
+                name="autocomplete"
+                id="autocomplete-input"
+                placeholder="Search an Address..."
+                autocomplete="off"
+              />
+              <button class="btn" type="submit" id="submit-button">
+                <span class="btnText" tabindex="-1">Search</span>
+              </button>
+            </div>
+          </div>
+          <div id="stores-panel">
+            <div class="stores-list">
+            </div>
+          </div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

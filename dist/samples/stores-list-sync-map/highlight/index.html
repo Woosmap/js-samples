@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Stores List Sync Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div class="search-panel" id="sidebar">
+        <div id="search-container">
+          <h3>Search Stores Nearby</h3>
+          <div id="search-input-container">
+            <input
+              type="text"
+              name="autocomplete"
+              id="autocomplete-input"
+              placeholder="Search an Address..."
+              autocomplete="off"
+            />
+            <button class="btn" type="submit" id="submit-button">
+              <span class="btnText" tabindex="-1">Search</span>
+            </button>
+          </div>
+        </div>
+        <div id="stores-panel">
+          <div class="stores-list"></div>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-5b16337d-8364-303a-854d-86f87b480aa5&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

@@ -138,11 +138,14 @@ function addClickListenerToStoreCards(stores) {
 }
 
 function createLocalitiesRequest(latlng) {
-  return inputElement
-    ? latlng
-      ? { latLng: latlng }
-      : { address: inputElement.value }
-    : null;
+  if (!inputElement) {
+    return null;
+  }
+
+  if (latlng) {
+    return { latLng: latlng };
+  }
+  return { address: inputElement.value };
 }
 
 function handleGeocode(latlng) {

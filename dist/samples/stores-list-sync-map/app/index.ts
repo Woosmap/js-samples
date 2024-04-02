@@ -72,6 +72,7 @@ function filterStoresByBounds(
 function getAllStores() {
   const allStores: woosmap.map.stores.StoreResponse[] = [];
   const query: woosmap.map.stores.StoresSearchRequest = { storesByPage: 300 };
+
   function getStores(storePage?: number) {
     if (storePage) {
       query.page = storePage;
@@ -152,11 +153,13 @@ function addClickListenerToStoreCards(
 function createLocalitiesRequest(
   latlng: woosmap.map.LatLng | null,
 ): woosmap.map.localities.LocalitiesGeocodeRequest | null {
-  return inputElement
-    ? latlng
-      ? { latLng: latlng }
-      : { address: inputElement.value }
-    : null;
+  if (!inputElement) {
+    return null;
+  }
+  if (latlng) {
+    return { latLng: latlng };
+  }
+  return { address: inputElement.value };
 }
 
 function handleGeocode(latlng: woosmap.map.LatLng | null) {

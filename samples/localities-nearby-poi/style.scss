@@ -1,0 +1,127 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_localities_nearby_poi] */
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+@import "../../shared/scss/mixins.scss";
+
+
+#sidebar {
+  flex-basis: 18rem;
+  box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1;
+}
+
+#innerWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 0 10px 40px;
+}
+
+#mapContainer {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 70vw;
+  flex-grow: 5;
+  position: relative;
+}
+
+#map {
+  &.cursor-crosshair {
+    .mapboxgl-canvas-container {
+      cursor: crosshair !important;
+    }
+  }
+}
+
+.sectionHeader {
+  span {
+    font-size: .85em;
+    font-weight: 600;
+  }
+
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eeeeee;
+  margin: 20px -10px 5px;
+  padding: 5px 10px;
+  color: #222;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.categoriesOptions {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  font-size: 13px;
+
+  &__list {
+    width: 100%;
+    height: 100%;
+    max-height: 30vh;
+    overflow: scroll;
+  }
+
+  &__input {
+    height: 24px;
+    display: flex;
+    align-items: baseline;
+  }
+}
+
+.radius__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & > label {
+    padding-left: 10px;
+    min-width: 10em;
+  }
+}
+
+ol#results {
+  margin: 0;
+  padding-left: 10px;
+
+  & > li {
+    margin-top: 10px;
+    background-color: white;
+    font-size: 10pt;
+    line-height: 1.2rem;
+
+    & > * {
+      display: block;
+    }
+
+    & > address {
+      padding-top: 0.2rem;
+      font-family: monospace;
+      font-style: normal;
+    }
+
+    & > .distance {
+      padding-top: 0.2rem;
+      font-weight: lighter;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 250, 0.25);
+    }
+  }
+}
+/* [END woosmap_localities_nearby_poi] */

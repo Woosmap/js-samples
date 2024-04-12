@@ -1,0 +1,231 @@
+{% extends '../../src/_includes/layout.njk' %}
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="container">
+        <div id="sidebar">
+            <div id="innerWrapper">
+                <div class="sectionHeader"><span>Categories</span></div>
+                <div class="categoriesOptions__list">
+
+                    <div class="categoriesOptions__input"><input id="category-business.cinema" value="business.cinema"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.cinema">business.cinema</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.finance.bank"
+                                                                 value="business.finance.bank" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.finance.bank">business.finance.bank</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.food_and_drinks.bar"
+                                                                 value="business.food_and_drinks.bar" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.food_and_drinks.bar">business.food_and_drinks.bar</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.food_and_drinks.biergarten"
+                                                                 value="business.food_and_drinks.biergarten"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.food_and_drinks.biergarten">business.food_and_drinks.biergarten</label>
+                    </div>
+                    <div class="categoriesOptions__input"><input id="category-business.food_and_drinks.cafe"
+                                                                 value="business.food_and_drinks.cafe" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.food_and_drinks.cafe">business.food_and_drinks.cafe</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.food_and_drinks.fast_food"
+                                                                 value="business.food_and_drinks.fast_food"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.food_and_drinks.fast_food">business.food_and_drinks.fast_food</label>
+                    </div>
+                    <div class="categoriesOptions__input"><input id="category-business.food_and_drinks.food_court"
+                                                                 value="business.food_and_drinks.food_court"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.food_and_drinks.food_court">business.food_and_drinks.food_court</label>
+                    </div>
+                    <div class="categoriesOptions__input"><input id="category-business.food_and_drinks.pub"
+                                                                 value="business.food_and_drinks.pub" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.food_and_drinks.pub">business.food_and_drinks.pub</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.food_and_drinks.restaurant"
+                                                                 value="business.food_and_drinks.restaurant"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.food_and_drinks.restaurant">business.food_and_drinks.restaurant</label>
+                    </div>
+                    <div class="categoriesOptions__input"><input id="category-business.fuel" value="business.fuel"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.fuel">business.fuel</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.mall" value="business.mall"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.mall">business.mall</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.nightclub"
+                                                                 value="business.nightclub" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.nightclub">business.nightclub</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.parking" value="business.parking"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.parking">business.parking</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.bakery"
+                                                                 value="business.shop.bakery" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.bakery">business.shop.bakery</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.butcher"
+                                                                 value="business.shop.butcher" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.butcher">business.shop.butcher</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.clothes"
+                                                                 value="business.shop.clothes" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.clothes">business.shop.clothes</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.electronics"
+                                                                 value="business.shop.electronics" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.electronics">business.shop.electronics</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.furniture"
+                                                                 value="business.shop.furniture" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.furniture">business.shop.furniture</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.grocery"
+                                                                 value="business.shop.grocery" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.grocery">business.shop.grocery</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.library"
+                                                                 value="business.shop.library" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.library">business.shop.library</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.mall"
+                                                                 value="business.shop.mall" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.mall">business.shop.mall</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.sports"
+                                                                 value="business.shop.sports" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.sports">business.shop.sports</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.shop.toys"
+                                                                 value="business.shop.toys" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-business.shop.toys">business.shop.toys</label></div>
+                    <div class="categoriesOptions__input"><input id="category-business.theatre" value="business.theatre"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-business.theatre">business.theatre</label></div>
+                    <div class="categoriesOptions__input"><input id="category-education.college"
+                                                                 value="education.college" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-education.college">education.college</label></div>
+                    <div class="categoriesOptions__input"><input id="category-education.kindergarten"
+                                                                 value="education.kindergarten" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-education.kindergarten">education.kindergarten</label></div>
+                    <div class="categoriesOptions__input"><input id="category-education.library"
+                                                                 value="education.library" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-education.library">education.library</label></div>
+                    <div class="categoriesOptions__input"><input id="category-education.school" value="education.school"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-education.school">education.school</label></div>
+                    <div class="categoriesOptions__input"><input id="category-education.university"
+                                                                 value="education.university" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-education.university">education.university</label></div>
+                    <div class="categoriesOptions__input"><input id="category-government" value="government"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-government">government</label></div>
+                    <div class="categoriesOptions__input"><input id="category-hospitality.bed_and_breakfast"
+                                                                 value="hospitality.bed_and_breakfast" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-hospitality.bed_and_breakfast">hospitality.bed_and_breakfast</label></div>
+                    <div class="categoriesOptions__input"><input id="category-hospitality.guest_house"
+                                                                 value="hospitality.guest_house" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-hospitality.guest_house">hospitality.guest_house</label></div>
+                    <div class="categoriesOptions__input"><input id="category-hospitality.hostel"
+                                                                 value="hospitality.hostel" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-hospitality.hostel">hospitality.hostel</label></div>
+                    <div class="categoriesOptions__input"><input id="category-hospitality.hotel"
+                                                                 value="hospitality.hotel" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-hospitality.hotel">hospitality.hotel</label></div>
+                    <div class="categoriesOptions__input"><input id="category-hospitality.motel"
+                                                                 value="hospitality.motel" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-hospitality.motel">hospitality.motel</label></div>
+                    <div class="categoriesOptions__input"><input id="category-medical.clinic" value="medical.clinic"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-medical.clinic">medical.clinic</label></div>
+                    <div class="categoriesOptions__input"><input id="category-park" value="park" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-park">park</label></div>
+                    <div class="categoriesOptions__input"><input id="category-place_of_worship" value="place_of_worship"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-place_of_worship">place_of_worship</label></div>
+                    <div class="categoriesOptions__input"><input id="category-police" value="police" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-police">police</label></div>
+                    <div class="categoriesOptions__input"><input id="category-post_office" value="post_office"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-post_office">post_office</label></div>
+                    <div class="categoriesOptions__input"><input id="category-sports" value="sports" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-sports">sports</label></div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.attraction"
+                                                                 value="tourism.attraction" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-tourism.attraction">tourism.attraction</label></div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.attraction.amusement_park"
+                                                                 value="tourism.attraction.amusement_park"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-tourism.attraction.amusement_park">tourism.attraction.amusement_park</label>
+                    </div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.attraction.amusement_park"
+                                                                 value="tourism.attraction.amusement_park"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-tourism.attraction.amusement_park">tourism.attraction.amusement_park</label>
+                    </div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.attraction.aquarium"
+                                                                 value="tourism.attraction.aquarium" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-tourism.attraction.aquarium">tourism.attraction.aquarium</label></div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.attraction.zoo"
+                                                                 value="tourism.attraction.zoo" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-tourism.attraction.zoo">tourism.attraction.zoo</label></div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.monument" value="tourism.monument"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-tourism.monument">tourism.monument</label></div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.monument.castle"
+                                                                 value="tourism.monument.castle" type="checkbox"
+                                                                 class="category" name="categories"> <label
+                            for="category-tourism.monument.castle">tourism.monument.castle</label></div>
+                    <div class="categoriesOptions__input"><input id="category-tourism.museum" value="tourism.museum"
+                                                                 type="checkbox" class="category" name="categories">
+                        <label for="category-tourism.museum">tourism.museum</label></div>
+                </div>
+
+                <div class="sectionHeader"><span>Radius</span></div>
+                <div class="radius__container">
+                    <input type="range" id="radius" min="1" max="200000" value="1000"><label id="radius-label" for="radius">1&thinsp;km</label>
+                </div>
+
+                <div class="sectionHeader"><span>Results</span></div>
+                <ol id="results"></ol>
+            </div>
+        </div>
+
+        <div id="mapContainer">
+            <div id="autocomplete-container">
+                {% svgIcon 'search.svg' %}
+                <input
+                        type="text"
+                        id="autocomplete-input"
+                        placeholder="Search Localities..."
+                        autocomplete="off"
+                />
+                <button aria-label="Clear" class="clear-searchButton" type="button">
+                    {% svgIcon 'clear.svg' %}
+                </button>
+                <ul id="suggestions-list"></ul>
+            </div>
+
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

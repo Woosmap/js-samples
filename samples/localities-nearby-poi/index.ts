@@ -96,7 +96,7 @@ function performNearbyRequest(
   }
 
   debouncedNearby(
-    `//develop-api.woosmap.com/1042/localities/poi_nearby?key=woos-42d7e4d5-41c5-376c-835f-94408ca02a53&location=${location}&radius=${radius}&categories=${selectedCategories}&page_size=10`,
+    `//develop-api.woosmap.com/1042/localities/nearby?key=woos-42d7e4d5-41c5-376c-835f-94408ca02a53&types=point_of_interest&location=${location}&radius=${radius}&categories=${selectedCategories}&page_size=10`,
     {
       headers: { Referer: "http://localhost" },
     },

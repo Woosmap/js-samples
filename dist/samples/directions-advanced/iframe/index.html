@@ -14,8 +14,8 @@
         new MutationObserver((n) => {
           for (const r of n)
             if (r.type === "childList")
-              for (const s of r.addedNodes)
-                s.tagName === "LINK" && s.rel === "modulepreload" && o(s);
+              for (const c of r.addedNodes)
+                c.tagName === "LINK" && c.rel === "modulepreload" && o(c);
         }).observe(document, { childList: !0, subtree: !0 });
         function i(n) {
           const r = {};
@@ -44,7 +44,7 @@
         p = [],
         f,
         v,
-        h;
+        y;
       const l = [];
       let L;
       const w = {
@@ -65,19 +65,19 @@
           label: { text: t, color: "white" },
         });
       }
-      function k() {
+      function I() {
         for (const e of p) e.setMap(null);
         p = [];
       }
       function B() {
-        k();
+        I();
         const e = _(
           a.origin,
           "O",
           "https://images.woosmap.com/marker-blue.svg",
         );
         e.addListener("dragend", () => {
-          (a.origin = e.getPosition()), g(v, e.getPosition().toJSON()), c();
+          (a.origin = e.getPosition()), g(v, e.getPosition().toJSON()), s();
         });
         const t = _(
           a.destination,
@@ -86,8 +86,8 @@
         );
         t.addListener("dragend", () => {
           (a.destination = t.getPosition()),
-            g(h, t.getPosition().toJSON()),
-            c();
+            g(y, t.getPosition().toJSON()),
+            s();
         }),
           p.push(e),
           p.push(t),
@@ -104,7 +104,7 @@
               (l[o].location = n.getPosition().toJSON()),
                 (f.querySelectorAll("li")[o].innerHTML =
                   `<span>lat: ${n.getPosition().lat().toFixed(4)}, lng: ${n.getPosition().lng().toFixed(4)}<span>`),
-                c();
+                s();
             }),
               p.push(n);
           }),
@@ -118,8 +118,8 @@
           { location: { lat: 51.5074, lng: -0.1278 } },
         ),
           g(v, e),
-          g(h, t);
-        for (const i of l) I(f, i.location);
+          g(y, t);
+        for (const i of l) k(f, i.location);
         return {
           origin: e,
           destination: t,
@@ -130,7 +130,7 @@
           unitSystem: woosmap.map.UnitSystem.METRIC,
         };
       }
-      function I(e, t) {
+      function k(e, t) {
         const i = document.createElement("li");
         i.innerHTML = `<span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span>`;
         const o = document.createElement("button");
@@ -144,7 +144,7 @@
                   l.findIndex((n) => n.location === t),
                   1,
                 ),
-              c();
+              s();
           }),
           i.appendChild(o),
           e.appendChild(i);
@@ -154,21 +154,21 @@
       }
       function D(e) {
         const t = e.routes.map((n, r) => {
-          const s = n.legs[0],
+          const c = n.legs[0],
             d = document.createElement("div");
           (d.className = "directionTrip"),
             r === 0 && d.classList.add("directionTrip__selected");
-          const y = w[a.travelMode] || w.DRIVING;
+          const h = w[a.travelMode] || w.DRIVING;
           return (
             (d.innerHTML = `
-            <img class="directionTrip__travelModeIcon" src="${y}">
+            <img class="directionTrip__travelModeIcon" src="${h}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
-                    <div class="directionTrip__duration">${s.duration.text}</div>
-                    <div class="directionTrip__distance">${s.distance.text}</div>
+                    <div class="directionTrip__duration">${c.duration.text}</div>
+                    <div class="directionTrip__distance">${c.distance.text}</div>
                 </div>
-                <div class="directionTrip__title">through ${s.start_address ? s.start_address : JSON.stringify(s.start_location)}</div>
-                <div class="directionTrip__summary">${s.duration.text} without traffic</div>
+                <div class="directionTrip__title">through ${c.start_address ? c.start_address : JSON.stringify(c.start_location)}</div>
+                <div class="directionTrip__summary">${c.duration.text} without traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `),
@@ -204,7 +204,7 @@
       function q(e) {
         L.setDirections(e);
       }
-      function c() {
+      function s() {
         M(),
           new Promise((e, t) => {
             const i = setTimeout(() => {
@@ -237,7 +237,7 @@
       function C() {
         document.querySelectorAll(".travelMode").forEach((e) =>
           e.addEventListener("click", () => {
-            O(e), (a.travelMode = e.dataset.travelmode), c();
+            O(e), (a.travelMode = e.dataset.travelmode), s();
           }),
         );
       }
@@ -245,26 +245,31 @@
         document.querySelectorAll(".avoid").forEach((e) =>
           e.addEventListener("click", () => {
             const t = document.getElementById("avoidHighways"),
-              i = document.getElementById("avoidTolls");
-            [
-              document.getElementById("avoidFerries").checked ? "ferries" : !1,
-              t.checked ? "highways" : !1,
-              i.checked ? "tolls" : !1,
-            ].filter(Boolean);
+              i = document.getElementById("avoidTolls"),
+              o = document.getElementById("avoidFerries");
+            (a.avoidFerries = o.checked),
+              (a.avoidHighways = t.checked),
+              (a.avoidTolls = i.checked),
+              s();
           }),
         );
       }
       function P() {
         document
           .querySelector('input[name="optimizeWaypoints"]')
-          .addEventListener("change", () => {});
+          .addEventListener("change", () => {
+            (a.optimizeWaypoints = document.querySelector(
+              'input[name="optimizeWaypoints"]',
+            ).checked),
+              s();
+          });
       }
       function x() {
         document
           .querySelectorAll('input[name="distanceUnits"]')
           .forEach((e) => {
             e.addEventListener("change", () => {
-              (a.unitSystem = e.value), c();
+              (a.unitSystem = e.value), s();
             });
           });
       }
@@ -272,26 +277,29 @@
         document.querySelectorAll('input[name="alternatives"]').forEach((e) => {
           e.addEventListener("change", () => {
             e.checked &&
-              ((a.provideRouteAlternatives = e.value === "true"), c());
+              ((a.provideRouteAlternatives = e.value === "true"), s());
+          });
+        });
+      }
+      function H() {
+        document.querySelectorAll('input[name="method"]').forEach((e) => {
+          e.addEventListener("change", () => {
+            (a.method = e.value), s();
           });
         });
       }
       function $() {
-        document.querySelectorAll('input[name="method"]').forEach((e) => {
-          e.addEventListener("change", () => {});
-        });
-      }
-      function H() {
         document.querySelectorAll('input[name="details"]').forEach((e) => {
           e.addEventListener("change", () => {
-            (a.details = e.value), c();
+            (a.details = e.value), s();
           });
         });
       }
       function F() {
-        document
-          .getElementById("language")
-          .addEventListener("change", () => {});
+        const e = document.getElementById("language");
+        e.addEventListener("change", () => {
+          (a.language = e.value), s();
+        });
       }
       function S(e) {
         return e.getTime && typeof e.getTime == "function";
@@ -320,13 +328,13 @@
                     e.disabled = !1;
                     break;
                 }
-                c();
+                s();
               });
             }),
           e.addEventListener("change", () => {
             t && (t.checked = !0);
             const i = new Date(e.value);
-            (a.departure_time = S(i) ? i.getTime().toString() : void 0), c();
+            (a.departure_time = S(i) ? i.getTime().toString() : void 0), s();
           }));
       }
       function E(e, t, i) {
@@ -343,18 +351,18 @@
           o.classList.add("addLocation__selected"),
             (r = document.getElementById("map")) == null ||
               r.classList.add("cursor-crosshair"),
-            woosmap.map.event.addListenerOnce(u, "click", (s) => {
-              var y;
-              (y = document.getElementById("map")) == null ||
-                y.classList.remove("cursor-crosshair"),
+            woosmap.map.event.addListenerOnce(u, "click", (c) => {
+              var h;
+              (h = document.getElementById("map")) == null ||
+                h.classList.remove("cursor-crosshair"),
                 o.classList.remove("addLocation__selected");
-              const d = s.latlng;
+              const d = c.latlng;
               Array.isArray(i)
-                ? (l.push({ location: d }), I(t, d))
+                ? (l.push({ location: d }), k(t, d))
                 : (t === v && (a.origin = d),
-                  t === h && (a.destination = d),
+                  t === y && (a.destination = d),
                   g(t, d)),
-                c();
+                s();
             });
         });
       }
@@ -362,13 +370,13 @@
         C(),
           R(),
           x(),
-          $(),
-          N(),
           H(),
+          N(),
+          $(),
           z(),
           F(),
           P(),
-          E(".addLocation__destinations", h, a.destination),
+          E(".addLocation__destinations", y, a.destination),
           E(".addLocation__origins", v, a.origin),
           E(
             ".addLocation__waypoints",
@@ -376,7 +384,7 @@
             l.map((e) => e.location),
           );
       }
-      function J() {
+      function W() {
         (u = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.5074, lng: -0.1478 },
           zoom: 10,
@@ -386,13 +394,13 @@
           L.setMap(u),
           (m = new woosmap.map.LatLngBounds()),
           (v = document.getElementById("origin")),
-          (h = document.getElementById("destination")),
+          (y = document.getElementById("destination")),
           (f = document.getElementById("waypoints")),
           (a = A()),
           G(),
-          c();
+          s();
       }
-      window.initMap = J;
+      window.initMap = W;
     </script>
     <style>
       html,
@@ -940,7 +948,6 @@
                     name="avoidParams"
                     type="checkbox"
                     value="highways"
-                    disabled
                   />
                   <label for="avoidHighways">Highways</label>
                 </div>
@@ -952,7 +959,6 @@
                     name="avoidParams"
                     type="checkbox"
                     value="tolls"
-                    disabled
                   />
                   <label for="avoidTolls">Tolls</label>
                 </div>
@@ -964,7 +970,6 @@
                     name="avoidParams"
                     type="checkbox"
                     value="ferries"
-                    disabled
                   />
                   <label for="avoidFerries">Ferries</label>
                 </div>
@@ -1035,7 +1040,6 @@
                     type="radio"
                     value="time"
                     checked=""
-                    disabled
                   />
                   <label for="fastest">fastest</label>
                 </div>
@@ -1046,7 +1050,6 @@
                     name="method"
                     type="radio"
                     value="distance"
-                    disabled
                   />
                   <label for="shortest">shortest</label>
                 </div>
@@ -1098,7 +1101,7 @@
               <div class="directionsOptions__content">
                 <span class="directionsOptions__header">Language</span>
                 <div class="directionsOptions__input">
-                  <select id="language" disabled>
+                  <select id="language">
                     <option value="en">English</option>
                     <option value="fr">French</option>
                     <option value="it">Italian</option>
@@ -1149,7 +1152,6 @@
                     aria-label="Optimize Waypoints"
                     name="optimizeWaypoints"
                     type="checkbox"
-                    disabled
                   />
                   <label for="optimizeWaypoints">Optimize</label>
                 </div>

@@ -39,7 +39,7 @@
       })();
       let u,
         m,
-        b,
+        I,
         a,
         p = [],
         f,
@@ -65,12 +65,12 @@
           label: { text: t, color: "white" },
         });
       }
-      function I() {
+      function k() {
         for (const e of p) e.setMap(null);
         p = [];
       }
       function B() {
-        I();
+        k();
         const e = _(
           a.origin,
           "O",
@@ -110,7 +110,7 @@
           }),
           u.fitBounds(m, { top: 70, bottom: 40, left: 50, right: 50 }, !0);
       }
-      function A() {
+      function D() {
         const e = { lat: 51.6511, lng: -0.1615 },
           t = { lat: 51.5146, lng: -0.0212 };
         l.push(
@@ -119,7 +119,7 @@
         ),
           g(v, e),
           g(y, t);
-        for (const i of l) k(f, i.location);
+        for (const i of l) b(f, i.location);
         return {
           origin: e,
           destination: t,
@@ -130,7 +130,7 @@
           unitSystem: woosmap.map.UnitSystem.METRIC,
         };
       }
-      function k(e, t) {
+      function b(e, t) {
         const i = document.createElement("li");
         i.innerHTML = `<span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span>`;
         const o = document.createElement("button");
@@ -152,7 +152,7 @@
       function g(e, t) {
         e.innerHTML = `<li><span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span></li>`;
       }
-      function D(e) {
+      function A(e) {
         const t = e.routes.map((n, r) => {
           const c = n.legs[0],
             d = document.createElement("div");
@@ -210,7 +210,7 @@
             const i = setTimeout(() => {
               t(new Error("Callback not called within 3 secs"));
             }, 3e3);
-            b.route(a, (o, n) => {
+            I.route(a, (o, n) => {
               clearTimeout(i),
                 n === "OK" && o && o.routes
                   ? e(o)
@@ -219,7 +219,7 @@
           })
             .then((e) => {
               const t = e;
-              B(), q(t), D(t), T("");
+              B(), q(t), A(t), T("");
             })
             .catch((e) => {
               console.error(e), T(e.message);
@@ -308,7 +308,8 @@
         const e = document.getElementById("departure-time"),
           t = document.getElementById("datetime");
         e &&
-          ((e.disabled = !0),
+          ((e.min = new Date().toISOString().slice(0, 16)),
+          (e.disabled = !0),
           document
             .querySelectorAll('input[name="departureTime"]')
             .forEach((i) => {
@@ -358,7 +359,7 @@
                 o.classList.remove("addLocation__selected");
               const d = c.latlng;
               Array.isArray(i)
-                ? (l.push({ location: d }), k(t, d))
+                ? (l.push({ location: d }), b(t, d))
                 : (t === v && (a.origin = d),
                   t === y && (a.destination = d),
                   g(t, d)),
@@ -389,14 +390,14 @@
           center: { lat: 51.5074, lng: -0.1478 },
           zoom: 10,
         })),
-          (b = new woosmap.map.DirectionsService()),
+          (I = new woosmap.map.DirectionsService()),
           (L = new woosmap.map.DirectionsRenderer({})),
           L.setMap(u),
           (m = new woosmap.map.LatLngBounds()),
           (v = document.getElementById("origin")),
           (y = document.getElementById("destination")),
           (f = document.getElementById("waypoints")),
-          (a = A()),
+          (a = D()),
           G(),
           s();
       }

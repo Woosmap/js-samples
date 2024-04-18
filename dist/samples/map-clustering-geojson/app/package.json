@@ -1,7 +1,7 @@
 {
   "name": "map-clustering-geojson",
   "description": "Samples for Woosmap Map JS API",
-  "version": "1.28.5",
+  "version": "1.28.6",
   "keywords": [
     "woosmap",
     "javascript",

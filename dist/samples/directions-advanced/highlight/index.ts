@@ -390,6 +390,7 @@ function updateDepartureTime(): void {
   if (!departureTimeElement) {
     return;
   }
+  departureTimeElement.min = new Date().toISOString().slice(0, 16);
   departureTimeElement.disabled = true;
   document.querySelectorAll('input[name="departureTime"]').forEach((el) => {
     el.addEventListener("change", () => {

@@ -122,7 +122,6 @@ function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
 
       directionTrip.addEventListener("click", () => {
         selectCorrectRoute(index);
-        //@ts-ignore
         transitRenderer.setRouteIndex(index);
       });
 
@@ -189,7 +188,6 @@ function toggleProgress() {
 }
 
 function displayTransitRoute(routes: woosmap.map.transit.TransitRoute[]) {
-  //@ts-ignore
   transitRenderer.setRoutes(routes);
 }
 
@@ -312,9 +310,75 @@ function registerAddButton(
   });
 }
 
+const includedModes: string[] = [];
+const excludedModes: string[] = [];
+const modes = {
+  train: [
+    "highSpeedTrain",
+    "intercityTrain",
+    "interRegionalTrain",
+    "regionalTrain",
+    "cityTrain",
+    "subway",
+    "lightRail",
+    "monorail",
+    "inclined",
+  ],
+  bus: ["bus", "privateBus", "busRapid"],
+  ferry: ["ferry"],
+  aerial: ["aerial", "flight", "spaceship"],
+};
+
+function updateTransitOptions() {
+  const checkboxes = document.querySelectorAll('.modesChk[type="checkbox"]');
+  const includeRadio = document.querySelector(
+    "#includeModes",
+  ) as HTMLInputElement;
+  const excludeRadio = document.querySelector(
+    "#excludeModes",
+  ) as HTMLInputElement;
+
+  function updateMode() {
+    includedModes.length = 0;
+    excludedModes.length = 0;
+
+    Object.keys(modes).forEach((mode) => {
+      const checkbox = document.querySelector(
+        `#mode${mode.charAt(0).toUpperCase() + mode.slice(1)}`,
+      ) as HTMLInputElement;
+      if (checkbox.checked) {
+        modes[mode].forEach((subMode) => {
+          if (includeRadio.checked) {
+            includedModes.push(subMode);
+          } else if (excludeRadio.checked) {
+            excludedModes.push("-" + subMode);
+          }
+        });
+      }
+    });
+
+    if (includedModes.length === 0 && excludedModes.length === 0) {
+      delete transitRequest.modes;
+    } else {
+      transitRequest.modes = includeRadio.checked
+        ? includedModes
+        : excludedModes;
+    }
+    calculateTransit();
+  }
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", updateMode);
+  });
+
+  includeRadio.addEventListener("change", updateMode);
+  excludeRadio.addEventListener("change", updateMode);
+}
+
 function initUI(): void {
   updateTime("departureTime");
   updateTime("arrivalTime");
+  updateTransitOptions();
   registerAddButton(
     ".addLocation__destinations",
     destinationContainer,
@@ -334,7 +398,6 @@ function initMap(): void {
   });
   transitService = new woosmap.map.TransitService();
   transitRenderer = new woosmap.map.TransitRenderer({});
-  //@ts-ignore
   transitRenderer.setMap(map);
   originContainer = document.getElementById("origin") as HTMLElement;
   destinationContainer = document.getElementById("destination") as HTMLElement;
@@ -350,3 +413,5 @@ declare global {
 }
 window.initMap = initMap;
 // [END woosmap_transit_advanced]
+
+export {};

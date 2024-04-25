@@ -133,7 +133,9 @@ function createRoutesTable(response) {
     }
   }
 
-  function formatTime(minutes) {
+  function formatTime(seconds) {
+    const minutes = Math.round(seconds / 60);
+
     if (minutes < 60) {
       return `${minutes}m`;
     } else {

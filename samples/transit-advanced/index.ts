@@ -137,7 +137,8 @@ function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
     }
   }
 
-  function formatTime(minutes: number): string {
+  function formatTime(seconds: number): string {
+    const minutes = Math.round(seconds/60);
     if (minutes < 60) {
       return `${minutes}m`;
     } else {

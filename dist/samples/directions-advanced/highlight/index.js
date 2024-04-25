@@ -171,7 +171,7 @@ function createRoutesTable(response) {
                     <div class="directionTrip__distance">${leg.distance.text}</div>
                 </div>
                 <div class="directionTrip__title">through ${leg.start_address ? leg.start_address : JSON.stringify(leg.start_location)}</div>
-                <div class="directionTrip__summary">${leg.duration.text} without traffic</div>
+                <div class="directionTrip__summary">${leg.duration.text} ${directionsRequest.departure_time || directionsRequest.arrival_time ? "with" : "without"} traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `;

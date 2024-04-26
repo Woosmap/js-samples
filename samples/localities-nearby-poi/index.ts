@@ -90,6 +90,8 @@ function initUI() {
     } else if (label) {
       label.innerHTML = `${value / 1000}&thinsp;km`;
     }
+    // The following fails, displaying bounds show no difference betwee range min and max
+    // map.fitBounds(nearbyCircle.getBounds(), {top:80});
     performNearbyRequest();
   });
 
@@ -186,20 +188,10 @@ function updateResults(response, center) {
         <span class="distance">${distance.toFixed(0)}m</span>
     `;
     resultListItem.addEventListener("click", () => {
-      if (result.geometry.viewport) {
-        map.fitBounds({
-          north: result.geometry.viewport.northeast.lat,
-          east: result.geometry.viewport.northeast.lng,
-          south: result.geometry.viewport.southwest.lat,
-          west: result.geometry.viewport.southwest.lng,
-        });
-      } else {
-        map.setCenter({
-          lat: result.geometry.location.lat,
-          lng: result.geometry.location.lng,
-        });
-        map.setZoom(18);
-      }
+      map.setCenter({
+        lat: result.geometry.location.lat,
+        lng: result.geometry.location.lng,
+      });
 
       marker.setPosition({
         lat: result.geometry.location.lat,

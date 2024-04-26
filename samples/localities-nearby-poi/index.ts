@@ -1,13 +1,16 @@
-// [START woosmap_localities_geocode]
+// [START woosmap_localities_nearby_poi]
 // Initialize and add the map
-let map: woosmap.map.Map;
+const woosmap_key = "YOUR_API_KEY";
 const categories: Set<string> = new Set();
+let map: woosmap.map.Map;
 let results: HTMLOListElement;
 let nearbyCircle: woosmap.map.Circle;
 let marker: woosmap.map.Marker;
 let localitiesService: woosmap.map.LocalitiesService;
 let request: woosmap.map.localities.LocalitiesAutocompleteRequest;
-let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
+let debouncedLocalitiesAutocomplete: (
+  ...args: any[]
+) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
 let debouncedNearby: (...args: any[]) => Promise<any>;
 
 function initMap() {
@@ -96,7 +99,7 @@ function performNearbyRequest(
   }
 
   debouncedNearby(
-    `//develop-api.woosmap.com/1042/localities/nearby?key=woos-42d7e4d5-41c5-376c-835f-94408ca02a53&types=point_of_interest&location=${location}&radius=${radius}&categories=${selectedCategories}&page_size=10`,
+    `//api.woosmap.com/localities/nearby?key=${woosmap_key}&types=point_of_interest&location=${location}&radius=${radius}&categories=${selectedCategories}&page_size=10`,
     {
       headers: { Referer: "http://localhost" },
     },
@@ -218,7 +221,6 @@ clearSearchBtn.addEventListener("click", () => {
   clearSearchBtn.style.display = "none";
   if (marker) {
     marker.setMap(null);
-    //infoWindow.close();
   }
   inputElement.focus();
 });
@@ -338,6 +340,6 @@ declare global {
   }
 }
 window.initMap = initMap;
-// [END woosmap_localities_geocode]
+// [END woosmap_localities_nearby_poi]
 
 export {};

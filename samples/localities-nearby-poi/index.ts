@@ -8,6 +8,14 @@ let nearbyCircle: woosmap.map.Circle;
 let marker: woosmap.map.Marker;
 let localitiesService: woosmap.map.LocalitiesService;
 let request: woosmap.map.localities.LocalitiesAutocompleteRequest;
+const nearbyParameters={
+    types: "point_of_interest",
+    location: "40.71399,-74.00499",
+    radius: 1000,
+    categories: "",
+    page_number: 1,
+    page_size: 10
+  };
 let debouncedLocalitiesAutocomplete: (
   ...args: any[]
 ) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
@@ -17,7 +25,7 @@ function initMap() {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
-      center: { lat: 44.2601861, lng: -72.5775098 },
+      center: { lat: 40.71399, lng: -74.00499 },
       zoom: 15,
       styles: [
         {
@@ -36,7 +44,7 @@ function initMap() {
 
   request = {
     input: "",
-    types: ["locality", "address", "postal_code"],
+    types: ["locality", "postal_code"],
   };
 
   debouncedLocalitiesAutocomplete = debouncePromise(
@@ -84,25 +92,37 @@ function initUI() {
     }
     performNearbyRequest();
   });
+
+  document.getElementById("page-previous")?.addEventListener("click", () => {
+    nearbyParameters.page_number--;
+    performNearbyRequest(null, false);
+  });
+
+  document.getElementById("page-next")?.addEventListener("click", () => {
+    nearbyParameters.page_number++;
+    performNearbyRequest(null,false);
+  });
+
 }
 
 function performNearbyRequest(
   overrideCenter: woosmap.map.LatLng | null = null,
+  newQuery:boolean=true
 ) {
   const requestCenter = overrideCenter ? overrideCenter : map.getCenter();
-  const location = `${requestCenter.lat()},${requestCenter.lng()}`;
   const radiusElement = document.getElementById("radius") as HTMLInputElement;
-  const radius = radiusElement ? parseInt(radiusElement.value) : 1000;
-  let selectedCategories = "";
+  nearbyParameters.location = `${requestCenter.lat()},${requestCenter.lng()}`;
+  nearbyParameters.radius = radiusElement ? parseInt(radiusElement.value) : 1000;
+  nearbyParameters.categories = "";
   if (categories.size > 0) {
-    selectedCategories = Array.from(categories).join("|");
+    nearbyParameters.categories = Array.from(categories).join("|");
   }
-
+  if(newQuery){
+    nearbyParameters.page_number=1
+  }
+  //location=${location}&radius=${radius}&categories=${selectedCategories}&page_size=10`,
   debouncedNearby(
-    `//api.woosmap.com/localities/nearby?key=${woosmap_key}&types=point_of_interest&location=${location}&radius=${radius}&categories=${selectedCategories}&page_size=10`,
-    {
-      headers: { Referer: "http://localhost" },
-    },
+    `//api.woosmap.com/localities/nearby?key=${woosmap_key}&${buildQueryString(nearbyParameters)}`
   )
     .then((response) => {
       if (response.status == 200) {
@@ -110,8 +130,8 @@ function performNearbyRequest(
       }
     })
     .then((responseJson) => {
-      drawNearbyZone(requestCenter, radius);
-      updateResults(responseJson, requestCenter, radius);
+      drawNearbyZone(requestCenter, nearbyParameters.radius);
+      updateResults(responseJson, requestCenter);
     });
 }
 
@@ -131,13 +151,27 @@ function drawNearbyZone(center, radius) {
   });
 }
 
-function updateResults(response, center, radius) {
+function updatePagination(hasNextPage:boolean){
+  if(hasNextPage){
+    document.getElementById("page-next")?.removeAttribute("disabled")
+  }
+  else{
+    document.getElementById("page-next")?.setAttribute("disabled", "true")
+  }
+  if(nearbyParameters.page_number > 1){
+    document.getElementById("page-previous")?.removeAttribute("disabled")
+  }
+  else{
+    document.getElementById("page-previous")?.setAttribute("disabled", "true")
+  }
+
+}
+
+function updateResults(response, center) {
   results.innerHTML = "";
+
+  updatePagination(response["pagination"]["has_next_page"])
   response["results"].forEach((result) => {
-    let addr = "";
-    if (result.formatted_address) {
-      addr = `<address>${result.formatted_address}</address>`;
-    }
     const distance = measure(
       center.lat(),
       center.lng(),
@@ -148,13 +182,11 @@ function updateResults(response, center, radius) {
     resultListItem.innerHTML = `
         <b>${result.name}</b>
         <i>${result.categories}</i>
-        ${addr}
-
+        
         <span class="distance">${distance.toFixed(0)}m</span>
     `;
     resultListItem.addEventListener("click", () => {
       if (result.geometry.viewport) {
-        console.log(result);
         map.fitBounds({
           north: result.geometry.viewport.northeast.lat,
           east: result.geometry.viewport.northeast.lng,
@@ -294,6 +326,20 @@ document.addEventListener("click", (event) => {
 
 // [START woosmap_localities_autocomplete_debounce_promise]
 let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
+
+function buildQueryString(params: object) {
+  const queryStringParts = [];
+
+  for (const key in params) {
+    if (params[key]) {
+      const value = params[key];
+      queryStringParts.push(
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}` as never,
+      );
+    }
+  }
+  return queryStringParts.join("&");
+}
 
 type DebouncePromiseFunction<T, Args extends any[]> = (
   ...args: Args

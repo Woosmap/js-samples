@@ -93,7 +93,12 @@
   }
 }
 
+#page-previous{
+  margin-right: 5px;
+}
+
 ol#results {
+  list-style-type: none;
   margin: 0;
   padding-left: 10px;
 
@@ -105,12 +110,6 @@ ol#results {
 
     & > * {
       display: block;
-    }
-
-    & > address {
-      padding-top: 0.2rem;
-      font-family: monospace;
-      font-style: normal;
     }
 
     & > .distance {

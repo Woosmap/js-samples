@@ -120,7 +120,7 @@ function performNearbyRequest(
   if(newQuery){
     nearbyParameters.page_number=1
   }
-  //location=${location}&radius=${radius}&categories=${selectedCategories}&page_size=10`,
+
   debouncedNearby(
     `//api.woosmap.com/localities/nearby?key=${woosmap_key}&${buildQueryString(nearbyParameters)}`
   )
@@ -324,9 +324,6 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// [START woosmap_localities_autocomplete_debounce_promise]
-let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
-
 function buildQueryString(params: object) {
   const queryStringParts = [];
 
@@ -376,9 +373,6 @@ function debouncePromise<T, Args extends any[]>(
     });
   };
 }
-
-// [END woosmap_localities_autocomplete_debounce_promise] */
-PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
 
 declare global {
   interface Window {

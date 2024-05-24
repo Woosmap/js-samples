@@ -2186,6 +2186,77 @@
 
         <div
           class="card"
+          id="card-localities-nearby-poi"
+          onclick="setSource(event, './samples/localities-nearby-poi/highlight/highlight.html', 'Localities Nearby POI', 'localities-nearby-poi', this)"
+        >
+          <h4 class="card-header">
+            Localities Nearby POI
+            <span class="subheader">(localities-nearby-poi)</span>
+          </h4>
+          <div class="card-description">
+            Use the LocalitiesService to find out nearby POI.
+          </div>
+          <div class="card-footer">
+            <button
+              class="button"
+              onclick="setSource(event, './samples/localities-nearby-poi/highlight/highlight.html', 'Localities Nearby POI','localities-nearby-poi', this)"
+            >
+              Highlight
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/localities-nearby-poi/iframe/index.html', 'Localities Nearby POI','localities-nearby-poi', this)"
+            >
+              Iframe
+            </button>
+            <button
+              class="button"
+              onclick="setSource(event, './samples/localities-nearby-poi/app/dist/index.html', 'Localities Nearby POI', 'localities-nearby-poi', this)"
+            >
+              App
+            </button>
+            <button class="button">
+              <div class="buttonIcon codesandbox"></div>
+              <a
+                target="_blank"
+                href="https://codesandbox.io/p/devbox/github/woosmap/js-samples/tree/master/dist/samples/localities-nearby-poi/app?file=index.ts"
+              >
+                CodeSandbox
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon stackblitz"></div>
+              <a
+                target="_blank"
+                href="https://stackblitz.com/github/woosmap/js-samples/tree/master/dist/samples/localities-nearby-poi/app?file=index.ts"
+              >
+                StackBlitz
+              </a>
+            </button>
+
+            <button class="button">
+              <div class="buttonIcon jsfiddle"></div>
+              <a
+                target="_blank"
+                href="https://jsfiddle.net/gh/get/library/pure/woosmap/js-samples/tree/master/dist/samples/localities-nearby-poi/jsfiddle"
+              >
+                JsFiddle
+              </a>
+            </button>
+
+            <button class="button">
+              <a
+                target="_blank"
+                href="https://github.com/woosmap/js-samples/tree/master/samples/localities-nearby-poi"
+                >Code</a
+              >
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="card"
           id="card-map-clustering-geojson"
           onclick="setSource(event, './samples/map-clustering-geojson/highlight/highlight.html', 'Map Clustering with GeoJSON', 'map-clustering-geojson', this)"
         >

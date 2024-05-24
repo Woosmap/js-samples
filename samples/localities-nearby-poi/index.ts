@@ -65,15 +65,8 @@ let results: HTMLOListElement;
 let nearbyCircle: woosmap.map.Circle;
 let marker: woosmap.map.Marker;
 let localitiesService: woosmap.map.LocalitiesService;
-let request: woosmap.map.localities.LocalitiesAutocompleteRequest;
-const nearbyParameters = {
-  types: "point_of_interest",
-  location: {},
-  radius: 1000,
-  categories: "",
-  page: 1,
-  limit: 10,
-};
+let autocompleteRequest: woosmap.map.localities.LocalitiesAutocompleteRequest;
+let nearbyRequest: woosmap.map.localities.LocalitiesNearbyRequest;
 
 const buildTree = (availableCategories: string[]) => {
   const tree = {};
@@ -138,11 +131,18 @@ function initMap() {
   );
   localitiesService = new woosmap.map.LocalitiesService();
 
-  request = {
+  autocompleteRequest = {
     input: "",
     types: ["locality", "postal_code"],
   };
-
+  nearbyRequest = {
+    types: "point_of_interest",
+    location: map.getCenter(),
+    radius: 1000,
+    categories: "",
+    page: 1,
+    limit: 10,
+  };
   marker = new woosmap.map.Marker({
     position: { lat: 0, lng: 0 },
     icon: {
@@ -223,14 +223,25 @@ function initUI() {
     const radiusValue = parseInt((e.target as HTMLInputElement).value);
     debouncedHandleRadius(radiusValue);
   });
-  document.getElementById("page-previous")?.addEventListener("click", () => {
-    nearbyParameters.page--;
-    performNearbyRequest(null, false);
-  });
-  document.getElementById("page-next")?.addEventListener("click", () => {
-    nearbyParameters.page++;
-    performNearbyRequest(null, false);
-  });
+  document.getElementById("page-previous")?.addEventListener("click", previousPage);
+  document.getElementById("page-next")?.addEventListener("click", nextPage);
+}
+function previousPage(){
+  let newQuery = true
+  if(nearbyRequest.page && nearbyRequest.page > 1) {
+    nearbyRequest.page--;
+    newQuery=false;
+  }
+  performNearbyRequest(null, newQuery);
+}
+
+function nextPage(){
+  let newQuery = true
+  if(nearbyRequest.page) {
+    nearbyRequest.page++;
+    newQuery=false;
+  }
+  performNearbyRequest(null, newQuery);
 }
 
 function performNearbyRequest(
@@ -239,21 +250,21 @@ function performNearbyRequest(
 ) {
   const requestCenter = overrideCenter || map.getCenter();
   const radiusElement = document.getElementById("radius") as HTMLInputElement;
-  nearbyParameters.location = requestCenter;
-  nearbyParameters.radius = radiusElement
+  nearbyRequest.location = requestCenter;
+  nearbyRequest.radius = radiusElement
     ? parseInt(radiusElement.value)
     : 1000;
-  nearbyParameters.categories = "";
+  nearbyRequest.categories = "";
   if (categories.size > 0) {
-    nearbyParameters.categories = Array.from(categories).join("|");
+    nearbyRequest.categories = Array.from(categories).join("|");
   }
   if (newQuery) {
-    nearbyParameters.page = 1;
+    nearbyRequest.page = 1;
   }
 
   //@ts-ignore
-  localitiesService.nearby(nearbyParameters).then((responseJson) => {
-    drawNearbyZone(requestCenter, nearbyParameters.radius);
+  localitiesService.nearby(nearbyRequest).then((responseJson) => {
+    drawNearbyZone(requestCenter, nearbyRequest.radius);
     updateResults(responseJson, requestCenter);
   });
 }
@@ -280,7 +291,7 @@ function updatePagination(hasNextPage: boolean) {
   } else {
     document.getElementById("page-next")?.setAttribute("disabled", "true");
   }
-  if (nearbyParameters.page > 1) {
+  if(nearbyRequest.page && nearbyRequest.page > 1) {
     document.getElementById("page-previous")?.removeAttribute("disabled");
   } else {
     document.getElementById("page-previous")?.setAttribute("disabled", "true");
@@ -369,10 +380,10 @@ clearSearchBtn.addEventListener("click", () => {
 
 function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
-    request.input = inputElement.value;
-    if (request.input) {
+    autocompleteRequest.input = inputElement.value;
+    if (autocompleteRequest.input) {
       localitiesService
-        .autocomplete(request)
+        .autocomplete(autocompleteRequest)
         .then((localities) => displaySuggestions(localities))
         .catch((error) =>
           console.error("Error autocomplete localities:", error),
@@ -394,9 +405,9 @@ function handleDetails(publicId: string) {
 function displayLocality(
   locality: woosmap.map.localities.LocalitiesDetailsResult,
 ) {
-  if (locality?.geometry) {
+  if (locality?.geometry && nearbyRequest.radius) {
     map.setCenter(locality.geometry.location);
-    handleRadius(nearbyParameters.radius, locality.geometry.location);
+    handleRadius(nearbyRequest.radius, locality.geometry.location);
   }
 }
 
@@ -405,7 +416,7 @@ function displaySuggestions(
 ) {
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
-    if (localitiesPredictions.localities.length > 0 && request["input"]) {
+    if (localitiesPredictions.localities.length > 0 && autocompleteRequest["input"]) {
       localitiesPredictions.localities.forEach((locality) => {
         const li = document.createElement("li");
         li.textContent = locality.description ?? "";

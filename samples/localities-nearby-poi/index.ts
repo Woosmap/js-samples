@@ -285,24 +285,24 @@ function drawNearbyZone(center, radius) {
   });
 }
 
-function updatePagination(hasNextPage: boolean) {
-  if (hasNextPage) {
+function updatePagination(pagination: woosmap.map.localities.LocalitiesNearbyPagination) {
+  if (pagination.next_page) {
     document.getElementById("page-next")?.removeAttribute("disabled");
   } else {
     document.getElementById("page-next")?.setAttribute("disabled", "true");
   }
-  if(nearbyRequest.page && nearbyRequest.page > 1) {
+  if(pagination.previous_page) {
     document.getElementById("page-previous")?.removeAttribute("disabled");
   } else {
     document.getElementById("page-previous")?.setAttribute("disabled", "true");
   }
 }
 
-function updateResults(response, center) {
+function updateResults(response: woosmap.map.localities.LocalitiesNearbyResponse, center) {
   results.innerHTML = "";
 
-  updatePagination(response["pagination"]["next_page"]);
-  response["results"].forEach((result) => {
+  updatePagination(response.pagination);
+  response.results.forEach((result:woosmap.map.localities.LocalitiesNearbyResult) => {
     const distance = measure(
       center.lat(),
       center.lng(),

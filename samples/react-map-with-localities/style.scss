@@ -1,0 +1,6 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START react_map_with_localities] */
+@include meta.load-css("../../shared/scss/_default.scss");
+
+/* [END react_map_with_localities] */

@@ -171,7 +171,7 @@ function createRoutesTable(response) {
                     <div class="directionTrip__distance">${leg.distance.text}</div>
                 </div>
                 <div class="directionTrip__title">through ${leg.start_address ? leg.start_address : JSON.stringify(leg.start_location)}</div>
-                <div class="directionTrip__summary">${leg.duration.text} without traffic</div>
+                <div class="directionTrip__summary">${leg.duration.text} ${directionsRequest.departure_time || directionsRequest.arrival_time ? "with" : "without"} traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `;
@@ -279,17 +279,14 @@ function updateTravelModeButtons() {
 function updateAvoidance() {
   document.querySelectorAll(".avoid").forEach((el) =>
     el.addEventListener("click", () => {
-      //TODO: Currently not supported in DirectionsRequest
       const avoidHighways = document.getElementById("avoidHighways");
       const avoidTolls = document.getElementById("avoidTolls");
       const avoidFerries = document.getElementById("avoidFerries");
-      const avoidList = [
-        avoidFerries.checked ? "ferries" : false,
-        avoidHighways.checked ? "highways" : false,
-        avoidTolls.checked ? "tolls" : false,
-      ].filter(Boolean);
-      //directionsRequest.avoid = avoidList.join("|");
-      //calculateDirections();
+
+      directionsRequest.avoidFerries = avoidFerries.checked;
+      directionsRequest.avoidHighways = avoidHighways.checked;
+      directionsRequest.avoidTolls = avoidTolls.checked;
+      calculateDirections();
     }),
   );
 }
@@ -298,9 +295,10 @@ function updateOptimizeWaypoint() {
   document
     .querySelector('input[name="optimizeWaypoints"]')
     .addEventListener("change", () => {
-      //TODO: Currently not supported in DirectionsRequest
-      //directionsRequest.optimizeWaypoints = (document.querySelector('input[name="optimizeWaypoint"]') as HTMLInputElement).checked;
-      //calculateDirections();
+      directionsRequest.optimizeWaypoints = document.querySelector(
+        'input[name="optimizeWaypoints"]',
+      ).checked;
+      calculateDirections();
     });
 }
 
@@ -327,9 +325,8 @@ function updateAlternatives() {
 function updateMethod() {
   document.querySelectorAll('input[name="method"]').forEach((el) => {
     el.addEventListener("change", () => {
-      //TODO: Currently not supported in DirectionsRequest
-      //directionsRequest.method = (el as HTMLInputElement).value as | "distance" | "time" | undefined;
-      //calculateDirections();
+      directionsRequest.method = el.value;
+      calculateDirections();
     });
   });
 }
@@ -347,9 +344,8 @@ function updateLanguage() {
   const languageSelect = document.getElementById("language");
 
   languageSelect.addEventListener("change", () => {
-    //TODO: Currently not supported in DirectionsRequest
-    //directionsRequest.language = languageSelect.value as string;
-    //calculateDirections();
+    directionsRequest.language = languageSelect.value;
+    calculateDirections();
   });
 }
 
@@ -365,6 +361,7 @@ function updateDepartureTime() {
     return;
   }
 
+  departureTimeElement.min = new Date().toISOString().slice(0, 16);
   departureTimeElement.disabled = true;
   document.querySelectorAll('input[name="departureTime"]').forEach((el) => {
     el.addEventListener("change", () => {

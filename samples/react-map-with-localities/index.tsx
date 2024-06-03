@@ -9,8 +9,7 @@ import React, {
   useState,
 } from "react";
 
-// Define the types for the position and the Woosmap object
-type Position = { lat: number; lng: number };
+// Define the types for the Woosmap object
 declare const woosmap: any;
 
 // Custom hook to load the Woosmap JavaScript API
@@ -35,7 +34,7 @@ interface APIProviderProps {
   children: React.ReactNode;
 }
 
-function APIProvider({ apiKey, children }: APIProviderProps) {
+const APIProvider: React.FC<APIProviderProps> = ({ apiKey, children }) => {
   const isLoaded = useWoosmap(apiKey);
 
   if (!isLoaded) {
@@ -43,16 +42,16 @@ function APIProvider({ apiKey, children }: APIProviderProps) {
   }
 
   return <MapContext.Provider value={woosmap}>{children}</MapContext.Provider>;
-}
+};
 
 interface MapProps extends woosmap.map.MapOptions {
   children: React.ReactNode;
 }
 
-function Map({ center, zoom, children }: MapProps) {
+const WoosmapMap: React.FC<MapProps> = ({ center, zoom, children }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const woosmap = useContext(MapContext);
-  const [mapInstance, setMapInstance] = useState<any>(null);
+  const [mapInstance, setMapInstance] = useState<woosmap.map.Map>(null);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -71,9 +70,9 @@ function Map({ center, zoom, children }: MapProps) {
       </div>
     </MapInstanceContext.Provider>
   );
-}
+};
 
-function Marker({ position }: woosmap.map.MarkerOptions) {
+const Marker: React.FC<woosmap.map.MarkerOptions> = ({ position }) => {
   const woosmap = useContext(MapContext);
   const mapInstance = useContext(MapInstanceContext);
 
@@ -94,19 +93,19 @@ function Marker({ position }: woosmap.map.MarkerOptions) {
   }, [woosmap, position, mapInstance]);
 
   return null;
-}
+};
 
-function App() {
-  const position: Position = { lat: 61.2176, lng: -149.8997 };
+const App: React.VFC = () => {
+  const position: woosmap.map.LatLngLiteral = { lat: 61.2176, lng: -149.8997 };
 
   return (
     <APIProvider apiKey={"YOUR_API_KEY"}>
-      <Map center={position} zoom={10}>
+      <WoosmapMap center={position} zoom={10}>
         <Marker position={position} />
-      </Map>
+      </WoosmapMap>
     </APIProvider>
   );
-}
+};
 
 window.addEventListener("DOMContentLoaded", () => {
   const root = createRoot(document.getElementById("root")!);

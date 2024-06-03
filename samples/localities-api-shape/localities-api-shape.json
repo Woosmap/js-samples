@@ -1,0 +1,14 @@
+{
+  "title": "Localities Api -Shape",
+  "description": "The Localities details endpoint returns detailed information about a specific point of interest (using the point of interest's identifier namely public_id), including geographic coordinates.",
+  "category": "Localities",
+  "tag": "localities_api_shape",
+  "name": "localities-api-shape",
+  "callback": "initMap",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

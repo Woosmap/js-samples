@@ -116,7 +116,14 @@ const LocalitiesAutocomplete: React.FC<LocalitiesAutocompleteProps> = ({
   const [suggestions, setSuggestions] = useState([]);
   const localitiesService = useRef(null);
 
+  const [shouldFetchSuggestions, setShouldFetchSuggestions] = useState(true);
+
   useEffect(() => {
+    if (!shouldFetchSuggestions) {
+      setShouldFetchSuggestions(true);
+      return;
+    }
+
     localitiesService.current = new woosmap.map.LocalitiesService();
 
     const fetchSuggestions = async () => {
@@ -141,12 +148,22 @@ const LocalitiesAutocomplete: React.FC<LocalitiesAutocompleteProps> = ({
       publicId: suggestion.public_id,
     });
     onLocalitySelect(localityDetails);
-    setInputValue(localityDetails.formatted_address);
+    setShouldFetchSuggestions(false);
+    setInputValue(suggestion.description);
+    setSuggestions([]);
   };
 
   const handleClearSearch = () => {
     setInputValue("");
     setSuggestions([]);
+    onLocalitySelect(null); // Add this line
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && suggestions.length > 0) {
+      e.preventDefault();
+      handleSuggestionClick(suggestions[0]);
+    }
   };
 
   return (
@@ -162,10 +179,18 @@ const LocalitiesAutocomplete: React.FC<LocalitiesAutocompleteProps> = ({
         id="autocomplete-input"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Search for a place"
       />
-      <button onClick={handleClearSearch} className="clear-searchButton">
-        Clear
+      <button
+        onClick={handleClearSearch}
+        className="clear-searchButton"
+        type="button"
+        style={{ display: inputValue ? "block" : "none" }}
+      >
+        <svg className="clear-icon" viewBox="0 0 24 24">
+          <path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path>
+        </svg>
       </button>
       {suggestions.length > 0 && (
         <ul id="suggestions-list" className="visible">
@@ -189,13 +214,15 @@ const App: React.VFC = () => {
     lng: -0.8997,
   };
   const [selectedLocality, setSelectedLocality] =
-    useState<woosmap.map.LatLngLiteral>(null);
+    useState<woosmap.map.LatLngLiteral | null>(null);
 
   const handleLocalitySelect = (
     localityDetails: woosmap.map.localities.LocalitiesDetailsResponse,
   ) => {
-    if (localityDetails.result.geometry?.location) {
-      setSelectedLocality(localityDetails.result.geometry.location);
+    if (localityDetails) {
+      setSelectedLocality(localityDetails.result.geometry?.location);
+    } else {
+      setSelectedLocality(null);
     }
   };
 

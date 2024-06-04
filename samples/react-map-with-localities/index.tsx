@@ -32,13 +32,16 @@ function useWoosmap(apiKey: string) {
 const MapContext = createContext<any>(null);
 const MapInstanceContext = createContext<woosmap.map.Map | null>(null);
 
-interface APIProviderProps {
+interface WoosmapAPIProviderProps {
   apiKey: string;
   children: React.ReactNode;
 }
 
 // This component uses the useWoosmap hook to load the Woosmap API and provides it through context.
-const APIProvider: React.FC<APIProviderProps> = ({ apiKey, children }) => {
+const WoosmapAPIProvider: React.FC<WoosmapAPIProviderProps> = ({
+  apiKey,
+  children,
+}) => {
   const isLoaded = useWoosmap(apiKey);
 
   if (!isLoaded) {
@@ -235,12 +238,12 @@ const App: React.VFC = () => {
   };
 
   return (
-    <APIProvider apiKey={"YOUR_API_KEY"}>
+    <WoosmapAPIProvider apiKey={"YOUR_API_KEY"}>
       <WoosmapMap center={initialPosition} zoom={4}>
         <Marker position={selectedLocality} />
       </WoosmapMap>
       <LocalitiesAutocomplete onLocalitySelect={handleLocalitySelect} />
-    </APIProvider>
+    </WoosmapAPIProvider>
   );
 };
 

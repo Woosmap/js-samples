@@ -1,11 +1,11 @@
 {
-  "title": "React Map with Localities",
-  "description": "A Woosmap Map sample with a Localities Autocomplete input using React JS Framework",
+  "title": "React Map Basic",
+  "description": "A basic Woosmap Map sample using React JS Framework",
   "callback": "initMap",
   "category": "React Map",
   "tsx": true,
-  "tag": "react_map_with_localities",
-  "name": "react-map-with-localities",
+  "tag": "react_map_basic",
+  "name": "react-map-basic",
   "pagination": {
     "data": "mode",
     "size": 1,

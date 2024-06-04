@@ -50,18 +50,11 @@ function displaySuggestions({ predictions }) {
     suggestionsList.innerHTML = "";
     if (predictions.length > 0) {
       predictions.forEach((prediction) => {
-        let _a;
         const li = document.createElement("li");
 
-        li.innerHTML =
-          (_a = formatPredictionList(prediction)) !== null && _a !== void 0
-            ? _a
-            : "";
+        li.innerHTML = formatPredictionList(prediction) ?? "";
         li.addEventListener("click", () => {
-          let _a;
-
-          inputElement.value =
-            (_a = prediction.name) !== null && _a !== void 0 ? _a : "";
+          inputElement.value = prediction.name ?? "";
           requestDetailsStore(prediction.store_id);
           suggestionsList.style.display = "none";
         });

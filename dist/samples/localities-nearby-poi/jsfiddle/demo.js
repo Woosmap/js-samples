@@ -214,26 +214,20 @@ function handleRadius(radiusValue, center) {
 }
 
 function initUI() {
-  let _a, _b, _c;
-
   results = document.querySelector("#results");
   buildCategoriesList();
 
   const debouncedHandleRadius = debounce(handleRadius, 300);
 
-  (_a = document.getElementById("radius")) === null || _a === void 0
-    ? void 0
-    : _a.addEventListener("input", (e) => {
-        const radiusValue = parseInt(e.target.value);
+  document.getElementById("radius")?.addEventListener("input", (e) => {
+    const radiusValue = parseInt(e.target.value);
 
-        debouncedHandleRadius(radiusValue);
-      });
-  (_b = document.getElementById("page-previous")) === null || _b === void 0
-    ? void 0
-    : _b.addEventListener("click", previousPage);
-  (_c = document.getElementById("page-next")) === null || _c === void 0
-    ? void 0
-    : _c.addEventListener("click", nextPage);
+    debouncedHandleRadius(radiusValue);
+  });
+  document
+    .getElementById("page-previous")
+    ?.addEventListener("click", previousPage);
+  document.getElementById("page-next")?.addEventListener("click", nextPage);
 }
 
 function previousPage() {
@@ -298,26 +292,16 @@ function drawNearbyZone(center, radius) {
 }
 
 function updatePagination(pagination) {
-  let _a, _b, _c, _d;
-
   if (pagination.next_page) {
-    (_a = document.getElementById("page-next")) === null || _a === void 0
-      ? void 0
-      : _a.removeAttribute("disabled");
+    document.getElementById("page-next")?.removeAttribute("disabled");
   } else {
-    (_b = document.getElementById("page-next")) === null || _b === void 0
-      ? void 0
-      : _b.setAttribute("disabled", "true");
+    document.getElementById("page-next")?.setAttribute("disabled", "true");
   }
 
   if (pagination.previous_page) {
-    (_c = document.getElementById("page-previous")) === null || _c === void 0
-      ? void 0
-      : _c.removeAttribute("disabled");
+    document.getElementById("page-previous")?.removeAttribute("disabled");
   } else {
-    (_d = document.getElementById("page-previous")) === null || _d === void 0
-      ? void 0
-      : _d.setAttribute("disabled", "true");
+    document.getElementById("page-previous")?.setAttribute("disabled", "true");
   }
 }
 
@@ -423,10 +407,7 @@ function handleDetails(publicId) {
 }
 
 function displayLocality(locality) {
-  if (
-    (locality === null || locality === void 0 ? void 0 : locality.geometry) &&
-    nearbyRequest.radius
-  ) {
+  if (locality?.geometry && nearbyRequest.radius) {
     map.setCenter(locality.geometry.location);
     handleRadius(nearbyRequest.radius, locality.geometry.location);
   }
@@ -440,16 +421,11 @@ function displaySuggestions(localitiesPredictions) {
       autocompleteRequest["input"]
     ) {
       localitiesPredictions.localities.forEach((locality) => {
-        let _a;
         const li = document.createElement("li");
 
-        li.textContent =
-          (_a = locality.description) !== null && _a !== void 0 ? _a : "";
+        li.textContent = locality.description ?? "";
         li.addEventListener("click", () => {
-          let _a;
-
-          inputElement.value =
-            (_a = locality.description) !== null && _a !== void 0 ? _a : "";
+          inputElement.value = locality.description ?? "";
           suggestionsList.style.display = "none";
           handleDetails(locality.public_id);
         });

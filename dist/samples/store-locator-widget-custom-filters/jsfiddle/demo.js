@@ -125,9 +125,8 @@ function filterPanelRenderer(title, children) {
 }
 
 function filterRenderer(key, label, selected) {
-  let _a;
   const className = key.startsWith("country")
-    ? `${(_a = key.split("=").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[",]+/g, "")} country`
+    ? `${key.split("=").pop()?.replace(/[",]+/g, "")} country`
     : key;
   return createDiv(
     selected ? "active" : "",

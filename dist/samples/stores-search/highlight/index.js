@@ -128,14 +128,7 @@ function handleGeocode(latlng) {
 }
 
 function handleGeocodeResults(localities) {
-  let _a, _b;
-  const location =
-    (_b =
-      (_a = localities.results[0]) === null || _a === void 0
-        ? void 0
-        : _a.geometry) === null || _b === void 0
-      ? void 0
-      : _b.location;
+  const location = localities.results[0]?.geometry?.location;
 
   location && handleStoresSearch(location);
 }

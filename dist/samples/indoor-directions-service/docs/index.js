@@ -18,15 +18,10 @@ function initMap() {
 
   // Indoor event that is triggered when the indoor venue is loaded.
   indoorRenderer.addListener("indoor_venue_loaded", (venue) => {
-    let _a;
-
     console.log(venue);
     if (indoorRenderer !== null && indoorRenderer.getVenue() !== null) {
       indoorDirectionsRequest = {
-        venueId:
-          ((_a = indoorRenderer.getVenue()) === null || _a === void 0
-            ? void 0
-            : _a.venue_id) || "gdn_doc",
+        venueId: indoorRenderer.getVenue()?.venue_id || "gdn_doc",
         origin: new woosmap.map.LatLng(48.8801287, 2.3548678),
         originLevel: 0,
         destination: new woosmap.map.LatLng(48.8799341, 2.3563779),

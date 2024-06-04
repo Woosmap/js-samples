@@ -15,6 +15,10 @@
   display: none;
   overflow-y: auto;
   background-color: #fff;
+
+  &.visible {
+    display: block;
+  }
 }
 
 #suggestions-list li {

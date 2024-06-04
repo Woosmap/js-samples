@@ -85,7 +85,6 @@ function setLatLngToContainer(element, location) {
 
 function createRoutesTable(response) {
   const directionTripElements = response.routes.map((route, index) => {
-    let _a;
     const leg = route.legs[0];
     const directionTrip = document.createElement("div");
 
@@ -95,11 +94,9 @@ function createRoutesTable(response) {
     }
 
     const startName =
-      ((_a = route.legs.find(
+      route.legs.find(
         (leg) => leg.start_location && leg.start_location.name !== null,
-      )) === null || _a === void 0
-        ? void 0
-        : _a.start_location.name) || "Walking";
+      )?.start_location.name || "Walking";
     const travelModeIconSrc =
       startName === "Walking"
         ? "https://images.woosmap.com/directions/walk_black.png"
@@ -275,27 +272,17 @@ function registerAddButton(selector, element, loc) {
   const button = document.querySelector(selector);
 
   button.addEventListener("click", () => {
-    let _a, _b;
-
     if (button.classList.contains("addLocation__selected")) {
       button.classList.remove("addLocation__selected");
-      (_a = document.getElementById("map")) === null || _a === void 0
-        ? void 0
-        : _a.classList.remove("cursor-crosshair");
+      document.getElementById("map")?.classList.remove("cursor-crosshair");
       woosmap.map.event.clearListeners(map, "click");
       return;
     }
 
     button.classList.add("addLocation__selected");
-    (_b = document.getElementById("map")) === null || _b === void 0
-      ? void 0
-      : _b.classList.add("cursor-crosshair");
+    document.getElementById("map")?.classList.add("cursor-crosshair");
     woosmap.map.event.addListenerOnce(map, "click", (e) => {
-      let _a;
-
-      (_a = document.getElementById("map")) === null || _a === void 0
-        ? void 0
-        : _a.classList.remove("cursor-crosshair");
+      document.getElementById("map")?.classList.remove("cursor-crosshair");
       button.classList.remove("addLocation__selected");
 
       const location = e.latlng;

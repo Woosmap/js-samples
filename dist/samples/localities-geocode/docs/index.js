@@ -51,11 +51,7 @@ function handleGeocode(latlng) {
   if (latlng) {
     request.latLng = latlng;
     delete request.address;
-  } else if (
-    (inputElement === null || inputElement === void 0
-      ? void 0
-      : inputElement.value) !== ""
-  ) {
+  } else if (inputElement?.value !== "") {
     request.address = inputElement.value;
     delete request.latLng;
   }
@@ -74,7 +70,7 @@ function displayLocality(locality) {
     infoWindow.close();
   }
 
-  if (locality === null || locality === void 0 ? void 0 : locality.geometry) {
+  if (locality?.geometry) {
     marker = new woosmap.map.Marker({
       position: locality.geometry.location,
       icon: {

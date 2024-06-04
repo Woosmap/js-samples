@@ -160,18 +160,11 @@ function displaySuggestions(localitiesPredictions) {
     suggestionsList.innerHTML = "";
     if (localitiesPredictions.length > 0) {
       localitiesPredictions.forEach((locality) => {
-        let _a;
         const li = document.createElement("li");
 
-        li.innerHTML =
-          (_a = formatPredictionList(locality)) !== null && _a !== void 0
-            ? _a
-            : "";
+        li.innerHTML = formatPredictionList(locality) ?? "";
         li.addEventListener("click", () => {
-          let _a;
-
-          inputElement.value =
-            (_a = locality.description) !== null && _a !== void 0 ? _a : "";
+          inputElement.value = locality.description ?? "";
           requestDetailsAddress(locality.public_id);
           suggestionsList.style.display = "none";
         });
@@ -341,18 +334,14 @@ function toggleDropdown(event) {
 function hideDropdown(dropdown) {
   const dropdownContent = dropdown.querySelector(".dropdown-content");
 
-  dropdownContent === null || dropdownContent === void 0
-    ? void 0
-    : dropdownContent.classList.remove("visible");
+  dropdownContent?.classList.remove("visible");
   dropdown.classList.remove("active");
 }
 
 function showDropdown(dropdown) {
   const dropdownContent = dropdown.querySelector(".dropdown-content");
 
-  dropdownContent === null || dropdownContent === void 0
-    ? void 0
-    : dropdownContent.classList.add("visible");
+  dropdownContent?.classList.add("visible");
   dropdown.classList.add("active");
 }
 

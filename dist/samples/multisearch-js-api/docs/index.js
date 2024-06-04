@@ -79,18 +79,11 @@ function displaySuggestions(results) {
     suggestionsList.innerHTML = "";
     if (results.length > 0) {
       results.forEach((result) => {
-        let _a;
         const li = document.createElement("li");
 
-        li.innerHTML =
-          (_a = formatPredictionList(result)) !== null && _a !== void 0
-            ? _a
-            : "";
+        li.innerHTML = formatPredictionList(result) ?? "";
         li.addEventListener("click", () => {
-          let _a;
-
-          inputElement.value =
-            (_a = result.description) !== null && _a !== void 0 ? _a : "";
+          inputElement.value = result.description ?? "";
           suggestionsList.style.display = "none";
           multiSearch
             .detailsMulti({ id: result.id, api: result.api })

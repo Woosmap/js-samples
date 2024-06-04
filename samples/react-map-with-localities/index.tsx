@@ -9,10 +9,12 @@ import React, {
   useState,
 } from "react";
 
-// Define the types for the Woosmap object
+// Define the types for the global Woosmap object
 declare const woosmap: any;
 
 // Custom hook to load the Woosmap JavaScript API
+// This hook creates a script tag with the Woosmap map.js URL and appends it to the body of the document.
+// It sets the state to true when the script loads.
 function useWoosmap(apiKey: string) {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -26,6 +28,7 @@ function useWoosmap(apiKey: string) {
   return isLoaded;
 }
 
+// Contexts for Woosmap and the map instance
 const MapContext = createContext<any>(null);
 const MapInstanceContext = createContext<woosmap.map.Map | null>(null);
 
@@ -34,6 +37,7 @@ interface APIProviderProps {
   children: React.ReactNode;
 }
 
+// This component uses the useWoosmap hook to load the Woosmap API and provides it through context.
 const APIProvider: React.FC<APIProviderProps> = ({ apiKey, children }) => {
   const isLoaded = useWoosmap(apiKey);
 
@@ -48,6 +52,7 @@ interface MapProps extends woosmap.map.MapOptions {
   children: React.ReactNode;
 }
 
+// This component creates a Woosmap map and provides it through context used by the <Marker/>
 const WoosmapMap: React.FC<MapProps> = ({ center, zoom, children }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const woosmap = useContext(MapContext);
@@ -72,6 +77,7 @@ const WoosmapMap: React.FC<MapProps> = ({ center, zoom, children }) => {
   );
 };
 
+// This component creates a Woosmap marker to display the selected locality and flyTo it
 const Marker: React.FC<woosmap.map.MarkerOptions> = ({ position }) => {
   const woosmap = useContext(MapContext);
   const mapInstance = useContext(MapInstanceContext);
@@ -108,12 +114,14 @@ interface LocalitiesAutocompleteProps {
   ) => void;
 }
 
+// This component creates an input field for searching localities and displays suggestions
 const LocalitiesAutocomplete: React.FC<LocalitiesAutocompleteProps> = ({
   onLocalitySelect,
 }) => {
   const woosmap = useContext(MapContext);
   const [inputValue, setInputValue] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] =
+    useState<woosmap.map.localities.LocalitiesAutocompleteResponse>([]);
   const localitiesService = useRef(null);
 
   const [shouldFetchSuggestions, setShouldFetchSuggestions] = useState(true);
@@ -180,7 +188,7 @@ const LocalitiesAutocomplete: React.FC<LocalitiesAutocompleteProps> = ({
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Search for a place"
+        placeholder="Search for a locality"
       />
       <button
         onClick={handleClearSearch}

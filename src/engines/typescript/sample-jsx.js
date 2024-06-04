@@ -13,6 +13,7 @@ module.exports = {
         ),
       ),
       file: [
+        "docs.tsx",
         "docs.jsx",
         "app.tsx",
         "jsfiddle.jsx",

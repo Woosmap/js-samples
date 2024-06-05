@@ -13,7 +13,6 @@ let markerAddress: woosmap.map.Marker;
 let detailsHTML: HTMLElement;
 let addressDetailsContainer: HTMLElement;
 const hasShape = false;
-let shapeLocalities: woosmap.map.Polygon[] = [];
 
 function initMap(): void {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
@@ -35,43 +34,19 @@ function initMap(): void {
   manageCountrySelector();
 }
 
-function createPolygon(polygonCoordinates, bounds) {
-  const polygon = new woosmap.map.Polygon({
-    paths: polygonCoordinates.map((coord) => {
-      bounds.extend(new woosmap.map.LatLng(coord[1], coord[0]));
-      return { lat: coord[1], lng: coord[0] };
-    }),
-    strokeColor: "#FF0000",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: "#FF0000",
-    fillOpacity: 0.35,
-  });
-
-  polygon.setMap(map);
-  shapeLocalities.push(polygon);
-}
-
 function createShape(result) {
-  shapeLocalities.forEach((polygon) => {
-    polygon.setMap(null);
-  });
-  shapeLocalities = [];
-
-  if (result && result.geometry && result.geometry.shape) {
-    const shapeType = result.geometry.shape.type;
-    const shapeCoordinates = result.geometry.shape.coordinates;
-    const bounds = new woosmap.map.LatLngBounds();
-
-    if (shapeType === "MultiPolygon") {
-      shapeCoordinates.forEach((polygonCoordinates) => {
-        createPolygon(polygonCoordinates[0], bounds);
-      });
-    } else if (shapeType === "Polygon") {
-      createPolygon(shapeCoordinates[0], bounds);
+  if (result?.geometry?.shape) {
+    // @ts-ignore
+    map.data.addGeoJson({ type: "Feature", geometry: result.geometry.shape });
+    if (result.geometry.viewport) {
+      const bounds = {
+        east: result.geometry.viewport.northeast.lng,
+        south: result.geometry.viewport.southwest.lat,
+        north: result.geometry.viewport.northeast.lat,
+        west: result.geometry.viewport.southwest.lng,
+      };
+      map.fitBounds(bounds);
     }
-
-    map.fitBounds(bounds);
   }
 }
 
@@ -79,7 +54,7 @@ function createAddressMarker(addressDetail) {
   if (markerAddress) {
     markerAddress.setMap(null);
   }
-  if (addressDetail && addressDetail.geometry) {
+  if (addressDetail?.geometry) {
     const position = addressDetail.geometry.location;
     markerAddress = new woosmap.map.Marker({
       position: position,
@@ -278,7 +253,7 @@ function autocompleteAddress(
     key: "123456789",
     input,
     no_deprecated_fields: "true",
-    types: "locality|address",
+    types: "locality",
     components,
   };
   if (components !== "") {

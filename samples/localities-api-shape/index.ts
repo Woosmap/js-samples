@@ -12,7 +12,7 @@ let map: woosmap.map.Map;
 let markerAddress: woosmap.map.Marker;
 let detailsHTML: HTMLElement;
 let addressDetailsContainer: HTMLElement;
-const hasShape = false;
+let hasShape = false;
 
 function initMap(): void {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
@@ -34,9 +34,9 @@ function initMap(): void {
   manageCountrySelector();
 }
 
-function createShape(result) {
+function createShape(result: woosmap.map.localities.LocalitiesDetailsResult) {
   if (result?.geometry?.shape) {
-    // @ts-ignore
+    hasShape = true;
     map.data.addGeoJson({ type: "Feature", geometry: result.geometry.shape });
     if (result.geometry.viewport) {
       const bounds = {
@@ -45,7 +45,7 @@ function createShape(result) {
         north: result.geometry.viewport.northeast.lat,
         west: result.geometry.viewport.southwest.lng,
       };
-      map.fitBounds(bounds);
+      map.fitBounds(bounds, { top: 60, left: 60, bottom: 60, right: 60 });
     }
   }
 }
@@ -71,6 +71,8 @@ function createAddressMarker(addressDetail) {
     // Pan the map to the marker's location
     if (!hasShape) {
       panMap(addressDetail);
+    } else {
+      hasShape = false;
     }
   }
 }
@@ -250,7 +252,7 @@ function autocompleteAddress(
   components: string,
 ): Promise<woosmap.map.localities.LocalitiesAutocompleteResponse> {
   const args = {
-    key: "123456789",
+    key: woosmap_key,
     input,
     no_deprecated_fields: "true",
     types: "locality",
@@ -262,7 +264,7 @@ function autocompleteAddress(
     }
   }
   return fetch(
-    `https://develop-api.woosmap.com/1049/localities/autocomplete/?${buildQueryString(args)}`,
+    `https://api.woosmap.com/localities/autocomplete/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
 
@@ -437,7 +439,7 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
       north: viewport.northeast.lat,
       west: viewport.southwest.lng,
     };
-    map.fitBounds(bounds);
+    map.fitBounds(bounds, { top: 100, left: 100, bottom: 100, right: 100 });
     map.panTo(addressDetail.geometry.location);
   } else {
     let zoom = 17;
@@ -453,12 +455,12 @@ function getLocalitiesDetails(
   publicId: string,
 ): Promise<woosmap.map.localities.LocalitiesDetailsResponse> {
   const args = {
-    key: "123456789",
+    key: woosmap_key,
     public_id: publicId,
     fields: "shape|geometry",
   };
   return fetch(
-    `https://develop-api.woosmap.com/1049/localities/details/?${buildQueryString(args)}`,
+    `https://api.woosmap.com/localities/details/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
 

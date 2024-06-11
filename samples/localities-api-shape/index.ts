@@ -35,8 +35,10 @@ function initMap(): void {
 }
 
 function createShape(result: woosmap.map.localities.LocalitiesDetailsResult) {
+  // @ts-ignore TypeDef to be updated
   if (result?.geometry?.shape) {
     hasShape = true;
+    // @ts-ignore TypeDef to be updated
     map.data.addGeoJson({ type: "Feature", geometry: result.geometry.shape });
     if (result.geometry.viewport) {
       const bounds = {

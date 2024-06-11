@@ -1,6 +1,6 @@
 {
-  "title": "Localities Api -Shape",
-  "description": "The Localities details endpoint returns detailed information about a specific point of interest (using the point of interest's identifier namely public_id), including geographic coordinates.",
+  "title": "Localities API - Shape",
+  "description": "This sample demonstrates how to display the shape returned from a supported feature using the Localities API. It retrieves GeoJSON Geometry from the Details endpoint of the Localities API and displays it using the map's Data layer.",
   "category": "Localities",
   "tag": "localities_api_shape",
   "name": "localities-api-shape",

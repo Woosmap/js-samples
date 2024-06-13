@@ -93,13 +93,9 @@ function displaySuggestions(results) {
     suggestionsList.innerHTML = "";
     if (results.length > 0) {
       results.forEach((result) => {
-        let _a;
         const li = document.createElement("li");
 
-        li.innerHTML =
-          (_a = formatPredictionList(result)) !== null && _a !== void 0
-            ? _a
-            : "";
+        li.innerHTML = formatPredictionList(result) ?? "";
         li.addEventListener("click", () => {
           suggestionsList.style.display = "none";
           multiSearch

@@ -43,18 +43,14 @@ const configLocator = {
 };
 
 function getPhone({ properties }) {
-  let _a;
-  const phone =
-    (_a = properties.contact) === null || _a === void 0 ? void 0 : _a.phone;
+  const phone = properties.contact?.phone;
   return phone
     ? `<li id='store-phone'><span class='marker-image'></span><p><a class='text-black' href='tel:${phone}'>${phone}</a></p></li>`
     : "";
 }
 
 function getWebSite({ properties }) {
-  let _a;
-  const website =
-    (_a = properties.contact) === null || _a === void 0 ? void 0 : _a.website;
+  const website = properties.contact?.website;
   return website
     ? `<li id='store-website'><span class='marker-image'></span><a class='text-black' href='${website}' target='_blank'>More Details</a></li>`
     : "";
@@ -114,11 +110,7 @@ function getFullSchedule({ properties }) {
 
   const daysHoursHTMLTable = Object.keys(dayLabels)
     .map((day) => {
-      let _a;
-      const hours =
-        ((_a = weeklyOpening[day]) === null || _a === void 0
-          ? void 0
-          : _a.hours) || [];
+      const hours = weeklyOpening[day]?.hours || [];
       let daysHours = "";
 
       if (hours.length === 0) {
@@ -144,8 +136,6 @@ function getHours(store) {
 }
 
 function getOpeningLabel({ properties }) {
-  let _a, _b, _c;
-
   if (!properties.open) {
     return "";
   }
@@ -153,10 +143,10 @@ function getOpeningLabel({ properties }) {
   let openLabel;
 
   if (properties.open.open_now) {
-    openLabel = `Open now until ${(_a = properties.open.current_slice) === null || _a === void 0 ? void 0 : _a.end}`;
+    openLabel = `Open now until ${properties.open.current_slice?.end}`;
   } else {
     // @ts-ignore - TODO next_opening is wrongly spelled `nextOpening` in @types/woosmap.map
-    openLabel = `Closed until ${convertTime(Date.parse(((_b = properties.open.next_opening) === null || _b === void 0 ? void 0 : _b.day) || "") / 1000)} at ${(_c = properties.open.next_opening) === null || _c === void 0 ? void 0 : _c.start}`;
+    openLabel = `Closed until ${convertTime(Date.parse(properties.open.next_opening?.day || "") / 1000)} at ${properties.open.next_opening?.start}`;
   }
   return `<p class='summary-hours'>${openLabel}</p>`;
 }

@@ -59,19 +59,16 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 }
 
 function getSelectedLatLng(selectElement) {
-  let _a, _b;
   return {
     lat: parseFloat(
-      (_a = selectElement.options[selectElement.selectedIndex]) === null ||
-        _a === void 0
-        ? void 0
-        : _a.getAttribute("data-lat"),
+      selectElement.options[selectElement.selectedIndex]?.getAttribute(
+        "data-lat",
+      ),
     ),
     lng: parseFloat(
-      (_b = selectElement.options[selectElement.selectedIndex]) === null ||
-        _b === void 0
-        ? void 0
-        : _b.getAttribute("data-lng"),
+      selectElement.options[selectElement.selectedIndex]?.getAttribute(
+        "data-lng",
+      ),
     ),
   };
 }

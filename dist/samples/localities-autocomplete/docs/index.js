@@ -81,7 +81,7 @@ function displayLocality(locality) {
     infoWindow.close();
   }
 
-  if (locality === null || locality === void 0 ? void 0 : locality.geometry) {
+  if (locality?.geometry) {
     marker = new woosmap.map.Marker({
       position: locality.geometry.location,
       icon: {
@@ -104,16 +104,11 @@ function displaySuggestions(localitiesPredictions) {
     suggestionsList.innerHTML = "";
     if (localitiesPredictions.localities.length > 0 && request["input"]) {
       localitiesPredictions.localities.forEach((locality) => {
-        let _a;
         const li = document.createElement("li");
 
-        li.textContent =
-          (_a = locality.description) !== null && _a !== void 0 ? _a : "";
+        li.textContent = locality.description ?? "";
         li.addEventListener("click", () => {
-          let _a;
-
-          inputElement.value =
-            (_a = locality.description) !== null && _a !== void 0 ? _a : "";
+          inputElement.value = locality.description ?? "";
           suggestionsList.style.display = "none";
           handleDetails(locality.public_id);
         });

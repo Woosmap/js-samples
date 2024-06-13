@@ -1,0 +1,72 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_stores_overlay_query_advanced] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@import "../../shared/scss/mixins.scss";
+
+#map-panel {
+  @include map-panel($top: 0, $left: 0);
+  max-width: 280px;
+  padding: 0;
+}
+
+#innerWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 0 10px 10px;
+  font-size: .85em;
+}
+
+.sectionHeader {
+  font-weight: 600;
+  background: #EEE;
+  border-bottom: 1px solid #eeeeee;
+  margin: 0 -10px 10px;
+  padding: 5px 10px;
+  color: #222;
+}
+
+select {
+  margin: .25em 0 0.7em;
+  padding: .5em .6em;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  vertical-align: middle;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  font-size: 1em;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+input[type=select]:focus {
+  outline: 0;
+  border-color: #03A9F4;
+}
+
+select {
+  height: 2.25em;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.options {
+  &__header {
+    font-weight: 600;
+    line-height: 24px;
+    display: flex;
+  }
+
+  &__input {
+    height: 24px;
+    display: flex;
+    align-items: baseline;
+  }
+}
+
+/* [END woosmap_stores_overlay_query_advanced] */

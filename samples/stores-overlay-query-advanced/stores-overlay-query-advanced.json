@@ -1,0 +1,16 @@
+{
+  "title": "Stores Overlay Query- Advanced",
+  "description": "Filter the displayed stores based on a specific query using Query Helper",
+  "category": "Stores Overlay",
+  "callback": "initMap",
+  "WOOSMAP_PUBLIC_API_KEY": "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
+  "libraries": [],
+  "tag": "stores_overlay_query_advanced",
+  "name": "stores-overlay-query-advanced",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

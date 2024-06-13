@@ -9,23 +9,23 @@ let storesOverlay: woosmap.map.StoresOverlay;
 function setQuery() {
   const type = typeSelect.value;
   const tag = tagSelect.value;
-  const clause = clauseAnd.checked
-    ? woosmap.map.query.BoolOperators.AND
-    : woosmap.map.query.BoolOperators.OR;
+  const clauseFunction = clauseAnd.checked
+    ? woosmap.map.query.and
+    : woosmap.map.query.or;
 
   let query: woosmap.map.query.Query;
 
   if (type !== "all" && tag !== "all") {
-    query = new woosmap.map.query.Query(
-      [woosmap.map.query.F("type", type), woosmap.map.query.F("tag", tag)],
-      clause,
-    );
+    query = clauseFunction([
+      woosmap.map.query.F("type", type),
+      woosmap.map.query.F("tag", tag),
+    ]);
   } else if (type !== "all") {
-    query = new woosmap.map.query.Query([woosmap.map.query.F("type", type)]);
+    query = clauseFunction([woosmap.map.query.F("type", type)]);
   } else if (tag !== "all") {
-    query = new woosmap.map.query.Query([woosmap.map.query.F("tag", tag)]);
+    query = clauseFunction([woosmap.map.query.F("tag", tag)]);
   } else {
-    query = new woosmap.map.query.Query([]);
+    query = clauseFunction([]);
   }
 
   storesOverlay.setQuery(query.toString());

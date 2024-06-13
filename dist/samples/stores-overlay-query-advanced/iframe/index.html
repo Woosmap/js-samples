@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Stores Overlay Query- Advanced</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const e = document.createElement("link").relList;
+        if (e && e.supports && e.supports("modulepreload")) return;
+        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
+          r(t);
+        new MutationObserver((t) => {
+          for (const o of t)
+            if (o.type === "childList")
+              for (const l of o.addedNodes)
+                l.tagName === "LINK" && l.rel === "modulepreload" && r(l);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function s(t) {
+          const o = {};
+          return (
+            t.integrity && (o.integrity = t.integrity),
+            t.referrerPolicy && (o.referrerPolicy = t.referrerPolicy),
+            t.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : t.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
+          );
+        }
+        function r(t) {
+          if (t.ep) return;
+          t.ep = !0;
+          const o = s(t);
+          fetch(t.href, o);
+        }
+      })();
+      let a, i, u, p, d;
+      function c() {
+        const n = a.value,
+          e = i.value,
+          s = u.checked ? woosmap.map.query.and : woosmap.map.query.or;
+        let r;
+        n !== "all" && e !== "all"
+          ? (r = s([
+              woosmap.map.query.F("type", n),
+              woosmap.map.query.F("tag", e),
+            ]))
+          : n !== "all"
+            ? (r = s([woosmap.map.query.F("type", n)]))
+            : e !== "all"
+              ? (r = s([woosmap.map.query.F("tag", e)]))
+              : (r = s([])),
+          d.setQuery(r.toString());
+      }
+      function m() {
+        const n = { lat: 51.52, lng: -0.13 },
+          e = {
+            url: "https://images.woosmap.com/marker-blue.svg",
+            scaledSize: { height: 40, width: 34 },
+          },
+          s = {
+            breakPoint: 18,
+            rules: [
+              { type: "bose_store", color: "#2d2d2d", icon: e },
+              { type: "professional_systems", color: "#733f00", icon: e },
+              { type: "bose_excellence_centre", color: "#ef8900", icon: e },
+              { type: "bose_reseller", color: "#607c92", icon: e },
+              { type: "bose_factory_store", color: "#607c92", icon: e },
+            ],
+            default: {
+              color: "#2D2D2D",
+              size: 11,
+              minSize: 3,
+              icon: e,
+              selectedIcon: {
+                url: "https://images.woosmap.com/marker-red.svg",
+                scaledSize: { height: 50, width: 43 },
+              },
+            },
+          },
+          r = new woosmap.map.Map(document.getElementById("map"), {
+            zoom: 8,
+            center: n,
+          });
+        (d = new woosmap.map.StoresOverlay(s)), d.setMap(r), y();
+      }
+      function y() {
+        (a = document.getElementById("type")),
+          (i = document.getElementById("tag")),
+          (u = document.getElementById("clauseAND")),
+          (p = document.getElementById("clauseOR")),
+          a.addEventListener("change", c),
+          i.addEventListener("change", c),
+          u.addEventListener("change", c),
+          p.addEventListener("change", c);
+      }
+      window.initMap = m;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      #map-panel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        overflow: hidden;
+        z-index: 1;
+        max-width: 280px;
+        padding: 0;
+      }
+      #innerWrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+        overflow-y: auto;
+        padding: 0 10px 10px;
+        font-size: 0.85em;
+      }
+      .sectionHeader {
+        font-weight: 600;
+        background: #eee;
+        border-bottom: 1px solid #eeeeee;
+        margin: 0 -10px 10px;
+        padding: 5px 10px;
+        color: #222;
+      }
+      select {
+        margin: 0.25em 0 0.7em;
+        padding: 0.5em 0.6em;
+        border: 1px solid #ccc;
+        box-shadow: inset 0 1px 3px #ddd;
+        border-radius: 4px;
+        vertical-align: middle;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        font-size: 1em;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 100%;
+      }
+      input[type="select"]:focus {
+        outline: 0;
+        border-color: #03a9f4;
+      }
+      select {
+        height: 2.25em;
+        border: 1px solid #ccc;
+        background-color: #fff;
+      }
+      .options__header {
+        font-weight: 600;
+        line-height: 24px;
+        display: flex;
+      }
+      .options__input {
+        height: 24px;
+        display: flex;
+        align-items: baseline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map-panel">
+      <div id="innerWrapper">
+        <div class="sectionHeader">
+          <span>setQuery using <em>Query Helper</em></span>
+        </div>
+        <div class="options">
+          <label class="options__header" for="type">Filter by Type </label>
+          <select id="type">
+            <option value="all">All</option>
+            <option value="bose_store">Bose Store</option>
+            <option value="bose_reseller">Reseller</option>
+            <option value="professional_systems">Professional Systems</option>
+            <option value="aviation">Aviation</option>
+            <option value="bose_music_partners">Music Partners</option>
+            <option value="bose_excellence_centre">Excellence Centre</option>
+            <option value="bose_factory_store">Factory Store</option>
+            <option value="bose_shop-in-shop">Shop In Shop</option>
+          </select>
+        </div>
+        <div class="options">
+          <label class="options__header" for="tag"
+            >Filter by Available Service (Tag)
+          </label>
+          <select id="tag">
+            <option value="all">All</option>
+            <option value="wheelchair_access">Wheelchair Access</option>
+            <option value="in-store_wi-fi">Wi-Fi</option>
+            <option value="parking">Parking</option>
+            <option value="schedule_a_demo">Schedule a Demo</option>
+            <option value="reserve_and_collect">Reserve & Collect</option>
+            <option value="delivery_and_installation_service">
+              Delivery & Installation
+            </option>
+            <option value="customised_solutions">Customised Solutions</option>
+            <option value="financing">Financing</option>
+            <option value="repair_service">Repair Service</option>
+          </select>
+        </div>
+        <div class="options">
+          <span class="options__header">Clause</span>
+          <div class="options__input">
+            <input
+              id="clauseAND"
+              aria-label="Yes"
+              name="clauses"
+              type="radio"
+              value="AND"
+              checked=""
+            />
+            <label for="true">AND</label>
+          </div>
+          <div class="options__input">
+            <input
+              id="clauseOR"
+              aria-label="No"
+              name="clauses"
+              type="radio"
+              value="OR"
+            />
+            <label for="false">OR</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

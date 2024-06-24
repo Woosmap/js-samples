@@ -1,7 +1,7 @@
 // [START woosmap_localities_api_shape]
 const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
   { country: [] };
-const woosmap_key = "YOUR_API_KEY";
+const woosmap_key = "123456789";
 let debouncedAutocomplete: (
   ...args: any[]
 ) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
@@ -257,7 +257,7 @@ function autocompleteAddress(
     key: woosmap_key,
     input,
     no_deprecated_fields: "true",
-    types: "locality",
+    types: "locality|admin_level|country",
     components,
   };
   if (components !== "") {
@@ -266,7 +266,7 @@ function autocompleteAddress(
     }
   }
   return fetch(
-    `https://api.woosmap.com/localities/autocomplete/?${buildQueryString(args)}`,
+    `https://develop-api.woosmap.com/localities/autocomplete/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
 
@@ -462,7 +462,7 @@ function getLocalitiesDetails(
     fields: "shape|geometry",
   };
   return fetch(
-    `https://api.woosmap.com/localities/details/?${buildQueryString(args)}`,
+    `https://develop-api.woosmap.com/localities/details/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
 

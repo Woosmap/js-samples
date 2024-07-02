@@ -1,6 +1,7 @@
 {
   "title": "Render Shapes - Handling Events",
   "description": "Register event listeners on the data layer",
+  "category": "Rendering Shapes",
   "callback": "initMap",
   "tag": "render_shapes_data_events",
   "name": "render-shapes-data-events",

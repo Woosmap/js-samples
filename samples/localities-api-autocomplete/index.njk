@@ -2,18 +2,24 @@
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
-        <div id="autocomplete-container">
-            {% svgIcon 'search.svg' %}
-            <input
-                    type="text"
-                    id="autocomplete-input"
-                    placeholder="Search a locality or a postal code..."
-                    autocomplete="off"
-            />
-            <button aria-label="Clear" class="clear-searchButton" type="button">
-                {% svgIcon 'clear.svg' %}
-            </button>
-            <ul id="suggestions-list"></ul>
+        <p class="title">Autocomplete input with Woosmap Localities API</p>
+        <p class="note">
+            <em>Restrictions on types "locality|postal_code"</em>
+        </p>
+        <div class="search-container">
+            <div id="autocomplete-container">
+                {% svgIcon 'search.svg' %}
+                <input
+                        type="text"
+                        id="autocomplete-input"
+                        placeholder="Search a locality or a postal code..."
+                        autocomplete="off"
+                />
+                <button aria-label="Clear" class="clear-searchButton" type="button">
+                    {% svgIcon 'clear.svg' %}
+                </button>
+                <ul id="suggestions-list"></ul>
+            </div>
         </div>
         <pre id="response-container"></pre>
     </div>

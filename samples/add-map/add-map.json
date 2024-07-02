@@ -2,6 +2,7 @@
   "title": "Add Map",
   "description": "A basic Woosmap Map sample centered on London",
   "callback": "initMap",
+  "category": "Map Basics",
   "tag": "add_map",
   "name": "add-map",
   "pagination": {

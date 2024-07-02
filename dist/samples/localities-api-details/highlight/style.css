@@ -90,12 +90,16 @@ body {
   left: 0;
   z-index: 1;
   list-style: none;
+  max-height: 80vh;
   margin: 5px 0 0;
   padding: 0;
   display: none;
-  max-height: 225px;
   overflow-y: auto;
   background-color: #fff;
+}
+
+#suggestions-list.visible {
+  display: block;
 }
 
 #suggestions-list li {
@@ -222,7 +226,7 @@ body {
 
 body {
   background-color: #eee;
-  overflow: auto;
+  overflow-y: hidden;
 }
 
 .bold {
@@ -273,7 +277,7 @@ body {
   display: none;
   position: absolute;
   right: 10px;
-  bottom: 60px;
+  bottom: 25px;
   border-radius: 6px;
   max-width: 240px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);

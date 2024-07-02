@@ -22,10 +22,10 @@ function initMap() {
       lng: -0.13,
     },
     icon: {
-      url: "https://images.woosmap.com/dot-marker.png",
+      url: "https://images.woosmap.com/marker.png",
       scaledSize: {
         height: 50,
-        width: 36,
+        width: 32,
       },
     },
     map,

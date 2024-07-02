@@ -1,0 +1,35 @@
+---json
+{
+"countries": [
+{ "code": "FR", "name": "France" },
+{ "code": "GB", "name": "United Kingdom"},
+{ "code": "DE", "name": "Germany"},
+{ "code": "ES", "name": "Spain"}
+]
+}
+---
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+        <div id="map"></div>
+        <div class="addressDetails">
+            <div class="addressOptions"></div>
+        </div>
+        <div id="autocomplete-container">
+            {% svgIcon 'search.svg' %}
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search an Address..."
+                    autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+                {% svgIcon 'clear.svg' %}
+            </button>
+            <ul id="suggestions-list"></ul>
+        </div>
+        {% include '../../src/_includes/country-selector.njk' %}
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

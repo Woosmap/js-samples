@@ -1,6 +1,7 @@
 {
   "title": "Distance Matrix - Advanced",
   "description": "Using the DistanceService to calculate distances and durations between multiple origins and destinations",
+  "category": "Services",
   "callback": "initMap",
   "tag": "distance_matrix_advanced",
   "name": "distance-matrix-advanced",

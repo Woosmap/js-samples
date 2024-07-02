@@ -1,6 +1,7 @@
 {
   "title": "Render Shapes - GeoJSON data",
   "description": "Add a map and load external GeoJSON data.",
+  "category": "Rendering Shapes",
   "callback": "initMap",
   "tag": "render_shapes_geojson",
   "name": "render-shapes-geojson",

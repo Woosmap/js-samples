@@ -1,6 +1,7 @@
 {
   "title": "Localities Api - Details Endpoint",
   "description": "The Localities details endpoint returns detailed information about a specific point of interest (using the point of interest's identifier namely public_id), including geographic coordinates.",
+  "category": "Localities",
   "tag": "localities_api_details",
   "name": "localities-api-details",
   "callback": "initMap",

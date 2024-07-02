@@ -1,6 +1,7 @@
 {
   "title": "Localities Api - Details (Autocomplete on postal codes with addresses)",
   "description": "Get details of localities using autocomplete on postal codes only. (only available in the UK).",
+  "category": "Localities",
   "tag": "localities_api_details_postalcodes",
   "name": "localities-api-details-postalcodes",
   "callback": "initMap",

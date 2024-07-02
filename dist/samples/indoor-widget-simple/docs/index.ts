@@ -1,4 +1,4 @@
-// [START woosmap_indoor_Widget_simple]
+// [START woosmap_indoor_widget_simple]
 let map: woosmap.map.Map;
 
 function initMap(): void {
@@ -57,6 +57,6 @@ declare global {
   }
 }
 window.initMap = initMap;
-// [END woosmap_indoor_Widget_simple]
+// [END woosmap_indoor_widget_simple]
 
 export {};

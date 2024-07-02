@@ -1,6 +1,7 @@
 {
   "title": "Distance Isochrone",
   "description": "Distance Isochrones lets you calculate distance isochrones from a given location.",
+  "category": "Services",
   "callback": "initMap",
   "tag": "distance_isochrone",
   "name": "distance-isochrone",

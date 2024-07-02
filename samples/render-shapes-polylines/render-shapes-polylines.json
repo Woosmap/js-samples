@@ -1,6 +1,7 @@
 {
   "title": "Render Shapes - Polylines",
   "description": "Display and style geospatial data like polylines or any GeoJSON data.",
+  "category": "Rendering Shapes",
   "callback": "initMap",
   "tag": "render_shapes_polylines",
   "name": "render-shapes-polylines",

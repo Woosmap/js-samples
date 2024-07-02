@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities API - Shape</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <div class="addressDetails">
+        <div class="addressOptions"></div>
+      </div>
+      <div id="autocomplete-container">
+        <svg class="search-icon" viewBox="0 0 16 16">
+          <path
+            d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Search an Address..."
+          autocomplete="off"
+        />
+        <button aria-label="Clear" class="clear-searchButton" type="button">
+          <svg class="clear-icon" viewBox="0 0 24 24">
+            <path
+              d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+            ></path>
+          </svg>
+        </button>
+        <ul id="suggestions-list"></ul>
+      </div>
+      <div id="countrySelector" class="dropdown">
+        <button class="dropdown-button">
+          <span> Select countries </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"
+            ></path>
+          </svg>
+        </button>
+        <div id="countryDropdown" class="dropdown-content dropdown-menu">
+          <div>
+            <ul role="listbox">
+              <li
+                class="country"
+                data-countrycode="FR"
+                data-countryname="France"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-fr"></span>
+                  <div class="country-name">France</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="GB"
+                data-countryname="United Kingdom"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-gb"></span>
+                  <div class="country-name">United Kingdom</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="DE"
+                data-countryname="Germany"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-de"></span>
+                  <div class="country-name">Germany</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="ES"
+                data-countryname="Spain"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-es"></span>
+                  <div class="country-name">Spain</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,220 @@
+/* [START woosmap_multisearch_address_form_autofill] */
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+  height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#autocomplete-container {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  background: #fff;
+  border-radius: 12px;
+  padding: 0 12px;
+  max-width: 320px;
+  width: 100%;
+  height: 42px;
+  border: none;
+  box-sizing: border-box;
+  align-items: center;
+  cursor: text;
+  font-size: 15px;
+}
+
+#autocomplete-container .search-icon, #autocomplete-container .clear-icon {
+  color: inherit;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+#autocomplete-container .clear-icon {
+  transform: scale(1.3);
+}
+
+#autocomplete-input {
+  box-sizing: border-box;
+  padding: 0;
+  height: 40px;
+  line-height: 24px;
+  vertical-align: top;
+  transition-property: color;
+  transition-duration: 0.3s;
+  width: 100%;
+  text-overflow: ellipsis;
+  background: transparent;
+  border-radius: 0;
+  border: 0;
+  margin: 0 8px;
+  outline: 0;
+  overflow: visible;
+  appearance: textfield;
+  font-size: 100%;
+}
+
+.clear-searchButton {
+  display: none;
+  height: 18px;
+  width: 22px;
+  background: none;
+  border: none;
+  vertical-align: middle;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+#suggestions-list {
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+  position: absolute;
+  max-width: 320px;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  list-style: none;
+  max-height: 80vh;
+  margin: 5px 0 0;
+  padding: 0;
+  display: none;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+#suggestions-list.visible {
+  display: block;
+}
+
+#suggestions-list li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#suggestions-list li:hover {
+  background-color: #f2f2f2;
+}
+
+body {
+  background-color: #eee;
+}
+
+.title {
+  margin-block-end: 0;
+  font-weight: 500;
+}
+
+.note {
+  margin-block-start: 4px;
+  font-size: 13px;
+}
+
+#form-wrapper {
+  padding: 15px;
+}
+
+#autocomplete-container {
+  position: relative;
+  left: 0;
+  top: 0;
+  max-width: 100%;
+  border: 1px solid #686868;
+  background: #FFF;
+  box-shadow: none;
+  border-radius: 3px;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.input-wrapper {
+  margin-top: 5px;
+  border: 1px solid #686868;
+  background: #FFF;
+  border-radius: 3px;
+  height: 40px;
+}
+.input-wrapper input {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  outline: 0;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: none;
+  font-size: 15px;
+}
+
+.form-label {
+  width: 100%;
+  padding: 0.5em 0;
+}
+
+.full-field {
+  flex: 400px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.field-left {
+  flex: 1 150px;
+  margin: 15px 15px 15px 0px;
+}
+
+.field-right {
+  flex: 1 150px;
+  margin: 15px 0px 15px 15px;
+}
+
+#suggestions-list {
+  max-width: 100%;
+}
+#suggestions-list:after {
+  content: "";
+  box-sizing: border-box;
+  text-align: right;
+  display: block;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+#suggestions-list.places:after {
+  padding: 1px 1px 1px 0;
+  height: 18px;
+  background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+  background-size: 120px 14px;
+}
+#suggestions-list.localities:after {
+  margin: 0 6px 3px;
+  height: 16px;
+  background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+}
+#suggestions-list .no-result {
+  opacity: 0.6;
+}
+
+/* [END woosmap_multisearch_address_form_autofill] */

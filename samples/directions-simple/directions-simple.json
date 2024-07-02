@@ -1,6 +1,7 @@
 {
   "title": "Directions Service",
   "description": "Compute routes between an origin and a destination.",
+  "category": "Services",
   "callback": "initMap",
   "tag": "directions_simple",
   "name": "directions-simple",

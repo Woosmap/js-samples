@@ -13,10 +13,10 @@ function initMap(): void {
   const marker = new woosmap.map.Marker({
     position: map.getCenter(),
     icon: {
-      url: "https://images.woosmap.com/dot-marker.png",
+      url: "https://images.woosmap.com/marker.png",
       scaledSize: {
-        height: 64,
-        width: 46,
+        height: 50,
+        width: 32,
       },
     },
   });

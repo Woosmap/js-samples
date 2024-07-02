@@ -1,6 +1,7 @@
 {
   "title": "Map Clustering with Stores",
   "description": "This sample illustrates the usage of map clustering with Stores Search API",
+  "category": "Markers",
   "callback": "initMap",
   "WOOSMAP_PUBLIC_API_KEY": "woos-3cad58f4-0d94-3f95-8fa3-1f0dc035591c",
   "tag": "map_clustering_stores",

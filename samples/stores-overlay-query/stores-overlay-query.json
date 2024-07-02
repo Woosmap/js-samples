@@ -1,6 +1,7 @@
 {
   "title": "Stores Overlay Query",
   "description": "Filter the displayed stores based on a specific query",
+  "category": "Stores Overlay",
   "callback": "initMap",
   "libraries": [],
   "tag": "stores_overlay_query",

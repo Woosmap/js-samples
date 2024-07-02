@@ -1,11 +1,10 @@
-// [START woosmap_indoor_Widget_simple]
+// [START woosmap_indoor_widget_simple]
 let map;
 
 function initMap() {
   console.log("init map");
   map = new window.woosmap.map.Map(document.getElementById("map"), {});
 
-  // [START woosmap_indoor_widget_simple]
   const conf = {
     defaultFloor: 0, //Render map with default floor
     venue: "gdn_doc",

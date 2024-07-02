@@ -71,16 +71,16 @@
           ],
           gestureHandling: v,
         },
-        d = document.getElementById("autocomplete-input"),
+        l = document.getElementById("autocomplete-input"),
         m = document.getElementById("submit-button");
-      d &&
+      l &&
         m &&
-        (d.addEventListener("keydown", b), m.addEventListener("click", S));
+        (l.addEventListener("keydown", b), m.addEventListener("click", S));
       function b(e) {
-        e.key === "Enter" && l(null);
+        e.key === "Enter" && d(null);
       }
       function S() {
-        l(null);
+        d(null);
       }
       function E(e) {
         const t = e.map(k),
@@ -117,9 +117,9 @@
         });
       }
       function $(e) {
-        return d ? (e ? { latLng: e } : { address: d.value }) : null;
+        return l ? (e ? { latLng: e } : { address: l.value }) : null;
       }
-      function l(e) {
+      function d(e) {
         const t = $(e);
         t &&
           f
@@ -166,8 +166,8 @@
           c = new woosmap.map.Marker({
             position: t,
             icon: {
-              url: "https://images.woosmap.com/dot-marker.png",
-              scaledSize: { height: 64, width: 46 },
+              url: "https://images.woosmap.com/marker.png",
+              scaledSize: { height: 50, width: 32 },
             },
           });
           const s = q(e);
@@ -184,7 +184,7 @@
               : "https://images.woosmap.com/starbucks-marker.svg",
           })),
           r.addListener("click", (e) => {
-            e.latlng && l(e.latlng);
+            e.latlng && d(e.latlng);
           }),
           (p = new woosmap.map.StoresService()),
           (f = new woosmap.map.LocalitiesService());

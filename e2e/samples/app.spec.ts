@@ -8,10 +8,17 @@ import fs from "fs";
 
 export const BROKEN_APP_SAMPLES = [
   "store-locator-widget-baidu", // too long to load
+  "geolocation-nearby-stores",
 ];
 export const AUTOCOMPLETE_WITHOUT_MAP_SAMPLES = [
   "localities-api-autocomplete",
   "localities-api-autocomplete-advanced",
+  "localities-js-api",
+  "localities-js-widget",
+  "localities-js-widget-custom-desc",
+  "multisearch-js-api",
+  "multisearch-address-form-autofill",
+  "stores-search-autocomplete-api",
 ];
 
 const samples = fs

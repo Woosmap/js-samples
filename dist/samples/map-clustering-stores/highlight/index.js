@@ -1,39 +1,3 @@
-let __awaiter =
-  (this && this.__awaiter) ||
-  function (thisArg, _arguments, P, generator) {
-    function adopt(value) {
-      return value instanceof P
-        ? value
-        : new P((resolve) => {
-            resolve(value);
-          });
-    }
-    return new (P || (P = Promise))((resolve, reject) => {
-      function fulfilled(value) {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-
-      function rejected(value) {
-        try {
-          step(generator["throw"](value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-
-      function step(result) {
-        result.done
-          ? resolve(result.value)
-          : adopt(result.value).then(fulfilled, rejected);
-      }
-
-      step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-  };
 import Supercluster from "supercluster";
 let map;
 let infoWindow;
@@ -134,25 +98,25 @@ function getAllStores() {
     storesByPage: 300,
   };
   const storesService = new woosmap.map.StoresService();
-  const getStores = (storePage) =>
-    __awaiter(this, void 0, void 0, function* () {
-      if (storePage) {
-        query.page = storePage;
-      }
-      return storesService
-        .search(query)
-        .then((response) => {
-          allStores.push(...response.features);
-          if (query.page === response.pagination.pageCount) {
-            return allStores;
-          }
-          return getStores(response.pagination.page + 1);
-        })
-        .catch((err) => {
-          console.error(err);
-          throw new Error(`Error getting all stores: ${err.message}`);
-        });
-    });
+
+  const getStores = async (storePage) => {
+    if (storePage) {
+      query.page = storePage;
+    }
+    return storesService
+      .search(query)
+      .then((response) => {
+        allStores.push(...response.features);
+        if (query.page === response.pagination.pageCount) {
+          return allStores;
+        }
+        return getStores(response.pagination.page + 1);
+      })
+      .catch((err) => {
+        console.error(err);
+        throw new Error(`Error getting all stores: ${err.message}`);
+      });
+  };
   return getStores();
 }
 

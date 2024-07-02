@@ -1,8 +1,9 @@
 {
   "title": "Indoor Navigation Widget",
   "description": "With the help IndoorDirectionService you can use the navigation widget for better navigation experience such as turn by turn navigation.",
+  "category": "Indoor Maps",
   "callback": "initMap",
-  "tag": "indoor_navigation_widegt",
+  "tag": "indoor_navigation_widget",
   "name": "indoor-navigation-widget",
   "libraries": "widgets",
   "pagination": {

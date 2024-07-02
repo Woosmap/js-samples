@@ -1,6 +1,7 @@
 {
   "title": "Vector Map",
   "description": "Display 3D buildings on tilt the map",
+  "category": "Map Styles",
   "callback": "initMap",
   "tag": "vector_map",
   "name": "vector-map",

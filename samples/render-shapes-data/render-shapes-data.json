@@ -1,6 +1,7 @@
 {
   "title": "Render Shapes - Data Layer",
   "description": "Adding Data Geometries. All supported geometries from GeoJSON has dedicated subclasses attached to the Data layer.",
+  "category": "Rendering Shapes",
   "callback": "initMap",
   "tag": "render_shapes_data",
   "name": "render-shapes-data",

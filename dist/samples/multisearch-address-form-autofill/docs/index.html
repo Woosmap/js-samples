@@ -1,0 +1,89 @@
+<!doctype html>
+<!-- [START woosmap_multisearch_address_form_autofill] -->
+<html>
+  <head>
+    <title>MultiSearch Autofill Address Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script src="https://sdk.woosmap.com/multisearch/multisearch.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <!-- [START woosmap_multisearch_address_form_autofill_div] -->
+    <div id="form-wrapper">
+      <p class="title">
+        Autofill address form with Woosmap Multisearch <em>(GB)</em>
+      </p>
+      <p class="note">
+        <em>Input an address in "Deliver to" field to autofill the form</em>
+      </p>
+      <form id="address-form" action="" method="get" autocomplete="off">
+        <div class="full-field">
+          <label class="form-label" for="autocomplete-input">Deliver to*</label>
+          <div id="autocomplete-container" class="input-wrapper">
+            <svg class="search-icon" viewBox="0 0 16 16">
+              <path
+                d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+
+            <input
+              type="text"
+              id="autocomplete-input"
+              name="autocomplete-input"
+              placeholder="Search an address..."
+              autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+              <svg class="clear-icon" viewBox="0 0 24 24">
+                <path
+                  d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+                ></path>
+              </svg>
+            </button>
+            <ul id="suggestions-list"></ul>
+          </div>
+        </div>
+        <div class="full-field">
+          <label class="form-label" for="address2"
+            >Apartment, unit, suite, or floor #</label
+          >
+          <div class="input-wrapper">
+            <input id="address2" name="address2" />
+          </div>
+        </div>
+        <div class="full-field">
+          <label class="form-label" for="locality">City*</label>
+          <div class="input-wrapper">
+            <input id="locality" name="locality" required />
+          </div>
+        </div>
+        <div class="field-left">
+          <label class="form-label" for="state">State/Province*</label>
+          <div class="input-wrapper">
+            <input id="state" name="state" required />
+          </div>
+        </div>
+        <div class="field-right">
+          <label class="form-label" for="postcode">Postal code*</label>
+          <div class="input-wrapper">
+            <input id="postcode" name="postcode" required />
+          </div>
+        </div>
+        <div class="full-field">
+          <label class="form-label" for="country">Country/Region*</label>
+          <div class="input-wrapper">
+            <input id="country" name="country" required />
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- [END woosmap_multisearch_address_form_autofill_div] -->
+  </body>
+</html>
+<!-- [END woosmap_multisearch_address_form_autofill] -->

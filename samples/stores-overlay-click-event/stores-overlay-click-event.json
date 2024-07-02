@@ -1,6 +1,7 @@
 {
   "title": "Stores Overlay Click Event",
   "description": "Listen to this event to get the store object and process the associated attributes.",
+  "category": "Stores Overlay",
   "callback": "initMap",
   "libraries": [],
   "tag": "stores_overlay_click_event",

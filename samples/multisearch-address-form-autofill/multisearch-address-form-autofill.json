@@ -1,0 +1,14 @@
+{
+  "title": "MultiSearch Autofill Address Form",
+  "description": "The Autofill Address Form sample demonstrates how to use the the MultiSearch JS API details call to populate the address form.",
+  "category": "Localities",
+  "GOOGLE_API_KEY": "AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA",
+  "tag": "multisearch_address_form_autofill",
+  "name": "multisearch-address-form-autofill",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

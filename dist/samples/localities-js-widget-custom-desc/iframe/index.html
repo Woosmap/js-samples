@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities JS Widget - custom description</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script src="https://sdk.woosmap.com/localities/localitieswidget.2.0.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4"></script>
+    <link
+      rel="stylesheet"
+      href="https://sdk.woosmap.com/localities/style.2.0.css"
+    />
+
+    <script type="module" crossorigin>
+      (function () {
+        const o = document.createElement("link").relList;
+        if (o && o.supports && o.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          s(e);
+        new MutationObserver((e) => {
+          for (const t of e)
+            if (t.type === "childList")
+              for (const i of t.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && s(i);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function r(e) {
+          const t = {};
+          return (
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
+          );
+        }
+        function s(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const t = r(e);
+          fetch(e.href, t);
+        }
+      })();
+      function c() {
+        const n = document.getElementById("response-container"),
+          o = new window.woosmap.localities.Autocomplete("autocomplete-input", {
+            minLength: 3,
+            components: { country: ["fr"] },
+            customDescription:
+              'postal_code:"{name} ({postal_town}) - {administrative_area_level_0}"',
+          });
+        o.addListener("selected_suggestion", () => {
+          const r = o.getSelectedSuggestionDetails();
+          n &&
+            ((n.innerHTML = `<code>${JSON.stringify(r, null, 2)}</code>`),
+            (n.style.display = "block"));
+        });
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        c();
+      });
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      body {
+        background-color: #eee;
+        overflow-y: hidden;
+      }
+      #autocomplete-container {
+        display: flex;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        background: #fff;
+        max-width: 320px;
+        width: 100%;
+        height: 42px;
+        border: none;
+        box-sizing: border-box;
+        align-items: center;
+        cursor: text;
+        font-size: 15px;
+      }
+      #autocomplete-input {
+        box-sizing: border-box;
+        height: 40px;
+        line-height: 24px;
+        vertical-align: top;
+        transition-property: color;
+        transition-duration: 0.3s;
+        width: 100%;
+        padding: 0 12px;
+        text-overflow: ellipsis;
+        background: transparent;
+        border-radius: 0;
+        border: 0;
+        margin: 0;
+        outline: 0;
+        overflow: visible;
+        appearance: textfield;
+        font-size: 100%;
+      }
+      .localities-input-wrapper,
+      .localities-input-container {
+        width: 100%;
+      }
+      pre {
+        display: none;
+        margin: 70px 10px;
+        max-height: calc(100vh - 110px);
+        padding: 10px;
+        border: 3px solid #c8c8c8;
+        background-color: #fff;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        overflow-x: auto;
+        font-family:
+          Consolas,
+          Andale Mono WT,
+          Andale Mono,
+          Lucida Console,
+          Lucida Sans Typewriter,
+          DejaVu Sans Mono,
+          Bitstream Vera Sans Mono,
+          Liberation Mono,
+          Nimbus Mono L,
+          Monaco,
+          Courier New,
+          Courier,
+          monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="autocomplete-container">
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Search a locality or a postal code..."
+          autocomplete="off"
+        />
+      </div>
+      <pre id="response-container"></pre>
+    </div>
+  </body>
+</html>

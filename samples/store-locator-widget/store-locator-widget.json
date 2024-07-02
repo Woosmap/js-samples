@@ -1,6 +1,7 @@
 {
   "title": "Store Locator Widget",
   "description": "Woosmap Store Locator Widget displaying Bose stores all over the world ",
+  "category": "Store Locator Widget",
   "WOOSMAP_PUBLIC_API_KEY": "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
   "tag": "store_locator_widget",
   "name": "store-locator-widget",

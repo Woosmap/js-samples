@@ -1,0 +1,188 @@
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+  height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#autocomplete-container {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  background: #fff;
+  border-radius: 12px;
+  padding: 0 12px;
+  max-width: 320px;
+  width: 100%;
+  height: 42px;
+  border: none;
+  box-sizing: border-box;
+  align-items: center;
+  cursor: text;
+  font-size: 15px;
+}
+
+#autocomplete-container .search-icon, #autocomplete-container .clear-icon {
+  color: inherit;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+#autocomplete-container .clear-icon {
+  transform: scale(1.3);
+}
+
+#autocomplete-input {
+  box-sizing: border-box;
+  padding: 0;
+  height: 40px;
+  line-height: 24px;
+  vertical-align: top;
+  transition-property: color;
+  transition-duration: 0.3s;
+  width: 100%;
+  text-overflow: ellipsis;
+  background: transparent;
+  border-radius: 0;
+  border: 0;
+  margin: 0 8px;
+  outline: 0;
+  overflow: visible;
+  appearance: textfield;
+  font-size: 100%;
+}
+
+.clear-searchButton {
+  display: none;
+  height: 18px;
+  width: 22px;
+  background: none;
+  border: none;
+  vertical-align: middle;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+#suggestions-list {
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+  position: absolute;
+  max-width: 320px;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  list-style: none;
+  max-height: 80vh;
+  margin: 5px 0 0;
+  padding: 0;
+  display: none;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+#suggestions-list.visible {
+  display: block;
+}
+
+#suggestions-list li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#suggestions-list li:hover {
+  background-color: #f2f2f2;
+}
+
+body {
+  background-color: #eee;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+  padding: 10px;
+}
+
+.search-container {
+  position: relative;
+  min-height: 45px;
+}
+
+.search-container #autocomplete-container {
+  top: 0;
+  left: 0;
+}
+
+pre {
+  display: none;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 3px solid #c8c8c8;
+  background-color: white;
+  border-radius: 8px;
+  overflow-y: auto;
+  overflow-x: auto;
+  font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.title {
+  margin-block-end: 0;
+  font-weight: 500;
+}
+
+.note {
+  margin-block-start: 4px;
+  font-size: 13px;
+}
+
+#suggestions-list:after {
+  content: "";
+  box-sizing: border-box;
+  text-align: right;
+  display: block;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+#suggestions-list.places:after {
+  padding: 1px 1px 1px 0;
+  height: 18px;
+  background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+  background-size: 120px 14px;
+}
+#suggestions-list.localities:after {
+  margin: 0 6px 3px;
+  height: 16px;
+  background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+}
+#suggestions-list .no-result {
+  opacity: 0.6;
+}
+

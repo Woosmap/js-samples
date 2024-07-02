@@ -91,12 +91,16 @@ body {
   left: 0;
   z-index: 1;
   list-style: none;
+  max-height: 80vh;
   margin: 5px 0 0;
   padding: 0;
   display: none;
-  max-height: 225px;
   overflow-y: auto;
   background-color: #fff;
+}
+
+#suggestions-list.visible {
+  display: block;
 }
 
 #suggestions-list li {

@@ -1,0 +1,51 @@
+
+body {
+  background-color: #eee;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+  padding: 10px;
+}
+
+.search-container {
+  position: relative;
+  min-height: 45px;
+
+  #autocomplete-container {
+    top: 0;
+    left: 0;
+  }
+}
+
+
+pre {
+  display: none;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 3px solid #c8c8c8;
+  background-color: white;
+  border-radius: 8px;
+  overflow-y: auto;
+  overflow-x: auto;
+  font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.title {
+  margin-block-end: 0;
+  font-weight: 500;
+}
+
+.note {
+  margin-block-start: 4px;
+  font-size: 13px;
+}

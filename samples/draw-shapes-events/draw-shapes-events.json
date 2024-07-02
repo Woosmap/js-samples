@@ -1,6 +1,7 @@
 {
   "title": "Draw Shapes - Handling Events",
   "description": "Register event handler on drawn shapes.",
+  "category": "Drawing Shapes",
   "callback": "initMap",
   "libraries": "drawing",
   "tag": "draw_shapes_events",

@@ -1,6 +1,7 @@
 {
   "title": "Map Clustering with GeoJSON",
   "description": "This sample illustrates the usage of map clustering with GeoJSON data.",
+  "category": "Markers",
   "callback": "initMap",
   "tag": "map_clustering_geojson",
   "name": "map-clustering-geojson",

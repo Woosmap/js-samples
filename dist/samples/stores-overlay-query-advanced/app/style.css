@@ -1,0 +1,90 @@
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+  height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#map-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 5px;
+  overflow: hidden;
+  z-index: 1;
+  max-width: 280px;
+  padding: 0;
+}
+
+#innerWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 0 10px 10px;
+  font-size: 0.85em;
+}
+
+.sectionHeader {
+  font-weight: 600;
+  background: #EEE;
+  border-bottom: 1px solid #eeeeee;
+  margin: 0 -10px 10px;
+  padding: 5px 10px;
+  color: #222;
+}
+
+select {
+  margin: 0.25em 0 0.7em;
+  padding: 0.5em 0.6em;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  vertical-align: middle;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  font-size: 1em;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+input[type=select]:focus {
+  outline: 0;
+  border-color: #03A9F4;
+}
+
+select {
+  height: 2.25em;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.options__header {
+  font-weight: 600;
+  line-height: 24px;
+  display: flex;
+}
+.options__input {
+  height: 24px;
+  display: flex;
+  align-items: baseline;
+}
+

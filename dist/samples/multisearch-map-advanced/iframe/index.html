@@ -1,0 +1,405 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MultiSearch Map Advanced</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script src="https://sdk.woosmap.com/multisearch/multisearch.js"></script>
+
+    <script type="module" crossorigin>
+      (function () {
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
+          a(o);
+        new MutationObserver((o) => {
+          for (const s of o)
+            if (s.type === "childList")
+              for (const m of s.addedNodes)
+                m.tagName === "LINK" && m.rel === "modulepreload" && a(m);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function i(o) {
+          const s = {};
+          return (
+            o.integrity && (s.integrity = o.integrity),
+            o.referrerPolicy && (s.referrerPolicy = o.referrerPolicy),
+            o.crossOrigin === "use-credentials"
+              ? (s.credentials = "include")
+              : o.crossOrigin === "anonymous"
+                ? (s.credentials = "omit")
+                : (s.credentials = "same-origin"),
+            s
+          );
+        }
+        function a(o) {
+          if (o.ep) return;
+          o.ep = !0;
+          const s = i(o);
+          fetch(o.href, s);
+        }
+      })();
+      const u = {
+        apiOrder: ["store", "localities", "places"],
+        debounceTime: 100,
+        localities: {
+          key: "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
+          fallbackBreakpoint: 0.4,
+          params: {
+            components: { country: ["gb", "fr", "de"] },
+            language: "en",
+            types: ["locality", "postal_code", "address"],
+          },
+        },
+        store: {
+          key: "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
+          fallbackBreakpoint: !1,
+          params: { query: "type:bose_store" },
+        },
+        places: {
+          key: "AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA",
+          fallbackBreakpoint: 1,
+          minInputLength: 10,
+          params: { components: { country: ["gb", "fr", "de"] } },
+        },
+      };
+      let f, c, n, p, d, l, r;
+      function y() {
+        (c = document.getElementById("autocomplete-input")),
+          (n = document.getElementById("suggestions-list")),
+          (p = document.getElementsByClassName("clear-searchButton")[0]),
+          c &&
+            n &&
+            (c.addEventListener("input", h),
+            c.addEventListener("keydown", (e) => {
+              if (e.key === "Enter") {
+                const t = n.querySelector("li");
+                t && t.click();
+              }
+            })),
+          p.addEventListener("click", () => {
+            (c.value = ""),
+              (n.style.display = "none"),
+              (p.style.display = "none"),
+              l && l.setMap(null),
+              r && r.close(),
+              c.focus();
+          }),
+          (f = window.woosmap.multisearch(u));
+      }
+      function g() {
+        (d = new window.woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 51.50940214, lng: -0.133012 },
+          zoom: 4,
+        })),
+          (r = new woosmap.map.InfoWindow({})),
+          y();
+      }
+      function h() {
+        if (c && n) {
+          const e = c.value;
+          e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+            e !== ""
+              ? f.autocompleteMulti(e).then(
+                  (t) => L(t),
+                  (t) => console.error(`Error autocomplete localities: ${t}`),
+                )
+              : ((n.style.display = "none"), (p.style.display = "none"));
+        }
+      }
+      function w() {
+        const e = document.createElement("li");
+        (e.innerHTML =
+          "<div class='prediction no-result'>No results found...</div>"),
+          n.appendChild(e),
+          (n.className = ""),
+          (n.style.display = "block");
+      }
+      function L(e) {
+        c &&
+          n &&
+          ((n.innerHTML = ""),
+          e.length > 0
+            ? (e.forEach((t) => {
+                var a;
+                const i = document.createElement("li");
+                (i.className = `${t.api}-api`),
+                  (i.innerHTML = (a = v(t)) != null ? a : ""),
+                  i.addEventListener("click", () => {
+                    var o;
+                    (c.value = (o = t.description) != null ? o : ""),
+                      (n.style.display = "none"),
+                      f.detailsMulti({ id: t.id, api: t.api }).then((s) => {
+                        b(s, t.api);
+                      });
+                  }),
+                  n.appendChild(i);
+              }),
+              (n.className = e[0].api),
+              (n.style.display = "block"),
+              (p.style.display = "block"))
+            : w());
+      }
+      function v(e) {
+        const t = "no-viewpoint",
+          i = e.highlight;
+        let a = "";
+        return (
+          (a += `<div class="api-icon"></div><div class="prediction ${t}">${i}</div>`),
+          a
+        );
+      }
+      function k(e) {
+        return new woosmap.map.Marker({
+          position: e.geometry.location,
+          icon: {
+            url: "https://images.woosmap.com/marker.png",
+            scaledSize: { height: 50, width: 32 },
+          },
+        });
+      }
+      function E(e, t) {
+        let i = "";
+        return (
+          e.address_components &&
+            e.address_components.forEach((a) => {
+              i += `<p>${a.long_name} (${a.short_name})</p>`;
+            }),
+          `<div class="info-content">${t ? `<div>api: <strong>${t}</strong></div>` : ""}
+      ${e.name ? `<p>${e.name}</p>` : ""}
+      ${e.formatted_address ? `<p>${e.formatted_address}</p>` : ""}
+      ${i}</div>`
+        );
+      }
+      function b(e, t) {
+        if ((l && l.setMap(null), r && r.close(), e != null && e.geometry)) {
+          (l = k(e)), l.setMap(d);
+          const i = E(e, t);
+          r.setOffset(new woosmap.map.Point(0, -50)),
+            r.setContent(i),
+            l.addListener("click", () => {
+              r.open(d, l.getPosition());
+            }),
+            d.setCenter(e.geometry.location, { top: 150 }),
+            d.setZoom(14),
+            woosmap.map.event.addListenerOnce(d, "idle", () => {
+              r.open(d, l.position);
+            });
+        }
+      }
+      document.addEventListener("click", (e) => {
+        !e.target.closest("#autocomplete-container") &&
+          n &&
+          (n.style.display = "none");
+      });
+      window.initMap = g;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      #autocomplete-container {
+        display: flex;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0 12px;
+        max-width: 320px;
+        width: 100%;
+        height: 42px;
+        border: none;
+        box-sizing: border-box;
+        align-items: center;
+        cursor: text;
+        font-size: 15px;
+      }
+      #autocomplete-container .search-icon,
+      #autocomplete-container .clear-icon {
+        color: inherit;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+      }
+      #autocomplete-container .clear-icon {
+        transform: scale(1.3);
+      }
+      #autocomplete-input {
+        box-sizing: border-box;
+        padding: 0;
+        height: 40px;
+        line-height: 24px;
+        vertical-align: top;
+        transition-property: color;
+        transition-duration: 0.3s;
+        width: 100%;
+        text-overflow: ellipsis;
+        background: transparent;
+        border-radius: 0;
+        border: 0;
+        margin: 0 8px;
+        outline: 0;
+        overflow: visible;
+        appearance: textfield;
+        font-size: 100%;
+      }
+      .clear-searchButton {
+        display: none;
+        height: 18px;
+        width: 22px;
+        background: none;
+        border: none;
+        vertical-align: middle;
+        pointer-events: all;
+        cursor: pointer;
+      }
+      #suggestions-list {
+        border-radius: 12px;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        box-sizing: border-box;
+        position: absolute;
+        max-width: 320px;
+        width: 100%;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        list-style: none;
+        max-height: 80vh;
+        margin: 5px 0 0;
+        padding: 0;
+        display: none;
+        overflow-y: auto;
+        background-color: #fff;
+      }
+      #suggestions-list.visible {
+        display: block;
+      }
+      #suggestions-list li {
+        padding: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #suggestions-list li:hover {
+        background-color: #f2f2f2;
+      }
+      #app {
+        height: 100%;
+      }
+      #suggestions-list li {
+        display: flex;
+        align-items: center;
+      }
+      #suggestions-list li .api-icon {
+        height: 20px;
+        width: 20px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        padding-right: 7px;
+      }
+      #suggestions-list li.store-api .api-icon {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z' fill='%23b2b2b2' /%3E%3C/svg%3E");
+      }
+      #suggestions-list li.localities-api .api-icon,
+      #suggestions-list li.places-api .api-icon {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' fill='%23b2b2b2' /%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+      }
+      #suggestions-list li .no-result {
+        opacity: 0.6;
+      }
+      #suggestions-list:after {
+        content: "";
+        box-sizing: border-box;
+        text-align: right;
+        display: block;
+        background-position: right;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+      #suggestions-list.places:after {
+        padding: 1px 1px 1px 0;
+        height: 18px;
+        background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
+        background-size: 120px 14px;
+      }
+      #suggestions-list.localities:after,
+      #suggestions-list.store:after {
+        margin: 0 6px 3px;
+        height: 16px;
+        background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+      }
+      .info-content {
+        max-width: 300px;
+        height: 100%;
+      }
+      .info-content p {
+        margin: 3px 0;
+      }
+      .info-content code {
+        margin-bottom: 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="autocomplete-container">
+        <svg class="search-icon" viewBox="0 0 16 16">
+          <path
+            d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Search Localities fallback Places..."
+          autocomplete="off"
+        />
+        <button aria-label="Clear" class="clear-searchButton" type="button">
+          <svg class="clear-icon" viewBox="0 0 24 24">
+            <path
+              d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+            ></path>
+          </svg>
+        </button>
+        <ul id="suggestions-list"></ul>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

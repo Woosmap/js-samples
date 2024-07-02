@@ -1,0 +1,770 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Localities API - Shape</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      (function () {
+        const e = document.createElement("link").relList;
+        if (e && e.supports && e.supports("modulepreload")) return;
+        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
+          s(n);
+        new MutationObserver((n) => {
+          for (const i of n)
+            if (i.type === "childList")
+              for (const a of i.addedNodes)
+                a.tagName === "LINK" && a.rel === "modulepreload" && s(a);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function o(n) {
+          const i = {};
+          return (
+            n.integrity && (i.integrity = n.integrity),
+            n.referrerPolicy && (i.referrerPolicy = n.referrerPolicy),
+            n.crossOrigin === "use-credentials"
+              ? (i.credentials = "include")
+              : n.crossOrigin === "anonymous"
+                ? (i.credentials = "omit")
+                : (i.credentials = "same-origin"),
+            i
+          );
+        }
+        function s(n) {
+          if (n.ep) return;
+          n.ep = !0;
+          const i = o(n);
+          fetch(n.href, i);
+        }
+      })();
+      const r = { country: [] },
+        h = "woos-48c80350-88aa-333e-835a-07f4b658a9a4";
+      let v,
+        l,
+        c,
+        d,
+        p,
+        u,
+        f,
+        b,
+        g = !1;
+      function _() {
+        (p = new woosmap.map.Map(document.getElementById("map"), {
+          center: { lat: 48.8534, lng: 2.3488 },
+          disableDefaultUI: !0,
+          gestureHandling: "greedy",
+          zoom: 5,
+          styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
+        })),
+          A(),
+          I();
+      }
+      function $(t) {
+        var e;
+        if (
+          (e = t == null ? void 0 : t.geometry) != null &&
+          e.shape &&
+          ((g = !0),
+          p.data.addGeoJson({ type: "Feature", geometry: t.geometry.shape }),
+          t.geometry.viewport)
+        ) {
+          const o = {
+            east: t.geometry.viewport.northeast.lng,
+            south: t.geometry.viewport.southwest.lat,
+            north: t.geometry.viewport.northeast.lat,
+            west: t.geometry.viewport.southwest.lng,
+          };
+          p.fitBounds(o, { top: 60, left: 60, bottom: 60, right: 60 });
+        }
+      }
+      function E(t) {
+        if ((u && u.setMap(null), t != null && t.geometry)) {
+          const e = t.geometry.location;
+          (u = new woosmap.map.Marker({
+            position: e,
+            icon: {
+              url: "https://images.woosmap.com/marker.png",
+              scaledSize: { height: 59, width: 37 },
+            },
+          })),
+            u.setMap(p),
+            g ? (g = !1) : x(t);
+        }
+      }
+      function M(t, e = "block") {
+        t.style.display = e;
+      }
+      function k(t) {
+        const e = [];
+        if (
+          ((f.innerHTML = ""),
+          (f.style.display = "block"),
+          t.formatted_address &&
+            e.push(
+              `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${t.formatted_address}</span></p>`,
+            ),
+          t.types &&
+            t.types[0] &&
+            e.push(
+              `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${t.types[0].replace("_", " ")}</span></p>`,
+            ),
+          t.geometry)
+        ) {
+          const o = t.geometry.accuracy;
+          if (
+            (o &&
+              e.push(
+                `<div class='option-detail'><div><span class='option-detail-label'>Location type :</span><span class='bold'>${o.replace("_", " ").toLowerCase()}</span></div></div>`,
+              ),
+            e.push(
+              `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${t.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${t.geometry.location.lng.toString()}</span></div></div>`,
+            ),
+            t.address_components)
+          ) {
+            const s = t.address_components
+              .map(
+                (n) =>
+                  `<p class='option-detail'><span class='option-detail-label'>${n.types[0]}:</span> <span class='bold'>${n.long_name}</span></p>`,
+              )
+              .join("");
+            e.push(
+              `<div class='address-components'><div class='title'>Address components</div><div>${s}</div>`,
+            );
+          }
+        }
+        f.innerHTML = e.join("");
+      }
+      function A() {
+        (l = document.getElementById("autocomplete-input")),
+          (c = document.getElementById("suggestions-list")),
+          (d = document.getElementsByClassName("clear-searchButton")[0]),
+          (b = document.querySelector(".addressDetails")),
+          (f = document.querySelector(".addressDetails .addressOptions")),
+          l &&
+            c &&
+            (l.addEventListener("input", w),
+            l.addEventListener("keydown", (t) => {
+              if (t.key === "Enter") {
+                const e = c.querySelector("li");
+                e && e.click();
+              }
+            })),
+          d.addEventListener("click", () => {
+            (l.value = ""),
+              (c.style.display = "none"),
+              (d.style.display = "none"),
+              (f.style.display = "none"),
+              l.focus(),
+              u.setMap(null);
+          }),
+          (v = H(B, 0));
+      }
+      function w() {
+        if (l && c) {
+          let t = l.value;
+          t = t.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
+          const e = r.country.map((o) => `country:${o}`).join("|");
+          t !== ""
+            ? v(t, e, h)
+                .then(({ localities: o }) => T(o))
+                .catch((o) =>
+                  console.error("Error autocomplete localities:", o),
+                )
+            : ((c.style.display = "none"), (d.style.display = "none"));
+        }
+      }
+      function T(t) {
+        l &&
+          c &&
+          ((c.innerHTML = ""),
+          t.length > 0
+            ? (t.forEach((e) => {
+                var s;
+                const o = document.createElement("li");
+                (o.innerHTML = (s = q(e)) != null ? s : ""),
+                  o.addEventListener("click", () => {
+                    var n;
+                    (l.value = (n = e.description) != null ? n : ""),
+                      N(e.public_id),
+                      (c.style.display = "none");
+                  }),
+                  c.appendChild(o);
+              }),
+              (c.style.display = "block"),
+              (d.style.display = "block"))
+            : (c.style.display = "none"));
+      }
+      function q(t) {
+        const e = t,
+          o = "no-viewpoint",
+          s = e.matched_substrings;
+        let n = "";
+        e.matched_substrings && e.matched_substrings.description
+          ? (n = C(e.description, s.description))
+          : (n = e.description);
+        let i = "";
+        return (i += `<div class="prediction ${o}">${n}</div>`), i;
+      }
+      function C(t, e) {
+        e = e.reverse();
+        for (const o of e) {
+          const s = t.substring(o.offset, o.offset + o.length);
+          t = `${t.substring(0, o.offset)}<span class='bold'>${s}</span>${t.substring(o.offset + o.length)}`;
+        }
+        return t;
+      }
+      function B(t, e) {
+        const o = {
+          key: h,
+          input: t,
+          no_deprecated_fields: "true",
+          types: "locality",
+          components: e,
+        };
+        return (
+          e !== "" && o.components && (o.components = e),
+          fetch(
+            `https://api.woosmap.com/localities/autocomplete/?${L(o)}`,
+          ).then((s) => s.json())
+        );
+      }
+      function L(t) {
+        const e = [];
+        for (const o in t)
+          if (t[o]) {
+            const s = t[o];
+            e.push(`${encodeURIComponent(o)}=${encodeURIComponent(s)}`);
+          }
+        return e.join("&");
+      }
+      function H(t, e) {
+        let o = null,
+          s = null,
+          n = null;
+        return function (...i) {
+          return new Promise((a, y) => {
+            o !== null && clearTimeout(o),
+              (s = a),
+              (n = y),
+              (o = setTimeout(() => {
+                t(...i)
+                  .then((m) => {
+                    s === a && n === y && a(m);
+                  })
+                  .catch((m) => {
+                    s === a && n === y && y(m);
+                  });
+              }, e));
+          });
+        };
+      }
+      function I() {
+        document.querySelectorAll(".country").forEach((s) => {
+          if (
+            (s.addEventListener("click", () => {
+              j(s);
+            }),
+            s.classList.contains("active"))
+          ) {
+            const n = s.dataset.countrycode;
+            r.country = [...r.country, n];
+          }
+        }),
+          document
+            .querySelectorAll(".dropdown .dropdown-button")
+            .forEach((s) => s.addEventListener("click", P));
+        const o = document.querySelectorAll(".dropdown");
+        document.addEventListener("click", (s) => {
+          o.forEach((n) => {
+            n.contains(s.target) || S(n);
+          });
+        });
+      }
+      function P(t) {
+        t.stopPropagation();
+        const e = t.target.closest(".dropdown");
+        e && (e.classList.contains("active") ? S(e) : O(e));
+      }
+      function S(t) {
+        const e = t.querySelector(".dropdown-content");
+        e == null || e.classList.remove("visible"),
+          t.classList.remove("active");
+      }
+      function O(t) {
+        const e = t.querySelector(".dropdown-content");
+        e == null || e.classList.add("visible"), t.classList.add("active");
+      }
+      function j(t) {
+        const e = t.classList.toggle("active"),
+          o = t.dataset.countrycode;
+        o &&
+          (e
+            ? (r.country = [...r.country, o])
+            : (r.country = r.country.filter((s) => s !== o)),
+          R(),
+          w());
+      }
+      function R() {
+        const t = document.querySelector(".dropdown-button span");
+        r.country.length > 0
+          ? (t.innerHTML = `Selected countries: <strong>${r.country.join("</strong>, <strong>")}</strong>`)
+          : (t.textContent = "Select countries");
+      }
+      const N = (t) => {
+        z(t).then((e) => {
+          e && (k(e.result), M(b), $(e.result), E(e.result));
+        });
+      };
+      function x(t) {
+        let e;
+        if (
+          (t && t.geometry && (e = t.geometry),
+          t && t.geometry && t.geometry.viewport)
+        ) {
+          const { viewport: o } = e,
+            s = {
+              east: o.northeast.lng,
+              south: o.southwest.lat,
+              north: o.northeast.lat,
+              west: o.southwest.lng,
+            };
+          p.fitBounds(s, { top: 100, left: 100, bottom: 100, right: 100 }),
+            p.panTo(t.geometry.location);
+        } else {
+          let o = 17;
+          t.types[0] === "address" && (o = 18),
+            p.setZoom(o),
+            p.panTo(e.location);
+        }
+      }
+      function z(t) {
+        return fetch(
+          `https://api.woosmap.com/localities/details/?${L({ key: h, public_id: t, fields: "shape|geometry" })}`,
+        ).then((o) => o.json());
+      }
+      window.initMap = _;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      #autocomplete-container {
+        display: flex;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0 12px;
+        max-width: 320px;
+        width: 100%;
+        height: 42px;
+        border: none;
+        box-sizing: border-box;
+        align-items: center;
+        cursor: text;
+        font-size: 15px;
+      }
+      #autocomplete-container .search-icon,
+      #autocomplete-container .clear-icon {
+        color: inherit;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
+      }
+      #autocomplete-container .clear-icon {
+        transform: scale(1.3);
+      }
+      #autocomplete-input {
+        box-sizing: border-box;
+        padding: 0;
+        height: 40px;
+        line-height: 24px;
+        vertical-align: top;
+        transition-property: color;
+        transition-duration: 0.3s;
+        width: 100%;
+        text-overflow: ellipsis;
+        background: transparent;
+        border-radius: 0;
+        border: 0;
+        margin: 0 8px;
+        outline: 0;
+        overflow: visible;
+        appearance: textfield;
+        font-size: 100%;
+      }
+      .clear-searchButton {
+        display: none;
+        height: 18px;
+        width: 22px;
+        background: none;
+        border: none;
+        vertical-align: middle;
+        pointer-events: all;
+        cursor: pointer;
+      }
+      #suggestions-list {
+        border-radius: 12px;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        box-sizing: border-box;
+        position: absolute;
+        max-width: 320px;
+        width: 100%;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        list-style: none;
+        max-height: 80vh;
+        margin: 5px 0 0;
+        padding: 0;
+        display: none;
+        overflow-y: auto;
+        background-color: #fff;
+      }
+      #suggestions-list.visible {
+        display: block;
+      }
+      #suggestions-list li {
+        padding: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #suggestions-list li:hover {
+        background-color: #f2f2f2;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown ul {
+        display: block;
+        list-style: none;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .dropdown.active .dropdown-button {
+        background-color: #e8ebee;
+        border: 1px solid #e8ebee;
+      }
+      .dropdown.active .dropdown-button svg {
+        transform: scale(-1);
+      }
+      .dropdown .dropdown-button {
+        cursor: pointer;
+        border: 1px solid #f9fbfd;
+        background-color: #f9fbfd;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        font-weight: 400;
+        height: 42px;
+        padding: 0 9px;
+        font-size: 14px;
+        border-radius: 12px;
+      }
+      .dropdown .dropdown-button:hover {
+        background-color: #e8ebee;
+        border: 1px solid #e8ebee;
+      }
+      .dropdown .dropdown-button strong {
+        font-size: 0.9em;
+        opacity: 0.9;
+      }
+      .dropdown .dropdown-button svg {
+        height: 0.75rem;
+        width: 0.75rem;
+        margin-left: 0.5rem;
+        margin-top: -0.125rem;
+        transition-duration: 0.1s;
+        transition-property: transform;
+        vertical-align: middle;
+        transition-timing-function: cubic-bezier(0.07, 0.49, 0, 1.05);
+        fill: #1d1d1d;
+        display: inline;
+        padding-top: 0;
+      }
+      .dropdown .dropdown-menuitem {
+        color: #1d1d1d;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        padding: 0.5rem 1rem;
+        position: relative;
+        white-space: nowrap;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .dropdown .dropdown-menuitem:hover {
+        background-color: #e8ebee;
+      }
+      .dropdown .dropdown-menuitem.divider {
+        border-top: 1px solid #e8ebee;
+      }
+      .dropdown .dropdown-content {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        min-width: 160px;
+        overflow: hidden;
+        top: 100%;
+        z-index: 999;
+      }
+      .dropdown .dropdown-content.visible {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+      }
+      .dropdown .dropdown-menu {
+        background-clip: padding-box;
+        background-color: #fff;
+        color: #1d1d1d;
+        border-radius: 12px;
+        box-shadow:
+          #0000 0 0,
+          #0000 0 0,
+          #060b1033 0 16px 24px,
+          #060b104d 0 6px 30px,
+          #060b1066 0 8px 10px;
+        left: 0;
+        margin-top: 1px;
+        min-width: 13rem;
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+      }
+      #app {
+        height: 100%;
+        font-size: 13px;
+      }
+      body {
+        background-color: #eee;
+        overflow-y: hidden;
+      }
+      .bold {
+        font-weight: 700;
+      }
+      #countrySelector {
+        position: absolute;
+        top: 10px;
+        left: 335px;
+      }
+      .country .country-name {
+        display: flex;
+        flex-grow: 1;
+      }
+      .country .flag-icon {
+        height: 20px;
+        width: 20px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        margin-right: 8px;
+      }
+      .country .flag-icon-fr {
+        background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/fr.svg);
+      }
+      .country .flag-icon-gb {
+        background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/gb.svg);
+      }
+      .country .flag-icon-de {
+        background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/de.svg);
+      }
+      .country .flag-icon-es {
+        background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/es.svg);
+      }
+      .country .active-icon-wrapper {
+        display: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.054 8.958 3.65 6.555A2.112 2.112 0 1 0 .663 9.543l3.86 3.86a2.11 2.11 0 0 0 2.054.543c.38-.084.74-.274 1.033-.568l7.77-7.77a2.114 2.114 0 0 0-2.987-2.99l-6.34 6.34z'%3E%3C/path%3E%3C/svg%3E");
+        height: 10px;
+        width: 10px;
+        background-position: 50%;
+        background-size: contain;
+      }
+      .country.active .active-icon-wrapper {
+        display: flex;
+      }
+      .addressDetails {
+        display: none;
+        position: absolute;
+        right: 10px;
+        bottom: 25px;
+        border-radius: 6px;
+        max-width: 240px;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        z-index: 1;
+        overflow: hidden;
+      }
+      .addressDetails .info {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        background-color: #fff;
+      }
+      .addressDetails .addressOptions {
+        overflow-y: auto;
+        max-height: 240px;
+        font-size: 12px;
+        padding-top: 12px;
+        background-color: #fff;
+      }
+      .addressDetails .addressOptions .option-detail {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 12px 8px;
+        margin: 0;
+      }
+      .addressDetails .addressOptions .option-detail-label {
+        color: #00000080;
+        margin-right: 4px;
+      }
+      .address-components {
+        padding: 0 0 18px;
+        background-color: #00000008;
+      }
+      .address-components .title {
+        color: #00000080;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 16px 12px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <div class="addressDetails">
+        <div class="addressOptions"></div>
+      </div>
+      <div id="autocomplete-container">
+        <svg class="search-icon" viewBox="0 0 16 16">
+          <path
+            d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+
+        <input
+          type="text"
+          id="autocomplete-input"
+          placeholder="Search an Address..."
+          autocomplete="off"
+        />
+        <button aria-label="Clear" class="clear-searchButton" type="button">
+          <svg class="clear-icon" viewBox="0 0 24 24">
+            <path
+              d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+            ></path>
+          </svg>
+        </button>
+        <ul id="suggestions-list"></ul>
+      </div>
+      <div id="countrySelector" class="dropdown">
+        <button class="dropdown-button">
+          <span> Select countries </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"
+            ></path>
+          </svg>
+        </button>
+        <div id="countryDropdown" class="dropdown-content dropdown-menu">
+          <div>
+            <ul role="listbox">
+              <li
+                class="country"
+                data-countrycode="FR"
+                data-countryname="France"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-fr"></span>
+                  <div class="country-name">France</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="GB"
+                data-countryname="United Kingdom"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-gb"></span>
+                  <div class="country-name">United Kingdom</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="DE"
+                data-countryname="Germany"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-de"></span>
+                  <div class="country-name">Germany</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="ES"
+                data-countryname="Spain"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-es"></span>
+                  <div class="country-name">Spain</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

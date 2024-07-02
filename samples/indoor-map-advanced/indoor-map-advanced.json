@@ -1,6 +1,7 @@
 {
   "title": "Indoor Map Renderer (Explore configuration options)",
   "description": "An example of Indoor renderer with configuration options to explore.",
+  "category": "Indoor Maps",
   "callback": "initMap",
   "tag": "indoor_map_advanced",
   "name": "indoor-map-advanced",

@@ -405,12 +405,15 @@
         left: 0;
         z-index: 1;
         list-style: none;
+        max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
         display: none;
-        max-height: 225px;
         overflow-y: auto;
         background-color: #fff;
+      }
+      #suggestions-list.visible {
+        display: block;
       }
       #suggestions-list li {
         padding: 12px;
@@ -490,7 +493,7 @@
         display: none;
         position: absolute;
         right: 10px;
-        bottom: 60px;
+        bottom: 25px;
         border-radius: 6px;
         max-width: 240px;
         box-shadow:

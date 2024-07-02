@@ -1,6 +1,7 @@
 {
   "title": "Localities autocomplete and details",
   "description": "Use the LocalitiesService to autocomplete and get details of localities, postal codes or addresses.",
+  "category": "Localities",
   "callback": "initMap",
   "tag": "localities_autocomplete",
   "name": "localities-autocomplete",

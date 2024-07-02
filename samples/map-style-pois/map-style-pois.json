@@ -1,6 +1,7 @@
 {
   "title": "Map Style Point of Interest",
   "description": "Standard style displaying all Points of Interest on the map.",
+  "category": "Map Styles",
   "callback": "initMap",
   "tag": "map_style_pois",
   "name": "map-style-pois",

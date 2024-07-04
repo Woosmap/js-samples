@@ -1,6 +1,6 @@
 {
-  "title": "External layer",
-  "description": "TBD",
+  "title": "Map External Layer",
+  "description": "Add your own layers on top of Woosmap Map.",
   "category": "Services",
   "callback": "initMap",
   "tag": "map_external_layer",

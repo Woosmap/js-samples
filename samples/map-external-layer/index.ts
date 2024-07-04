@@ -14,7 +14,7 @@ function initMap() {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
-      zoom: 2,
+      zoom: 3,
       center: centerLatLng,
       styles: []
     },

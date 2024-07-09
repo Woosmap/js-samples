@@ -1,4 +1,7 @@
 const availableCategories = [
+  "transit.station",
+  "transit.station.airport",
+  "transit.station.rail",
   "business",
   "business.cinema",
   "business.theatre",

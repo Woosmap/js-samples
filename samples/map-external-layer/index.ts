@@ -21,9 +21,7 @@ function initMap() {
   );
 
   const imageMapType = new woosmap.map.ImageMapType({
-    getTileUrl: function (coord, zoom) {
-      return `https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/${zoom}/${coord.y}/${coord.x}.png`;
-    },
+    url: "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png",
     tileSize: new woosmap.map.Size(256, 256),
     maxZoom: 19
   });

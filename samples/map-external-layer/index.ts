@@ -82,27 +82,22 @@ function changeStyle(name: String)
 
 function changeLayer(provider: string, opacity: number)
 {
-  let getTileUrl
+  let url
   if(provider == "temperature")
     {
-        getTileUrl = function (coord, zoom) {
-          return `https://tile.openweathermap.org/map/temp_new/${zoom}/${coord.x}/${coord.y}?appid=${openWeatherMapKey}`;
-        }
+      url = `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}?appid=${openWeatherMapKey}`;
+        
     }
     else if(provider == "precipitation")
     {
-        getTileUrl = function (coord, zoom) {
-          return `https://tile.openweathermap.org/map/precipitation_new/${zoom}/${coord.x}/${coord.y}?appid=${openWeatherMapKey}`;
-        }
+      url = `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}?appid=${openWeatherMapKey}`;
     }
     else 
     {
-      getTileUrl = function (coord, zoom) {
-        return `https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/${zoom}/${coord.y}/${coord.x}.png`;
-      }
+      url = `https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png`;
     }
   const imageMapType = new woosmap.map.ImageMapType({
-    getTileUrl: getTileUrl,
+    url: url,
     tileSize: new woosmap.map.Size(256, 256),
     maxZoom: 19,
     opacity: opacity,    

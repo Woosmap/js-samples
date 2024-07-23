@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Stores Overlay Query- Advanced</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body>
+    <div id="map-panel">
+      <div id="innerWrapper">
+        <div class="sectionHeader">
+          <span>setQuery using <em>Query Helper</em></span>
+        </div>
+        <div class="options">
+          <label class="options__header" for="type">Filter by Type </label>
+          <select id="type">
+            <option value="all">All</option>
+            <option value="bose_store">Bose Store</option>
+            <option value="bose_reseller">Reseller</option>
+            <option value="professional_systems">Professional Systems</option>
+            <option value="aviation">Aviation</option>
+            <option value="bose_music_partners">Music Partners</option>
+            <option value="bose_excellence_centre">Excellence Centre</option>
+            <option value="bose_factory_store">Factory Store</option>
+            <option value="bose_shop-in-shop">Shop In Shop</option>
+          </select>
+        </div>
+        <div class="options">
+          <label class="options__header" for="tag"
+            >Filter by Available Service (Tag)
+          </label>
+          <select id="tag">
+            <option value="all">All</option>
+            <option value="wheelchair_access">Wheelchair Access</option>
+            <option value="in-store_wi-fi">Wi-Fi</option>
+            <option value="parking">Parking</option>
+            <option value="schedule_a_demo">Schedule a Demo</option>
+            <option value="reserve_and_collect">Reserve & Collect</option>
+            <option value="delivery_and_installation_service">
+              Delivery & Installation
+            </option>
+            <option value="customised_solutions">Customised Solutions</option>
+            <option value="financing">Financing</option>
+            <option value="repair_service">Repair Service</option>
+          </select>
+        </div>
+        <div class="options">
+          <span class="options__header">Clause</span>
+          <div class="options__input">
+            <input
+              id="clauseAND"
+              aria-label="Yes"
+              name="clauses"
+              type="radio"
+              value="AND"
+              checked=""
+            />
+            <label for="true">AND</label>
+          </div>
+          <div class="options__input">
+            <input
+              id="clauseOR"
+              aria-label="No"
+              name="clauses"
+              type="radio"
+              value="OR"
+            />
+            <label for="false">OR</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

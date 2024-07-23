@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Map External Layer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div id="selector">
+        <div class="select-container">
+          <span>Woosmap Style </span>
+          <select id="woosmap-style-select">
+            <option value="default">Default</option>
+            <option value="lightgrey">Light Grey</option>
+            <option value="night">Transit By Night</option>
+            <option value="retro">Retro</option>
+          </select>
+        </div>
+        <div class="select-container">
+          <span>Third party layer </span>
+          <select id="layer-provider-select">
+            <option value="satellite">QGIS satellite view</option>
+            <option value="temperature">OpenWeather temperature</option>
+            <option value="precipitation">OpenWeather precipitation</option>
+          </select>
+        </div>
+        <div class="select-container">
+          <span>Opacity </span>
+          <input
+            id="opacity-value-input"
+            type="number"
+            value="0.5"
+            step="0.1"
+            min="0"
+            max="1"
+          />
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

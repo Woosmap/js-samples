@@ -40,10 +40,10 @@
       let m,
         $,
         a,
-        y = [],
+        T = [],
         g,
         f,
-        T;
+        _;
       function E(e, t, c) {
         return new woosmap.map.Marker({
           map: m,
@@ -57,19 +57,19 @@
           label: { text: t, color: "white" },
         });
       }
-      function q() {
-        for (const e of y) e.setMap(null);
-        y = [];
-      }
       function B() {
-        q();
+        for (const e of T) e.setMap(null);
+        T = [];
+      }
+      function x() {
+        B();
         const e = E(
           a.origin,
           "O",
           "https://images.woosmap.com/marker-blue.svg",
         );
         e.addListener("dragend", () => {
-          (a.origin = e.getPosition()), p(g, e.getPosition().toJSON()), u();
+          (a.origin = e.getPosition()), p(g, e.getPosition().toJSON()), l();
         });
         const t = E(
           a.destination,
@@ -79,12 +79,12 @@
         t.addListener("dragend", () => {
           (a.destination = t.getPosition()),
             p(f, t.getPosition().toJSON()),
-            u();
+            l();
         }),
-          y.push(e),
-          y.push(t);
+          T.push(e),
+          T.push(t);
       }
-      function x() {
+      function C() {
         const e = { lat: 51.6511, lng: -0.1615 },
           t = { lat: 51.5146, lng: -0.0212 };
         return p(g, e), p(f, t), { origin: e, destination: t };
@@ -92,40 +92,40 @@
       function p(e, t) {
         e.innerHTML = `<li><span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span></li>`;
       }
-      function C(e) {
+      function D(e) {
         const t = e.routes.map((o, s) => {
-          var b;
-          const d = o.legs[0],
-            l = document.createElement("div");
-          (l.className = "directionTrip"),
-            s === 0 && l.classList.add("directionTrip__selected");
-          const L =
-              ((b = o.legs.find(
-                (k) => k.start_location && k.start_location.name !== null,
+          var k;
+          const u = o.legs.reduce((h, q) => h + q.distance, 0),
+            d = document.createElement("div");
+          (d.className = "directionTrip"),
+            s === 0 && d.classList.add("directionTrip__selected");
+          const b =
+              ((k = o.legs.find(
+                (h) => h.start_location && h.start_location.name !== null,
               )) == null
                 ? void 0
-                : b.start_location.name) || "Walking",
+                : k.start_location.name) || "Walking",
             R =
-              L === "Walking"
+              b === "Walking"
                 ? "https://images.woosmap.com/directions/walk_black.png"
                 : "https://images.woosmap.com/directions/transit_black.png";
           return (
-            (l.innerHTML = `
+            (d.innerHTML = `
             <img class="directionTrip__travelModeIcon" src="${R}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
-                    <div class="directionTrip__duration">${r(d.duration)}</div>
-                    <div class="directionTrip__distance">${c(d.distance)}</div>
+                    <div class="directionTrip__duration">${r(o.duration)}</div>
+                    <div class="directionTrip__distance">${c(u)}</div>
                 </div>
-                <div class="directionTrip__title">through ${L}</div>
-                <div class="directionTrip__summary">${r(d.duration)}</div>
+                <div class="directionTrip__title">through ${b}</div>
+                <div class="directionTrip__summary">${r(o.duration)}</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `),
-            l.addEventListener("click", () => {
-              n(s), T.setRouteIndex(s);
+            d.addEventListener("click", () => {
+              n(s), _.setRouteIndex(s);
             }),
-            l
+            d
           );
         });
         function c(o) {
@@ -135,9 +135,9 @@
           const s = Math.round(o / 60);
           if (s < 60) return `${s}m`;
           {
-            const d = Math.floor(s / 60),
-              l = s % 60;
-            return `${d}h${l}m`;
+            const u = Math.floor(s / 60),
+              d = s % 60;
+            return `${u}h${d}m`;
           }
         }
         function n(o) {
@@ -160,22 +160,22 @@
           (c.innerHTML = ""), (c.style.display = "none");
         }
       }
-      function _() {
+      function L() {
         document.querySelector(".linear-progress").classList.toggle("hide");
       }
-      function D(e) {
-        T.setRoutes(e);
+      function P(e) {
+        _.setRoutes(e);
       }
-      function u() {
-        _(),
+      function l() {
+        L(),
           $.route(a)
-            .then(P)
+            .then(A)
             .catch((e) => {
-              console.error("Error calculating transit route:", e), I(e), _();
+              console.error("Error calculating transit route:", e), I(e), L();
             });
       }
-      function P(e) {
-        D(e.routes), B(), C(e), I(""), _();
+      function A(e) {
+        P(e.routes), x(), D(e), I(""), L();
       }
       function w(e) {
         return e.getTime && typeof e.getTime == "function";
@@ -212,13 +212,13 @@
                   t.disabled = !1;
                   break;
               }
-              u();
+              l();
             });
           }),
           t.addEventListener("change", () => {
             c && (c.checked = !0);
             const i = new Date(t.value);
-            (a[e] = w(i) ? i.getTime().toString() : void 0), u();
+            (a[e] = w(i) ? i.getTime().toString() : void 0), l();
           }));
       }
       function S(e, t, c) {
@@ -236,20 +236,20 @@
             (i = document.getElementById("map")) == null ||
               i.classList.add("cursor-crosshair"),
             woosmap.map.event.addListenerOnce(m, "click", (o) => {
-              var d;
-              (d = document.getElementById("map")) == null ||
-                d.classList.remove("cursor-crosshair"),
+              var u;
+              (u = document.getElementById("map")) == null ||
+                u.classList.remove("cursor-crosshair"),
                 r.classList.remove("addLocation__selected");
               const s = o.latlng;
               t === g && (a.origin = s),
                 t === f && (a.destination = s),
                 p(t, s),
-                u();
+                l();
             });
         });
       }
-      const h = [],
-        v = [],
+      const v = [],
+        y = [],
         O = {
           train: [
             "highSpeedTrain",
@@ -266,25 +266,25 @@
           ferry: ["ferry"],
           aerial: ["aerial", "flight", "spaceship"],
         };
-      function A() {
+      function N() {
         const e = document.querySelectorAll('.modesChk[type="checkbox"]'),
           t = document.querySelector("#includeModes"),
           c = document.querySelector("#excludeModes");
         function r() {
-          (h.length = 0),
-            (v.length = 0),
+          (v.length = 0),
+            (y.length = 0),
             Object.keys(O).forEach((n) => {
               document.querySelector(
                 `#mode${n.charAt(0).toUpperCase() + n.slice(1)}`,
               ).checked &&
                 O[n].forEach((o) => {
-                  t.checked ? h.push(o) : c.checked && v.push("-" + o);
+                  t.checked ? v.push(o) : c.checked && y.push("-" + o);
                 });
             }),
-            h.length === 0 && v.length === 0
+            v.length === 0 && y.length === 0
               ? delete a.modes
-              : (a.modes = t.checked ? h : v),
-            u();
+              : (a.modes = t.checked ? v : y),
+            l();
         }
         e.forEach((n) => {
           n.addEventListener("change", r);
@@ -292,28 +292,28 @@
           t.addEventListener("change", r),
           c.addEventListener("change", r);
       }
-      function N() {
+      function H() {
         M("departureTime"),
           M("arrivalTime"),
-          A(),
+          N(),
           S(".addLocation__destinations", f, a.destination),
           S(".addLocation__origins", g, a.origin);
       }
-      function H() {
+      function F() {
         (m = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.5074, lng: -0.1478 },
           zoom: 10,
         })),
           ($ = new woosmap.map.TransitService()),
-          (T = new woosmap.map.TransitRenderer({})),
-          T.setMap(m),
+          (_ = new woosmap.map.TransitRenderer({})),
+          _.setMap(m),
           (g = document.getElementById("origin")),
           (f = document.getElementById("destination")),
-          (a = x()),
-          N(),
-          u();
+          (a = C()),
+          H(),
+          l();
       }
-      window.initMap = H;
+      window.initMap = F;
     </script>
     <style>
       html,

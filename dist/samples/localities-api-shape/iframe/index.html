@@ -42,9 +42,9 @@
       let v,
         l,
         c,
-        d,
-        p,
         u,
+        p,
+        d,
         f,
         b,
         g = !1;
@@ -78,16 +78,16 @@
         }
       }
       function E(t) {
-        if ((u && u.setMap(null), t != null && t.geometry)) {
+        if ((d && d.setMap(null), t != null && t.geometry)) {
           const e = t.geometry.location;
-          (u = new woosmap.map.Marker({
+          (d = new woosmap.map.Marker({
             position: e,
             icon: {
               url: "https://images.woosmap.com/marker.png",
               scaledSize: { height: 59, width: 37 },
             },
           })),
-            u.setMap(p),
+            d.setMap(p),
             g ? (g = !1) : x(t);
         }
       }
@@ -137,7 +137,7 @@
       function A() {
         (l = document.getElementById("autocomplete-input")),
           (c = document.getElementById("suggestions-list")),
-          (d = document.getElementsByClassName("clear-searchButton")[0]),
+          (u = document.getElementsByClassName("clear-searchButton")[0]),
           (b = document.querySelector(".addressDetails")),
           (f = document.querySelector(".addressDetails .addressOptions")),
           l &&
@@ -149,13 +149,13 @@
                 e && e.click();
               }
             })),
-          d.addEventListener("click", () => {
+          u.addEventListener("click", () => {
             (l.value = ""),
               (c.style.display = "none"),
-              (d.style.display = "none"),
+              (u.style.display = "none"),
               (f.style.display = "none"),
               l.focus(),
-              u.setMap(null);
+              d.setMap(null);
           }),
           (v = H(B, 0));
       }
@@ -170,7 +170,7 @@
                 .catch((o) =>
                   console.error("Error autocomplete localities:", o),
                 )
-            : ((c.style.display = "none"), (d.style.display = "none"));
+            : ((c.style.display = "none"), (u.style.display = "none"));
         }
       }
       function T(t) {
@@ -191,7 +191,7 @@
                   c.appendChild(o);
               }),
               (c.style.display = "block"),
-              (d.style.display = "block"))
+              (u.style.display = "block"))
             : (c.style.display = "none"));
       }
       function q(t) {
@@ -218,7 +218,7 @@
           key: h,
           input: t,
           no_deprecated_fields: "true",
-          types: "locality",
+          types: "locality|admin_level|country|postal_code",
           components: e,
         };
         return (

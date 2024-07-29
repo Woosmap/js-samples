@@ -86,7 +86,10 @@ function setLatLngToContainer(element, location) {
 
 function createRoutesTable(response) {
   const directionTripElements = response.routes.map((route, index) => {
-    const leg = route.legs[0];
+    const distanceTotal = route.legs.reduce(
+      (total, leg) => total + leg.distance,
+      0,
+    );
     const directionTrip = document.createElement("div");
 
     directionTrip.className = "directionTrip";
@@ -107,11 +110,11 @@ function createRoutesTable(response) {
             <img class="directionTrip__travelModeIcon" src="${travelModeIconSrc}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
-                    <div class="directionTrip__duration">${formatTime(leg.duration)}</div>
-                    <div class="directionTrip__distance">${formatDistance(leg.distance)}</div>
+                    <div class="directionTrip__duration">${formatTime(route.duration)}</div>
+                    <div class="directionTrip__distance">${formatDistance(distanceTotal)}</div>
                 </div>
                 <div class="directionTrip__title">through ${startName}</div>
-                <div class="directionTrip__summary">${formatTime(leg.duration)}</div>
+                <div class="directionTrip__summary">${formatTime(route.duration)}</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `;

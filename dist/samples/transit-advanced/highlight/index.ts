@@ -88,7 +88,10 @@ function setLatLngToContainer(
 function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
   const directionTripElements = response.routes.map(
     (route: woosmap.map.transit.TransitRoute, index: number) => {
-      const leg = route.legs[0];
+      const distanceTotal = route.legs.reduce(
+        (total, leg) => total + leg.distance,
+        0,
+      );
       const directionTrip = document.createElement("div");
       directionTrip.className = "directionTrip";
       if (index === 0) {
@@ -110,11 +113,11 @@ function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
             <img class="directionTrip__travelModeIcon" src="${travelModeIconSrc}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
-                    <div class="directionTrip__duration">${formatTime(leg.duration)}</div>
-                    <div class="directionTrip__distance">${formatDistance(leg.distance)}</div>
+                    <div class="directionTrip__duration">${formatTime(route.duration)}</div>
+                    <div class="directionTrip__distance">${formatDistance(distanceTotal)}</div>
                 </div>
                 <div class="directionTrip__title">through ${startName}</div>
-                <div class="directionTrip__summary">${formatTime(leg.duration)}</div>
+                <div class="directionTrip__summary">${formatTime(route.duration)}</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `;
@@ -137,7 +140,7 @@ function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
   }
 
   function formatTime(seconds: number): string {
-    const minutes = Math.round(seconds/60);
+    const minutes = Math.round(seconds / 60);
     if (minutes < 60) {
       return `${minutes}m`;
     } else {

@@ -155,6 +155,14 @@ function createRoutesTable(response: woosmap.map.DirectionResult) {
   const directionTripElements = response.routes.map(
     (route: woosmap.map.DirectionRoute, index: number) => {
       const leg = route.legs[0];
+      const distanceTotal = route.legs.reduce(
+        (total, leg) => total + leg.distance.value,
+        0,
+      );
+      const durationTotal = route.legs.reduce(
+        (total, leg) => total + leg.duration.value,
+        0,
+      );
       const directionTrip = document.createElement("div");
       directionTrip.className = "directionTrip";
       if (index === 0) {
@@ -168,11 +176,11 @@ function createRoutesTable(response: woosmap.map.DirectionResult) {
             <img class="directionTrip__travelModeIcon" src="${travelModeIconSrc}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
-                    <div class="directionTrip__duration">${leg.duration.text}</div>
-                    <div class="directionTrip__distance">${leg.distance.text}</div>
+                    <div class="directionTrip__duration">${formatTime(durationTotal)}</div>
+                    <div class="directionTrip__distance">${formatDistance(distanceTotal)}</div>
                 </div>
                 <div class="directionTrip__title">through ${leg.start_address ? leg.start_address : JSON.stringify(leg.start_location)}</div>
-                <div class="directionTrip__summary">${leg.duration.text} ${(directionsRequest.departure_time || directionsRequest.arrival_time) ? "with" : "without"} traffic</div>
+                <div class="directionTrip__summary">${formatTime(durationTotal)} ${directionsRequest.departure_time || directionsRequest.arrival_time ? "with" : "without"} traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `;
@@ -186,6 +194,24 @@ function createRoutesTable(response: woosmap.map.DirectionResult) {
     },
   );
 
+  function formatDistance(meters: number): string {
+    if (meters < 1000) {
+      return `${meters} m`;
+    } else {
+      return `${(meters / 1000).toFixed(2)} km`;
+    }
+  }
+
+  function formatTime(seconds: number): string {
+    const minutes = Math.round(seconds / 60);
+    if (minutes < 60) {
+      return `${minutes}m`;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return `${hours}h${remainingMinutes}m`;
+    }
+  }
   function selectCorrectRoute(index: number) {
     document
       .querySelectorAll(".directionTrip__selected")

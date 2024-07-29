@@ -256,7 +256,7 @@ function autocompleteAddress(
     key: woosmap_key,
     input,
     no_deprecated_fields: "true",
-    types: "locality",
+    types: "locality|admin_level|country|postal_code",
     components,
   };
   if (components !== "") {

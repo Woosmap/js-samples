@@ -1,0 +1,14 @@
+{
+  "title": "Transit Service With Roadbook",
+  "description": "Demonstrate building a roadbook or itinerary using the Transit Service to get directions for public transport mode.",
+  "category": "Services",
+  "callback": "initMap",
+  "tag": "transit_roadbook",
+  "name": "transit-roadbook",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

@@ -243,7 +243,7 @@ function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
       return `${hours}h${remainingMinutes}m`;
     }
   }
-  function formatTimeNumberOnly(seconds: number): string {
+  function formatTimeNumberOnly(seconds: number): number {
     const minutes = Math.round(seconds / 60);
     return minutes;
   }

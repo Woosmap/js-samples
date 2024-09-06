@@ -1,4 +1,4 @@
-// [START woosmap_transit_advanced]
+// [START woosmap_transit_roadbook]
 let map: woosmap.map.Map;
 let transitService: woosmap.map.TransitService;
 let transitRequest: woosmap.map.transit.TransitRouteRequest;
@@ -537,6 +537,6 @@ declare global {
   }
 }
 window.initMap = initMap;
-// [END woosmap_transit_advanced]
+// [END woosmap_transit_roadbook]
 
 export {};

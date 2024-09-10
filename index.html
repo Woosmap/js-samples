@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Transit Service - Advanced</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="sidebar">
+        <div id="innerWrapper">
+          <div class="sectionHeader">
+            <span>Origin</span>
+            <div
+              aria-label="Set Origin"
+              class="addLocation addLocation__origins"
+            >
+              <svg
+                width="10"
+                height="14"
+                viewBox="0 0 10 14"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.21278471,13.2173279 C4.21344203,13.4210003 4.29852035,13.6152829 4.447752,13.7538931 C4.59698368,13.8925033 4.79700821,13.9630315 5.00017514,13.9486763 C5.20260653,13.9603467 5.40103075,13.8888849 5.54953735,13.7508253 C5.69804403,13.6127657 5.78376442,13.4200717 5.786865,13.2173279 C5.786865,11.8485015 6.73642703,10.7280113 7.74168082,9.54202199 C8.85201342,8.23203971 9.9998241,6.87722382 9.9998241,5.04184757 C10.0148585,3.24561164 9.06519921,1.57935055 7.51207057,0.676864524 C5.958942,-0.225621508 4.04105803,-0.225621508 2.48792942,0.676864524 C0.93480081,1.57935055 -0.0148585204,3.24561164 0.000175901018,5.04184757 C0.000175901018,6.87722382 1.14833685,8.23203971 2.25901969,9.54202199 C3.26322269,10.7280113 4.21278471,11.8485015 4.21278471,13.2173279 Z"
+                  fill="#787878"
+                />
+              </svg>
+              <div>Set origin</div>
+            </div>
+          </div>
+          <div class="transitOptions">
+            <ol id="origin" class="customCounter customCounter__origin"></ol>
+          </div>
+          <div class="sectionHeader">
+            <span>Destination</span>
+            <div
+              aria-label="Set Destination"
+              class="addLocation addLocation__destinations"
+            >
+              <svg
+                width="10"
+                height="14"
+                viewBox="0 0 10 14"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.21278471,13.2173279 C4.21344203,13.4210003 4.29852035,13.6152829 4.447752,13.7538931 C4.59698368,13.8925033 4.79700821,13.9630315 5.00017514,13.9486763 C5.20260653,13.9603467 5.40103075,13.8888849 5.54953735,13.7508253 C5.69804403,13.6127657 5.78376442,13.4200717 5.786865,13.2173279 C5.786865,11.8485015 6.73642703,10.7280113 7.74168082,9.54202199 C8.85201342,8.23203971 9.9998241,6.87722382 9.9998241,5.04184757 C10.0148585,3.24561164 9.06519921,1.57935055 7.51207057,0.676864524 C5.958942,-0.225621508 4.04105803,-0.225621508 2.48792942,0.676864524 C0.93480081,1.57935055 -0.0148585204,3.24561164 0.000175901018,5.04184757 C0.000175901018,6.87722382 1.14833685,8.23203971 2.25901969,9.54202199 C3.26322269,10.7280113 4.21278471,11.8485015 4.21278471,13.2173279 Z"
+                  fill="#787878"
+                />
+              </svg>
+              <div>Set destination</div>
+            </div>
+          </div>
+          <div class="transitOptions">
+            <ol
+              id="destination"
+              class="customCounter customCounter__destination"
+            ></ol>
+          </div>
+          <div class="sectionHeader"><span>Options</span></div>
+          <div class="transitOptions">
+            <div class="transitOptions__list">
+              <div class="transitOptions__content">
+                <span class="transitOptions__header">Departure time</span>
+                <div class="transitOptions__input">
+                  <input
+                    id="empty"
+                    aria-label="Empty"
+                    name="departureTime"
+                    type="radio"
+                    value="empty"
+                    checked=""
+                  />
+                  <label for="empty">Not Define (now)</label>
+                </div>
+                <div class="transitOptions__input">
+                  <input
+                    id="datetime"
+                    aria-label="Datetime"
+                    name="departureTime"
+                    type="radio"
+                    value="datetime"
+                  />
+                  <input
+                    id="departureTime-time"
+                    name="departure-time"
+                    type="datetime-local"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="transitOptions">
+            <div class="transitOptions__list">
+              <div class="transitOptions__content">
+                <span class="transitOptions__header">Arrival time</span>
+                <div class="transitOptions__input">
+                  <input
+                    id="empty"
+                    aria-label="Empty"
+                    name="arrivalTime"
+                    type="radio"
+                    value="empty"
+                    checked=""
+                  />
+                  <label for="empty">Not Define</label>
+                </div>
+                <div class="transitOptions__input">
+                  <input
+                    id="datetime"
+                    aria-label="Datetime"
+                    name="arrivalTime"
+                    type="radio"
+                    value="datetime"
+                  />
+                  <input
+                    id="arrivalTime-time"
+                    name="arrival-time"
+                    type="datetime-local"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="transitOptions">
+            <div class="transitOptions__list">
+              <div class="transitOptions__content">
+                <span class="transitOptions__header">Specify modes</span>
+                <div class="transitOptions__input">
+                  <input
+                    id="includeModes"
+                    aria-label="include"
+                    name="modeOption"
+                    type="radio"
+                    value="include"
+                    checked=""
+                  />
+                  <label for="empty">Include only</label>
+                </div>
+                <div class="transitOptions__input">
+                  <input
+                    id="excludeModes"
+                    aria-label="exclude"
+                    name="modeOption"
+                    type="radio"
+                    value="exclude"
+                  />
+                  <label for="empty">Exclude</label>
+                </div>
+                <div class="transitOptions__input">
+                  <input
+                    class="modesChk"
+                    id="modeTrain"
+                    aria-label="Mode Train"
+                    name="train"
+                    type="checkbox"
+                  />
+                  <label for="modeTrain">Train</label>
+                </div>
+                <div class="transitOptions__input">
+                  <input
+                    class="modesChk"
+                    id="modeBus"
+                    aria-label="Mode Bus"
+                    name="bus"
+                    type="checkbox"
+                  />
+                  <label for="modeBus">Bus</label>
+                </div>
+                <div class="transitOptions__input">
+                  <input
+                    class="modesChk"
+                    id="modeFerry"
+                    aria-label="ferry"
+                    name="modeFerry"
+                    type="checkbox"
+                  />
+                  <label for="modeFerry">Ferry</label>
+                </div>
+                <div class="transitOptions__input">
+                  <input
+                    class="modesChk"
+                    id="modeAerial"
+                    aria-label="aerial"
+                    name="modeAerial"
+                    type="checkbox"
+                  />
+                  <label for="modeAerial">Aerial</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="mapContainer">
+        <div class="linear-progress hide">
+          <div class="progress"></div>
+        </div>
+        <div id="map"></div>
+        <div id="infoMessage">Drag markers to update route</div>
+        <div class="tableContainer"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

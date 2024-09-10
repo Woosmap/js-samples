@@ -291,8 +291,11 @@ function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
   tableContainer.style.display = "block";
 }
 
-function displayOrHideError(error: string) {
+function displayOrHideError(error: string, status: string) {
   const infoMsgElement = document.getElementById("infoMessage") as HTMLElement;
+  const $roadbookSection = document.getElementById(
+    "roadbook__container",
+  ) as HTMLElement;
   if (error === "") {
     infoMsgElement.innerText = "Drag markers to update route";
   } else {
@@ -303,6 +306,10 @@ function displayOrHideError(error: string) {
     ) as HTMLElement;
     tableContainer.innerHTML = "";
     tableContainer.style.display = "none";
+    $roadbookSection.innerHTML = `Error calculating transit route:", ${error}`;
+  }
+  if (status !== "OK") {
+    $roadbookSection.innerHTML = "No route found";
   }
 }
 
@@ -324,7 +331,7 @@ function calculateTransit(): void {
     .then(handleResponse)
     .catch((error) => {
       console.error("Error calculating transit route:", error);
-      displayOrHideError(error);
+      displayOrHideError(error, "");
       toggleProgress();
     });
 }
@@ -333,7 +340,7 @@ function handleResponse(response: woosmap.map.transit.TransitRouteResponse) {
   displayTransitRoute(response.routes);
   displayTransitMarkers();
   createRoutesTable(response);
-  displayOrHideError("");
+  displayOrHideError("", response.status);
   toggleProgress();
 }
 

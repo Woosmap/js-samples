@@ -3,7 +3,7 @@
   "description": "TBD",
   "category": "Localities",
   "tag": "demo_airport",
-  "name": "woosmap-demo-airport",
+  "name": "demo-airport",
   "callback": "initMap",
   "pagination": {
     "data": "mode",

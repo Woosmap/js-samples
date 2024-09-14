@@ -1,6 +1,6 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
-/* [START woosmap_localities_api_details] */
+/* [START woosmap_demo_airport] */
 @include meta.load-css("../../shared/scss/_default.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
@@ -211,4 +211,4 @@ body {
   padding: 16px 12px 10px 12px;
 }
 
-/* [END woosmap_localities_api_details] */
+/* [END woosmap_demo_airport] */

@@ -1,0 +1,45 @@
+---json
+{
+"parkings": [
+    { "ref": "p1", "name": "Parking 1 (Via Taxi/Voiture)", "shortname": "Parking"},
+    { "ref": "dm", "name": "Dépose Minute (Via Taxi/Voiture)", "shortname": "Dépose Minute"},
+    { "ref": "nv", "name": "Navette (Via Transport public)", "shortname": "Navette"}
+],
+"gates": [
+    { "ref": "gate21", "name": "Porte 21", "shortname": "21"},
+    { "ref": "gate22", "name": "Porte 22", "shortname": "22"},
+    { "ref": "gate23", "name": "Porte 23", "shortname": "23"},
+    { "ref": "gate24", "name": "Porte 24", "shortname": "24"},
+    { "ref": "gate25", "name": "Porte 25", "shortname": "25"},
+    { "ref": "gate26", "name": "Porte 26", "shortname": "26"},
+    { "ref": "gate27", "name": "Porte 27", "shortname": "27"},
+    { "ref": "gate28", "name": "Porte 28", "shortname": "28"},
+    { "ref": "gate29", "name": "Porte 29", "shortname": "29"}
+]
+}
+---
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+        <div id="map"></div>
+        <div class="routeDetails">
+            <div class="routeOptions"></div>
+        </div>
+        <div id="autocomplete-container">
+            {% svgIcon 'search.svg' %}
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search an Address..."
+                    autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+                {% svgIcon 'clear.svg' %}
+            </button>
+            <ul id="suggestions-list"></ul>
+        </div>
+        {% include '../../src/_includes/indoor-poi-selector.njk' %}
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

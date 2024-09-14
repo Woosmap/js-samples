@@ -1,0 +1,65 @@
+<div id="poiSelector" class="dropdown">
+    <button id="parkingDropdownButton" class="dropdown-button"><span>
+            {% set selectedPOIs = parkings | selectattr("selected") | list %}
+            {% if selectedPOIs.length > 0 %}
+                Parking:
+                {% for poi in selectedPOIs %}
+                    <strong>{{ poi.shortname }}</strong>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                Choisissez un parking
+            {% endif %}
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"></path>
+        </svg>
+    </button>
+    <div id="parkingDropdown" class="dropdown-content dropdown-menu">
+        <div>
+            <ul role="listbox">
+                {% for poi in parkings %}
+                    <li class="parking {{ 'active' if poi.selected }}" data-parkingref="{{ poi.ref }}"
+                        data-parkingname="{{ poi.name }}">
+                        <div class="dropdown-menuitem">
+                            <div class="parking-name">{{ poi.name }}</div>
+                            <div class="active-icon-wrapper"></div>
+                        </div>
+                    </li>
+                {% endfor %} 
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="poiSelector2" class="dropdown">
+    <button id="gateDropdownButton" class="dropdown-button"><span>
+            {% set selectedPOIs = gates | selectattr("selected") | list %}
+            {% if selectedPOIs.length > 0 %}
+                Porte:
+                {% for poi in selectedPOIs %}
+                    <strong>{{ poi.shortname }}</strong>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                Choisissez une porte
+            {% endif %}
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"></path>
+        </svg>
+    </button>
+    <div id="parkingDropdown" class="dropdown-content dropdown-menu">
+        <div>
+            <ul role="listbox">
+                {% for poi in gates %}
+                    <li class="gate {{ 'active' if poi.selected }}" data-gateref="{{ poi.ref }}"
+                        data-gatename="{{ poi.name }}">
+                        <div class="dropdown-menuitem">
+                            <div class="gate-name">{{ poi.name }}</div>
+                            <div class="active-icon-wrapper"></div>
+                        </div>
+                    </li>
+                {% endfor %} 
+            </ul>
+        </div>
+    </div>
+</div>
+

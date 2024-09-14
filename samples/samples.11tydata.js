@@ -3,7 +3,7 @@ const _ = require("lodash");
 const data = {
   ..._.pick(
     {
-      WOOSMAP_PUBLIC_API_KEY: "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
+      WOOSMAP_PUBLIC_API_KEY: "woos-4fdc8f8d-e161-3fb8-9a57-e1759c71716a",
       ...process.env,
     },
     ["WOOSMAP_PUBLIC_API_KEY"],

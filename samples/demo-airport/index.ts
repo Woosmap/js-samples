@@ -351,6 +351,7 @@ function toggleDropdown(event: Event) {
       hideDropdown(dropdown);
     } else {
       showDropdown(dropdown);
+      hideUnselectDropdowns(dropdown);
     }
   }
 }
@@ -367,11 +368,18 @@ function hideDropdowns() {
   const dropdowns = document.querySelectorAll(".dropdown");
   document.addEventListener("click", (event: Event) => {
     dropdowns.forEach((dropdown: Element) => {
-      if (!dropdown.contains(event.target as Node)) {
         hideDropdown(dropdown);
-      }
     });
   });
+}
+
+function hideUnselectDropdowns(selectedDropdown) {
+  const dropdowns = document.querySelectorAll(".dropdown");
+  dropdowns.forEach((dropdown: Element) => {
+      if (dropdown != selectedDropdown) {
+        hideDropdown(dropdown);
+      }    
+    });
 }
 
 function showDropdown(dropdown: Element) {

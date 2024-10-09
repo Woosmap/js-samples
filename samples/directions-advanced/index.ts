@@ -180,7 +180,7 @@ function createRoutesTable(response: woosmap.map.DirectionResult) {
                     <div class="directionTrip__duration">${formatTime(durationTotal)}</div>
                     <div class="directionTrip__distance">${formatDistance(distanceTotal)}</div>
                 </div>
-                <div class="directionTrip__title">${route.main_route_name ? "through " + route.main_route_name : "Alternative route"}</div>
+                <div class="directionTrip__title">through ${route.main_route_name ? route.main_route_name : JSON.stringify(leg.start_location)}</div>
                 <div class="directionTrip__summary">${formatTime(durationTotal)} ${directionsRequest.departure_time || directionsRequest.arrival_time ? "with" : "without"} traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>

@@ -54,14 +54,17 @@ function initMap(): void {
     }
 
     draw(): void {
+      this.positionDiv();
+    }
+
+    onAdd(): void {
       if (!this.div) {
         this.createDiv();
         this.appendDivToOverlay();
       }
-      this.positionDiv();
     }
 
-    remove(): void {
+    onRemove(): void {
       if (this.div && this.div.parentNode) {
         this.div.parentNode.removeChild(this.div);
         this.div = null;

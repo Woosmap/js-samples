@@ -1,0 +1,93 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_marker_html_css] */
+@include meta.load-css("../../shared/scss/_default.scss");
+
+.popover {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+
+  .popover-content {
+    display: flex;
+    align-items: center;
+    background-color: #FFF;
+    color: #1D1D1D;
+    padding: 6px 8px;
+    border-radius: 20px;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f50057;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 6px;
+
+
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjRkZGRkZGIj48cGF0aCBkPSJNNDAtMjAwdi02MDBoODB2NDAwaDMyMHYtMzIwaDMyMHE2NiAwIDExMyA0N3Q0NyAxMTN2MzYwaC04MHYtMTIwSDEyMHYxMjBINDBabTI0MC0yNDBxLTUwIDAtODUtMzV0LTM1LTg1cTAtNTAgMzUtODV0ODUtMzVxNTAgMCA4NSAzNXQzNSA4NXEwIDUwLTM1IDg1dC04NSAzNVoiLz48L3N2Zz4=");
+      background-repeat: no-repeat;
+      background-size: 16px 16px;
+      background-position: center;
+    }
+
+    .price {
+      white-space: nowrap;
+    }
+  }
+
+  .popover-arrow-shadow {
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid rgba(0, 0, 0, 0.2);
+    filter: blur(2px);
+    z-index: 0;
+  }
+
+  .popover-arrow {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #FFF;
+    z-index: 1;
+  }
+
+  &.active {
+    .popover-content {
+      background-color: #f50057;
+      color: #FFFFFF;
+
+      .icon {
+        background-color: #FFFFFF;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZjUwMDU3Ij48cGF0aCBkPSJNNDAtMjAwdi02MDBoODB2NDAwaDMyMHYtMzIwaDMyMHE2NiAwIDExMyA0N3Q0NyAxMTN2MzYwaC04MHYtMTIwSDEyMHYxMjBINDBabTI0MC0yNDBxLTUwIDAtODUtMzV0LTM1LTg1cTAtNTAgMzUtODV0ODUtMzVxNTAgMCA4NSAzNXQzNSA4NXEwIDUwLTM1IDg1dC04NSAzNVoiLz48L3N2Zz4=");
+      }
+    }
+
+    .popover-arrow {
+      border-top: 6px solid #f50057;
+    }
+  }
+}
+
+/* [END woosmap_marker_html_css] */

@@ -1,0 +1,33 @@
+{
+  "name": "marker-html-css",
+  "description": "Samples for Woosmap Map JS API",
+  "version": "1.36.2",
+  "keywords": [
+    "woosmap",
+    "javascript",
+    "map"
+  ],
+  "homepage": "https://github.com/woosmap/js-samples#readme",
+  "bugs": {
+    "url": "https://github.com/woosmap/js-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woosmap/js-samples.git"
+  },
+  "files": [],
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build --outDir dist --base './'",
+    "test": "tsc --no-emit",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/woosmap.map": "^1.4.14",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
+  },
+  "dependencies": {}
+}

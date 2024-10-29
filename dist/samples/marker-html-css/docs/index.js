@@ -49,14 +49,15 @@ function initMap() {
       }
     }
     draw() {
+      this.positionDiv();
+    }
+    onAdd() {
       if (!this.div) {
         this.createDiv();
         this.appendDivToOverlay();
       }
-
-      this.positionDiv();
     }
-    remove() {
+    onRemove() {
       if (this.div && this.div.parentNode) {
         this.div.parentNode.removeChild(this.div);
         this.div = null;

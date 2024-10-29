@@ -7,16 +7,16 @@
 
     <script type="module" crossorigin>
       var h = Object.defineProperty;
-      var f = (n, s, o) =>
-        s in n
-          ? h(n, s, {
+      var f = (r, s, o) =>
+        s in r
+          ? h(r, s, {
               enumerable: !0,
               configurable: !0,
               writable: !0,
               value: o,
             })
-          : (n[s] = o);
-      var c = (n, s, o) => (f(n, typeof s != "symbol" ? s + "" : s, o), o);
+          : (r[s] = o);
+      var d = (r, s, o) => (f(r, typeof s != "symbol" ? s + "" : s, o), o);
       (function () {
         const s = document.createElement("link").relList;
         if (s && s.supports && s.supports("modulepreload")) return;
@@ -49,12 +49,12 @@
         }
       })();
       function m() {
-        class n extends woosmap.map.OverlayView {
-          constructor({ latlng: e, map: r, data: p }) {
+        class r extends woosmap.map.OverlayView {
+          constructor({ latlng: e, map: n, data: p }) {
             super();
-            c(this, "latlng");
-            c(this, "html");
-            c(this, "div", null);
+            d(this, "latlng");
+            d(this, "html");
+            d(this, "div", null);
             (this.latlng = e),
               (this.html = `<div class="popover-content">
                       <span class="icon">️</span>
@@ -62,7 +62,7 @@
                     </div>
                      <div class="popover-arrow-shadow"></div>
                      <div class="popover-arrow"></div>`),
-              this.setMap(r);
+              this.setMap(n);
           }
           createDiv() {
             (this.div = document.createElement("div")),
@@ -78,11 +78,11 @@
             e && this.div && e.overlayImage.appendChild(this.div);
           }
           positionDiv() {
-            var r;
+            var n;
             const e =
-              (r = this.getProjection()) == null
+              (n = this.getProjection()) == null
                 ? void 0
-                : r.fromLatLngToDivPixel(this.latlng);
+                : n.fromLatLngToDivPixel(this.latlng);
             if (e && this.div) {
               const p = this.div.offsetWidth / 2,
                 v = this.div.offsetHeight + 6;
@@ -91,10 +91,12 @@
             }
           }
           draw() {
-            this.div || (this.createDiv(), this.appendDivToOverlay()),
-              this.positionDiv();
+            this.positionDiv();
           }
-          remove() {
+          onAdd() {
+            this.div || (this.createDiv(), this.appendDivToOverlay());
+          }
+          onRemove() {
             this.div &&
               this.div.parentNode &&
               (this.div.parentNode.removeChild(this.div), (this.div = null));
@@ -102,8 +104,8 @@
           getPosition() {
             return this.latlng;
           }
-          addEventListener(e, r) {
-            this.div && this.div.addEventListener(e, r);
+          addEventListener(e, n) {
+            this.div && this.div.addEventListener(e, n);
           }
         }
         const s = { lat: 51.5074, lng: -0.1278 },
@@ -126,15 +128,15 @@
             { lat: 51.5074, lng: -0.1078 },
           ],
           i = [];
-        l.forEach((a, d) => {
-          const e = new n({
-            latlng: new woosmap.map.LatLng(t[d].lat, t[d].lng),
+        l.forEach((a, c) => {
+          const e = new r({
+            latlng: new woosmap.map.LatLng(t[c].lat, t[c].lng),
             map: o,
             data: a,
           });
           e.addEventListener("click", () => {
-            i.forEach((r) => {
-              r.div && r.div.classList.remove("active");
+            i.forEach((n) => {
+              n.div && n.div.classList.remove("active");
             }),
               e.div && e.div.classList.add("active");
           }),

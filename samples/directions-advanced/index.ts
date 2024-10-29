@@ -174,7 +174,7 @@ function createRoutesTable(response: woosmap.map.DirectionResult) {
         travelModeIcons["DRIVING"];
 
       directionTrip.innerHTML = `
-            <img class="directionTrip__travelModeIcon" src="${travelModeIconSrc}">
+            <img alt="travel mode" class="directionTrip__travelModeIcon" src="${travelModeIconSrc}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
                     <div class="directionTrip__duration">${formatTime(durationTotal)}</div>

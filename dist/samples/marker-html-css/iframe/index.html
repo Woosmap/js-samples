@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Marker HTML CSS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <script type="module" crossorigin>
+      var h = Object.defineProperty;
+      var f = (r, s, o) =>
+        s in r
+          ? h(r, s, {
+              enumerable: !0,
+              configurable: !0,
+              writable: !0,
+              value: o,
+            })
+          : (r[s] = o);
+      var d = (r, s, o) => (f(r, typeof s != "symbol" ? s + "" : s, o), o);
+      (function () {
+        const s = document.createElement("link").relList;
+        if (s && s.supports && s.supports("modulepreload")) return;
+        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
+          l(t);
+        new MutationObserver((t) => {
+          for (const i of t)
+            if (i.type === "childList")
+              for (const a of i.addedNodes)
+                a.tagName === "LINK" && a.rel === "modulepreload" && l(a);
+        }).observe(document, { childList: !0, subtree: !0 });
+        function o(t) {
+          const i = {};
+          return (
+            t.integrity && (i.integrity = t.integrity),
+            t.referrerPolicy && (i.referrerPolicy = t.referrerPolicy),
+            t.crossOrigin === "use-credentials"
+              ? (i.credentials = "include")
+              : t.crossOrigin === "anonymous"
+                ? (i.credentials = "omit")
+                : (i.credentials = "same-origin"),
+            i
+          );
+        }
+        function l(t) {
+          if (t.ep) return;
+          t.ep = !0;
+          const i = o(t);
+          fetch(t.href, i);
+        }
+      })();
+      function m() {
+        class r extends woosmap.map.OverlayView {
+          constructor({ latlng: e, map: n, data: p }) {
+            super();
+            d(this, "latlng");
+            d(this, "html");
+            d(this, "div", null);
+            (this.latlng = e),
+              (this.html = `<div class="popover-content">
+                      <span class="icon">️</span>
+                      <span class="price">${p.price}</span>
+                    </div>
+                     <div class="popover-arrow-shadow"></div>
+                     <div class="popover-arrow"></div>`),
+              this.setMap(n);
+          }
+          createDiv() {
+            (this.div = document.createElement("div")),
+              (this.div.style.position = "absolute"),
+              (this.div.className = "popover"),
+              this.html && (this.div.innerHTML = this.html),
+              woosmap.map.event.addDomListener(this.div, "click", () => {
+                woosmap.map.event.trigger(this, "click");
+              });
+          }
+          appendDivToOverlay() {
+            const e = this.getPanes();
+            e && this.div && e.overlayImage.appendChild(this.div);
+          }
+          positionDiv() {
+            var n;
+            const e =
+              (n = this.getProjection()) == null
+                ? void 0
+                : n.fromLatLngToDivPixel(this.latlng);
+            if (e && this.div) {
+              const p = this.div.offsetWidth / 2,
+                v = this.div.offsetHeight + 6;
+              (this.div.style.left = `${e.x - p}px`),
+                (this.div.style.top = `${e.y - v}px`);
+            }
+          }
+          draw() {
+            this.positionDiv();
+          }
+          onAdd() {
+            this.div || (this.createDiv(), this.appendDivToOverlay());
+          }
+          onRemove() {
+            this.div &&
+              this.div.parentNode &&
+              (this.div.parentNode.removeChild(this.div), (this.div = null));
+          }
+          getPosition() {
+            return this.latlng;
+          }
+          addEventListener(e, n) {
+            this.div && this.div.addEventListener(e, n);
+          }
+        }
+        const s = { lat: 51.5074, lng: -0.1278 },
+          o = new woosmap.map.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: s,
+          }),
+          l = [
+            { price: "100 €" },
+            { price: "200 €" },
+            { price: "300 €" },
+            { price: "400 €" },
+            { price: "500 €" },
+          ],
+          t = [
+            { lat: 51.5074, lng: -0.1278 },
+            { lat: 51.5174, lng: -0.1378 },
+            { lat: 51.4974, lng: -0.1178 },
+            { lat: 51.5074, lng: -0.1478 },
+            { lat: 51.5074, lng: -0.1078 },
+          ],
+          i = [];
+        l.forEach((a, c) => {
+          const e = new r({
+            latlng: new woosmap.map.LatLng(t[c].lat, t[c].lng),
+            map: o,
+            data: a,
+          });
+          e.addEventListener("click", () => {
+            i.forEach((n) => {
+              n.div && n.div.classList.remove("active");
+            }),
+              e.div && e.div.classList.add("active");
+          }),
+            i.push(e);
+        });
+      }
+      window.initMap = m;
+    </script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      .popover {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+      .popover .popover-content {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        color: #1d1d1d;
+        padding: 6px 8px;
+        border-radius: 20px;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        box-shadow: 0 2px 4px #0003;
+        z-index: 1;
+      }
+      .popover .popover-content .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f50057;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        margin-right: 6px;
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjRkZGRkZGIj48cGF0aCBkPSJNNDAtMjAwdi02MDBoODB2NDAwaDMyMHYtMzIwaDMyMHE2NiAwIDExMyA0N3Q0NyAxMTN2MzYwaC04MHYtMTIwSDEyMHYxMjBINDBabTI0MC0yNDBxLTUwIDAtODUtMzV0LTM1LTg1cTAtNTAgMzUtODV0ODUtMzVxNTAgMCA4NSAzNXQzNSA4NXEwIDUwLTM1IDg1dC04NSAzNVoiLz48L3N2Zz4=);
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        background-position: center;
+      }
+      .popover .popover-content .price {
+        white-space: nowrap;
+      }
+      .popover .popover-arrow-shadow {
+        position: absolute;
+        bottom: -7px;
+        left: 50%;
+        transform: translate(-50%);
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 7px solid rgba(0, 0, 0, 0.2);
+        filter: blur(2px);
+        z-index: 0;
+      }
+      .popover .popover-arrow {
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translate(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #fff;
+        z-index: 1;
+      }
+      .popover.active .popover-content {
+        background-color: #f50057;
+        color: #fff;
+      }
+      .popover.active .popover-content .icon {
+        background-color: #fff;
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZjUwMDU3Ij48cGF0aCBkPSJNNDAtMjAwdi02MDBoODB2NDAwaDMyMHYtMzIwaDMyMHE2NiAwIDExMyA0N3Q0NyAxMTN2MzYwaC04MHYtMTIwSDEyMHYxMjBINDBabTI0MC0yNDBxLTUwIDAtODUtMzV0LTM1LTg1cTAtNTAgMzUtODV0ODUtMzVxNTAgMCA4NSAzNXQzNSA4NXEwIDUwLTM1IDg1dC04NSAzNVoiLz48L3N2Zz4=);
+      }
+      .popover.active .popover-arrow {
+        border-top: 6px solid #f50057;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap"
+      defer
+    ></script>
+  </body>
+</html>

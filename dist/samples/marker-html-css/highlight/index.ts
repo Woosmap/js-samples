@@ -33,21 +33,21 @@ function initMap(): void {
     }
 
     private appendDivToOverlay(): void {
-      // @ts-ignore
       const panes = this.getPanes();
       if (panes && this.div) {
-        panes.overlayImage.appendChild(this.div);
+        panes.floatPane.appendChild(this.div);
       }
     }
 
     private positionDiv(): void {
-      // @ts-ignore
       const point = this.getProjection()?.fromLatLngToDivPixel(this.latlng);
       if (point && this.div) {
         // Offset should depend on the style of your popover
         const offsetWidth = this.div.offsetWidth / 2; // 50% of div width
         const offsetHeight = this.div.offsetHeight + 6; // Full height of div plus the arrow height
+        // @ts-ignore
         this.div.style.left = `${point.x - offsetWidth}px`;
+        // @ts-ignore
         this.div.style.top = `${point.y - offsetHeight}px`;
       }
     }

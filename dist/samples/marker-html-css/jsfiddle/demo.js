@@ -27,15 +27,13 @@ function initMap() {
       });
     }
     appendDivToOverlay() {
-      // @ts-ignore
       const panes = this.getPanes();
 
       if (panes && this.div) {
-        panes.overlayImage.appendChild(this.div);
+        panes.floatPane.appendChild(this.div);
       }
     }
     positionDiv() {
-      // @ts-ignore
       const point = this.getProjection()?.fromLatLngToDivPixel(this.latlng);
 
       if (point && this.div) {
@@ -43,7 +41,9 @@ function initMap() {
         const offsetWidth = this.div.offsetWidth / 2; // 50% of div width
         const offsetHeight = this.div.offsetHeight + 6; // Full height of div plus the arrow height
 
+        // @ts-ignore
         this.div.style.left = `${point.x - offsetWidth}px`;
+        // @ts-ignore
         this.div.style.top = `${point.y - offsetHeight}px`;
       }
     }

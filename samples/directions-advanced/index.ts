@@ -174,13 +174,13 @@ function createRoutesTable(response: woosmap.map.DirectionResult) {
         travelModeIcons["DRIVING"];
 
       directionTrip.innerHTML = `
-            <img class="directionTrip__travelModeIcon" src="${travelModeIconSrc}">
+            <img alt="travel mode" class="directionTrip__travelModeIcon" src="${travelModeIconSrc}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
                     <div class="directionTrip__duration">${formatTime(durationTotal)}</div>
                     <div class="directionTrip__distance">${formatDistance(distanceTotal)}</div>
                 </div>
-                <div class="directionTrip__title">through ${leg.start_address ? leg.start_address : JSON.stringify(leg.start_location)}</div>
+                <div class="directionTrip__title">through ${route.main_route_name ? route.main_route_name : JSON.stringify(leg.start_location)}</div>
                 <div class="directionTrip__summary">${formatTime(durationTotal)} ${directionsRequest.departure_time || directionsRequest.arrival_time ? "with" : "without"} traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>

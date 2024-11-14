@@ -50,8 +50,8 @@ jobs:
         env:
           CI: true
       - name: Push test report to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: Test Results
+          name: Test Results ${{ github.sha }}
           path: test-results/

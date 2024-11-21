@@ -1,0 +1,16 @@
+{
+  "title": "Datasets Api - Using DatasetsOverlay",
+  "description": "Advanced geospatial search and query functions",
+  "WOOSMAP_PUBLIC_API_KEY": "woos-38514ecd-aa2a-38b8-9873-9dbc457e54f5",
+  "callback": "initMap",
+  "category": "Services",
+  "libraries": "drawing",
+  "tag": "datasets_api",
+  "name": "datasets-api",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

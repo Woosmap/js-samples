@@ -12,6 +12,7 @@ let clearSearchBtn: HTMLButtonElement;
 let datasetSelect: HTMLSelectElement;
 let operatorSelect: HTMLSelectElement;
 let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
+let results: HTMLOListElement;
 
 const datasetId = "d210a9d3-001e-4607-81c9-b5fc247f2f13"; //US - Seismic Hazard Map
 
@@ -27,6 +28,7 @@ function initMap(): void {
   initDrawing();
   initServices();
   manageDropdownSelection();
+  results = document.querySelector("#results") as HTMLOListElement;
   // [END woosmap_datasets_api_instantiate_map]
 }
 function initServices(): void {
@@ -63,6 +65,7 @@ function initDrawing(): void {
     map.data.forEach((feature) => {
       map.data.remove(feature);
     });
+    results.innerHTML = "";
   });
   drawTools.addListener("draw.update", async (ev) => {
     await intersectCb(ev);
@@ -93,6 +96,7 @@ function initAutoComplete(): void {
     inputElement.value = "";
     suggestionsList.style.display = "none";
     clearSearchBtn.style.display = "none";
+    results.innerHTML = "";
     inputElement.focus();
   });
 }
@@ -177,11 +181,13 @@ function manageDropdownSelection() {
     await intersectCb(collection);
   });
 }
-function updateDataset(datasetId: string) {
+async function updateDataset(datasetId: string) {
   datasetsOverlay.setMap(null);
   datasetsOverlay = new woosmap.map.DatasetsOverlay(datasetId);
   datasetsService = new woosmap.map.DatasetsService(datasetId);
   datasetsOverlay.setMap(map);
+  const collection = drawTools.getAll();
+  await intersectCb(collection);
 }
 async function intersectCb(ev) {
   async function applyOperator(geometry, operator) {
@@ -209,6 +215,7 @@ async function intersectCb(ev) {
 
   const features = [];
 
+  bindResults(response.features);
   // resultList.results = response.features;
   console.log(response.features);
 
@@ -227,6 +234,26 @@ async function intersectCb(ev) {
     type: "FeatureCollection",
     features: features,
   });
+}
+function bindResults(features: woosmap.map.GeoJSONFeature[]) {
+  results.innerHTML = "";
+  console.log(features);
+  if (features.length > 0) {
+    features.map((feature) => {
+      console.log(feature);
+      const attributes = feature["attributes"];
+      const resultListItem = document.createElement("table");
+      resultListItem.classList.add("result");
+      Object.keys(attributes).map((key) => {
+        if (attributes[key]) {
+          resultListItem.innerHTML =
+            resultListItem.innerHTML +
+            `<tr><td><b>${key} </b></td><td>${attributes[key]}</td></tr>`;
+        }
+      }),
+        results.appendChild(resultListItem);
+    });
+  }
 }
 // [START woosmap_localities_autocomplete_debounce_promise]
 let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line

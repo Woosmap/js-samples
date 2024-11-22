@@ -40,7 +40,7 @@
       let i,
         c = null,
         d,
-        g,
+        h,
         v,
         u = [],
         m = [];
@@ -66,10 +66,10 @@
         p &&
         (l.addEventListener("keydown", L), p.addEventListener("click", b));
       function L(e) {
-        e.key === "Enter" && y(null);
+        e.key === "Enter" && y();
       }
       function b() {
-        y(null);
+        y();
       }
       function E(e, t) {
         return e.filter((o) =>
@@ -87,7 +87,7 @@
         function o(s) {
           return (
             s && (t.page = s),
-            g
+            h
               .search(t)
               .then(
                 (r) => (
@@ -146,10 +146,10 @@
         });
       }
       function A(e) {
-        return l ? (e ? { latLng: e } : { address: l.value }) : null;
+        return l ? { address: l.value } : null;
       }
       function y(e) {
-        const t = A(e);
+        const t = A();
         t &&
           v
             .geocode(t)
@@ -178,7 +178,7 @@
             i.setCenter(e),
             i.setZoom(8));
       }
-      function h(e) {
+      function g(e) {
         const t = document.querySelector(".stores-list");
         if (t)
           if (e) {
@@ -212,12 +212,12 @@
             }, 50),
           ),
           window.woosmap.map.event.addListener(i, "store_selected", (e) => {
-            h(e.properties.store_id);
+            g(e.properties.store_id);
           }),
           window.woosmap.map.event.addListener(i, "store_unselected", () => {
-            h();
+            g();
           }),
-          (g = new woosmap.map.StoresService()),
+          (h = new woosmap.map.StoresService()),
           (v = new woosmap.map.LocalitiesService()),
           M().then((e) => {
             (m = e), f(e);

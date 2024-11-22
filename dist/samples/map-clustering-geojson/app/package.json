@@ -25,9 +25,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/woosmap.map": "^1.4.15",
+    "@types/woosmap.map": "^1.4.17",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12"
+    "vite": "^5.4.11"
   },
   "dependencies": {
     "supercluster": "^7.1.3",

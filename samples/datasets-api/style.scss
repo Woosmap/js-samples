@@ -1,11 +1,9 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
 
 /* [START woosmap_datasets_api] */
-@include meta.load-css("../../shared/scss/_default.scss");
 @include meta.load-css("../../shared/scss/_sidebar.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
-@import "../../shared/scss/mixins.scss";
 
 #sidebar {
   flex-basis: 18rem;
@@ -29,6 +27,7 @@
   flex-grow: 5;
   position: relative;
 }
+
 #od-selector {
   width: 100%;
 }
@@ -46,6 +45,7 @@
   font-size: 10pt;
   font-weight: 600;
 }
+
 .sectionHeader {
   span {
     font-size: .85em;
@@ -65,28 +65,38 @@
     margin-top: 0;
   }
 }
+
 .dropdown__container {
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  & > label {
+  &>label {
     padding-left: 10px;
   }
 }
+
 ol#results {
   list-style-type: none;
   margin: 0;
   padding-left: 0;
 
-  & > table {
+  &.error {
+    font-size: 10pt;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  &>table {
     &:hover {
       cursor: pointer;
       background-color: #f2f2f2;
     }
+
     border: none;
     border-bottom: 1px solid #dfdfdf;
     padding: 5px;
+
     table.result:last-child {
       border: none;
     }
@@ -97,7 +107,9 @@ ol#results {
       text-align: left;
       color: #555;
       word-break: break-word;
+      vertical-align: top;
     }
+
   }
 }
-/* [END woosmap_datasets_api] */
+  /* [END woosmap_datasets_api] */

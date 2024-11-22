@@ -1,5 +1,5 @@
 {
-  "title": "Datasets Api - Using DatasetsOverlay",
+  "title": "Datasets Api - Using DatasetsOverlay & DatasetsService classes",
   "description": "Advanced geospatial search and query functions",
   "WOOSMAP_PUBLIC_API_KEY": "woos-38514ecd-aa2a-38b8-9873-9dbc457e54f5",
   "callback": "initMap",

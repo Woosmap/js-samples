@@ -27,7 +27,7 @@ function initMap(): void {
   });
   initDrawing();
   initServices();
-  manageDropdownSelection();
+  manageFiltersElements();
   results = document.querySelector("#results") as HTMLOListElement;
   // [END woosmap_datasets_api_instantiate_map]
 }
@@ -169,7 +169,7 @@ function displaySuggestions(
     }
   }
 }
-function manageDropdownSelection() {
+function manageFiltersElements() {
   datasetSelect = document.getElementById("dataset") as HTMLSelectElement;
   operatorSelect = document.getElementById("operator") as HTMLSelectElement;
   datasetSelect.addEventListener("change", (event) => {
@@ -208,41 +208,38 @@ async function intersectCb(ev) {
     return response;
   }
 
-  const response = await applyOperator(
-    ev.features[0].geometry,
-    operatorSelect.value,
-  );
+  await applyOperator(ev.features[0].geometry, operatorSelect.value)
+    .then((response) => {
+      const features = [];
+      bindResultsToPanel(response.features);
+      map.data.forEach((feature) => {
+        map.data.remove(feature);
+      });
+      for (const feature of response.features) {
+        // @ts-ignore TypeDef to be updated
+        features.push({
+          type: "Feature",
+          geometry: feature.geometry,
+        });
+      }
 
-  const features = [];
-
-  bindResults(response.features);
-  // resultList.results = response.features;
-  console.log(response.features);
-
-  map.data.forEach((feature) => {
-    map.data.remove(feature);
-  });
-  for (const feature of response.features) {
-    // @ts-ignore TypeDef to be updated
-    features.push({
-      type: "Feature",
-      geometry: feature.geometry,
+      map.data.addGeoJson({
+        type: "FeatureCollection",
+        features: features,
+      });
+    })
+    .catch((error) => {
+      results.innerHTML = error;
+      results.classList.add("error");
     });
-  }
-
-  map.data.addGeoJson({
-    type: "FeatureCollection",
-    features: features,
-  });
 }
-function bindResults(features: woosmap.map.GeoJSONFeature[]) {
+function bindResultsToPanel(features: woosmap.map.GeoJSONFeature[]) {
   results.innerHTML = "";
-  console.log(features);
   if (features.length > 0) {
     features.map((feature) => {
-      console.log(feature);
       const attributes = feature["attributes"];
       const resultListItem = document.createElement("table");
+      results.classList.remove("error");
       resultListItem.classList.add("result");
       Object.keys(attributes).map((key) => {
         if (attributes[key]) {

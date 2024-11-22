@@ -15,7 +15,7 @@ let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
 let results: HTMLOListElement;
 let resetButton: HTMLButtonElement;
 
-const datasetId = "d210a9d3-001e-4607-81c9-b5fc247f2f13"; //US - Seismic Hazard Map
+const datasetId = "fd2732a6-714d-4894-98ef-c0c7744a399c"; //US - Seismic Hazard Map
 
 function initMap(): void {
   // [START woosmap_datasets_api_instantiate_map]
@@ -49,7 +49,12 @@ function initServices(): void {
   initAutoComplete();
 }
 function initDrawing(): void {
-  drawTools = new woosmap.map.Drawing();
+  drawTools = new woosmap.map.Drawing({
+    controls: {
+      combine_features: false,
+      uncombine_features: false,
+    },
+  });
   drawTools.addControl(map);
   drawTools.addListener("draw.create", async (ev) => {
     const collection = drawTools.getAll();

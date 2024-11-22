@@ -1,0 +1,57 @@
+{% extends '../../src/_includes/layout.njk' %}
+
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="container">
+        <div id="sidebar">
+            <div id="innerWrapper">
+                <div class="sectionHeader">
+                    <span>Filters</span></div>
+                <div class="dropdown__container">
+                    <div id="od-selector">
+                        <div class="od-container">
+                            <span>Dataset</span>
+                            <select id="dataset">
+                                <option value="07908ffb-14e8-46a1-a35e-5d5a305ca140">US National Risk Index</option>
+                                <option value="bd95d206-4822-4b78-9e82-ab724a888aeb">Worldwide Solar Potential</option>
+                                <option selected value="fd2732a6-714d-4894-98ef-c0c7744a399c">US - Seismic Hazard Map</option>
+                            </select>
+                        </div>
+                        <div class="od-container">
+                            <span>Operator </span>
+                            <select id="operator">
+                                <option value="intersects" selected>Intersects</option>
+                                <option value="within">Within</option>
+                                <option value="contains">Contains</option>
+                            </select>
+                        </div>
+                        <button class="btn" id="btnReset" type="button">
+                            <span class="btnText" tabindex="-1">Reset</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sectionHeader">
+                    <span>Results</span>
+                </div>
+                <ol id="results"></ol>
+            </div>
+        </div>
+        <div id="mapContainer">
+            <div id="map"></div>
+            <div id="autocomplete-container">
+                {% svgIcon 'search.svg' %}
+                <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search an Address..."
+                    autocomplete="off"/>
+                <button aria-label="Clear" class="clear-searchButton" type="button">
+                    {% svgIcon 'clear.svg' %}
+                </button>
+                <ul id="suggestions-list"></ul>
+            </div>
+        </div>
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

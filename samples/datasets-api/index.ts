@@ -13,6 +13,7 @@ let datasetSelect: HTMLSelectElement;
 let operatorSelect: HTMLSelectElement;
 let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
 let results: HTMLOListElement;
+let resetButton: HTMLButtonElement;
 
 const datasetId = "d210a9d3-001e-4607-81c9-b5fc247f2f13"; //US - Seismic Hazard Map
 
@@ -27,8 +28,8 @@ function initMap(): void {
   });
   initDrawing();
   initServices();
+  initUIElements();
   manageFiltersElements();
-  results = document.querySelector("#results") as HTMLOListElement;
   // [END woosmap_datasets_api_instantiate_map]
 }
 function initServices(): void {
@@ -99,6 +100,30 @@ function initAutoComplete(): void {
     results.innerHTML = "";
     inputElement.focus();
   });
+}
+function initUIElements(): void {
+  results = document.querySelector("#results") as HTMLOListElement;
+  resetButton = document.getElementById("btnReset") as HTMLButtonElement;
+  resetButton.onclick = function () {
+    resetElements();
+  };
+}
+function resetElements(): void {
+  datasetsOverlay.setMap(null);
+  datasetsOverlay = new woosmap.map.DatasetsOverlay(datasetId);
+  datasetsService = new woosmap.map.DatasetsService(datasetId);
+  datasetsOverlay.setMap(map);
+  map.flyTo({ center: { lat: 38, lng: -99 } });
+  datasetSelect.selectedIndex = 2;
+  operatorSelect.selectedIndex = 0;
+  drawTools.deleteAll();
+  map.data.forEach((feature) => {
+    map.data.remove(feature);
+  });
+  inputElement.value = "";
+  suggestionsList.style.display = "none";
+  clearSearchBtn.style.display = "none";
+  results.innerHTML = "";
 }
 function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
@@ -250,6 +275,9 @@ function bindResultsToPanel(features: woosmap.map.GeoJSONFeature[]) {
       }),
         results.appendChild(resultListItem);
     });
+  } else {
+    results.innerHTML = "No results found";
+    results.classList.add("error");
   }
 }
 // [START woosmap_localities_autocomplete_debounce_promise]

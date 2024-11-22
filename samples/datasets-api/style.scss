@@ -4,6 +4,7 @@
 @include meta.load-css("../../shared/scss/_sidebar.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+@import "../../shared/scss/mixins.scss";
 
 #sidebar {
   flex-basis: 18rem;
@@ -111,5 +112,13 @@ ol#results {
     }
 
   }
+}
+.btn {
+  width: 80px;
+  @include button($background: #3d5afe);
+}
+
+.btnText {
+  @include actionText($color: #fff);
 }
   /* [END woosmap_datasets_api] */

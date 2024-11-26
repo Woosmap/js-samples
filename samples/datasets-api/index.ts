@@ -21,10 +21,14 @@ function initMap(): void {
   // [START woosmap_datasets_api_instantiate_map]
 
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
-    center: { lat: 38, lng: -99 },
-    zoom: 5.3,
     gestureHandling: "auto",
     defaultStyle: "streets",
+  });
+  map.fitBounds({
+    east: -66.93457,
+    north: 49.384358,
+    south: 24.396308,
+    west: -125.00165,
   });
   initDrawing();
   initServices();

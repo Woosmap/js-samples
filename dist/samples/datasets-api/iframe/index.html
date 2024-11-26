@@ -43,14 +43,18 @@
       const L = "fd2732a6-714d-4894-98ef-c0c7744a399c";
       function T() {
         (o = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 38, lng: -99 },
-          zoom: 5.3,
           gestureHandling: "auto",
           defaultStyle: "streets",
         })),
+          o.fitBounds({
+            east: -66.93457,
+            north: 49.384358,
+            south: 24.396308,
+            west: -125.00165,
+          }),
           O(),
           I(),
-          B(),
+          D(),
           F();
       }
       function I() {
@@ -60,7 +64,7 @@
           (E = new window.woosmap.map.LocalitiesService()),
           (y = { input: "", types: ["locality", "address", "postal_code"] }),
           (S = R(E.autocomplete, 0)),
-          D();
+          B();
       }
       function O() {
         (l = new woosmap.map.Drawing({
@@ -84,7 +88,7 @@
             await g(e);
           });
       }
-      function D() {
+      function B() {
         (c = document.getElementById("autocomplete-input")),
           (r = document.getElementById("suggestions-list")),
           (m = document.getElementsByClassName("clear-searchButton")[0]),
@@ -105,7 +109,7 @@
               c.focus();
           });
       }
-      function B() {
+      function D() {
         (d = document.querySelector("#results")),
           (M = document.getElementById("btnReset")),
           (M.onclick = function () {

@@ -218,6 +218,7 @@ function handleRadius(
     18 - (Math.log(radiusValue / 10) / Math.log(50000 / 10)) * (18 - 7),
   );
   map.flyTo({ center: center || nearbyCircle.getCenter(), zoom: zoomLevel });
+  nearbyRequest.radius = radiusValue;
   performNearbyRequest(new woosmap.map.LatLng(center || nearbyCircle.getCenter()));
 }
 
@@ -256,17 +257,24 @@ function performNearbyRequest(
   newQuery = true,
 ) {
   const requestCenter = overrideCenter || map.getCenter();
-  const radiusElement = document.getElementById("radius") as HTMLInputElement;
   nearbyRequest.location = requestCenter;
-  nearbyRequest.radius = radiusElement
-    ? parseInt(radiusElement.value)
-    : 1000;
   nearbyRequest.categories = "";
   if (categories.size > 0) {
     nearbyRequest.categories = Array.from(categories).join("|");
   }
   if (newQuery) {
     nearbyRequest.page = 1;
+  }
+
+  results.innerHTML = "";
+
+  if (nearbyRequest.radius && nearbyRequest.radius > 50000) {
+    results.innerHTML = "<li style='color: red;'><b>Radius should be less than or equal to 50km.</b></li>";
+    return;
+  }
+  else if (nearbyRequest.radius && nearbyRequest.radius < 10) {
+    results.innerHTML = "<li style='color: red;'><b>Radius should be greater than or equal to 10m.</b></li>";
+    return;
   }
 
   //@ts-ignore
@@ -306,8 +314,6 @@ function updatePagination(pagination: woosmap.map.localities.LocalitiesNearbyPag
 }
 
 function updateResults(response: woosmap.map.localities.LocalitiesNearbyResponse, center) {
-  results.innerHTML = "";
-
   updatePagination(response.pagination);
   response.results.forEach((result:woosmap.map.localities.LocalitiesNearbyResult) => {
     const distance = measure(

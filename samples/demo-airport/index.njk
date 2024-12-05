@@ -1,0 +1,109 @@
+---json
+{
+"parkings": [
+    { "ref": "p1", "name": "Parking 1 (Via Voiture)", "shortname": "Parking"},
+    { "ref": "dm", "name": "Dépose Minute (Via Taxi)", "shortname": "Dépose Minute"},
+    { "ref": "nv", "name": "Navette (Via Transport public)", "shortname": "Navette"}
+],
+"gates": [
+    { "ref": "gate21", "name": "Porte 21", "shortname": "21"},
+    { "ref": "gate22", "name": "Porte 22", "shortname": "22"},
+    { "ref": "gate23", "name": "Porte 23", "shortname": "23"},
+    { "ref": "gate24", "name": "Porte 24", "shortname": "24"},
+    { "ref": "gate25", "name": "Porte 25", "shortname": "25"},
+    { "ref": "gate26", "name": "Porte 26", "shortname": "26"},
+    { "ref": "gate27", "name": "Porte 27", "shortname": "27"},
+    { "ref": "gate28", "name": "Porte 28", "shortname": "28"},
+    { "ref": "gate29", "name": "Porte 29", "shortname": "29"}
+]
+}
+---
+{% extends '../../src/_includes/layout.njk' %}
+{% block html %}
+    <!-- [START woosmap_{{ tag }}_div] -->
+    <div id="app">
+        <div id="map"></div>
+        <div class="routeDetails">
+            <div class="routeOptions"></div>
+        </div>
+        <div id="autocomplete-container">
+            {% svgIcon 'search.svg' %}
+            <input
+                    type="text"
+                    id="autocomplete-input"
+                    placeholder="Search an Address..."
+                    autocomplete="off"
+            />
+            <button aria-label="Clear" class="clear-searchButton" type="button">
+                {% svgIcon 'clear.svg' %}
+            </button>
+            <ul id="suggestions-list"></ul>
+        </div>
+<div id="poiSelector" class="dropdown">
+    <button id="parkingDropdownButton" class="dropdown-button"><span>
+            {% set selectedPOIs = parkings | selectattr("selected") | list %}
+            {% if selectedPOIs.length > 0 %}
+                Parking:
+                {% for poi in selectedPOIs %}
+                    <strong>{{ poi.shortname }}</strong>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                Choisissez un parking
+            {% endif %}
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"></path>
+        </svg>
+    </button>
+    <div id="parkingDropdown" class="dropdown-content dropdown-menu">
+        <div>
+            <ul role="listbox">
+                {% for poi in parkings %}
+                    <li class="parking {{ 'active' if poi.selected }}" data-parkingref="{{ poi.ref }}"
+                        data-parkingname="{{ poi.name }}">
+                        <div class="dropdown-menuitem">
+                            <div class="parking-name">{{ poi.name }}</div>
+                            <div class="active-icon-wrapper"></div>
+                        </div>
+                    </li>
+                {% endfor %} 
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="poiSelector2" class="dropdown">
+    <button id="gateDropdownButton" class="dropdown-button"><span>
+            {% set selectedPOIs = gates | selectattr("selected") | list %}
+            {% if selectedPOIs.length > 0 %}
+                Porte:
+                {% for poi in selectedPOIs %}
+                    <strong>{{ poi.shortname }}</strong>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                Choisissez une porte
+            {% endif %}
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"></path>
+        </svg>
+    </button>
+    <div id="gateDropdown" class="dropdown-content dropdown-menu">
+        <div>
+            <ul role="listbox">
+                {% for poi in gates %}
+                    <li class="gate {{ 'active' if poi.selected }}" data-gateref="{{ poi.ref }}"
+                        data-gatename="{{ poi.name }}">
+                        <div class="dropdown-menuitem">
+                            <div class="gate-name">{{ poi.name }}</div>
+                            <div class="active-icon-wrapper"></div>
+                        </div>
+                    </li>
+                {% endfor %} 
+            </ul>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <!-- [END woosmap_{{ tag }}_div] -->
+{% endblock %}

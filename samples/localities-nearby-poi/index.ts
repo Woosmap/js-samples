@@ -134,6 +134,10 @@ function initMap() {
   );
   localitiesService = new woosmap.map.LocalitiesService();
 
+  map.addListener("click", (e) => {
+    handleRadius(nearbyRequest.radius || 1000, e.latlng);
+  });
+
   autocompleteRequest = {
     input: "",
     types: ["locality", "postal_code"],
@@ -214,7 +218,7 @@ function handleRadius(
     18 - (Math.log(radiusValue / 10) / Math.log(50000 / 10)) * (18 - 7),
   );
   map.flyTo({ center: center || nearbyCircle.getCenter(), zoom: zoomLevel });
-  performNearbyRequest();
+  performNearbyRequest(new woosmap.map.LatLng(center || nearbyCircle.getCenter()));
 }
 
 function initUI() {
@@ -460,6 +464,54 @@ function debounce(func: (...args: any[]) => void, wait: number) {
     timeout = setTimeout(later, wait);
   };
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const radiusInput = document.getElementById('radius') as HTMLInputElement;
+  const radiusLabel = document.getElementById('radius-label') as HTMLLabelElement;
+
+  if (!radiusInput || !radiusLabel) {
+      console.error('Elements not found in the DOM.');
+      return;
+  }
+
+  // Update the range input when the label content is modified
+  radiusLabel.addEventListener('blur', () => {
+      const parsedValue = parseLabel(radiusLabel.textContent || '');
+      if (parsedValue !== null) {
+          radiusInput.value = parsedValue.toString();
+          handleRadius(parsedValue)
+      } else {
+          // Revert to the current range value if parsing fails
+          radiusLabel.textContent = formatValue(parseInt(radiusInput.value, 10));
+      }
+  });
+
+  radiusLabel.addEventListener('keypress', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+          e.preventDefault(); // Prevent line breaks
+          radiusLabel.blur(); // Trigger the blur event to validate and update
+      }
+  });
+
+  // Format the value in meters to "km" or "m" for display
+  const formatValue = (value: number): string => {
+      return value >= 1000 ? `${value / 1000} km` : `${value} m`;
+  };
+
+  // Parse the label content back to meters
+  const parseLabel = (label: string): number | null => {
+      const kmMatch = label.match(/^(\d+(?:\.\d+)?)\s*km$/i);
+      const mMatch = label.match(/^(\d+)\s*m$/i);
+
+      if (kmMatch) {
+          return Math.round(parseFloat(kmMatch[1]) * 1000); // Convert km to meters
+      } else if (mMatch) {
+          return parseInt(mMatch[1], 10); // Keep value in meters
+      }
+      return null; // Invalid input
+  };
+});
+
 
 declare global {
   interface Window {

@@ -153,4 +153,13 @@ ol#results {
   }
 }
 
+#radius {
+  flex: 1; /* Take all remaining space */
+}
+
+#radius-label {
+    border: 1px dashed #ccc;
+    outline: none;
+}
+
 /* [END woosmap_localities_nearby_poi] */

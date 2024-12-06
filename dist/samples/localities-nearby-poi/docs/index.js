@@ -135,6 +135,9 @@ function initMap() {
     ],
   });
   localitiesService = new woosmap.map.LocalitiesService();
+  map.addListener("click", (e) => {
+    handleRadius(nearbyRequest.radius || 1000, e.latlng);
+  });
   autocompleteRequest = {
     input: "",
     types: ["locality", "postal_code"],
@@ -214,7 +217,10 @@ function handleRadius(radiusValue, center) {
   );
 
   map.flyTo({ center: center || nearbyCircle.getCenter(), zoom: zoomLevel });
-  performNearbyRequest();
+  nearbyRequest.radius = radiusValue;
+  performNearbyRequest(
+    new woosmap.map.LatLng(center || nearbyCircle.getCenter()),
+  );
 }
 
 function initUI() {
@@ -258,10 +264,8 @@ function nextPage() {
 
 function performNearbyRequest(overrideCenter = null, newQuery = true) {
   const requestCenter = overrideCenter || map.getCenter();
-  const radiusElement = document.getElementById("radius");
 
   nearbyRequest.location = requestCenter;
-  nearbyRequest.radius = radiusElement ? parseInt(radiusElement.value) : 1000;
   nearbyRequest.categories = "";
   if (categories.size > 0) {
     nearbyRequest.categories = Array.from(categories).join("|");
@@ -269,6 +273,17 @@ function performNearbyRequest(overrideCenter = null, newQuery = true) {
 
   if (newQuery) {
     nearbyRequest.page = 1;
+  }
+
+  results.innerHTML = "";
+  if (nearbyRequest.radius && nearbyRequest.radius > 50000) {
+    results.innerHTML =
+      "<li style='color: red;'><b>Radius should be less than or equal to 50km.</b></li>";
+    return;
+  } else if (nearbyRequest.radius && nearbyRequest.radius < 10) {
+    results.innerHTML =
+      "<li style='color: red;'><b>Radius should be greater than or equal to 10m.</b></li>";
+    return;
   }
 
   //@ts-ignore
@@ -310,7 +325,6 @@ function updatePagination(pagination) {
 }
 
 function updateResults(response, center) {
-  results.innerHTML = "";
   updatePagination(response.pagination);
   response.results.forEach((result) => {
     const distance = measure(
@@ -468,5 +482,51 @@ function debounce(func, wait) {
   };
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const radiusInput = document.getElementById("radius");
+  const radiusLabel = document.getElementById("radius-label");
+
+  if (!radiusInput || !radiusLabel) {
+    console.error("Elements not found in the DOM.");
+    return;
+  }
+
+  // Update the range input when the label content is modified
+  radiusLabel.addEventListener("blur", () => {
+    const parsedValue = parseLabel(radiusLabel.textContent || "");
+
+    if (parsedValue !== null) {
+      radiusInput.value = parsedValue.toString();
+      handleRadius(parsedValue);
+    } else {
+      // Revert to the current range value if parsing fails
+      radiusLabel.textContent = formatValue(parseInt(radiusInput.value, 10));
+    }
+  });
+  radiusLabel.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent line breaks
+      radiusLabel.blur(); // Trigger the blur event to validate and update
+    }
+  });
+
+  // Format the value in meters to "km" or "m" for display
+  const formatValue = (value) => {
+    return value >= 1000 ? `${value / 1000} km` : `${value} m`;
+  };
+
+  // Parse the label content back to meters
+  const parseLabel = (label) => {
+    const kmMatch = label.match(/^(\d+(?:\.\d+)?)\s*km$/i);
+    const mMatch = label.match(/^(\d+)\s*m$/i);
+
+    if (kmMatch) {
+      return Math.round(parseFloat(kmMatch[1]) * 1000); // Convert km to meters
+    } else if (mMatch) {
+      return parseInt(mMatch[1], 10); // Keep value in meters
+    }
+    return null; // Invalid input
+  };
+});
 window.initMap = initMap;
 // [END woosmap_localities_nearby_poi]

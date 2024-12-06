@@ -266,3 +266,12 @@ ol#results > li:hover {
   background-color: #f2f2f2;
 }
 
+#radius {
+  flex: 1; /* Take all remaining space */
+}
+
+#radius-label {
+  border: 1px dashed #ccc;
+  outline: none;
+}
+

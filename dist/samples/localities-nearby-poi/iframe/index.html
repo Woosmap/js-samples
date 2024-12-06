@@ -7,37 +7,37 @@
 
     <script type="module" crossorigin>
       (function () {
-        const s = document.createElement("link").relList;
-        if (s && s.supports && s.supports("modulepreload")) return;
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
         for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(t);
+          i(t);
         new MutationObserver((t) => {
-          for (const i of t)
-            if (i.type === "childList")
-              for (const a of i.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && o(a);
+          for (const o of t)
+            if (o.type === "childList")
+              for (const a of o.addedNodes)
+                a.tagName === "LINK" && a.rel === "modulepreload" && i(a);
         }).observe(document, { childList: !0, subtree: !0 });
-        function n(t) {
-          const i = {};
+        function s(t) {
+          const o = {};
           return (
-            t.integrity && (i.integrity = t.integrity),
-            t.referrerPolicy && (i.referrerPolicy = t.referrerPolicy),
+            t.integrity && (o.integrity = t.integrity),
+            t.referrerPolicy && (o.referrerPolicy = t.referrerPolicy),
             t.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
+              ? (o.credentials = "include")
               : t.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
           );
         }
-        function o(t) {
+        function i(t) {
           if (t.ep) return;
           t.ep = !0;
-          const i = n(t);
-          fetch(t.href, i);
+          const o = s(t);
+          fetch(t.href, o);
         }
       })();
-      const L = [
+      const v = [
           "transit.station",
           "transit.station.airport",
           "transit.station.rail",
@@ -100,26 +100,26 @@
           "post_office",
           "sports",
         ],
-        h = new Set();
-      let d, k, g, m, b, p, r;
-      const M = (e) => {
-          const s = {};
+        y = new Set();
+      let u, p, m, g, E, f, r;
+      const _ = (e) => {
+          const n = {};
           return (
-            e.forEach((n) => {
-              const o = n.split(".");
-              let t = s;
-              o.forEach((i) => {
-                (t[i] = t[i] || {}), (t = t[i]);
+            e.forEach((s) => {
+              const i = s.split(".");
+              let t = n;
+              i.forEach((o) => {
+                (t[o] = t[o] || {}), (t = t[o]);
               });
             }),
-            s
+            n
           );
         },
-        _ = (e, s = "") => {
-          const n = document.createElement("ul");
-          for (const o in e) {
-            const t = s ? `${s}.${o}` : o,
-              i = document.createElement("li"),
+        M = (e, n = "") => {
+          const s = document.createElement("ul");
+          for (const i in e) {
+            const t = n ? `${n}.${i}` : i,
+              o = document.createElement("li"),
               a = document.createElement("input");
             (a.type = "checkbox"),
               (a.id = `category-${t}`),
@@ -128,16 +128,16 @@
               (a.value = t);
             const l = document.createElement("label");
             (l.htmlFor = `category-${t}`),
-              (l.textContent = o),
-              i.appendChild(a),
-              i.appendChild(l);
-            const E = _(e[o], t);
-            E && i.appendChild(E), n.appendChild(i);
+              (l.textContent = i),
+              o.appendChild(a),
+              o.appendChild(l);
+            const L = M(e[i], t);
+            L && o.appendChild(L), s.appendChild(o);
           }
-          return n.childElementCount ? n : null;
+          return s.childElementCount ? s : null;
         };
       function C() {
-        (d = new window.woosmap.map.Map(document.getElementById("map"), {
+        (u = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 40.71399, lng: -74.00499 },
           zoom: 14,
           styles: [
@@ -148,17 +148,20 @@
             },
           ],
         })),
-          (b = new woosmap.map.LocalitiesService()),
-          (p = { input: "", types: ["locality", "postal_code"] }),
+          (E = new woosmap.map.LocalitiesService()),
+          u.addListener("click", (e) => {
+            k(r.radius || 1e3, e.latlng);
+          }),
+          (f = { input: "", types: ["locality", "postal_code"] }),
           (r = {
             types: "point_of_interest",
-            location: d.getCenter(),
+            location: u.getCenter(),
             radius: 1e3,
             categories: "",
             page: 1,
             limit: 10,
           }),
-          (m = new woosmap.map.Marker({
+          (g = new woosmap.map.Marker({
             position: { lat: 0, lng: 0 },
             icon: {
               url: "https://images.woosmap.com/marker.png",
@@ -166,86 +169,98 @@
             },
           })),
           w(),
-          f();
+          h();
       }
       function I() {
-        const e = M(L),
-          s = _(e);
-        document.querySelector(".categoriesOptions__list").appendChild(s),
-          document.querySelectorAll(".category").forEach((n) =>
-            n.addEventListener("click", (o) => {
-              const t = o.target,
-                i = t.closest("li"),
-                a = i
-                  ? Array.from(i.children)
+        const e = _(v),
+          n = M(e);
+        document.querySelector(".categoriesOptions__list").appendChild(n),
+          document.querySelectorAll(".category").forEach((s) =>
+            s.addEventListener("click", (i) => {
+              const t = i.target,
+                o = t.closest("li"),
+                a = o
+                  ? Array.from(o.children)
                       .filter((l) => l !== t)
                       .flatMap((l) =>
                         Array.from(l.querySelectorAll(".category")),
                       )
                   : [];
               t.checked
-                ? (h.add(t.value),
+                ? (y.add(t.value),
                   a.length > 0 &&
                     a.forEach((l) => {
                       l.disabled = !0;
                     }))
-                : (h.delete(t.value),
+                : (y.delete(t.value),
                   a.length > 0 &&
                     a.forEach((l) => {
                       l.disabled = !1;
                     })),
-                f();
+                h();
             }),
           );
       }
-      function v(e, s) {
-        const n = document.getElementById("radius-label");
-        e < 1e3 && n
-          ? (n.innerHTML = `${e}&thinsp;m`)
-          : n && (n.innerHTML = `${e / 1e3}&thinsp;km`);
-        const o = Math.round(18 - (Math.log(e / 10) / Math.log(5e4 / 10)) * 11);
-        d.flyTo({ center: s || g.getCenter(), zoom: o }), f();
+      function k(e, n) {
+        const s = document.getElementById("radius-label");
+        e < 1e3 && s
+          ? (s.innerHTML = `${e}&thinsp;m`)
+          : s && (s.innerHTML = `${e / 1e3}&thinsp;km`);
+        const i = Math.round(18 - (Math.log(e / 10) / Math.log(5e4 / 10)) * 11);
+        u.flyTo({ center: n || m.getCenter(), zoom: i }),
+          (r.radius = e),
+          h(new woosmap.map.LatLng(n || m.getCenter()));
       }
       function w() {
-        var s, n, o;
-        (k = document.querySelector("#results")), I();
-        const e = z(v, 300);
-        (s = document.getElementById("radius")) == null ||
-          s.addEventListener("input", (t) => {
-            const i = parseInt(t.target.value);
-            e(i);
+        var n, s, i;
+        (p = document.querySelector("#results")), I();
+        const e = H(k, 300);
+        (n = document.getElementById("radius")) == null ||
+          n.addEventListener("input", (t) => {
+            const o = parseInt(t.target.value);
+            e(o);
           }),
-          (n = document.getElementById("page-previous")) == null ||
-            n.addEventListener("click", B),
-          (o = document.getElementById("page-next")) == null ||
-            o.addEventListener("click", q);
+          (s = document.getElementById("page-previous")) == null ||
+            s.addEventListener("click", B),
+          (i = document.getElementById("page-next")) == null ||
+            i.addEventListener("click", q);
       }
       function B() {
         let e = !0;
-        r.page && r.page > 1 && (r.page--, (e = !1)), f(null, e);
+        r.page && r.page > 1 && (r.page--, (e = !1)), h(null, e);
       }
       function q() {
         let e = !0;
-        r.page && (r.page++, (e = !1)), f(null, e);
+        r.page && (r.page++, (e = !1)), h(null, e);
       }
-      function f(e = null, s = !0) {
-        const n = e || d.getCenter(),
-          o = document.getElementById("radius");
-        (r.location = n),
-          (r.radius = o ? parseInt(o.value) : 1e3),
+      function h(e = null, n = !0) {
+        const s = e || u.getCenter();
+        if (
+          ((r.location = s),
           (r.categories = ""),
-          h.size > 0 && (r.categories = Array.from(h).join("|")),
-          s && (r.page = 1),
-          b.nearby(r).then((t) => {
-            A(n, r.radius), S(t, n);
-          });
+          y.size > 0 && (r.categories = Array.from(y).join("|")),
+          n && (r.page = 1),
+          (p.innerHTML = ""),
+          r.radius && r.radius > 5e4)
+        ) {
+          p.innerHTML =
+            "<li style='color: red;'><b>Radius should be less than or equal to 50km.</b></li>";
+          return;
+        } else if (r.radius && r.radius < 10) {
+          p.innerHTML =
+            "<li style='color: red;'><b>Radius should be greater than or equal to 10m.</b></li>";
+          return;
+        }
+        E.nearby(r).then((i) => {
+          T(s, r.radius), A(i, s);
+        });
       }
-      function A(e, s) {
-        g && g.setMap(null),
-          (g = new woosmap.map.Circle({
-            map: d,
+      function T(e, n) {
+        m && m.setMap(null),
+          (m = new woosmap.map.Circle({
+            map: u,
             center: e,
-            radius: s,
+            radius: n,
             strokeColor: "#1165c2",
             strokeOpacity: 0.8,
             strokeWeight: 2,
@@ -253,125 +268,123 @@
             fillOpacity: 0.2,
           }));
       }
-      function P(e) {
-        var s, n, o, t;
+      function x(e) {
+        var n, s, i, t;
         e.next_page
-          ? (s = document.getElementById("page-next")) == null ||
-            s.removeAttribute("disabled")
-          : (n = document.getElementById("page-next")) == null ||
-            n.setAttribute("disabled", "true"),
+          ? (n = document.getElementById("page-next")) == null ||
+            n.removeAttribute("disabled")
+          : (s = document.getElementById("page-next")) == null ||
+            s.setAttribute("disabled", "true"),
           e.previous_page
-            ? (o = document.getElementById("page-previous")) == null ||
-              o.removeAttribute("disabled")
+            ? (i = document.getElementById("page-previous")) == null ||
+              i.removeAttribute("disabled")
             : (t = document.getElementById("page-previous")) == null ||
               t.setAttribute("disabled", "true");
       }
-      function S(e, s) {
-        (k.innerHTML = ""),
-          P(e.pagination),
-          e.results.forEach((n) => {
-            const o = T(
-                s.lat(),
-                s.lng(),
-                n.geometry.location.lat,
-                n.geometry.location.lng,
+      function A(e, n) {
+        x(e.pagination),
+          e.results.forEach((s) => {
+            const i = P(
+                n.lat(),
+                n.lng(),
+                s.geometry.location.lat,
+                s.geometry.location.lng,
               ),
               t = document.createElement("li");
             (t.innerHTML = `
-        <b>${n.name}</b>
-        <i>${n.categories}</i>
+        <b>${s.name}</b>
+        <i>${s.categories}</i>
         
-        <span class="distance">${o.toFixed(0)}m</span>
+        <span class="distance">${i.toFixed(0)}m</span>
     `),
               t.addEventListener("click", () => {
-                d.setCenter({
-                  lat: n.geometry.location.lat,
-                  lng: n.geometry.location.lng,
+                u.setCenter({
+                  lat: s.geometry.location.lat,
+                  lng: s.geometry.location.lng,
                 }),
-                  m.setPosition({
-                    lat: n.geometry.location.lat,
-                    lng: n.geometry.location.lng,
+                  g.setPosition({
+                    lat: s.geometry.location.lat,
+                    lng: s.geometry.location.lng,
                   }),
-                  m.setMap(d);
+                  g.setMap(u);
               }),
-              k.appendChild(t);
+              p.appendChild(t);
           });
       }
-      function T(e, s, n, o) {
-        const i = (n * Math.PI) / 180 - (e * Math.PI) / 180,
-          a = (o * Math.PI) / 180 - (s * Math.PI) / 180,
+      function P(e, n, s, i) {
+        const o = (s * Math.PI) / 180 - (e * Math.PI) / 180,
+          a = (i * Math.PI) / 180 - (n * Math.PI) / 180,
           l =
-            Math.sin(i / 2) * Math.sin(i / 2) +
+            Math.sin(o / 2) * Math.sin(o / 2) +
             Math.cos((e * Math.PI) / 180) *
-              Math.cos((n * Math.PI) / 180) *
+              Math.cos((s * Math.PI) / 180) *
               Math.sin(a / 2) *
               Math.sin(a / 2);
         return (
           6378.137 * (2 * Math.atan2(Math.sqrt(l), Math.sqrt(1 - l))) * 1e3
         );
       }
-      const u = document.getElementById("autocomplete-input"),
+      const d = document.getElementById("autocomplete-input"),
         c = document.getElementById("suggestions-list"),
-        y = document.getElementsByClassName("clear-searchButton")[0];
-      u &&
+        b = document.getElementsByClassName("clear-searchButton")[0];
+      d &&
         c &&
-        (u.addEventListener("input", x),
-        u.addEventListener("keydown", (e) => {
+        (d.addEventListener("input", S),
+        d.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
-            const s = c.querySelector("li");
-            s && s.click();
+            const n = c.querySelector("li");
+            n && n.click();
           }
         }));
-      y.addEventListener("click", () => {
-        (u.value = ""),
+      b.addEventListener("click", () => {
+        (d.value = ""),
           (c.style.display = "none"),
-          (y.style.display = "none"),
-          m && m.setMap(null),
-          u.focus();
+          (b.style.display = "none"),
+          g && g.setMap(null),
+          d.focus();
       });
-      function x() {
-        u &&
+      function S() {
+        d &&
           c &&
-          ((p.input = u.value),
-          p.input
-            ? b
-                .autocomplete(p)
+          ((f.input = d.value),
+          f.input
+            ? E.autocomplete(f)
                 .then((e) => R(e))
                 .catch((e) =>
                   console.error("Error autocomplete localities:", e),
                 )
-            : ((c.style.display = "none"), (y.style.display = "none")));
-      }
-      function O(e) {
-        b.getDetails({ publicId: e })
-          .then((s) => $(s.result))
-          .catch((s) => console.error("Error getting locality details:", s));
+            : ((c.style.display = "none"), (b.style.display = "none")));
       }
       function $(e) {
+        E.getDetails({ publicId: e })
+          .then((n) => O(n.result))
+          .catch((n) => console.error("Error getting locality details:", n));
+      }
+      function O(e) {
         e != null &&
           e.geometry &&
           r.radius &&
-          (d.setCenter(e.geometry.location), v(r.radius, e.geometry.location));
+          (u.setCenter(e.geometry.location), k(r.radius, e.geometry.location));
       }
       function R(e) {
-        u &&
+        d &&
           c &&
           ((c.innerHTML = ""),
-          e.localities.length > 0 && p.input
-            ? (e.localities.forEach((s) => {
-                var o;
-                const n = document.createElement("li");
-                (n.textContent = (o = s.description) != null ? o : ""),
-                  n.addEventListener("click", () => {
+          e.localities.length > 0 && f.input
+            ? (e.localities.forEach((n) => {
+                var i;
+                const s = document.createElement("li");
+                (s.textContent = (i = n.description) != null ? i : ""),
+                  s.addEventListener("click", () => {
                     var t;
-                    (u.value = (t = s.description) != null ? t : ""),
+                    (d.value = (t = n.description) != null ? t : ""),
                       (c.style.display = "none"),
-                      O(s.public_id);
+                      $(n.public_id);
                   }),
-                  c.appendChild(n);
+                  c.appendChild(s);
               }),
               (c.style.display = "block"),
-              (y.style.display = "block"))
+              (b.style.display = "block"))
             : (c.style.display = "none"));
       }
       document.addEventListener("click", (e) => {
@@ -379,15 +392,42 @@
           c &&
           (c.style.display = "none");
       });
-      function z(e, s) {
-        let n;
+      function H(e, n) {
+        let s;
         return function (...t) {
-          const i = () => {
-            clearTimeout(n), e(...t);
+          const o = () => {
+            clearTimeout(s), e(...t);
           };
-          clearTimeout(n), (n = setTimeout(i, s));
+          clearTimeout(s), (s = setTimeout(o, n));
         };
       }
+      document.addEventListener("DOMContentLoaded", () => {
+        const e = document.getElementById("radius"),
+          n = document.getElementById("radius-label");
+        if (!e || !n) {
+          console.error("Elements not found in the DOM.");
+          return;
+        }
+        n.addEventListener("blur", () => {
+          const t = i(n.textContent || "");
+          t !== null
+            ? ((e.value = t.toString()), k(t))
+            : (n.textContent = s(parseInt(e.value, 10)));
+        }),
+          n.addEventListener("keypress", (t) => {
+            t.key === "Enter" && (t.preventDefault(), n.blur());
+          });
+        const s = (t) => (t >= 1e3 ? `${t / 1e3} km` : `${t} m`),
+          i = (t) => {
+            const o = t.match(/^(\d+(?:\.\d+)?)\s*km$/i),
+              a = t.match(/^(\d+)\s*m$/i);
+            return o
+              ? Math.round(parseFloat(o[1]) * 1e3)
+              : a
+                ? parseInt(a[1], 10)
+                : null;
+          };
+      });
       window.initMap = C;
     </script>
     <style>
@@ -640,6 +680,13 @@
         cursor: pointer;
         background-color: #f2f2f2;
       }
+      #radius {
+        flex: 1;
+      }
+      #radius-label {
+        border: 1px dashed #ccc;
+        outline: none;
+      }
     </style>
   </head>
   <body>
@@ -653,10 +700,13 @@
             <input
               type="range"
               id="radius"
-              min="10"
-              max="50000"
+              min="100"
+              max="10000"
               value="1000"
-            /><label id="radius-label" for="radius">1&thinsp;km</label>
+              step="100"
+            /><label id="radius-label" contenteditable="true"
+              >1&thinsp;km</label
+            >
           </div>
 
           <div class="sectionHeader">

@@ -1,0 +1,49 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#container {
+  height: 100%;
+  display: flex;
+}
+
+#sidebar {
+  flex-basis: 12rem;
+  flex-grow: 1;
+  max-width: 30rem;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+#map {
+  flex-basis: 70vw;
+  flex-grow: 5;
+  height: 100%;
+}
+
+#sidebar {
+  padding: 5px;
+  flex-basis: 25rem;
+}
+
+pre .string {
+  color: green;
+}
+pre .number {
+  color: magenta;
+}
+pre .boolean {
+  color: blue;
+}
+pre .null {
+  color: magenta;
+}
+pre .key {
+  color: #1D1D1D;
+}
+

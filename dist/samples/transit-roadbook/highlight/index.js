@@ -68,8 +68,8 @@ function displayTransitMarkers() {
 }
 
 function createDefaultRequest() {
-  const origin = { lat: 51.6511, lng: -0.1615 };
-  const destination = { lat: 51.5146, lng: -0.0212 };
+  const origin = { lat: 45.4765, lng: 9.0553 };
+  const destination = { lat: 45.4599, lng: 9.2822 };
 
   setLatLngToContainer(originContainer, origin);
   setLatLngToContainer(destinationContainer, destination);
@@ -519,8 +519,8 @@ function initUI() {
 
 function initMap() {
   map = new woosmap.map.Map(document.getElementById("map"), {
-    center: { lat: 51.5074, lng: -0.1478 },
-    zoom: 10,
+    center: { lat: 45.482604, lng: 9.16924 },
+    zoom: 11,
   });
   transitService = new woosmap.map.TransitService();
   transitRenderer = new woosmap.map.TransitRenderer({});

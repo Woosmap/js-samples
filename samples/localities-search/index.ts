@@ -8,25 +8,24 @@ let input: string;
 let detailsHTML: HTMLElement;
 let addressDetailsContainer: HTMLElement;
 
+// @ts-nocheck
 function initMap(): void {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
       center: { lat: 51.507445, lng: -0.127765 },
       zoom: 8,
-    },
+    }
   );
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new window.woosmap.map.LocalitiesService();
 
-  debouncedLocalitiesSearch = debouncePromise(
-    fetchLocalitiesSearch,
-    0,
-  );
+  debouncedLocalitiesSearch = debouncePromise(fetchLocalitiesSearch, 0);
 }
 
 const fetchLocalitiesSearch = async (input: any): Promise<any> => {
-  const center = map.getCenter()
+  const center = map.getCenter();
+  const radius = (map.getZoom() > 10) ? "10000" : "100000"
   try {
     const response = await fetch(
       `
@@ -34,48 +33,47 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
     );
     return await response.json();
   } catch (error) {
-    console.error('Error fetching localities:', error);
+    console.error("Error fetching localities:", error);
     throw error;
   }
 };
 
 function fillAddressDetails(
-  addressDetails: woosmap.map.localities.LocalitiesDetailsResult,
+  addressDetails: woosmap.map.localities.LocalitiesDetailsResult
 ) {
   const details: string[] = [];
   detailsHTML.innerHTML = "";
   detailsHTML.style.display = "block";
   if (addressDetails.formatted_address) {
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Formatted_address:</span><span class='bold'>${addressDetails.formatted_address}</span></p>`,
+      `<p class='option-detail'><span class='option-detail-label'>Formatted_address:</span><span class='bold'>${addressDetails.formatted_address}</span></p>`
     );
-  }
-  else if (addressDetails.name)
+  } else if (addressDetails.name)
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Name:</span><span class='bold'>${addressDetails.name}</span></p>`,
+      `<p class='option-detail'><span class='option-detail-label'>Name:</span><span class='bold'>${addressDetails.name}</span></p>`
     );
   if (addressDetails.types && addressDetails.types[0]) {
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Type: </span><span class='bold'>${addressDetails.types[0]}</span></p>`,
+      `<p class='option-detail'><span class='option-detail-label'>Type: </span><span class='bold'>${addressDetails.types[0]}</span></p>`
     );
   }
   if (addressDetails.categories)
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Categories:</span><span class='bold'>${addressDetails.categories[0]}</span></p>`,
+      `<p class='option-detail'><span class='option-detail-label'>Categories:</span><span class='bold'>${addressDetails.categories[0]}</span></p>`
     );
   if (addressDetails.geometry) {
     details.push(
-      `<div class='option-detail'><div><span class='option-detail-label'>Latitude:</span> <span class='bold'>${addressDetails.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude: </span><span class='bold'>${addressDetails.geometry.location.lng.toString()}</span></div></div>`,
+      `<div class='option-detail'><div><span class='option-detail-label'>Latitude:</span> <span class='bold'>${addressDetails.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude: </span><span class='bold'>${addressDetails.geometry.location.lng.toString()}</span></div></div>`
     );
     if (addressDetails.address_components) {
       const compoHtml = addressDetails.address_components
         .map(
           (compo) =>
-            `<p class='option-detail'><span class='option-detail-label'>${compo.types.find(item => item.includes("division")) || compo.types[0]}:</span> <span class='bold'>${compo.long_name}</span></p>`,
+            `<p class='option-detail'><span class='option-detail-label'>${compo.types.find((item) => item.includes("division")) || compo.types[0]}:</span> <span class='bold'>${compo.long_name}</span></p>`
         )
         .join("");
       details.push(
-        `<div class='address-components'><div class='title'>Address components</div><div>${compoHtml}</div>`,
+        `<div class='address-components'><div class='title'>Address components</div><div>${compoHtml}</div>`
       );
     }
   }
@@ -83,19 +81,19 @@ function fillAddressDetails(
 }
 
 const inputElement = document.getElementById(
-  "autocomplete-input",
+  "autocomplete-input"
 ) as HTMLInputElement;
 const suggestionsList = document.getElementById(
-  "suggestions-list",
+  "suggestions-list"
 ) as HTMLUListElement;
 const clearSearchBtn = document.getElementsByClassName(
-  "clear-searchButton",
+  "clear-searchButton"
 )[0] as HTMLButtonElement;
 addressDetailsContainer = document.querySelector(
-  ".addressDetails",
+  ".addressDetails"
 ) as HTMLElement;
 detailsHTML = document.querySelector(
-  ".addressDetails .addressOptions",
+  ".addressDetails .addressOptions"
 ) as HTMLElement;
 if (inputElement && suggestionsList) {
   inputElement.addEventListener("input", handleAutocomplete);
@@ -126,7 +124,7 @@ function handleAutocomplete(): void {
       debouncedLocalitiesSearch(input)
         .then((localities) => displaySuggestions(localities))
         .catch((error) =>
-          console.error("Error autocomplete localities:", error),
+          console.error("Error autocomplete localities:", error)
         );
     } else {
       suggestionsList.style.display = "none";
@@ -147,7 +145,7 @@ function displaySection(section: HTMLElement, mode = "block"): void {
 }
 
 function displayLocality(
-  locality: woosmap.map.localities.LocalitiesDetailsResult,
+  locality: woosmap.map.localities.LocalitiesDetailsResult
 ) {
   fillAddressDetails(locality);
   displaySection(addressDetailsContainer);
@@ -167,16 +165,16 @@ function displayLocality(
       },
     });
     marker.setMap(map);
-    infoWindow.setContent(`<span>${locality.formatted_address ?? locality.name}</span>`);
+    infoWindow.setContent(
+      `<span>${locality.formatted_address ?? locality.name}</span>`
+    );
     infoWindow.open(map, marker);
     map.flyTo({ center: locality.geometry.location, zoom: 14 });
   }
 }
 
-function displaySuggestions(
-  localitiesPredictions: any,
-) {
-  console.log("localitiesPredictions: ", localitiesPredictions)
+function displaySuggestions(localitiesPredictions: any) {
+  console.log("localitiesPredictions: ", localitiesPredictions);
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
     if (localitiesPredictions.results.length > 0 && input) {
@@ -196,18 +194,15 @@ function displaySuggestions(
         suggestionsList.appendChild(li);
         li.appendChild(title);
         title.appendChild(desc);
-        if(locality.categories)
-        {
-          const category = document.createElement("span")
-          category.textContent = locality.categories[0]
-          category.className = "localities-search-category"
+        if (locality.categories) {
+          const category = document.createElement("span");
+          category.textContent = locality.categories[0];
+          category.className = "localities-search-category";
           title.appendChild(category);
-        }
-        else
-        {
-          const type = document.createElement("span")
-          type.textContent = locality.types[0]
-          type.className = "localities-search-type"
+        } else {
+          const type = document.createElement("span");
+          type.textContent = locality.types[0];
+          type.className = "localities-search-type";
           title.appendChild(type);
         }
       });
@@ -222,7 +217,7 @@ function displaySuggestions(
 document.addEventListener("click", (event) => {
   const targetElement = event.target as Element;
   const isClickInsideAutocomplete = targetElement.closest(
-    "#autocomplete-container",
+    "#autocomplete-container"
   );
 
   if (!isClickInsideAutocomplete && suggestionsList) {
@@ -239,7 +234,7 @@ type DebouncePromiseFunction<T, Args extends any[]> = (
 
 function debouncePromise<T, Args extends any[]>(
   fn: (...args: Args) => Promise<T>,
-  delay: number,
+  delay: number
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;

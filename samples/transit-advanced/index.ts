@@ -193,7 +193,6 @@ function toggleProgress() {
 
 function displayTransitRoute(routes: woosmap.map.transit.TransitRoute[]) {
   transitRenderer.setRoutes(routes);
-  console.log(map.getCenter())
 }
 
 function calculateTransit(): void {

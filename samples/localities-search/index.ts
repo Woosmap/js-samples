@@ -5,13 +5,15 @@ let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 let debouncedLocalitiesSearch: (...args: any[]) => Promise<any>;
 let input: string;
+let detailsHTML: HTMLElement;
+let addressDetailsContainer: HTMLElement;
 
 function initMap(): void {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
-      center: { lat: 51.50940214, lng: -0.133012 },
-      zoom: 4,
+      center: { lat: 51.507445, lng: -0.127765 },
+      zoom: 8,
     },
   );
   infoWindow = new woosmap.map.InfoWindow({});
@@ -24,11 +26,11 @@ function initMap(): void {
 }
 
 const fetchLocalitiesSearch = async (input: any): Promise<any> => {
-  console.log("input: ", input)
+  const center = map.getCenter()
   try {
     const response = await fetch(
       `
-https://develop-api.woosmap.com/1178/localities/search?types=point_of_interest|locality&input=${encodeURIComponent(input)}&location=51.51870003259117,-0.11396717804869089&radius=100000&key=woos-f3399eaa-1f01-33cd-a0db-ce1e23b7320d&components=country%3Agb`
+https://api.woosmap.com//localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=100000&key=woos-f3399eaa-1f01-33cd-a0db-ce1e23b7320d&components=country%3Agb`
     );
     return await response.json();
   } catch (error) {
@@ -36,6 +38,49 @@ https://develop-api.woosmap.com/1178/localities/search?types=point_of_interest|l
     throw error;
   }
 };
+
+function fillAddressDetails(
+  addressDetails: woosmap.map.localities.LocalitiesDetailsResult,
+) {
+  const details: string[] = [];
+  detailsHTML.innerHTML = "";
+  detailsHTML.style.display = "block";
+  if (addressDetails.formatted_address) {
+    details.push(
+      `<p class='option-detail'><span class='option-detail-label'>Formatted_address:</span><span class='bold'>${addressDetails.formatted_address}</span></p>`,
+    );
+  }
+  else if (addressDetails.name)
+    details.push(
+      `<p class='option-detail'><span class='option-detail-label'>Name:</span><span class='bold'>${addressDetails.name}</span></p>`,
+    );
+  if (addressDetails.types && addressDetails.types[0]) {
+    details.push(
+      `<p class='option-detail'><span class='option-detail-label'>Type: </span><span class='bold'>${addressDetails.types[0]}</span></p>`,
+    );
+  }
+  if (addressDetails.categories)
+    details.push(
+      `<p class='option-detail'><span class='option-detail-label'>Categories:</span><span class='bold'>${addressDetails.categories[0]}</span></p>`,
+    );
+  if (addressDetails.geometry) {
+    details.push(
+      `<div class='option-detail'><div><span class='option-detail-label'>Latitude:</span> <span class='bold'>${addressDetails.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude: </span><span class='bold'>${addressDetails.geometry.location.lng.toString()}</span></div></div>`,
+    );
+    if (addressDetails.address_components) {
+      const compoHtml = addressDetails.address_components
+        .map(
+          (compo) =>
+            `<p class='option-detail'><span class='option-detail-label'>${compo.types.find(item => item.includes("division")) || compo.types[0]}:</span> <span class='bold'>${compo.long_name}</span></p>`,
+        )
+        .join("");
+      details.push(
+        `<div class='address-components'><div class='title'>Address components</div><div>${compoHtml}</div>`,
+      );
+    }
+  }
+  detailsHTML.innerHTML = details.join("");
+}
 
 const inputElement = document.getElementById(
   "autocomplete-input",
@@ -46,6 +91,12 @@ const suggestionsList = document.getElementById(
 const clearSearchBtn = document.getElementsByClassName(
   "clear-searchButton",
 )[0] as HTMLButtonElement;
+addressDetailsContainer = document.querySelector(
+  ".addressDetails",
+) as HTMLElement;
+detailsHTML = document.querySelector(
+  ".addressDetails .addressOptions",
+) as HTMLElement;
 if (inputElement && suggestionsList) {
   inputElement.addEventListener("input", handleAutocomplete);
   inputElement.addEventListener("keydown", (event) => {
@@ -91,9 +142,15 @@ function handleDetails(publicId: string) {
     .catch((error) => console.error("Error getting locality details:", error));
 }
 
+function displaySection(section: HTMLElement, mode = "block"): void {
+  section.style.display = mode;
+}
+
 function displayLocality(
   locality: woosmap.map.localities.LocalitiesDetailsResult,
 ) {
+  fillAddressDetails(locality);
+  displaySection(addressDetailsContainer);
   if (marker) {
     marker.setMap(null);
     infoWindow.close();
@@ -138,9 +195,21 @@ function displaySuggestions(
         });
         suggestionsList.appendChild(li);
         li.appendChild(title);
-        const br = document.createElement("br");
-        title.appendChild(br)
         title.appendChild(desc);
+        if(locality.categories)
+        {
+          const category = document.createElement("span")
+          category.textContent = locality.categories[0]
+          category.className = "localities-search-category"
+          title.appendChild(category);
+        }
+        else
+        {
+          const type = document.createElement("span")
+          type.textContent = locality.types[0]
+          type.className = "localities-search-type"
+          title.appendChild(type);
+        }
       });
       suggestionsList.style.display = "block";
       clearSearchBtn.style.display = "block";

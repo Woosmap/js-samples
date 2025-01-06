@@ -524,8 +524,8 @@ function initUI(): void {
 
 function initMap(): void {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
-    center: { lat: 51.5074, lng: -0.1478 },
-    zoom: 10,
+    center: { lat: 45.482604, lng: 9.16924 },
+    zoom: 11,
   });
   transitService = new woosmap.map.TransitService();
   transitRenderer = new woosmap.map.TransitRenderer({});

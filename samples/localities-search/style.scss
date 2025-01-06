@@ -1,0 +1,24 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_localities_search] */
+@include meta.load-css("../../shared/scss/_default.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+
+#app {
+    height: 100%;
+}
+
+.localities-search-title {
+    flex-grow: 1;
+}
+
+.localities-search-description {
+    font-weight: lighter;
+    color: #333;
+    font-size: 0.8rem;
+}
+
+
+
+/* [END woosmap_localities_search] */

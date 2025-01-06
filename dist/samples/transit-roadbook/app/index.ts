@@ -67,8 +67,8 @@ function displayTransitMarkers(): void {
 }
 
 function createDefaultRequest(): woosmap.map.transit.TransitRouteRequest {
-  const origin = { lat: 51.6511, lng: -0.1615 };
-  const destination = { lat: 51.5146, lng: -0.0212 };
+  const origin = { lat: 45.4765, lng: 9.0553 };
+  const destination = { lat: 45.4599, lng: 9.2822 };
   setLatLngToContainer(originContainer, origin);
   setLatLngToContainer(destinationContainer, destination);
 

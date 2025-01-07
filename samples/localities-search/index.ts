@@ -10,7 +10,6 @@ let addressDetailsContainer: HTMLElement;
 
 const woosmap_key = "YOUR_API_KEY";
 
-// @ts-nocheck
 function initMap(): void {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
@@ -40,7 +39,6 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
   }
 };
 
-// @ts-nocheck
 function fillAddressDetails(
   addressDetails: any
 ) {

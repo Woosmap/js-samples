@@ -37,7 +37,7 @@
 }
 
 
-.addressDetails {
+.detailsResult {
     display: none;
     position: absolute;
     right: 10px;
@@ -54,7 +54,7 @@
       background-color: #fff;
     }
   
-    .addressOptions {
+    .detailsOptions {
       overflow-y: auto;
       max-height: 240px;
       font-size: 12px;

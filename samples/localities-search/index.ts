@@ -8,6 +8,8 @@ let input: string;
 let detailsHTML: HTMLElement;
 let addressDetailsContainer: HTMLElement;
 
+const woosmap_key = "YOUR_API_KEY";
+
 // @ts-nocheck
 function initMap(): void {
   map = new window.woosmap.map.Map(
@@ -29,7 +31,7 @@ const fetchLocalitiesSearch = async (input: any): Promise<any> => {
   try {
     const response = await fetch(
       `
-https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=100000&key=woos-f3399eaa-1f01-33cd-a0db-ce1e23b7320d&components=country%3Agb`
+https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=${woosmap_key}&components=country%3Agb`
     );
     return await response.json();
   } catch (error) {
@@ -38,6 +40,7 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
   }
 };
 
+// @ts-nocheck
 function fillAddressDetails(
   addressDetails: woosmap.map.localities.LocalitiesDetailsResult
 ) {

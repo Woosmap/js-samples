@@ -73,7 +73,7 @@ function fillDetailsResult(detailsResult: any) {
     );
   if (detailsResult.geometry) {
     details.push(
-      `<div class='option-detail'><div><span class='option-detail-label'>Latitude:</span> <span class='bold'>${detailsResult.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude: </span><span class='bold'>${detailsResult.geometry.location.lng.toString()}</span></div></div>`
+      `<div class='option-detail'><div><span class='option-detail-label'>Latitude:</span> <span class='bold'>${detailsResult.geometry.location.lat.toFixed(5).toString()}</span></div><div><span class='option-detail-label'>Longitude: </span><span class='bold'>${detailsResult.geometry.location.lng.toFixed(5).toString()}</span></div></div>`
     );
     if (detailsResult.address_components) {
       const compoHtml = detailsResult.address_components
@@ -182,7 +182,6 @@ function displayResult(result: woosmap.map.localities.LocalitiesDetailsResult) {
 }
 
 function displaySuggestions(localitiesPredictions: any) {
-  console.log("localitiesPredictions: ", localitiesPredictions);
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
     if (localitiesPredictions.results.length > 0 && input) {

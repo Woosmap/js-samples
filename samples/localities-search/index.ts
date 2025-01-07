@@ -42,7 +42,7 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
 
 // @ts-nocheck
 function fillAddressDetails(
-  addressDetails: woosmap.map.localities.LocalitiesDetailsResult
+  addressDetails: any
 ) {
   const details: string[] = [];
   detailsHTML.innerHTML = "";

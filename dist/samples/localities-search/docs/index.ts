@@ -8,7 +8,10 @@ let input: string;
 let detailsHTML: HTMLElement;
 let detailsResultContainer: HTMLElement;
 
+
 const woosmap_key = "YOUR_API_KEY";
+const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
+  { country: [] };
 
 function initMap(): void {
   map = new window.woosmap.map.Map(
@@ -33,15 +36,21 @@ function initMap(): void {
   localitiesService = new window.woosmap.map.LocalitiesService();
 
   debouncedLocalitiesSearch = debouncePromise(fetchLocalitiesSearch, 0);
+  manageCountrySelector();
 }
 
 const fetchLocalitiesSearch = async (input: any): Promise<any> => {
   const center = map.getCenter();
   const radius = map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
+  const componentsArgs: string = (componentsRestriction.country as string[])
+  .map((country) => `country:${country}`)
+  .join("|");
+
+
   try {
     const response = await fetch(
       `
-https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=${woosmap_key}&components=country%3Agb`
+https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=${woosmap_key}&components=${componentsArgs}`
     );
     return await response.json();
   } catch (error) {
@@ -279,5 +288,103 @@ declare global {
 }
 window.initMap = initMap;
 // [END woosmap_localities_search]
+
+function manageCountrySelector() {
+  const countryElements = document.querySelectorAll(".country");
+  countryElements.forEach((countryElement: Element) => {
+    countryElement.addEventListener("click", () => {
+      toggleCountry(countryElement);
+    });
+    if (countryElement.classList.contains("active")) {
+      const countryCode = (countryElement as HTMLElement).dataset
+        .countrycode as string;
+      componentsRestriction.country = [
+        ...(componentsRestriction.country as string[]),
+        countryCode,
+      ];
+    }
+  });
+
+  const dropdownButtons = document.querySelectorAll(
+    ".dropdown .dropdown-button",
+  );
+  dropdownButtons.forEach((button: Element) =>
+    button.addEventListener("click", toggleDropdown),
+  );
+
+  // Hide dropdowns when clicking outside
+  const dropdowns = document.querySelectorAll(".dropdown");
+  document.addEventListener("click", (event: Event) => {
+    dropdowns.forEach((dropdown: Element) => {
+      if (!dropdown.contains(event.target as Node)) {
+        hideDropdown(dropdown);
+      }
+    });
+  });
+}
+
+function toggleDropdown(event: Event) {
+  event.stopPropagation();
+  const dropdown = (event.target as Element).closest(".dropdown");
+  if (dropdown) {
+    if (dropdown.classList.contains("active")) {
+      hideDropdown(dropdown);
+    } else {
+      showDropdown(dropdown);
+    }
+  }
+}
+
+function hideDropdown(dropdown: Element) {
+  const dropdownContent = dropdown.querySelector(
+    ".dropdown-content",
+  ) as HTMLElement;
+  dropdownContent?.classList.remove("visible");
+  dropdown.classList.remove("active");
+}
+
+function showDropdown(dropdown: Element) {
+  const dropdownContent = dropdown.querySelector(
+    ".dropdown-content",
+  ) as HTMLElement;
+  dropdownContent?.classList.add("visible");
+  dropdown.classList.add("active");
+}
+
+function toggleCountry(country: Element) {
+  const isActive = country.classList.toggle("active");
+  const countryCode = (country as HTMLElement).dataset.countrycode;
+
+  if (countryCode) {
+    if (isActive) {
+      componentsRestriction.country = [
+        ...(componentsRestriction.country as string[]),
+        countryCode,
+      ];
+    } else {
+      componentsRestriction.country = (
+        componentsRestriction.country as string[]
+      ).filter((code) => code !== countryCode);
+    }
+    updateCountrySelectorText();
+    handleAutocomplete();
+  }
+}
+
+function updateCountrySelectorText() {
+  const dropdownText = document.querySelector(
+    ".dropdown-button span",
+  ) as HTMLElement;
+  const inputPlaceholder = document.querySelector("#autocomplete-input") as HTMLInputElement;
+  if (componentsRestriction.country.length > 0) {
+    inputElement.readOnly = false;
+    dropdownText.innerHTML = `Selected countries: <strong>${(componentsRestriction.country as string[]).join("</strong>, <strong>")}</strong>`;
+    inputPlaceholder.placeholder = `Search for a place in ${(componentsRestriction.country as string[]).join(" or ")}...`
+  } else {
+    dropdownText.textContent = "Select countries";
+    inputElement.readOnly = true;
+    inputPlaceholder.placeholder = "Select at least one country to proceed."
+  }
+}
 
 export {};

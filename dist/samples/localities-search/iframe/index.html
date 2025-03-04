@@ -9,38 +9,39 @@
       (function () {
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
-        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(n);
-        new MutationObserver((n) => {
-          for (const s of n)
-            if (s.type === "childList")
-              for (const c of s.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && o(c);
+        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
+          n(o);
+        new MutationObserver((o) => {
+          for (const i of o)
+            if (i.type === "childList")
+              for (const l of i.addedNodes)
+                l.tagName === "LINK" && l.rel === "modulepreload" && n(l);
         }).observe(document, { childList: !0, subtree: !0 });
-        function a(n) {
-          const s = {};
+        function s(o) {
+          const i = {};
           return (
-            n.integrity && (s.integrity = n.integrity),
-            n.referrerPolicy && (s.referrerPolicy = n.referrerPolicy),
-            n.crossOrigin === "use-credentials"
-              ? (s.credentials = "include")
-              : n.crossOrigin === "anonymous"
-                ? (s.credentials = "omit")
-                : (s.credentials = "same-origin"),
-            s
+            o.integrity && (i.integrity = o.integrity),
+            o.referrerPolicy && (i.referrerPolicy = o.referrerPolicy),
+            o.crossOrigin === "use-credentials"
+              ? (i.credentials = "include")
+              : o.crossOrigin === "anonymous"
+                ? (i.credentials = "omit")
+                : (i.credentials = "same-origin"),
+            i
           );
         }
-        function o(n) {
-          if (n.ep) return;
-          n.ep = !0;
-          const s = a(n);
-          fetch(n.href, s);
+        function n(o) {
+          if (o.ep) return;
+          o.ep = !0;
+          const i = s(o);
+          fetch(o.href, i);
         }
       })();
-      let d, r, m, h, b, u, y, w;
-      const v = "woos-48c80350-88aa-333e-835a-07f4b658a9a4";
-      function E() {
-        (d = new window.woosmap.map.Map(document.getElementById("map"), {
+      let u, p, m, w, v, y, f, L;
+      const S = "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
+        d = { country: [] };
+      function C() {
+        (u = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.507445, lng: -0.127765 },
           zoom: 8,
           styles: [
@@ -52,27 +53,29 @@
           ],
         })),
           (m = new woosmap.map.InfoWindow({})),
-          (h = new window.woosmap.map.LocalitiesService()),
-          (b = T(L, 0));
+          (w = new window.woosmap.map.LocalitiesService()),
+          (v = A($, 0)),
+          x();
       }
-      const L = async (e) => {
-        const t = d.getCenter(),
-          a =
-            d.getZoom() > 10 ? (d.getZoom() > 14 ? "1000" : "10000") : "100000";
+      const $ = async (e) => {
+        const t = u.getCenter(),
+          s =
+            u.getZoom() > 10 ? (u.getZoom() > 14 ? "1000" : "10000") : "100000",
+          n = d.country.map((o) => `country:${o}`).join("|");
         try {
           return await (
             await fetch(`
-https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(e)}&location=${t.lat()},${t.lng()}&radius=${a}&key=${v}&components=country%3Agb`)
+https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(e)}&location=${t.lat()},${t.lng()}&radius=${s}&key=${S}&components=${n}`)
           ).json();
         } catch (o) {
           throw (console.error("Error fetching localities:", o), o);
         }
       };
-      function C(e) {
+      function k(e) {
         const t = [];
         if (
-          ((y.innerHTML = ""),
-          (y.style.display = "block"),
+          ((f.innerHTML = ""),
+          (f.style.display = "block"),
           e.formatted_address
             ? t.push(
                 `<p class='option-detail'><span class='option-detail-label'>Formatted_address:</span><span class='bold'>${e.formatted_address}</span></p>`,
@@ -96,148 +99,205 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
             ),
             e.address_components))
         ) {
-          const a = e.address_components
+          const s = e.address_components
             .map(
-              (o) =>
-                `<p class='option-detail'><span class='option-detail-label'>${o.types.find((n) => n.includes("division")) || o.types[0]}:</span> <span class='bold'>${o.long_name}</span></p>`,
+              (n) =>
+                `<p class='option-detail'><span class='option-detail-label'>${n.types.find((o) => o.includes("division")) || n.types[0]}:</span> <span class='bold'>${n.long_name}</span></p>`,
             )
             .join("");
           t.push(
-            `<div class='address-components'><div class='title'>Address components</div><div>${a}</div>`,
+            `<div class='address-components'><div class='title'>Address components</div><div>${s}</div>`,
           );
         }
-        y.innerHTML = t.join("");
+        f.innerHTML = t.join("");
       }
-      const p = document.getElementById("autocomplete-input"),
-        l = document.getElementById("suggestions-list"),
-        f = document.getElementsByClassName("clear-searchButton")[0];
-      w = document.querySelector(".detailsResult");
-      y = document.querySelector(".detailsResult .detailsOptions");
-      p &&
-        l &&
-        (p.addEventListener("input", _),
-        p.addEventListener("keydown", (e) => {
+      const r = document.getElementById("autocomplete-input"),
+        a = document.getElementById("suggestions-list"),
+        g = document.getElementsByClassName("clear-searchButton")[0];
+      L = document.querySelector(".detailsResult");
+      f = document.querySelector(".detailsResult .detailsOptions");
+      r &&
+        a &&
+        (r.addEventListener("input", b),
+        r.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
-            const t = l.querySelector("li");
+            const t = a.querySelector("li");
             t && t.click();
           }
         }));
-      f.addEventListener("click", () => {
-        (p.value = ""),
-          (l.style.display = "none"),
-          (f.style.display = "none"),
-          r && (r.setMap(null), m.close()),
-          p.focus();
+      g.addEventListener("click", () => {
+        (r.value = ""),
+          (a.style.display = "none"),
+          (g.style.display = "none"),
+          p && (p.setMap(null), m.close()),
+          r.focus();
       });
-      function _() {
-        p &&
-          l &&
-          ((u = p.value),
-          u
-            ? b(u)
-                .then((e) => M(e))
+      function b() {
+        r &&
+          a &&
+          ((y = r.value),
+          y
+            ? v(y)
+                .then((e) => q(e))
                 .catch((e) =>
                   console.error("Error autocomplete localities:", e),
                 )
-            : ((l.style.display = "none"), (f.style.display = "none")));
+            : ((a.style.display = "none"), (g.style.display = "none")));
       }
-      function $(e) {
-        h.getDetails({ publicId: e })
-          .then((t) => k(t.result))
+      function _(e) {
+        w.getDetails({ publicId: e })
+          .then((t) => T(t.result))
           .catch((t) => console.error("Error getting locality details:", t));
       }
-      function S(e, t = "block") {
+      function M(e, t = "block") {
         e.style.display = t;
       }
-      function k(e) {
+      function T(e) {
         var t;
-        C(e),
-          S(w),
-          r && (r.setMap(null), m.close()),
+        k(e),
+          M(L),
+          p && (p.setMap(null), m.close()),
           e != null &&
             e.geometry &&
-            ((r = new woosmap.map.Marker({
+            ((p = new woosmap.map.Marker({
               position: e.geometry.location,
               icon: {
                 url: "https://images.woosmap.com/marker.png",
                 scaledSize: { height: 50, width: 32 },
               },
             })),
-            r.setMap(d),
+            p.setMap(u),
             m.setContent(
               `<span>${(t = e.formatted_address) != null ? t : e.name}</span>`,
             ),
-            m.open(d, r),
-            d.flyTo({ center: e.geometry.location, zoom: 14 }));
+            m.open(u, p),
+            u.flyTo({ center: e.geometry.location, zoom: 14 }));
       }
-      function M(e) {
-        p &&
-          l &&
-          ((l.innerHTML = ""),
-          e.results.length > 0 && u
+      function q(e) {
+        r &&
+          a &&
+          ((a.innerHTML = ""),
+          e.results.length > 0 && y
             ? (e.results.forEach((t) => {
-                var s, c;
-                const a = document.createElement("li"),
-                  o = document.createElement("div"),
-                  n = document.createElement("span");
+                var i, l;
+                const s = document.createElement("li"),
+                  n = document.createElement("div"),
+                  o = document.createElement("span");
                 if (
-                  ((o.textContent = (s = t.title) != null ? s : ""),
-                  (o.className = "localities-search-title"),
-                  (n.textContent = (c = t.description) != null ? c : ""),
-                  (n.className = "localities-search-description"),
-                  a.addEventListener("click", () => {
-                    var i;
-                    (p.value = (i = t.title) != null ? i : ""),
-                      (l.style.display = "none"),
-                      $(t.public_id);
+                  ((n.textContent = (i = t.title) != null ? i : ""),
+                  (n.className = "localities-search-title"),
+                  (o.textContent = (l = t.description) != null ? l : ""),
+                  (o.className = "localities-search-description"),
+                  s.addEventListener("click", () => {
+                    var c;
+                    (r.value = (c = t.title) != null ? c : ""),
+                      (a.style.display = "none"),
+                      _(t.public_id);
                   }),
-                  l.appendChild(a),
-                  a.appendChild(o),
-                  o.appendChild(n),
+                  a.appendChild(s),
+                  s.appendChild(n),
+                  n.appendChild(o),
                   t.categories)
                 ) {
-                  const i = document.createElement("span");
-                  (i.textContent = t.categories[0]),
-                    (i.className = "localities-search-category"),
-                    o.appendChild(i);
+                  const c = document.createElement("span");
+                  (c.textContent = t.categories[0]),
+                    (c.className = "localities-search-category"),
+                    n.appendChild(c);
                 } else {
-                  const i = document.createElement("span");
-                  (i.textContent = t.types[0]),
-                    (i.className = "localities-search-type"),
-                    o.appendChild(i);
+                  const c = document.createElement("span");
+                  (c.textContent = t.types[0]),
+                    (c.className = "localities-search-type"),
+                    n.appendChild(c);
                 }
               }),
-              (l.style.display = "block"),
-              (f.style.display = "block"))
-            : (l.style.display = "none"));
+              (a.style.display = "block"),
+              (g.style.display = "block"))
+            : (a.style.display = "none"));
       }
       document.addEventListener("click", (e) => {
         !e.target.closest("#autocomplete-container") &&
-          l &&
-          (l.style.display = "none");
+          a &&
+          (a.style.display = "none");
       });
-      function T(e, t) {
-        let a = null,
-          o = null,
-          n = null;
-        return function (...s) {
-          return new Promise((c, i) => {
-            a !== null && clearTimeout(a),
+      function A(e, t) {
+        let s = null,
+          n = null,
+          o = null;
+        return function (...i) {
+          return new Promise((l, c) => {
+            s !== null && clearTimeout(s),
+              (n = l),
               (o = c),
-              (n = i),
-              (a = setTimeout(() => {
-                e(...s)
-                  .then((g) => {
-                    o === c && n === i && c(g);
+              (s = setTimeout(() => {
+                e(...i)
+                  .then((h) => {
+                    n === l && o === c && l(h);
                   })
-                  .catch((g) => {
-                    o === c && n === i && i(g);
+                  .catch((h) => {
+                    n === l && o === c && c(h);
                   });
               }, t));
           });
         };
       }
-      window.initMap = E;
+      window.initMap = C;
+      function x() {
+        document.querySelectorAll(".country").forEach((n) => {
+          if (
+            (n.addEventListener("click", () => {
+              O(n);
+            }),
+            n.classList.contains("active"))
+          ) {
+            const o = n.dataset.countrycode;
+            d.country = [...d.country, o];
+          }
+        }),
+          document
+            .querySelectorAll(".dropdown .dropdown-button")
+            .forEach((n) => n.addEventListener("click", I));
+        const s = document.querySelectorAll(".dropdown");
+        document.addEventListener("click", (n) => {
+          s.forEach((o) => {
+            o.contains(n.target) || E(o);
+          });
+        });
+      }
+      function I(e) {
+        e.stopPropagation();
+        const t = e.target.closest(".dropdown");
+        t && (t.classList.contains("active") ? E(t) : N(t));
+      }
+      function E(e) {
+        const t = e.querySelector(".dropdown-content");
+        t == null || t.classList.remove("visible"),
+          e.classList.remove("active");
+      }
+      function N(e) {
+        const t = e.querySelector(".dropdown-content");
+        t == null || t.classList.add("visible"), e.classList.add("active");
+      }
+      function O(e) {
+        const t = e.classList.toggle("active"),
+          s = e.dataset.countrycode;
+        s &&
+          (t
+            ? (d.country = [...d.country, s])
+            : (d.country = d.country.filter((n) => n !== s)),
+          B(),
+          b());
+      }
+      function B() {
+        const e = document.querySelector(".dropdown-button span"),
+          t = document.querySelector("#autocomplete-input");
+        d.country.length > 0
+          ? ((r.readOnly = !1),
+            (e.innerHTML = `Selected countries: <strong>${d.country.join("</strong>, <strong>")}</strong>`),
+            (t.placeholder = `Search for a place in ${d.country.join(" or ")}...`))
+          : ((e.textContent = "Select countries"),
+            (r.readOnly = !0),
+            (t.placeholder = "Select at least one country to proceed."));
+      }
     </script>
     <style>
       #map {
@@ -355,8 +415,150 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
       #suggestions-list li:hover {
         background-color: #f2f2f2;
       }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown ul {
+        display: block;
+        list-style: none;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .dropdown.active .dropdown-button {
+        background-color: #e8ebee;
+        border: 1px solid #e8ebee;
+      }
+      .dropdown.active .dropdown-button svg {
+        transform: scale(-1);
+      }
+      .dropdown .dropdown-button {
+        cursor: pointer;
+        border: 1px solid #f9fbfd;
+        background-color: #f9fbfd;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
+        font-weight: 400;
+        height: 42px;
+        padding: 0 9px;
+        font-size: 14px;
+        border-radius: 12px;
+      }
+      .dropdown .dropdown-button:hover {
+        background-color: #e8ebee;
+        border: 1px solid #e8ebee;
+      }
+      .dropdown .dropdown-button strong {
+        font-size: 0.9em;
+        opacity: 0.9;
+      }
+      .dropdown .dropdown-button svg {
+        height: 0.75rem;
+        width: 0.75rem;
+        margin-left: 0.5rem;
+        margin-top: -0.125rem;
+        transition-duration: 0.1s;
+        transition-property: transform;
+        vertical-align: middle;
+        transition-timing-function: cubic-bezier(0.07, 0.49, 0, 1.05);
+        fill: #1d1d1d;
+        display: inline;
+        padding-top: 0;
+      }
+      .dropdown .dropdown-menuitem {
+        color: #1d1d1d;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        padding: 0.5rem 1rem;
+        position: relative;
+        white-space: nowrap;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .dropdown .dropdown-menuitem:hover {
+        background-color: #e8ebee;
+      }
+      .dropdown .dropdown-menuitem.divider {
+        border-top: 1px solid #e8ebee;
+      }
+      .dropdown .dropdown-content {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        min-width: 160px;
+        overflow: hidden;
+        top: 100%;
+        z-index: 999;
+      }
+      .dropdown .dropdown-content.visible {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+      }
+      .dropdown .dropdown-menu {
+        background-clip: padding-box;
+        background-color: #fff;
+        color: #1d1d1d;
+        border-radius: 12px;
+        box-shadow:
+          #0000 0 0,
+          #0000 0 0,
+          #060b1033 0 16px 24px,
+          #060b104d 0 6px 30px,
+          #060b1066 0 8px 10px;
+        left: 0;
+        margin-top: 1px;
+        min-width: 13rem;
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+      }
       #app {
         height: 100%;
+      }
+      body {
+        background-color: #eee;
+        overflow-y: hidden;
+      }
+      #countrySelector {
+        position: absolute;
+        top: 10px;
+        left: 335px;
+      }
+      .country .country-name {
+        display: flex;
+        flex-grow: 1;
+      }
+      .country .flag-icon {
+        height: 20px;
+        width: 20px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        margin-right: 8px;
+      }
+      .country .flag-icon-fr {
+        background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/fr.svg);
+      }
+      .country .flag-icon-gb {
+        background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/gb.svg);
+      }
+      .country .active-icon-wrapper {
+        display: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.054 8.958 3.65 6.555A2.112 2.112 0 1 0 .663 9.543l3.86 3.86a2.11 2.11 0 0 0 2.054.543c.38-.084.74-.274 1.033-.568l7.77-7.77a2.114 2.114 0 0 0-2.987-2.99l-6.34 6.34z'%3E%3C/path%3E%3C/svg%3E");
+        height: 10px;
+        width: 10px;
+        background-position: 50%;
+        background-size: contain;
+      }
+      .country.active .active-icon-wrapper {
+        display: flex;
       }
       .localities-search-title {
         flex-grow: 1;
@@ -431,6 +633,10 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
   </head>
   <body>
     <div id="app">
+      <div id="map"></div>
+      <div class="detailsResult">
+        <div class="detailsOptions"></div>
+      </div>
       <div id="autocomplete-container">
         <svg class="search-icon" viewBox="0 0 16 16">
           <path
@@ -443,7 +649,7 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
         <input
           type="text"
           id="autocomplete-input"
-          placeholder="Search for a place in the UK..."
+          placeholder="Search for a place in GB..."
           autocomplete="off"
         />
         <button aria-label="Clear" class="clear-searchButton" type="button">
@@ -455,10 +661,53 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
         </button>
         <ul id="suggestions-list"></ul>
       </div>
-      <div class="detailsResult">
-        <div class="detailsOptions"></div>
+      <div id="countrySelector" class="dropdown">
+        <button class="dropdown-button">
+          <span>
+            Selected countries:
+
+            <strong>GB</strong>
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"
+            ></path>
+          </svg>
+        </button>
+        <div id="countryDropdown" class="dropdown-content dropdown-menu">
+          <div>
+            <ul role="listbox">
+              <li
+                class="country active"
+                data-countrycode="GB"
+                data-countryname="United Kingdom"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-gb"></span>
+                  <div class="country-name">United Kingdom</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="FR"
+                data-countryname="France"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-fr"></span>
+                  <div class="country-name">France</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div id="map"></div>
     </div>
 
     <script

@@ -7,6 +7,7 @@ let input;
 let detailsHTML;
 let detailsResultContainer;
 const woosmap_key = "YOUR_API_KEY";
+const componentsRestriction = { country: [] };
 
 function initMap() {
   map = new window.woosmap.map.Map(document.getElementById("map"), {
@@ -27,16 +28,20 @@ function initMap() {
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new window.woosmap.map.LocalitiesService();
   debouncedLocalitiesSearch = debouncePromise(fetchLocalitiesSearch, 0);
+  manageCountrySelector();
 }
 
 const fetchLocalitiesSearch = async (input) => {
   const center = map.getCenter();
   const radius =
     map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
+  const componentsArgs = componentsRestriction.country
+    .map((country) => `country:${country}`)
+    .join("|");
 
   try {
     const response = await fetch(`
-https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=${woosmap_key}&components=country%3Agb`);
+https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=${woosmap_key}&components=${componentsArgs}`);
     return await response.json();
   } catch (error) {
     console.error("Error fetching localities:", error);
@@ -261,3 +266,104 @@ function debouncePromise(fn, delay) {
 }
 
 window.initMap = initMap;
+
+function manageCountrySelector() {
+  const countryElements = document.querySelectorAll(".country");
+
+  countryElements.forEach((countryElement) => {
+    countryElement.addEventListener("click", () => {
+      toggleCountry(countryElement);
+    });
+    if (countryElement.classList.contains("active")) {
+      const countryCode = countryElement.dataset.countrycode;
+
+      componentsRestriction.country = [
+        ...componentsRestriction.country,
+        countryCode,
+      ];
+    }
+  });
+
+  const dropdownButtons = document.querySelectorAll(
+    ".dropdown .dropdown-button",
+  );
+
+  dropdownButtons.forEach((button) =>
+    button.addEventListener("click", toggleDropdown),
+  );
+
+  // Hide dropdowns when clicking outside
+  const dropdowns = document.querySelectorAll(".dropdown");
+
+  document.addEventListener("click", (event) => {
+    dropdowns.forEach((dropdown) => {
+      if (!dropdown.contains(event.target)) {
+        hideDropdown(dropdown);
+      }
+    });
+  });
+}
+
+function toggleDropdown(event) {
+  event.stopPropagation();
+
+  const dropdown = event.target.closest(".dropdown");
+
+  if (dropdown) {
+    if (dropdown.classList.contains("active")) {
+      hideDropdown(dropdown);
+    } else {
+      showDropdown(dropdown);
+    }
+  }
+}
+
+function hideDropdown(dropdown) {
+  const dropdownContent = dropdown.querySelector(".dropdown-content");
+
+  dropdownContent?.classList.remove("visible");
+  dropdown.classList.remove("active");
+}
+
+function showDropdown(dropdown) {
+  const dropdownContent = dropdown.querySelector(".dropdown-content");
+
+  dropdownContent?.classList.add("visible");
+  dropdown.classList.add("active");
+}
+
+function toggleCountry(country) {
+  const isActive = country.classList.toggle("active");
+  const countryCode = country.dataset.countrycode;
+
+  if (countryCode) {
+    if (isActive) {
+      componentsRestriction.country = [
+        ...componentsRestriction.country,
+        countryCode,
+      ];
+    } else {
+      componentsRestriction.country = componentsRestriction.country.filter(
+        (code) => code !== countryCode,
+      );
+    }
+
+    updateCountrySelectorText();
+    handleAutocomplete();
+  }
+}
+
+function updateCountrySelectorText() {
+  const dropdownText = document.querySelector(".dropdown-button span");
+  const inputPlaceholder = document.querySelector("#autocomplete-input");
+
+  if (componentsRestriction.country.length > 0) {
+    inputElement.readOnly = false;
+    dropdownText.innerHTML = `Selected countries: <strong>${componentsRestriction.country.join("</strong>, <strong>")}</strong>`;
+    inputPlaceholder.placeholder = `Search for a place in ${componentsRestriction.country.join(" or ")}...`;
+  } else {
+    dropdownText.textContent = "Select countries";
+    inputElement.readOnly = true;
+    inputPlaceholder.placeholder = "Select at least one country to proceed.";
+  }
+}

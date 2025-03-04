@@ -12,6 +12,10 @@
   <body>
     <!-- [START woosmap_localities_search_div] -->
     <div id="app">
+      <div id="map"></div>
+      <div class="detailsResult">
+        <div class="detailsOptions"></div>
+      </div>
       <div id="autocomplete-container">
         <svg class="search-icon" viewBox="0 0 16 16">
           <path
@@ -24,7 +28,7 @@
         <input
           type="text"
           id="autocomplete-input"
-          placeholder="Search for a place in the UK..."
+          placeholder="Search for a place in GB..."
           autocomplete="off"
         />
         <button aria-label="Clear" class="clear-searchButton" type="button">
@@ -36,10 +40,53 @@
         </button>
         <ul id="suggestions-list"></ul>
       </div>
-      <div class="detailsResult">
-        <div class="detailsOptions"></div>
+      <div id="countrySelector" class="dropdown">
+        <button class="dropdown-button">
+          <span>
+            Selected countries:
+
+            <strong>GB</strong>
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="m4 4 3.4 3.4c.3.4.9.4 1.2 0L11.9 4 14 6.2l-5.4 5.6c-.3.3-.9.3-1.2 0L2 6.2z"
+            ></path>
+          </svg>
+        </button>
+        <div id="countryDropdown" class="dropdown-content dropdown-menu">
+          <div>
+            <ul role="listbox">
+              <li
+                class="country active"
+                data-countrycode="GB"
+                data-countryname="United Kingdom"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-gb"></span>
+                  <div class="country-name">United Kingdom</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+
+              <li
+                class="country"
+                data-countrycode="FR"
+                data-countryname="France"
+              >
+                <div class="dropdown-menuitem">
+                  <span class="flag-icon flag-icon-fr"></span>
+                  <div class="country-name">France</div>
+                  <div class="active-icon-wrapper"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div id="map"></div>
     </div>
     <!-- [END woosmap_localities_search_div] -->
 

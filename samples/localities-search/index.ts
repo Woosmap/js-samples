@@ -379,11 +379,13 @@ function updateCountrySelectorText() {
   ) as HTMLElement;
   const inputPlaceholder = document.querySelector("#autocomplete-input") as HTMLInputElement;
   if (componentsRestriction.country.length > 0) {
+    inputElement.readOnly = false;
     dropdownText.innerHTML = `Selected countries: <strong>${(componentsRestriction.country as string[]).join("</strong>, <strong>")}</strong>`;
     inputPlaceholder.placeholder = `Search for a place in ${(componentsRestriction.country as string[]).join(" or ")}...`
   } else {
     dropdownText.textContent = "Select countries";
-    inputPlaceholder.placeholder = "First, select at least on country"
+    inputElement.readOnly = true;
+    inputPlaceholder.placeholder = "Select at least one country to proceed."
   }
 }
 

@@ -1,13 +1,25 @@
+---json
+{
+"countries": [
+{ "code": "GB", "name": "United Kingdom", "selected": true },
+{ "code": "FR", "name": "France" }
+]
+}
+---
 {% extends '../../src/_includes/layout.njk' %}
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
+        <div id="map"></div>
+        <div class="detailsResult">
+            <div class="detailsOptions"></div>
+        </div>
         <div id="autocomplete-container">
             {% svgIcon 'search.svg' %}
             <input
                     type="text"
                     id="autocomplete-input"
-                    placeholder="Search for a place in the UK..."
+                    placeholder="Search for a place in GB..."
                     autocomplete="off"
             />
             <button aria-label="Clear" class="clear-searchButton" type="button">
@@ -15,10 +27,7 @@
             </button>
             <ul id="suggestions-list"></ul>
         </div>
-        <div class="detailsResult">
-            <div class="detailsOptions"></div>
-        </div>
-        <div id="map"></div>
+        {% include '../../src/_includes/country-selector.njk' %}
     </div>
     <!-- [END woosmap_{{ tag }}_div] -->
 {% endblock %}

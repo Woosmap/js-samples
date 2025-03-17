@@ -154,17 +154,14 @@ const Marker: React.FC<{
       }
 
       draw() {
-        console.log("draw");
         const projection = this.getProjection();
         const point = projection.fromLatLngToDivPixel(this.position);
         if (point) {
-          console.log("width", this.containerDiv.offsetWidth);
           // Offset should depend on the style of your icon  - here it is positioned at the middle
           const offsetWidth = this.containerDiv.offsetWidth / 2; // 50% of div width
           const offsetHeight = this.containerDiv.offsetHeight / 2; // 50% of div height
           this.containerDiv.style.left = `${point.x - offsetWidth}px`;
           this.containerDiv.style.top = `${point.y - offsetHeight}px`;
-          console.log("left", this.containerDiv.style.left);
         }
       }
 

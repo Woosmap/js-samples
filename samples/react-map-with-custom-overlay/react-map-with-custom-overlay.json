@@ -1,0 +1,19 @@
+{
+  "title": "React Map with CustomOverlay",
+  "description": "A Woosmap Map sample with a Marker as CustomOverlay using React JS Framework",
+  "callback": "initMap",
+  "category": "React Map",
+  "tsx": true,
+  "tag": "react_map_with_custom_overlay",
+  "name": "react-map-with-custom-overlay",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}",
+  "dependencies": [
+    "react",
+    "react-dom"
+  ]
+}

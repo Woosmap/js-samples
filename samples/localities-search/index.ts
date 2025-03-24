@@ -4,6 +4,8 @@ let marker: woosmap.map.Marker;
 let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 let debouncedLocalitiesSearch: (...args: any[]) => Promise<any>;
+let debouncedPRSearch: (...args: any[]) => Promise<any>;
+let PR_NUMBER = "1234"
 let input: string;
 let detailsHTML: HTMLElement;
 let detailsResultContainer: HTMLElement;
@@ -36,6 +38,7 @@ function initMap(): void {
   localitiesService = new window.woosmap.map.LocalitiesService();
 
   debouncedLocalitiesSearch = debouncePromise(fetchLocalitiesSearch, 0);
+  debouncedPRSearch = debouncePromise(fetchPRSearch, 0);
   manageCountrySelector();
 }
 
@@ -55,6 +58,26 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
     return await response.json();
   } catch (error) {
     console.error("Error fetching localities:", error);
+    throw error;
+  }
+};
+
+const fetchPRSearch = async (input: any): Promise<any> => {
+  const center = map.getCenter();
+  const radius = map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
+  const componentsArgs: string = (componentsRestriction.country as string[])
+  .map((country) => `country:${country}`)
+  .join("|");
+
+
+  try {
+    const response = await fetch(
+      `
+https://develop-api.woosmap.com/${PR_NUMBER}/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=woos-b2f35903-92d8-3a95-9b35-dd503c752a51&components=${componentsArgs}`
+    );
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching PR:", error);
     throw error;
   }
 };
@@ -105,6 +128,9 @@ const inputElement = document.getElementById(
 const suggestionsList = document.getElementById(
   "suggestions-list"
 ) as HTMLUListElement;
+const prSuggestionsList = document.getElementById(
+  "pr-suggestions-list"
+) as HTMLUListElement;
 const clearSearchBtn = document.getElementsByClassName(
   "clear-searchButton"
 )[0] as HTMLButtonElement;
@@ -142,6 +168,11 @@ function handleAutocomplete(): void {
     if (input) {
       debouncedLocalitiesSearch(input)
         .then((results) => displaySuggestions(results))
+        .catch((error) =>
+          console.error("Error autocomplete localities:", error)
+        );
+      debouncedPRSearch(input)
+        .then((results) => displaySuggestions(results, prSuggestionsList))
         .catch((error) =>
           console.error("Error autocomplete localities:", error)
         );
@@ -190,9 +221,12 @@ function displayResult(result: woosmap.map.localities.LocalitiesDetailsResult) {
   }
 }
 
-function displaySuggestions(localitiesPredictions: any) {
+function displaySuggestions(localitiesPredictions: any, container:any=null) {
+  if (container == null) {
+    container=suggestionsList
+  }
   if (inputElement && suggestionsList) {
-    suggestionsList.innerHTML = "";
+    container.innerHTML = "";
     if (localitiesPredictions.results.length > 0 && input) {
       localitiesPredictions.results.forEach((result) => {
         const li = document.createElement("li");
@@ -204,10 +238,10 @@ function displaySuggestions(localitiesPredictions: any) {
         desc.className = "localities-search-description";
         li.addEventListener("click", () => {
           inputElement.value = result.title ?? "";
-          suggestionsList.style.display = "none";
+          container.style.display = "none";
           handleDetails(result.public_id);
         });
-        suggestionsList.appendChild(li);
+        container.appendChild(li);
         li.appendChild(title);
         title.appendChild(desc);
         if (result.categories) {
@@ -222,10 +256,10 @@ function displaySuggestions(localitiesPredictions: any) {
           title.appendChild(type);
         }
       });
-      suggestionsList.style.display = "block";
+      container.style.display = "block";
       clearSearchBtn.style.display = "block";
     } else {
-      suggestionsList.style.display = "none";
+      container.style.display = "none";
     }
   }
 }
@@ -242,7 +276,6 @@ document.addEventListener("click", (event) => {
 });
 
 // [START woosmap_localities_search_debounce_promise]
-let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
 
 type DebouncePromiseFunction<T, Args extends any[]> = (
   ...args: Args
@@ -281,7 +314,6 @@ function debouncePromise<T, Args extends any[]>(
 }
 
 // [END woosmap_localities_search_debounce_promise] */
-PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
 
 declare global {
   interface Window {

@@ -15,7 +15,7 @@ function initMap() {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
-      center: { lat: 51.50940214, lng: -0.133012 },
+      center: { lat: 43.77751768293183, lng: 11.2553439740075 },
       zoom: 12,
     },
   );

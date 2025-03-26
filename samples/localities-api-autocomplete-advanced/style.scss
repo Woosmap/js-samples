@@ -6,4 +6,7 @@
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_without_map.scss");
 
+#pr-suggestions-list.suggestions-list {
+  left:325px;
+}
 /* [END woosmap_localities_api_autocomplete_advanced] */

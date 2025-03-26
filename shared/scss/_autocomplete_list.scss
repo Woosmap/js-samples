@@ -30,3 +30,36 @@
 #suggestions-list li:hover {
   background-color: #f2f2f2;
 }
+
+.suggestions-list {
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+  position: absolute;
+  max-width: 320px;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  list-style: none;
+  max-height: 80vh;
+  margin: 5px 0 0;
+  padding: 0;
+  display: none;
+  overflow-y: auto;
+  background-color: #fff;
+
+  &.visible {
+    display: block;
+  }
+}
+
+.suggestions-list li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.suggestions-list li:hover {
+  background-color: #f2f2f2;
+}

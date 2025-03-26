@@ -7,7 +7,6 @@ let marker: woosmap.map.Marker;
 let infoWindow: woosmap.map.InfoWindow;
 let pr_marker: woosmap.map.Marker;
 let pr_infoWindow: HTMLElement | null;
-let PR_NUMBER = "1216"
 let localitiesService: woosmap.map.LocalitiesService;
 const request: woosmap.map.localities.LocalitiesGeocodeRequest = {};
 
@@ -74,6 +73,13 @@ function buildQueryString(params: object) {
   }
   return queryStringParts.join("&");
 }
+function getSecondaryUrl():string {
+  let secondary_target = document.getElementById("secondary-target") as HTMLInputElement
+  if (secondary_target && secondary_target.value) {
+    return `https://develop-api.woosmap.com/${secondary_target.value}`
+  }
+  return "https://develop-api.woosmap.com"
+}
 
 const pr_reverse_geocode = async (latLng:woosmap.map.LatLngLiteral|woosmap.map.LatLng): Promise<any> => {
   let params = {
@@ -88,8 +94,7 @@ const pr_reverse_geocode = async (latLng:woosmap.map.LatLngLiteral|woosmap.map.L
 
   try {
     const response = await fetch(
-      `
-https://develop-api.woosmap.com/${PR_NUMBER}/localities/geocode?${buildQueryString(params)}`
+      `${getSecondaryUrl()}/localities/geocode?${buildQueryString(params)}`
     );
     return await response.json();
   } catch (error) {

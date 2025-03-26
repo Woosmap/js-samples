@@ -2,13 +2,24 @@
 
 /* [START woosmap_localities_geocode] */
 @include meta.load-css("../../shared/scss/_default.scss");
-@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+/* @include meta.load-css("../../shared/scss/_autocomplete_input.scss");*/
 @import "../../shared/scss/mixins.scss";
+@include meta.load-css("../../shared/scss/_pr_test.scss");
 
 #app {
   height: 100%;
 }
-
+#map{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.search-container {
+  top: 10px;
+  left: 10px;
+}
 .btn {
   @include button($background: #3d5afe, $display: inline, $position: relative, $height: 38px);
 }

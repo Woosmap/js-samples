@@ -7,7 +7,6 @@ let debouncedAutocomplete: (
 let debouncedAutocompletePR: (
   ...args: any[]
 ) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
-let PR_NUMBER= "1237"
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let prSuggestionsList: HTMLUListElement;
@@ -160,6 +159,14 @@ function autocompleteAddress(
   ).then((response) => response.json());
 }
 
+function getSecondaryUrl():string {
+  let secondary_target = document.getElementById("secondary-target") as HTMLInputElement
+  if (secondary_target && secondary_target.value) {
+    return `https://develop-api.woosmap.com/${secondary_target.value}`
+  }
+  return "https://develop-api.woosmap.com"
+}
+
 function autocompleteAddressPR(
   input: string,
   components: string,
@@ -177,8 +184,9 @@ function autocompleteAddressPR(
       args["components"] = components;
     }
   }
+
   return fetch(
-    `https://develop-api.woosmap.com/${PR_NUMBER}/localities/autocomplete/?${buildQueryString(args)}`,
+    `${getSecondaryUrl()}/localities/autocomplete/?${buildQueryString(args)}`,
   ).then((response) => response.json());
 }
 

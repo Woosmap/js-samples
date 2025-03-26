@@ -2,6 +2,8 @@
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
+        <div id="map"></div>
+        <div class="search-container">
         <div id="autocomplete-container">
             {% svgIcon 'search.svg' %}
             <input
@@ -13,12 +15,20 @@
                 {% svgIcon 'clear.svg' %}
             </button>
         </div>
-
+        <input
+            type="text"
+            id="secondary-target"
+            value="1216"
+            autocomplete="off"
+            class="autocomplete-input"
+            hint="PR number or empty for develop"
+        />
+        </div>
         <div id="instructions">
             Enter an address to geocode or click on the map to reverse geocode.
         </div>
 
-        <div id="map"></div>
+
     </div>
     <!-- [END woosmap_{{ tag }}_div] -->
 {% endblock %}

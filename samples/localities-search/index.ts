@@ -5,7 +5,6 @@ let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 let debouncedLocalitiesSearch: (...args: any[]) => Promise<any>;
 let debouncedPRSearch: (...args: any[]) => Promise<any>;
-let PR_NUMBER = "1234"
 let input: string;
 let detailsHTML: HTMLElement;
 let detailsResultContainer: HTMLElement;
@@ -62,6 +61,14 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
   }
 };
 
+function getSecondaryUrl():string {
+  let secondary_target = document.getElementById("secondary-target") as HTMLInputElement
+  if (secondary_target && secondary_target.value) {
+    return `https://develop-api.woosmap.com/${secondary_target.value}`
+  }
+  return "https://develop-api.woosmap.com"
+}
+
 const fetchPRSearch = async (input: any): Promise<any> => {
   const center = map.getCenter();
   const radius = map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
@@ -72,8 +79,7 @@ const fetchPRSearch = async (input: any): Promise<any> => {
 
   try {
     const response = await fetch(
-      `
-https://develop-api.woosmap.com/${PR_NUMBER}/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=woos-b2f35903-92d8-3a95-9b35-dd503c752a51&components=${componentsArgs}`
+      `${getSecondaryUrl()}/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=woos-b2f35903-92d8-3a95-9b35-dd503c752a51&components=${componentsArgs}`
     );
     return await response.json();
   } catch (error) {
@@ -81,6 +87,7 @@ https://develop-api.woosmap.com/${PR_NUMBER}/localities/search?types=point_of_in
     throw error;
   }
 };
+
 
 function fillDetailsResult(detailsResult: any) {
   const details: string[] = [];

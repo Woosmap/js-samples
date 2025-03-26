@@ -6,6 +6,7 @@
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
 @include meta.load-css("../../shared/scss/_dropdown.scss");
 @import "../../shared/scss/mixins.scss";
+@include meta.load-css("../../shared/scss/_pr_test.scss");
 
 #app {
     height: 100%;
@@ -16,12 +17,21 @@ body {
   overflow-y: hidden;
 }
 
-#countrySelector {
+#map{
   position: absolute;
-  top: 10px;
-  left: 335px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
-
+#countrySelector {
+  left: 10px;
+  top: 0;
+}
+.search-container {
+  top: 10px;
+  left: 10px;
+}
 .country {
   .country-name {
     display: flex;
@@ -138,6 +148,7 @@ body {
     border-radius: 6px;
     max-width: 240px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+
     z-index: 1;
     overflow: hidden;
   

@@ -7,7 +7,7 @@
             <em>Restrictions on "locality|postal_code|address", country "fr|gb|it|es|de"</em>
         </p>
         <div class="search-container">
-            <div id="autocomplete-container">
+            <div id="autocomplete-container" class="autocomplete-container">
                 {% svgIcon 'search.svg' %}
                 <input
                         type="text"
@@ -21,6 +21,14 @@
                 <ul id="suggestions-list" class="suggestions-list"></ul>
                 <ul id="pr-suggestions-list" class="suggestions-list"></ul>
             </div>
+            <input
+                    type="text"
+                    id="secondary-target"
+                    value="1237"
+                    autocomplete="off"
+                    class="autocomplete-input"
+                    hint="PR number or empty for develop"
+                />
         </div>
         <pre id="response-container"></pre>
     </div>

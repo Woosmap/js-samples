@@ -1,3 +1,12 @@
+---json
+{
+"countries": [
+{ "code": "GB", "name": "United Kingdom", "selected": true },
+{ "code": "FR", "name": "France" },
+{ "code": "DZ", "name": "Algeria" }
+]
+}
+---
 {% extends '../../src/_includes/layout.njk' %}
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
@@ -23,6 +32,7 @@
             class="autocomplete-input"
             hint="PR number or empty for develop"
         />
+        {% include '../../src/_includes/country-selector.njk' %}
         </div>
         <div id="instructions">
             Enter an address to geocode or click on the map to reverse geocode.

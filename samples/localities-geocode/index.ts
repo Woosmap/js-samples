@@ -99,7 +99,11 @@ const pr_reverse_geocode = async (request:LocalitiesGeocodeRequest): Promise<any
       .map((country) => `country:${country}`)
       .join("|");
   }
-
+  let list_sub_buildings: HTMLInputElement= document.getElementById("list-sub-buildings") as HTMLInputElement;
+  if (list_sub_buildings && list_sub_buildings.value) {
+    console.log("list sub buildings")
+    params["list_sub_buildings"] = "1";
+  }
   try {
     const response = await fetch(
       `${getSecondaryUrl()}/localities/geocode?${buildQueryString(params)}`

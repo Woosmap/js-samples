@@ -100,7 +100,7 @@ const pr_reverse_geocode = async (request:LocalitiesGeocodeRequest): Promise<any
       .join("|");
   }
   let list_sub_buildings: HTMLInputElement= document.getElementById("list-sub-buildings") as HTMLInputElement;
-  if (list_sub_buildings && list_sub_buildings.value) {
+  if (list_sub_buildings && list_sub_buildings.checked) {
     console.log("list sub buildings")
     params["list_sub_buildings"] = "1";
   }

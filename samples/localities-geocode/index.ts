@@ -8,6 +8,8 @@ let infoWindow: woosmap.map.InfoWindow;
 let pr_marker: woosmap.map.Marker;
 let pr_infoWindow: HTMLElement | null;
 let localitiesService: woosmap.map.LocalitiesService;
+let suggestionsList: HTMLUListElement;
+let prSuggestionsList: HTMLUListElement;
 const request: woosmap.map.localities.LocalitiesGeocodeRequest = {};
 const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
   { country: [] };
@@ -23,6 +25,12 @@ function initMap() {
   infoWindow = new woosmap.map.InfoWindow({});
   pr_infoWindow = document.getElementById("instructions")
   localitiesService = new woosmap.map.LocalitiesService();
+  suggestionsList = document.getElementById(
+    "suggestions-list",
+  ) as HTMLUListElement;
+  prSuggestionsList = document.getElementById(
+    "pr-suggestions-list",
+  ) as HTMLUListElement;
   map.addListener("click", (e) => {
     handleGeocode(e.latlng);
   });
@@ -63,6 +71,26 @@ clearSearchBtn.addEventListener("click", () => {
   inputElement.focus();
 });
 
+function displaySuggestions(
+  localitiesPredictions: woosmap.map.localities.LocalitiesDetailsSummary[],
+  container: HTMLUListElement = suggestionsList
+) {
+  if (inputElement && container) {
+    container.innerHTML = "";
+    if (localitiesPredictions.length > 0) {
+      localitiesPredictions.forEach((locality) => {
+        const li = document.createElement("li");
+        li.innerHTML = locality["description"] ?? "";
+        container.appendChild(li);
+      });
+      container.style.display = "block";
+      clearSearchBtn.style.display = "block";
+    } else {
+      container.style.display = "none";
+    }
+  }
+}
+
 function buildQueryString(params: object) {
   const queryStringParts = [];
 
@@ -76,6 +104,7 @@ function buildQueryString(params: object) {
   }
   return queryStringParts.join("&");
 }
+
 function getSecondaryUrl():string {
   let secondary_target = document.getElementById("secondary-target") as HTMLInputElement
   if (secondary_target && secondary_target.value) {
@@ -99,11 +128,14 @@ const pr_reverse_geocode = async (request:LocalitiesGeocodeRequest): Promise<any
       .map((country) => `country:${country}`)
       .join("|");
   }
-  let list_sub_buildings: HTMLInputElement= document.getElementById("list-sub-buildings") as HTMLInputElement;
-  if (list_sub_buildings && list_sub_buildings.checked) {
-    console.log("list sub buildings")
+  if (request.list_sub_buildings) {
     params["list_sub_buildings"] = "1";
   }
+  // let list_sub_buildings: HTMLInputElement= document.getElementById("list-sub-buildings") as HTMLInputElement;
+  // if (list_sub_buildings && list_sub_buildings.checked) {
+  //   console.log("list sub buildings")
+  //   params["list_sub_buildings"] = "1";
+  // }
   try {
     const response = await fetch(
       `${getSecondaryUrl()}/localities/geocode?${buildQueryString(params)}`
@@ -124,7 +156,11 @@ function handleGeocode(latlng: woosmap.map.LatLngLiteral | null) {
     delete request.latLng;
   }
   request.components = componentsRestriction
+  let list_sub_buildings: HTMLInputElement= document.getElementById("list-sub-buildings") as HTMLInputElement;
+  request.list_sub_buildings = (list_sub_buildings && list_sub_buildings.checked);
 
+  displaySuggestions([], suggestionsList)
+  displaySuggestions([], prSuggestionsList)
   if (request.latLng || request.address) {
     localitiesService
       .geocode(request)
@@ -162,6 +198,9 @@ function displayLocality(
     if (map.getZoom() < 14) {
       map.setZoom(14);
     }
+    if (locality.sub_buildings){
+      displaySuggestions(locality.sub_buildings, suggestionsList)
+    }
   }
 }
 
@@ -187,7 +226,9 @@ function displayPRLocality(
     if (pr_infoWindow) {
       pr_infoWindow.textContent = `[PR says] ${locality.formatted_address} (red marker)`;
     }
-
+    if (locality.sub_buildings){
+      displaySuggestions(locality.sub_buildings, prSuggestionsList)
+    }
   }
 }
 

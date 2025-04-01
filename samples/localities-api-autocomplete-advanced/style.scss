@@ -2,8 +2,9 @@
 
 /* [START woosmap_localities_api_autocomplete_advanced] */
 @include meta.load-css("../../shared/scss/_default.scss");
-@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+/*@include meta.load-css("../../shared/scss/_autocomplete_input.scss");*/
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_without_map.scss");
+@include meta.load-css("../../shared/scss/_pr_test.scss");
 
 /* [END woosmap_localities_api_autocomplete_advanced] */

@@ -1,24 +1,50 @@
+---json
+{
+"countries": [
+{ "code": "GB", "name": "United Kingdom", "selected": true },
+{ "code": "FR", "name": "France" },
+{ "code": "DZ", "name": "Algeria" }
+]
+}
+---
 {% extends '../../src/_includes/layout.njk' %}
 {% block html %}
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
-        <div id="autocomplete-container">
-            {% svgIcon 'search.svg' %}
+        <div id="map"></div>
+        <div class="search-container">
+            <div id="autocomplete-container">
+                {% svgIcon 'search.svg' %}
+                <input
+                        type="text"
+                        id="autocomplete-input"
+                        placeholder="Geocode Localities..."
+                />
+               <button aria-label="Clear" class="clear-searchButton" type="button">
+                    {% svgIcon 'clear.svg' %}
+                </button>
+               <ul id="suggestions-list" class="suggestions-list"></ul>
+                <ul id="pr-suggestions-list" class="suggestions-list"></ul>
+            </div>
             <input
-                    type="text"
-                    id="autocomplete-input"
-                    placeholder="Geocode Localities..."
+                type="text"
+                id="secondary-target"
+                value="1216"
+                autocomplete="off"
+                class="autocomplete-input"
+                hint="PR number or empty for develop"
             />
-           <button aria-label="Clear" class="clear-searchButton" type="button">
-                {% svgIcon 'clear.svg' %}
-            </button>
+            {% include '../../src/_includes/country-selector.njk' %}
+            <div class="checkbox-container">
+                <input type="checkbox" id="list-sub-buildings" name="list-sub-buildings"/>
+                <label for="list-sub-buildings">reverse list sub buildings</label>
+            </div>
         </div>
-
         <div id="instructions">
             Enter an address to geocode or click on the map to reverse geocode.
         </div>
 
-        <div id="map"></div>
+
     </div>
     <!-- [END woosmap_{{ tag }}_div] -->
 {% endblock %}

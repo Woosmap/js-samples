@@ -11,9 +11,7 @@
     <!-- [START woosmap_{{ tag }}_div] -->
     <div id="app">
         <div id="map"></div>
-        <div class="detailsResult">
-            <div class="detailsOptions"></div>
-        </div>
+        <div class="search-container">
         <div id="autocomplete-container">
             {% svgIcon 'search.svg' %}
             <input
@@ -25,9 +23,23 @@
             <button aria-label="Clear" class="clear-searchButton" type="button">
                 {% svgIcon 'clear.svg' %}
             </button>
-            <ul id="suggestions-list"></ul>
+            <ul id="suggestions-list" class="suggestions-list"></ul>
+            <ul id="pr-suggestions-list" class="suggestions-list"></ul>
         </div>
-        {% include '../../src/_includes/country-selector.njk' %}
+
+            <input
+                    type="text"
+                    id="secondary-target"
+                    value="1234"
+                    autocomplete="off"
+                    class="autocomplete-input"
+                    hint="PR number or empty for develop"
+                />
+            {% include '../../src/_includes/country-selector.njk' %}
+        </div>
+        <div class="detailsResult">
+            <div class="detailsOptions"></div>
+        </div>
     </div>
     <!-- [END woosmap_{{ tag }}_div] -->
 {% endblock %}

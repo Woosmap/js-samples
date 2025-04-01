@@ -6,6 +6,7 @@
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
 @include meta.load-css("../../shared/scss/_dropdown.scss");
 @import "../../shared/scss/mixins.scss";
+@include meta.load-css("../../shared/scss/_pr_test.scss");
 
 #app {
     height: 100%;
@@ -16,12 +17,21 @@ body {
   overflow-y: hidden;
 }
 
-#countrySelector {
+#map{
   position: absolute;
-  top: 10px;
-  left: 335px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
-
+#countrySelector {
+  left: 10px;
+  top: 0;
+}
+.search-container {
+  top: 10px;
+  left: 10px;
+}
 .country {
   .country-name {
     display: flex;
@@ -92,6 +102,43 @@ body {
   align-self: flex-end;
 }
 
+.suggestions-list {
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+  position: absolute;
+  max-width: 320px;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  list-style: none;
+  max-height: 80vh;
+  margin: 5px 0 0;
+  padding: 0;
+  display: none;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+#pr-suggestions-list.suggestions-list {
+  left:325px;
+}
+
+.suggestions-list.visible {
+  display: block;
+}
+
+.suggestions-list li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.suggestions-list li:hover {
+  background-color: #f2f2f2;
+}
+
 
 .detailsResult {
     display: none;
@@ -101,6 +148,7 @@ body {
     border-radius: 6px;
     max-width: 240px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+
     z-index: 1;
     overflow: hidden;
   

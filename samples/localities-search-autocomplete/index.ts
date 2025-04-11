@@ -25,6 +25,7 @@ function initMap(): void {
     {
       center: { lat: 47, lng:7.5 },
       zoom: 5,
+      gestureHandling: "greedy",
       styles: [
         {
           featureType: "point_of_interest",

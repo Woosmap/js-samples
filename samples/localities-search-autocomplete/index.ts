@@ -5,13 +5,17 @@ let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 let debouncedLocalitiesSearch: (...args: any[]) => Promise<any>;
 let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
-let request: woosmap.map.localities.LocalitiesAutocompleteRequest;
-let input: string;
 let detailsHTML: HTMLElement;
 let detailsResultContainer: HTMLElement;
 
 
 const woosmap_key = "YOUR_API_KEY";
+
+// Tune the sample
+let searchRequest = { types: ['point_of_interest', 'locality', 'postal_code', 'admin_level', 'country'], excluded_categories: ['hospitality'] };
+let autocompleteRequest = { types: ['address'] };
+const numberOfAddresses = 3; // min 1, max 5
+
 const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
   { country: [] };
 
@@ -36,13 +40,6 @@ function initMap(): void {
   );
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new window.woosmap.map.LocalitiesService();
-
-  request = {
-    input: "",
-    types: ["address"],
-    location: { lat: 47, lng:7.5 },
-    components: componentsRestriction
-  };
 
   debouncedLocalitiesSearch = debouncePromise(localitiesService.search, 0);
   debouncedLocalitiesAutocomplete = debouncePromise(localitiesService.autocomplete, 0);
@@ -130,16 +127,12 @@ clearSearchBtn.addEventListener("click", () => {
 
 function handleAutocomplete(): void {
     if (inputElement && suggestionsList) {
-      request.input = inputElement.value;
       const center = map.getCenter();
       const radius = map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
-      request.location = center;
-      const searchRequest = { radius: radius, ...request};
-      searchRequest.types = ['point_of_interest', 'locality', 'postal_code', 'admin_level', 'country'];
-      if (request.input) {
+      if (inputElement.value) {
       Promise.all([
-        debouncedLocalitiesAutocomplete(request),
-        debouncedLocalitiesSearch(searchRequest),
+        debouncedLocalitiesAutocomplete({ input: inputElement.value, location: center, components: componentsRestriction, ...autocompleteRequest}),
+        debouncedLocalitiesSearch({ input: inputElement.value, location: center, radius: radius, components: componentsRestriction, ...searchRequest}),
       ]).then(([autocompleteResults, searchResults]) => {
           const combinedResults = {autocompleteResults: autocompleteResults, searchResults: searchResults};
           console.log(combinedResults)
@@ -196,7 +189,7 @@ function displayResult(result: woosmap.map.localities.LocalitiesDetailsResult) {
 function displaySuggestions(combinedResults: any) {
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
-    if ((combinedResults.searchResults.results.length > 0 || combinedResults.autocompleteResults.localities.length > 0) && request.input) {
+    if ((combinedResults.searchResults.results.length > 0 || combinedResults.autocompleteResults.localities.length > 0) && inputElement.value) {
       combinedResults.searchResults.results.forEach((result) => {
         const li = document.createElement("li");
         const title = document.createElement("div");
@@ -226,7 +219,7 @@ function displaySuggestions(combinedResults: any) {
         }
       });
       if (combinedResults.autocompleteResults.localities.length > 0) {
-        combinedResults.autocompleteResults.localities.forEach((result) => {
+        combinedResults.autocompleteResults.localities.slice(0, numberOfAddresses).forEach((result) => {
           const li = document.createElement("li");
           const title = document.createElement("div");
           const desc = document.createElement("span");

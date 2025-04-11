@@ -41,8 +41,8 @@ function initMap(): void {
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new window.woosmap.map.LocalitiesService();
 
-  debouncedLocalitiesSearch = debouncePromise(localitiesService.search, 0);
-  debouncedLocalitiesAutocomplete = debouncePromise(localitiesService.autocomplete, 0);
+  debouncedLocalitiesSearch = debouncePromise(localitiesService.search, 200);
+  debouncedLocalitiesAutocomplete = debouncePromise(localitiesService.autocomplete, 200);
   manageCountrySelector();
 }
 

@@ -109,25 +109,26 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.1rem;
+  font-size: 0.8rem;
 }
 
 .localities-search-description {
   font-weight: lighter;
   color: #333;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 }
 
 .localities-search-category {
   color: #c46500;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-style: italic;
   align-self: flex-end;
 }
 
 .localities-search-type {
   color: #000000;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-style: italic;
   align-self: flex-end;
 }

@@ -39,7 +39,7 @@ function initMap(): void {
 
   request = {
     input: "",
-    types: ["locality", "address", "postal_code", "admin_level"],
+    types: ["address"],
     location: { lat: 47, lng:7.5 },
     components: componentsRestriction
   };
@@ -135,7 +135,7 @@ function handleAutocomplete(): void {
       const radius = map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
       request.location = center;
       const searchRequest = { radius: radius, ...request};
-      searchRequest.types = ['point_of_interest'];
+      searchRequest.types = ['point_of_interest', 'locality', 'postal_code', 'admin_level', 'country'];
       if (request.input) {
       Promise.all([
         debouncedLocalitiesAutocomplete(request),

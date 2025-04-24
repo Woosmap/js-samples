@@ -48,6 +48,7 @@ const performLocalitiesSearch = async (input: string): Promise<any> => {
     radius: parseInt(radius),
     components: componentsRestriction,
     types: ["point_of_interest", "locality", "address", "postal_code"],
+    categories: ["tourism", "education"],
   };
   localitiesService
     .search(localitiesSearchRequest)

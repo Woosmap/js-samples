@@ -9,7 +9,6 @@ let detailsHTML: HTMLElement;
 let detailsResultContainer: HTMLElement;
 let localitiesSearchRequest: woosmap.map.localities.LocalitiesSearchRequest;
 
-const woosmap_key = "YOUR_API_KEY";
 const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
   { country: [] };
 
@@ -48,7 +47,7 @@ const performLocalitiesSearch = async (input: string): Promise<any> => {
     location: center,
     radius: parseInt(radius),
     components: componentsRestriction,
-    types: ["point_of_interest", "locality", "postal_code", "address"],
+    types: ["point_of_interest", "locality", "address", "postal_code"],
   };
   localitiesService
     .search(localitiesSearchRequest)
@@ -58,7 +57,9 @@ const performLocalitiesSearch = async (input: string): Promise<any> => {
     .catch((error) => console.error("Error localities search:", error));
 };
 
-function fillDetailsResult(detailsResult: any) {
+function fillDetailsResult(
+  detailsResult: woosmap.map.localities.LocalitiesDetailsResult,
+): void {
   const details: string[] = [];
   detailsHTML.innerHTML = "";
   detailsHTML.style.display = "block";
@@ -128,6 +129,7 @@ clearSearchBtn.addEventListener("click", () => {
   inputElement.value = "";
   suggestionsList.style.display = "none";
   clearSearchBtn.style.display = "none";
+  detailsHTML.style.display = "none";
   if (marker) {
     marker.setMap(null);
     infoWindow.close();

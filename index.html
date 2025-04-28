@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Datasets Api - Using DatasetsOverlay &amp; DatasetsService classes
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="sidebar">
+        <div id="innerWrapper">
+          <div class="sectionHeader">
+            <span>Filters</span>
+          </div>
+          <div class="dropdown__container">
+            <div id="od-selector">
+              <div class="od-container">
+                <span>Dataset</span>
+                <select id="dataset">
+                  <option value="07908ffb-14e8-46a1-a35e-5d5a305ca140">
+                    US National Risk Index
+                  </option>
+                  <option value="bd95d206-4822-4b78-9e82-ab724a888aeb">
+                    Worldwide Solar Potential
+                  </option>
+                  <option selected value="fd2732a6-714d-4894-98ef-c0c7744a399c">
+                    US - Seismic Hazard Map
+                  </option>
+                </select>
+              </div>
+              <div class="od-container">
+                <span>Operator </span>
+                <select id="operator">
+                  <option value="intersects" selected>Intersects</option>
+                  <option value="within">Within</option>
+                  <option value="contains">Contains</option>
+                </select>
+              </div>
+              <button class="btn" id="btnReset" type="button">
+                <span class="btnText" tabindex="-1">Reset</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="sectionHeader">
+            <span>Results</span>
+          </div>
+          <ol id="results"></ol>
+        </div>
+      </div>
+      <div id="mapContainer">
+        <div id="map"></div>
+        <div id="autocomplete-container">
+          <svg class="search-icon" viewBox="0 0 16 16">
+            <path
+              d="M3.617 7.083a4.338 4.338 0 1 1 8.676 0 4.338 4.338 0 0 1-8.676 0m4.338-5.838a5.838 5.838 0 1 0 2.162 11.262l2.278 2.279a1 1 0 0 0 1.415-1.414l-1.95-1.95A5.838 5.838 0 0 0 7.955 1.245"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+
+          <input
+            type="text"
+            id="autocomplete-input"
+            placeholder="Search an Address..."
+            autocomplete="off"
+          />
+          <button aria-label="Clear" class="clear-searchButton" type="button">
+            <svg class="clear-icon" viewBox="0 0 24 24">
+              <path
+                d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"
+              ></path>
+            </svg>
+          </button>
+          <ul id="suggestions-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap&libraries=drawing"
+      defer
+    ></script>
+  </body>
+</html>

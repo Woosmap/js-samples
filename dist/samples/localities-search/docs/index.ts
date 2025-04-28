@@ -7,9 +7,8 @@ let debouncedLocalitiesSearch: (...args: any[]) => Promise<any>;
 let input: string;
 let detailsHTML: HTMLElement;
 let detailsResultContainer: HTMLElement;
+let localitiesSearchRequest: woosmap.map.localities.LocalitiesSearchRequest;
 
-
-const woosmap_key = "YOUR_API_KEY";
 const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
   { country: [] };
 
@@ -30,69 +29,70 @@ function initMap(): void {
           ],
         },
       ],
-    }
+    },
   );
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new window.woosmap.map.LocalitiesService();
 
-  debouncedLocalitiesSearch = debouncePromise(fetchLocalitiesSearch, 0);
+  debouncedLocalitiesSearch = debouncePromise(performLocalitiesSearch, 0);
   manageCountrySelector();
 }
 
-const fetchLocalitiesSearch = async (input: any): Promise<any> => {
+const performLocalitiesSearch = async (input: string): Promise<any> => {
   const center = map.getCenter();
-  const radius = map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
-  const componentsArgs: string = (componentsRestriction.country as string[])
-  .map((country) => `country:${country}`)
-  .join("|");
-
-
-  try {
-    const response = await fetch(
-      `
-https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=${woosmap_key}&components=${componentsArgs}`
-    );
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching localities:", error);
-    throw error;
-  }
+  const radius =
+    map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
+  localitiesSearchRequest = {
+    input,
+    location: center,
+    radius: parseInt(radius),
+    components: componentsRestriction,
+    types: ["point_of_interest", "locality", "address", "postal_code"],
+  };
+  localitiesService
+    .search(localitiesSearchRequest)
+    .then((localities: woosmap.map.localities.LocalitiesSearchResponse) =>
+      displaySuggestions(localities),
+    )
+    .catch((error) => console.error("Error localities search:", error));
 };
 
-function fillDetailsResult(detailsResult: any) {
+function fillDetailsResult(
+  detailsResult: woosmap.map.localities.LocalitiesDetailsResult,
+): void {
   const details: string[] = [];
   detailsHTML.innerHTML = "";
   detailsHTML.style.display = "block";
   if (detailsResult.formatted_address) {
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Formatted_address:</span><span class='bold'>${detailsResult.formatted_address}</span></p>`
+      `<p class='option-detail'><span class='option-detail-label'>Formatted_address:</span><span class='bold'>${detailsResult.formatted_address}</span></p>`,
     );
   } else if (detailsResult.name)
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Name:</span><span class='bold'>${detailsResult.name}</span></p>`
+      `<p class='option-detail'><span class='option-detail-label'>Name:</span><span class='bold'>${detailsResult.name}</span></p>`,
     );
   if (detailsResult.types && detailsResult.types[0]) {
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Type: </span><span class='bold'>${detailsResult.types[0]}</span></p>`
+      `<p class='option-detail'><span class='option-detail-label'>Type: </span><span class='bold'>${detailsResult.types[0]}</span></p>`,
     );
   }
   if (detailsResult.categories)
     details.push(
-      `<p class='option-detail'><span class='option-detail-label'>Categories:</span><span class='bold'>${detailsResult.categories[0]}</span></p>`
+      `<p class='option-detail'><span class='option-detail-label'>Categories:</span><span class='bold'>${detailsResult.categories[0]}</span></p>`,
     );
   if (detailsResult.geometry) {
     details.push(
-      `<div class='option-detail'><div><span class='option-detail-label'>Latitude:</span> <span class='bold'>${detailsResult.geometry.location.lat.toFixed(5).toString()}</span></div><div><span class='option-detail-label'>Longitude: </span><span class='bold'>${detailsResult.geometry.location.lng.toFixed(5).toString()}</span></div></div>`
+      `<div class='option-detail'><div><span class='option-detail-label'>Latitude:</span> <span class='bold'>${detailsResult.geometry.location.lat.toFixed(5).toString()}</span></div><div><span class='option-detail-label'>Longitude: </span><span class='bold'>${detailsResult.geometry.location.lng.toFixed(5).toString()}</span></div></div>`,
     );
     if (detailsResult.address_components) {
       const compoHtml = detailsResult.address_components
         .map(
           (compo) =>
-            `<p class='option-detail'><span class='option-detail-label'>${compo.types.find((item) => item.includes("division")) || compo.types[0]}:</span> <span class='bold'>${compo.long_name}</span></p>`
+            `<p class='option-detail'><span class='option-detail-label'>${compo.types.find((item) => item.includes("division")) || compo.types[0]}:</span> <span class='bold'>${compo.long_name}</span></p>`,
         )
         .join("");
       details.push(
-        `<div class='address-components'><div class='title'>Address components</div><div>${compoHtml}</div>`
+        `<div class='address-components'><div class='title'>Address components</div><div>${compoHtml}</div>`,
       );
     }
   }
@@ -100,19 +100,19 @@ function fillDetailsResult(detailsResult: any) {
 }
 
 const inputElement = document.getElementById(
-  "autocomplete-input"
+  "autocomplete-input",
 ) as HTMLInputElement;
 const suggestionsList = document.getElementById(
-  "suggestions-list"
+  "suggestions-list",
 ) as HTMLUListElement;
 const clearSearchBtn = document.getElementsByClassName(
-  "clear-searchButton"
+  "clear-searchButton",
 )[0] as HTMLButtonElement;
 detailsResultContainer = document.querySelector(
-  ".detailsResult"
+  ".detailsResult",
 ) as HTMLElement;
 detailsHTML = document.querySelector(
-  ".detailsResult .detailsOptions"
+  ".detailsResult .detailsOptions",
 ) as HTMLElement;
 if (inputElement && suggestionsList) {
   inputElement.addEventListener("input", handleAutocomplete);
@@ -129,6 +129,7 @@ clearSearchBtn.addEventListener("click", () => {
   inputElement.value = "";
   suggestionsList.style.display = "none";
   clearSearchBtn.style.display = "none";
+  detailsHTML.style.display = "none";
   if (marker) {
     marker.setMap(null);
     infoWindow.close();
@@ -140,11 +141,7 @@ function handleAutocomplete(): void {
   if (inputElement && suggestionsList) {
     input = inputElement.value;
     if (input) {
-      debouncedLocalitiesSearch(input)
-        .then((results) => displaySuggestions(results))
-        .catch((error) =>
-          console.error("Error autocomplete localities:", error)
-        );
+      debouncedLocalitiesSearch(input);
     } else {
       suggestionsList.style.display = "none";
       clearSearchBtn.style.display = "none";
@@ -183,45 +180,49 @@ function displayResult(result: woosmap.map.localities.LocalitiesDetailsResult) {
     });
     marker.setMap(map);
     infoWindow.setContent(
-      `<span>${result.formatted_address ?? result.name}</span>`
+      `<span>${result.formatted_address ?? result.name}</span>`,
     );
     infoWindow.open(map, marker);
     map.flyTo({ center: result.geometry.location, zoom: 14 });
   }
 }
 
-function displaySuggestions(localitiesPredictions: any) {
+function displaySuggestions(
+  localitiesPredictions: woosmap.map.localities.LocalitiesSearchResponse,
+) {
   if (inputElement && suggestionsList) {
     suggestionsList.innerHTML = "";
     if (localitiesPredictions.results.length > 0 && input) {
-      localitiesPredictions.results.forEach((result) => {
-        const li = document.createElement("li");
-        const title = document.createElement("div");
-        const desc = document.createElement("span");
-        title.textContent = result.title ?? "";
-        title.className = "localities-search-title";
-        desc.textContent = result.description ?? "";
-        desc.className = "localities-search-description";
-        li.addEventListener("click", () => {
-          inputElement.value = result.title ?? "";
-          suggestionsList.style.display = "none";
-          handleDetails(result.public_id);
-        });
-        suggestionsList.appendChild(li);
-        li.appendChild(title);
-        title.appendChild(desc);
-        if (result.categories) {
-          const category = document.createElement("span");
-          category.textContent = result.categories[0];
-          category.className = "localities-search-category";
-          title.appendChild(category);
-        } else {
-          const type = document.createElement("span");
-          type.textContent = result.types[0];
-          type.className = "localities-search-type";
-          title.appendChild(type);
-        }
-      });
+      localitiesPredictions.results.forEach(
+        (result: woosmap.map.localities.LocalitiesSearchResult) => {
+          const li = document.createElement("li");
+          const title = document.createElement("div");
+          const desc = document.createElement("span");
+          title.textContent = result.title ?? "";
+          title.className = "localities-search-title";
+          desc.textContent = result.description ?? "";
+          desc.className = "localities-search-description";
+          li.addEventListener("click", () => {
+            inputElement.value = result.title ?? "";
+            suggestionsList.style.display = "none";
+            handleDetails(result.public_id);
+          });
+          suggestionsList.appendChild(li);
+          li.appendChild(title);
+          title.appendChild(desc);
+          if (result.categories) {
+            const category = document.createElement("span");
+            category.textContent = result.categories[0];
+            category.className = "localities-search-category";
+            title.appendChild(category);
+          } else {
+            const type = document.createElement("span");
+            type.textContent = result.types[0];
+            type.className = "localities-search-type";
+            title.appendChild(type);
+          }
+        },
+      );
       suggestionsList.style.display = "block";
       clearSearchBtn.style.display = "block";
     } else {
@@ -233,7 +234,7 @@ function displaySuggestions(localitiesPredictions: any) {
 document.addEventListener("click", (event) => {
   const targetElement = event.target as Element;
   const isClickInsideAutocomplete = targetElement.closest(
-    "#autocomplete-container"
+    "#autocomplete-container",
   );
 
   if (!isClickInsideAutocomplete && suggestionsList) {
@@ -249,7 +250,7 @@ type DebouncePromiseFunction<T, Args extends any[]> = (
 
 function debouncePromise<T, Args extends any[]>(
   fn: (...args: Args) => Promise<T>,
-  delay: number
+  delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
@@ -375,15 +376,17 @@ function updateCountrySelectorText() {
   const dropdownText = document.querySelector(
     ".dropdown-button span",
   ) as HTMLElement;
-  const inputPlaceholder = document.querySelector("#autocomplete-input") as HTMLInputElement;
+  const inputPlaceholder = document.querySelector(
+    "#autocomplete-input",
+  ) as HTMLInputElement;
   if (componentsRestriction.country.length > 0) {
     inputElement.readOnly = false;
     dropdownText.innerHTML = `Selected countries: <strong>${(componentsRestriction.country as string[]).join("</strong>, <strong>")}</strong>`;
-    inputPlaceholder.placeholder = `Search for a place in ${(componentsRestriction.country as string[]).join(" or ")}...`
+    inputPlaceholder.placeholder = `Search for a place in ${(componentsRestriction.country as string[]).join(" or ")}...`;
   } else {
     dropdownText.textContent = "Select countries";
     inputElement.readOnly = true;
-    inputPlaceholder.placeholder = "Select at least one country to proceed."
+    inputPlaceholder.placeholder = "Select at least one country to proceed.";
   }
 }
 

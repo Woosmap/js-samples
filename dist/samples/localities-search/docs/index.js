@@ -7,7 +7,7 @@ let debouncedLocalitiesSearch;
 let input;
 let detailsHTML;
 let detailsResultContainer;
-const woosmap_key = "YOUR_API_KEY";
+let localitiesSearchRequest;
 const componentsRestriction = { country: [] };
 
 function initMap() {
@@ -28,26 +28,26 @@ function initMap() {
   });
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new window.woosmap.map.LocalitiesService();
-  debouncedLocalitiesSearch = debouncePromise(fetchLocalitiesSearch, 0);
+  debouncedLocalitiesSearch = debouncePromise(performLocalitiesSearch, 0);
   manageCountrySelector();
 }
 
-const fetchLocalitiesSearch = async (input) => {
+const performLocalitiesSearch = async (input) => {
   const center = map.getCenter();
   const radius =
     map.getZoom() > 10 ? (map.getZoom() > 14 ? "1000" : "10000") : "100000";
-  const componentsArgs = componentsRestriction.country
-    .map((country) => `country:${country}`)
-    .join("|");
 
-  try {
-    const response = await fetch(`
-https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(input)}&location=${center.lat()},${center.lng()}&radius=${radius}&key=${woosmap_key}&components=${componentsArgs}`);
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching localities:", error);
-    throw error;
-  }
+  localitiesSearchRequest = {
+    input,
+    location: center,
+    radius: parseInt(radius),
+    components: componentsRestriction,
+    types: ["point_of_interest", "locality", "address", "postal_code"],
+  };
+  localitiesService
+    .search(localitiesSearchRequest)
+    .then((localities) => displaySuggestions(localities))
+    .catch((error) => console.error("Error localities search:", error));
 };
 
 function fillDetailsResult(detailsResult) {
@@ -119,6 +119,7 @@ clearSearchBtn.addEventListener("click", () => {
   inputElement.value = "";
   suggestionsList.style.display = "none";
   clearSearchBtn.style.display = "none";
+  detailsHTML.style.display = "none";
   if (marker) {
     marker.setMap(null);
     infoWindow.close();
@@ -131,11 +132,7 @@ function handleAutocomplete() {
   if (inputElement && suggestionsList) {
     input = inputElement.value;
     if (input) {
-      debouncedLocalitiesSearch(input)
-        .then((results) => displaySuggestions(results))
-        .catch((error) =>
-          console.error("Error autocomplete localities:", error),
-        );
+      debouncedLocalitiesSearch(input);
     } else {
       suggestionsList.style.display = "none";
       clearSearchBtn.style.display = "none";

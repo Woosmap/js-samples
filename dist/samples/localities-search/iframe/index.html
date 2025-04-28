@@ -9,37 +9,36 @@
       (function () {
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
-        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
-          n(o);
-        new MutationObserver((o) => {
-          for (const i of o)
+        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
+          o(n);
+        new MutationObserver((n) => {
+          for (const i of n)
             if (i.type === "childList")
               for (const l of i.addedNodes)
-                l.tagName === "LINK" && l.rel === "modulepreload" && n(l);
+                l.tagName === "LINK" && l.rel === "modulepreload" && o(l);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(o) {
+        function s(n) {
           const i = {};
           return (
-            o.integrity && (i.integrity = o.integrity),
-            o.referrerPolicy && (i.referrerPolicy = o.referrerPolicy),
-            o.crossOrigin === "use-credentials"
+            n.integrity && (i.integrity = n.integrity),
+            n.referrerPolicy && (i.referrerPolicy = n.referrerPolicy),
+            n.crossOrigin === "use-credentials"
               ? (i.credentials = "include")
-              : o.crossOrigin === "anonymous"
+              : n.crossOrigin === "anonymous"
                 ? (i.credentials = "omit")
                 : (i.credentials = "same-origin"),
             i
           );
         }
-        function n(o) {
-          if (o.ep) return;
-          o.ep = !0;
-          const i = s(o);
-          fetch(o.href, i);
+        function o(n) {
+          if (n.ep) return;
+          n.ep = !0;
+          const i = s(n);
+          fetch(n.href, i);
         }
       })();
-      let u, p, m, w, v, y, f, L;
-      const S = "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
-        d = { country: [] };
+      let u, p, m, v, L, f, y, b, w;
+      const d = { country: [] };
       function C() {
         (u = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.507445, lng: -0.127765 },
@@ -53,29 +52,31 @@
           ],
         })),
           (m = new woosmap.map.InfoWindow({})),
-          (w = new window.woosmap.map.LocalitiesService()),
-          (v = A($, 0)),
-          x();
+          (v = new window.woosmap.map.LocalitiesService()),
+          (L = x(k, 0)),
+          A();
       }
-      const $ = async (e) => {
+      const k = async (e) => {
         const t = u.getCenter(),
           s =
-            u.getZoom() > 10 ? (u.getZoom() > 14 ? "1000" : "10000") : "100000",
-          n = d.country.map((o) => `country:${o}`).join("|");
-        try {
-          return await (
-            await fetch(`
-https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin_level|postal_code|address&input=${encodeURIComponent(e)}&location=${t.lat()},${t.lng()}&radius=${s}&key=${S}&components=${n}`)
-          ).json();
-        } catch (o) {
-          throw (console.error("Error fetching localities:", o), o);
-        }
+            u.getZoom() > 10 ? (u.getZoom() > 14 ? "1000" : "10000") : "100000";
+        (w = {
+          input: e,
+          location: t,
+          radius: parseInt(s),
+          components: d,
+          types: ["point_of_interest", "locality", "address", "postal_code"],
+        }),
+          v
+            .search(w)
+            .then((o) => $(o))
+            .catch((o) => console.error("Error localities search:", o));
       };
-      function k(e) {
+      function M(e) {
         const t = [];
         if (
-          ((f.innerHTML = ""),
-          (f.style.display = "block"),
+          ((y.innerHTML = ""),
+          (y.style.display = "block"),
           e.formatted_address
             ? t.push(
                 `<p class='option-detail'><span class='option-detail-label'>Formatted_address:</span><span class='bold'>${e.formatted_address}</span></p>`,
@@ -101,24 +102,24 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
         ) {
           const s = e.address_components
             .map(
-              (n) =>
-                `<p class='option-detail'><span class='option-detail-label'>${n.types.find((o) => o.includes("division")) || n.types[0]}:</span> <span class='bold'>${n.long_name}</span></p>`,
+              (o) =>
+                `<p class='option-detail'><span class='option-detail-label'>${o.types.find((n) => n.includes("division")) || o.types[0]}:</span> <span class='bold'>${o.long_name}</span></p>`,
             )
             .join("");
           t.push(
             `<div class='address-components'><div class='title'>Address components</div><div>${s}</div>`,
           );
         }
-        f.innerHTML = t.join("");
+        y.innerHTML = t.join("");
       }
       const r = document.getElementById("autocomplete-input"),
         a = document.getElementById("suggestions-list"),
         g = document.getElementsByClassName("clear-searchButton")[0];
-      L = document.querySelector(".detailsResult");
-      f = document.querySelector(".detailsResult .detailsOptions");
+      b = document.querySelector(".detailsResult");
+      y = document.querySelector(".detailsResult .detailsOptions");
       r &&
         a &&
-        (r.addEventListener("input", b),
+        (r.addEventListener("input", S),
         r.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
             const t = a.querySelector("li");
@@ -129,33 +130,28 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
         (r.value = ""),
           (a.style.display = "none"),
           (g.style.display = "none"),
+          (y.style.display = "none"),
           p && (p.setMap(null), m.close()),
           r.focus();
       });
-      function b() {
+      function S() {
         r &&
           a &&
-          ((y = r.value),
-          y
-            ? v(y)
-                .then((e) => q(e))
-                .catch((e) =>
-                  console.error("Error autocomplete localities:", e),
-                )
-            : ((a.style.display = "none"), (g.style.display = "none")));
-      }
-      function _(e) {
-        w.getDetails({ publicId: e })
-          .then((t) => T(t.result))
-          .catch((t) => console.error("Error getting locality details:", t));
-      }
-      function M(e, t = "block") {
-        e.style.display = t;
+          ((f = r.value),
+          f ? L(f) : ((a.style.display = "none"), (g.style.display = "none")));
       }
       function T(e) {
+        v.getDetails({ publicId: e })
+          .then((t) => q(t.result))
+          .catch((t) => console.error("Error getting locality details:", t));
+      }
+      function _(e, t = "block") {
+        e.style.display = t;
+      }
+      function q(e) {
         var t;
-        k(e),
-          M(L),
+        M(e),
+          _(b),
           p && (p.setMap(null), m.close()),
           e != null &&
             e.geometry &&
@@ -173,41 +169,41 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
             m.open(u, p),
             u.flyTo({ center: e.geometry.location, zoom: 14 }));
       }
-      function q(e) {
+      function $(e) {
         r &&
           a &&
           ((a.innerHTML = ""),
-          e.results.length > 0 && y
+          e.results.length > 0 && f
             ? (e.results.forEach((t) => {
                 var i, l;
                 const s = document.createElement("li"),
-                  n = document.createElement("div"),
-                  o = document.createElement("span");
+                  o = document.createElement("div"),
+                  n = document.createElement("span");
                 if (
-                  ((n.textContent = (i = t.title) != null ? i : ""),
-                  (n.className = "localities-search-title"),
-                  (o.textContent = (l = t.description) != null ? l : ""),
-                  (o.className = "localities-search-description"),
+                  ((o.textContent = (i = t.title) != null ? i : ""),
+                  (o.className = "localities-search-title"),
+                  (n.textContent = (l = t.description) != null ? l : ""),
+                  (n.className = "localities-search-description"),
                   s.addEventListener("click", () => {
                     var c;
                     (r.value = (c = t.title) != null ? c : ""),
                       (a.style.display = "none"),
-                      _(t.public_id);
+                      T(t.public_id);
                   }),
                   a.appendChild(s),
-                  s.appendChild(n),
-                  n.appendChild(o),
+                  s.appendChild(o),
+                  o.appendChild(n),
                   t.categories)
                 ) {
                   const c = document.createElement("span");
                   (c.textContent = t.categories[0]),
                     (c.className = "localities-search-category"),
-                    n.appendChild(c);
+                    o.appendChild(c);
                 } else {
                   const c = document.createElement("span");
                   (c.textContent = t.types[0]),
                     (c.className = "localities-search-type"),
-                    n.appendChild(c);
+                    o.appendChild(c);
                 }
               }),
               (a.style.display = "block"),
@@ -219,47 +215,47 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
           a &&
           (a.style.display = "none");
       });
-      function A(e, t) {
+      function x(e, t) {
         let s = null,
-          n = null,
-          o = null;
+          o = null,
+          n = null;
         return function (...i) {
           return new Promise((l, c) => {
             s !== null && clearTimeout(s),
-              (n = l),
-              (o = c),
+              (o = l),
+              (n = c),
               (s = setTimeout(() => {
                 e(...i)
                   .then((h) => {
-                    n === l && o === c && l(h);
+                    o === l && n === c && l(h);
                   })
                   .catch((h) => {
-                    n === l && o === c && c(h);
+                    o === l && n === c && c(h);
                   });
               }, t));
           });
         };
       }
       window.initMap = C;
-      function x() {
-        document.querySelectorAll(".country").forEach((n) => {
+      function A() {
+        document.querySelectorAll(".country").forEach((o) => {
           if (
-            (n.addEventListener("click", () => {
-              O(n);
+            (o.addEventListener("click", () => {
+              O(o);
             }),
-            n.classList.contains("active"))
+            o.classList.contains("active"))
           ) {
-            const o = n.dataset.countrycode;
-            d.country = [...d.country, o];
+            const n = o.dataset.countrycode;
+            d.country = [...d.country, n];
           }
         }),
           document
             .querySelectorAll(".dropdown .dropdown-button")
-            .forEach((n) => n.addEventListener("click", I));
+            .forEach((o) => o.addEventListener("click", I));
         const s = document.querySelectorAll(".dropdown");
-        document.addEventListener("click", (n) => {
-          s.forEach((o) => {
-            o.contains(n.target) || E(o);
+        document.addEventListener("click", (o) => {
+          s.forEach((n) => {
+            n.contains(o.target) || E(n);
           });
         });
       }
@@ -283,9 +279,9 @@ https://api.woosmap.com/localities/search?types=point_of_interest|locality|admin
         s &&
           (t
             ? (d.country = [...d.country, s])
-            : (d.country = d.country.filter((n) => n !== s)),
+            : (d.country = d.country.filter((o) => o !== s)),
           B(),
-          b());
+          S());
       }
       function B() {
         const e = document.querySelector(".dropdown-button span"),

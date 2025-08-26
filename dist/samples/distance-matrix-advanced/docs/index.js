@@ -331,7 +331,9 @@ function updateDepartureTime() {
 
     const newDate = new Date(departureTimeElement.value);
 
-    distanceRequest.departureTime = isValidDate(newDate) ? newDate : undefined;
+    distanceRequest.departureTime = isValidDate(newDate)
+      ? Math.floor(newDate.getTime() / 1000).toString()
+      : undefined;
     calculateDistances();
   });
 }

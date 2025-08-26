@@ -349,7 +349,10 @@
           e.addEventListener("change", () => {
             t && (t.checked = !0);
             const i = new Date(e.value);
-            (o.departure_time = D(i) ? i.getTime().toString() : void 0), d();
+            (o.departure_time = D(i)
+              ? Math.floor(i.getTime() / 1e3).toString()
+              : void 0),
+              d();
           }));
       }
       function S(e, t, i) {

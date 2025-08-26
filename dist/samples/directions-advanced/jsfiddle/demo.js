@@ -430,7 +430,7 @@ function updateDepartureTime() {
     const newDate = new Date(departureTimeElement.value);
 
     directionsRequest.departure_time = isValidDate(newDate)
-      ? newDate.getTime().toString()
+      ? Math.floor(newDate.getTime() / 1000).toString()
       : undefined;
     calculateDirections();
   });

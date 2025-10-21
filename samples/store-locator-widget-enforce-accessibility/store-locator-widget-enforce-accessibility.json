@@ -1,0 +1,14 @@
+{
+  "title": "Store Locator Widget - Enforce Accessibility",
+  "description": "Woosmap Store Locator Widget displaying Bose stores all over the world. Enforcing accessibility features for better usability.",
+  "category": "Store Locator Widget",
+  "WOOSMAP_PUBLIC_API_KEY": "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
+  "tag": "store_locator_widget_enforce_accessibility",
+  "name": "store-locator-widget-enforce-accessibility",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

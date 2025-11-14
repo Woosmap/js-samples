@@ -1,5 +1,5 @@
 // [START woosmap_localities_nearby_poi]
-const availableCategories = [
+const availableTypes = [
   "transit.station",
   "transit.station.airport",
   "transit.station.rail",
@@ -62,7 +62,7 @@ const availableCategories = [
   "post_office",
   "sports",
 ];
-const categories: Set<string> = new Set();
+const types: Set<string> = new Set();
 let map: woosmap.map.Map;
 let results: HTMLOListElement;
 let nearbyCircle: woosmap.map.Circle;
@@ -71,10 +71,10 @@ let localitiesService: woosmap.map.LocalitiesService;
 let autocompleteRequest: woosmap.map.localities.LocalitiesAutocompleteRequest;
 let nearbyRequest: woosmap.map.localities.LocalitiesNearbyRequest;
 
-const buildTree = (availableCategories: string[]) => {
+const buildTree = (availableTypes: string[]) => {
   const tree = {};
-  availableCategories.forEach((category) => {
-    const parts = category.split(".");
+  availableTypes.forEach((type) => {
+    const parts = type.split(".");
     let node = tree;
     parts.forEach((part) => {
       node[part] = node[part] || {};
@@ -92,13 +92,13 @@ const createList = (node: any, prefix = "") => {
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.id = `category-${fullKey}`;
-    checkbox.name = "categories";
-    checkbox.classList.add("category");
+    checkbox.id = `type-${fullKey}`;
+    checkbox.name = "types";
+    checkbox.classList.add("type");
     checkbox.value = fullKey;
 
     const label = document.createElement("label");
-    label.htmlFor = `category-${fullKey}`;
+    label.htmlFor = `type-${fullKey}`;
     label.textContent = key;
 
     li.appendChild(checkbox);
@@ -164,31 +164,31 @@ function initMap() {
   performNearbyRequest();
 }
 
-function buildCategoriesList() {
-  const tree = buildTree(availableCategories);
+function buildTypesList() {
+  const tree = buildTree(availableTypes);
   const list = createList(tree);
   (
-    document.querySelector(".categoriesOptions__list") as HTMLDivElement
+    document.querySelector(".typesOptions__list") as HTMLDivElement
   ).appendChild(list as HTMLElement);
-  document.querySelectorAll(".category").forEach((el) =>
+  document.querySelectorAll(".type").forEach((el) =>
     el.addEventListener("click", (ev) => {
       const inputElement = ev.target as HTMLInputElement;
       const parentLi = inputElement.closest("li");
       const childrenCheckboxes = parentLi
         ? Array.from(parentLi.children)
             .filter((child) => child !== inputElement)
-            .flatMap((child) => Array.from(child.querySelectorAll(".category")))
+            .flatMap((child) => Array.from(child.querySelectorAll(".type")))
         : [];
 
       if (inputElement.checked) {
-        categories.add(inputElement.value);
+        types.add(inputElement.value);
         if (childrenCheckboxes.length > 0) {
           childrenCheckboxes.forEach((checkbox) => {
             (checkbox as HTMLInputElement).disabled = true;
           });
         }
       } else {
-        categories.delete(inputElement.value);
+        types.delete(inputElement.value);
         if (childrenCheckboxes.length > 0) {
           childrenCheckboxes.forEach((checkbox) => {
             (checkbox as HTMLInputElement).disabled = false;
@@ -223,7 +223,7 @@ function handleRadius(
 
 function initUI() {
   results = document.querySelector("#results") as HTMLOListElement;
-  buildCategoriesList();
+  buildTypesList();
   const debouncedHandleRadius = debounce(handleRadius, 300);
 
   document.getElementById("radius")?.addEventListener("input", (e) => {
@@ -258,8 +258,8 @@ function performNearbyRequest(
   const requestCenter = overrideCenter || map.getCenter();
   nearbyRequest.location = requestCenter;
   nearbyRequest.types = "";
-  if (categories.size > 0) {
-    nearbyRequest.types = Array.from(categories).join("|");
+  if (types.size > 0) {
+    nearbyRequest.types = Array.from(types).join("|");
   }
   else {
       nearbyRequest.types="point_of_interest"

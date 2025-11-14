@@ -146,7 +146,6 @@ function initMap() {
     types: "point_of_interest",
     location: map.getCenter(),
     radius: 1000,
-    categories: "",
     page: 1,
     limit: 10,
   };
@@ -258,9 +257,12 @@ function performNearbyRequest(
 ) {
   const requestCenter = overrideCenter || map.getCenter();
   nearbyRequest.location = requestCenter;
-  nearbyRequest.categories = "";
+  nearbyRequest.types = "";
   if (categories.size > 0) {
-    nearbyRequest.categories = Array.from(categories).join("|");
+    nearbyRequest.types = Array.from(categories).join("|");
+  }
+  else {
+      nearbyRequest.types="point_of_interest"
   }
   if (newQuery) {
     nearbyRequest.page = 1;
@@ -325,7 +327,7 @@ function updateResults(response: woosmap.map.localities.LocalitiesNearbyResponse
     const resultListItem = document.createElement("li");
     resultListItem.innerHTML = `
         <b>${result.name}</b>
-        <i>${result.categories}</i>
+        <i>${result.types}</i>
         
         <span class="distance">${distance.toFixed(0)}m</span>
     `;

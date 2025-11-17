@@ -1,0 +1,14 @@
+{
+  "title": "Localities Search Autocomplete",
+  "description": "Use the LocalitiesService to autocomplete and get details of localities, postal codes or addresses.",
+  "category": "Localities",
+  "callback": "initMap",
+  "tag": "localities_search_autocomplete",
+  "name": "localities-search-autocomplete",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

@@ -100,8 +100,8 @@
           "post_office",
           "sports",
         ],
-        y = new Set();
-      let u, p, m, g, E, f, r;
+        g = new Set();
+      let u, p, m, y, E, f, r;
       const _ = (e) => {
           const n = {};
           return (
@@ -122,12 +122,12 @@
               o = document.createElement("li"),
               a = document.createElement("input");
             (a.type = "checkbox"),
-              (a.id = `category-${t}`),
-              (a.name = "categories"),
-              a.classList.add("category"),
+              (a.id = `type-${t}`),
+              (a.name = "types"),
+              a.classList.add("type"),
               (a.value = t);
             const l = document.createElement("label");
-            (l.htmlFor = `category-${t}`),
+            (l.htmlFor = `type-${t}`),
               (l.textContent = i),
               o.appendChild(a),
               o.appendChild(l);
@@ -157,11 +157,10 @@
             types: "point_of_interest",
             location: u.getCenter(),
             radius: 1e3,
-            categories: "",
             page: 1,
             limit: 10,
           }),
-          (g = new woosmap.map.Marker({
+          (y = new woosmap.map.Marker({
             position: { lat: 0, lng: 0 },
             icon: {
               url: "https://images.woosmap.com/marker.png",
@@ -174,25 +173,23 @@
       function I() {
         const e = _(v),
           n = M(e);
-        document.querySelector(".categoriesOptions__list").appendChild(n),
-          document.querySelectorAll(".category").forEach((s) =>
+        document.querySelector(".typesOptions__list").appendChild(n),
+          document.querySelectorAll(".type").forEach((s) =>
             s.addEventListener("click", (i) => {
               const t = i.target,
                 o = t.closest("li"),
                 a = o
                   ? Array.from(o.children)
                       .filter((l) => l !== t)
-                      .flatMap((l) =>
-                        Array.from(l.querySelectorAll(".category")),
-                      )
+                      .flatMap((l) => Array.from(l.querySelectorAll(".type")))
                   : [];
               t.checked
-                ? (y.add(t.value),
+                ? (g.add(t.value),
                   a.length > 0 &&
                     a.forEach((l) => {
                       l.disabled = !0;
                     }))
-                : (y.delete(t.value),
+                : (g.delete(t.value),
                   a.length > 0 &&
                     a.forEach((l) => {
                       l.disabled = !1;
@@ -223,13 +220,13 @@
           (s = document.getElementById("page-previous")) == null ||
             s.addEventListener("click", B),
           (i = document.getElementById("page-next")) == null ||
-            i.addEventListener("click", q);
+            i.addEventListener("click", T);
       }
       function B() {
         let e = !0;
         r.page && r.page > 1 && (r.page--, (e = !1)), h(null, e);
       }
-      function q() {
+      function T() {
         let e = !0;
         r.page && (r.page++, (e = !1)), h(null, e);
       }
@@ -237,8 +234,10 @@
         const s = e || u.getCenter();
         if (
           ((r.location = s),
-          (r.categories = ""),
-          y.size > 0 && (r.categories = Array.from(y).join("|")),
+          (r.types = ""),
+          g.size > 0
+            ? (r.types = Array.from(g).join("|"))
+            : (r.types = "point_of_interest"),
           n && (r.page = 1),
           (p.innerHTML = ""),
           r.radius && r.radius > 5e4)
@@ -252,10 +251,10 @@
           return;
         }
         E.nearby(r).then((i) => {
-          T(s, r.radius), A(i, s);
+          q(s, r.radius), A(i, s);
         });
       }
-      function T(e, n) {
+      function q(e, n) {
         m && m.setMap(null),
           (m = new woosmap.map.Circle({
             map: u,
@@ -293,7 +292,7 @@
               t = document.createElement("li");
             (t.innerHTML = `
         <b>${s.name}</b>
-        <i>${s.categories}</i>
+        <i>${s.types}</i>
         
         <span class="distance">${i.toFixed(0)}m</span>
     `),
@@ -302,11 +301,11 @@
                   lat: s.geometry.location.lat,
                   lng: s.geometry.location.lng,
                 }),
-                  g.setPosition({
+                  y.setPosition({
                     lat: s.geometry.location.lat,
                     lng: s.geometry.location.lng,
                   }),
-                  g.setMap(u);
+                  y.setMap(u);
               }),
               p.appendChild(t);
           });
@@ -340,7 +339,7 @@
         (d.value = ""),
           (c.style.display = "none"),
           (b.style.display = "none"),
-          g && g.setMap(null),
+          y && y.setMap(null),
           d.focus();
       });
       function S() {
@@ -603,7 +602,7 @@
       .sectionHeader:first-child {
         margin-top: 0;
       }
-      .categoriesOptions {
+      .typesOptions {
         padding: 0;
         margin: 0;
         list-style: none;
@@ -612,36 +611,36 @@
         display: flex;
         font-size: 13px;
       }
-      .categoriesOptions__list {
+      .typesOptions__list {
         width: 100%;
         height: 100%;
         max-height: 30vh;
         overflow: scroll;
       }
-      .categoriesOptions__list ul {
+      .typesOptions__list ul {
         list-style: none;
         padding: 0;
         margin: 0;
       }
-      .categoriesOptions__list ul li {
+      .typesOptions__list ul li {
         padding: 3px 0;
       }
-      .categoriesOptions__list ul li input[type="checkbox"] {
+      .typesOptions__list ul li input[type="checkbox"] {
         margin-right: 3px;
       }
-      .categoriesOptions__list ul li input[type="checkbox"]:disabled {
+      .typesOptions__list ul li input[type="checkbox"]:disabled {
         box-shadow: inset 0 0 20px #999;
       }
-      .categoriesOptions__list ul li label {
+      .typesOptions__list ul li label {
         margin-left: 3px;
         font-size: 0.85em;
       }
-      .categoriesOptions__list ul li ul {
+      .typesOptions__list ul li ul {
         margin-left: 10px;
         padding-left: 5px;
         border-left: 1px solid #ddd;
       }
-      .categoriesOptions__input {
+      .typesOptions__input {
         height: 24px;
         display: flex;
         align-items: baseline;
@@ -693,8 +692,8 @@
     <div id="container">
       <div id="sidebar">
         <div id="innerWrapper">
-          <div class="sectionHeader"><span>Categories</span></div>
-          <div class="categoriesOptions__list"></div>
+          <div class="sectionHeader"><span>Types</span></div>
+          <div class="typesOptions__list"></div>
           <div class="sectionHeader"><span>Radius</span></div>
           <div class="radius__container">
             <input

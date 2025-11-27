@@ -278,7 +278,10 @@
           e.addEventListener("change", () => {
             n && (n.checked = !0);
             const t = new Date(e.value);
-            (i.departureTime = b(t) ? t : void 0), c();
+            (i.departureTime = b(t)
+              ? Math.floor(t.getTime() / 1e3).toString()
+              : void 0),
+              c();
           }));
       }
       function M(e, n, t) {

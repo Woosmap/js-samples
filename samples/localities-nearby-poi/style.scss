@@ -59,7 +59,7 @@
   }
 }
 
-.categoriesOptions {
+.typesOptions {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -151,6 +151,15 @@ ol#results {
       background-color: #f2f2f2;
     }
   }
+}
+
+#radius {
+  flex: 1; /* Take all remaining space */
+}
+
+#radius-label {
+    border: 1px dashed #ccc;
+    outline: none;
 }
 
 /* [END woosmap_localities_nearby_poi] */

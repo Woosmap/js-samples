@@ -23,6 +23,7 @@ const storeLocatorConfig = {
     localities: {
       types: [],
     },
+    w3w: true,
   },
   woosmapview: {
     initialCenter: {

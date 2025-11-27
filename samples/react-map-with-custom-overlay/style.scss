@@ -1,0 +1,24 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_react_map_with_custom_overlay] */
+@include meta.load-css("../../shared/scss/_default.scss");
+
+.custom-marker-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: #f50057;
+  border: 3px solid #fff;
+  cursor: pointer;
+  border-radius: 100%;
+  box-shadow: 0 2px 4px #0003;
+  width: 36px;
+  height: 36px;
+
+  .custom-marker {
+    display: flex;
+  }
+}
+
+/* [END woosmap_react_map_with_custom_overlay] */

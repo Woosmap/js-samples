@@ -1,4 +1,4 @@
-const availableCategories = [
+const availableTypes = [
   "transit.station",
   "transit.station.airport",
   "transit.station.rail",
@@ -61,7 +61,7 @@ const availableCategories = [
   "post_office",
   "sports",
 ];
-const categories: Set<string> = new Set();
+const types: Set<string> = new Set();
 let map: woosmap.map.Map;
 let results: HTMLOListElement;
 let nearbyCircle: woosmap.map.Circle;
@@ -70,10 +70,10 @@ let localitiesService: woosmap.map.LocalitiesService;
 let autocompleteRequest: woosmap.map.localities.LocalitiesAutocompleteRequest;
 let nearbyRequest: woosmap.map.localities.LocalitiesNearbyRequest;
 
-const buildTree = (availableCategories: string[]) => {
+const buildTree = (availableTypes: string[]) => {
   const tree = {};
-  availableCategories.forEach((category) => {
-    const parts = category.split(".");
+  availableTypes.forEach((type) => {
+    const parts = type.split(".");
     let node = tree;
     parts.forEach((part) => {
       node[part] = node[part] || {};
@@ -91,13 +91,13 @@ const createList = (node: any, prefix = "") => {
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.id = `category-${fullKey}`;
-    checkbox.name = "categories";
-    checkbox.classList.add("category");
+    checkbox.id = `type-${fullKey}`;
+    checkbox.name = "types";
+    checkbox.classList.add("type");
     checkbox.value = fullKey;
 
     const label = document.createElement("label");
-    label.htmlFor = `category-${fullKey}`;
+    label.htmlFor = `type-${fullKey}`;
     label.textContent = key;
 
     li.appendChild(checkbox);
@@ -133,6 +133,10 @@ function initMap() {
   );
   localitiesService = new woosmap.map.LocalitiesService();
 
+  map.addListener("click", (e) => {
+    handleRadius(nearbyRequest.radius || 1000, e.latlng);
+  });
+
   autocompleteRequest = {
     input: "",
     types: ["locality", "postal_code"],
@@ -141,7 +145,6 @@ function initMap() {
     types: "point_of_interest",
     location: map.getCenter(),
     radius: 1000,
-    categories: "",
     page: 1,
     limit: 10,
   };
@@ -160,31 +163,31 @@ function initMap() {
   performNearbyRequest();
 }
 
-function buildCategoriesList() {
-  const tree = buildTree(availableCategories);
+function buildTypesList() {
+  const tree = buildTree(availableTypes);
   const list = createList(tree);
   (
-    document.querySelector(".categoriesOptions__list") as HTMLDivElement
+    document.querySelector(".typesOptions__list") as HTMLDivElement
   ).appendChild(list as HTMLElement);
-  document.querySelectorAll(".category").forEach((el) =>
+  document.querySelectorAll(".type").forEach((el) =>
     el.addEventListener("click", (ev) => {
       const inputElement = ev.target as HTMLInputElement;
       const parentLi = inputElement.closest("li");
       const childrenCheckboxes = parentLi
         ? Array.from(parentLi.children)
             .filter((child) => child !== inputElement)
-            .flatMap((child) => Array.from(child.querySelectorAll(".category")))
+            .flatMap((child) => Array.from(child.querySelectorAll(".type")))
         : [];
 
       if (inputElement.checked) {
-        categories.add(inputElement.value);
+        types.add(inputElement.value);
         if (childrenCheckboxes.length > 0) {
           childrenCheckboxes.forEach((checkbox) => {
             (checkbox as HTMLInputElement).disabled = true;
           });
         }
       } else {
-        categories.delete(inputElement.value);
+        types.delete(inputElement.value);
         if (childrenCheckboxes.length > 0) {
           childrenCheckboxes.forEach((checkbox) => {
             (checkbox as HTMLInputElement).disabled = false;
@@ -213,12 +216,13 @@ function handleRadius(
     18 - (Math.log(radiusValue / 10) / Math.log(50000 / 10)) * (18 - 7),
   );
   map.flyTo({ center: center || nearbyCircle.getCenter(), zoom: zoomLevel });
-  performNearbyRequest();
+  nearbyRequest.radius = radiusValue;
+  performNearbyRequest(new woosmap.map.LatLng(center || nearbyCircle.getCenter()));
 }
 
 function initUI() {
   results = document.querySelector("#results") as HTMLOListElement;
-  buildCategoriesList();
+  buildTypesList();
   const debouncedHandleRadius = debounce(handleRadius, 300);
 
   document.getElementById("radius")?.addEventListener("input", (e) => {
@@ -251,17 +255,27 @@ function performNearbyRequest(
   newQuery = true,
 ) {
   const requestCenter = overrideCenter || map.getCenter();
-  const radiusElement = document.getElementById("radius") as HTMLInputElement;
   nearbyRequest.location = requestCenter;
-  nearbyRequest.radius = radiusElement
-    ? parseInt(radiusElement.value)
-    : 1000;
-  nearbyRequest.categories = "";
-  if (categories.size > 0) {
-    nearbyRequest.categories = Array.from(categories).join("|");
+  nearbyRequest.types = "";
+  if (types.size > 0) {
+    nearbyRequest.types = Array.from(types).join("|");
+  }
+  else {
+      nearbyRequest.types="point_of_interest"
   }
   if (newQuery) {
     nearbyRequest.page = 1;
+  }
+
+  results.innerHTML = "";
+
+  if (nearbyRequest.radius && nearbyRequest.radius > 50000) {
+    results.innerHTML = "<li style='color: red;'><b>Radius should be less than or equal to 50km.</b></li>";
+    return;
+  }
+  else if (nearbyRequest.radius && nearbyRequest.radius < 10) {
+    results.innerHTML = "<li style='color: red;'><b>Radius should be greater than or equal to 10m.</b></li>";
+    return;
   }
 
   //@ts-ignore
@@ -301,8 +315,6 @@ function updatePagination(pagination: woosmap.map.localities.LocalitiesNearbyPag
 }
 
 function updateResults(response: woosmap.map.localities.LocalitiesNearbyResponse, center) {
-  results.innerHTML = "";
-
   updatePagination(response.pagination);
   response.results.forEach((result:woosmap.map.localities.LocalitiesNearbyResult) => {
     const distance = measure(
@@ -314,7 +326,7 @@ function updateResults(response: woosmap.map.localities.LocalitiesNearbyResponse
     const resultListItem = document.createElement("li");
     resultListItem.innerHTML = `
         <b>${result.name}</b>
-        <i>${result.categories}</i>
+        <i>${result.types}</i>
         
         <span class="distance">${distance.toFixed(0)}m</span>
     `;
@@ -459,6 +471,54 @@ function debounce(func: (...args: any[]) => void, wait: number) {
     timeout = setTimeout(later, wait);
   };
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const radiusInput = document.getElementById('radius') as HTMLInputElement;
+  const radiusLabel = document.getElementById('radius-label') as HTMLLabelElement;
+
+  if (!radiusInput || !radiusLabel) {
+      console.error('Elements not found in the DOM.');
+      return;
+  }
+
+  // Update the range input when the label content is modified
+  radiusLabel.addEventListener('blur', () => {
+      const parsedValue = parseLabel(radiusLabel.textContent || '');
+      if (parsedValue !== null) {
+          radiusInput.value = parsedValue.toString();
+          handleRadius(parsedValue)
+      } else {
+          // Revert to the current range value if parsing fails
+          radiusLabel.textContent = formatValue(parseInt(radiusInput.value, 10));
+      }
+  });
+
+  radiusLabel.addEventListener('keypress', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+          e.preventDefault(); // Prevent line breaks
+          radiusLabel.blur(); // Trigger the blur event to validate and update
+      }
+  });
+
+  // Format the value in meters to "km" or "m" for display
+  const formatValue = (value: number): string => {
+      return value >= 1000 ? `${value / 1000} km` : `${value} m`;
+  };
+
+  // Parse the label content back to meters
+  const parseLabel = (label: string): number | null => {
+      const kmMatch = label.match(/^(\d+(?:\.\d+)?)\s*km$/i);
+      const mMatch = label.match(/^(\d+)\s*m$/i);
+
+      if (kmMatch) {
+          return Math.round(parseFloat(kmMatch[1]) * 1000); // Convert km to meters
+      } else if (mMatch) {
+          return parseInt(mMatch[1], 10); // Keep value in meters
+      }
+      return null; // Invalid input
+  };
+});
+
 
 declare global {
   interface Window {

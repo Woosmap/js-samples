@@ -1,0 +1,7 @@
+name: Transit Service With Roadbook
+authors:
+  - Woosmap
+tags:
+  - woosmap
+load_type: h
+description: Sample code for Woosmap Map JavaScript API

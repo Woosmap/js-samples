@@ -163,13 +163,13 @@
           const O = I[o.travelMode] || I.DRIVING;
           return (
             (p.innerHTML = `
-            <img class="directionTrip__travelModeIcon" src="${O}">
+            <img alt="travel mode" class="directionTrip__travelModeIcon" src="${O}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
                     <div class="directionTrip__duration">${a(k)}</div>
                     <div class="directionTrip__distance">${i(w)}</div>
                 </div>
-                <div class="directionTrip__title">through ${u.start_address ? u.start_address : JSON.stringify(u.start_location)}</div>
+                <div class="directionTrip__title">through ${r.main_route_name ? r.main_route_name : JSON.stringify(u.start_location)}</div>
                 <div class="directionTrip__summary">${a(k)} ${o.departure_time || o.arrival_time ? "with" : "without"} traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
@@ -349,7 +349,10 @@
           e.addEventListener("change", () => {
             t && (t.checked = !0);
             const i = new Date(e.value);
-            (o.departure_time = D(i) ? i.getTime().toString() : void 0), d();
+            (o.departure_time = D(i)
+              ? Math.floor(i.getTime() / 1e3).toString()
+              : void 0),
+              d();
           }));
       }
       function S(e, t, i) {

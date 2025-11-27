@@ -1,0 +1,124 @@
+@use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+
+/* [START woosmap_datasets_api] */
+@include meta.load-css("../../shared/scss/_sidebar.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_input.scss");
+@include meta.load-css("../../shared/scss/_autocomplete_list.scss");
+@import "../../shared/scss/mixins.scss";
+
+#sidebar {
+  flex-basis: 18rem;
+  box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1;
+}
+
+#innerWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 0 10px 40px;
+}
+
+#mapContainer {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 70vw;
+  flex-grow: 5;
+  position: relative;
+}
+
+#od-selector {
+  width: 100%;
+}
+
+.od-container {
+  padding: 5px 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#od-selector span {
+  padding: 0 5px;
+  width: 100px;
+  font-size: 10pt;
+  font-weight: 600;
+}
+
+.sectionHeader {
+  span {
+    font-size: .85em;
+    font-weight: 600;
+  }
+
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eeeeee;
+  margin: 20px -10px 5px;
+  padding: 5px 10px;
+  color: #222;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.dropdown__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &>label {
+    padding-left: 10px;
+  }
+}
+
+ol#results {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+
+  &.error {
+    font-size: 10pt;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  &>table {
+    &:hover {
+      cursor: pointer;
+      background-color: #f2f2f2;
+    }
+
+    border: none;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 5px;
+
+    table.result:last-child {
+      border: none;
+    }
+
+    td {
+      font-size: 10pt;
+      max-width: 200px;
+      text-align: left;
+      color: #555;
+      word-break: break-word;
+      vertical-align: top;
+    }
+
+  }
+}
+.btn {
+  width: 80px;
+  @include button($background: #3d5afe);
+}
+
+.btnText {
+  @include actionText($color: #fff);
+}
+  /* [END woosmap_datasets_api] */

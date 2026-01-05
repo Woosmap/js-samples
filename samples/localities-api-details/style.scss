@@ -1,11 +1,11 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+@use "../../shared/scss/mixins" as *;
 
 /* [START woosmap_localities_api_details] */
 @include meta.load-css("../../shared/scss/_default.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
 @include meta.load-css("../../shared/scss/_dropdown.scss");
-@import "../../shared/scss/mixins.scss";
 
 #app {
   height: 100%;

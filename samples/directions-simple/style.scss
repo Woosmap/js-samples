@@ -1,8 +1,8 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+@use "../../shared/scss/mixins" as *;
 
 /* [START woosmap_directions_simple] */
 @include meta.load-css("../../shared/scss/_default.scss");
-@import "../../shared/scss/mixins.scss";
 
 #od-selector {
   width: 200px;

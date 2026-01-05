@@ -1,8 +1,8 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+@use "../../shared/scss/mixins" as *;
 
 /* [START woosmap_transit_roadbook] */
 @include meta.load-css("../../shared/scss/_sidebar.scss");
-@import "../../shared/scss/mixins.scss";
 
 #sidebar {
   flex-basis: 18rem;

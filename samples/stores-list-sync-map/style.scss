@@ -1,9 +1,9 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+@use "../../shared/scss/mixins" as *;
 
 /* [START woosmap_stores_list_sync_map] */
 @include meta.load-css("../../shared/scss/_sidebar.scss");
 
-@import "../../shared/scss/mixins.scss";
 
 .btn {
   @include button($background: #3d5afe, $display: inline, $position: relative, $height: 40px);

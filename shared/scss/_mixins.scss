@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "sass:string";
+
 @mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
   position: $position;
   top: $top;
@@ -29,7 +32,14 @@
   z-index: 1;
 }
 
-@mixin button($background: #fff, $color: #202124, $hover: darken($background, 10%), $display: flex, $position: relative, $height: 32px) {
+@mixin button(
+  $background: #fff,
+  $color: #202124,
+  $hover: color.adjust($background, $lightness: -10%),
+  $display: flex,
+  $position: relative,
+  $height: 32px
+) {
   background: $background;
   border: 0;
   border-radius: 4px;
@@ -88,12 +98,15 @@
 }
 
 @function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
-  @return if($index,
-          str-slice($string, 1, $index - 1) + $replace +
-        str-replace(str-slice($string, $index +
-        str-length($search)), $search, $replace),
-          $string);
+  $index: string.index($string, $search);
+
+  @if $index {
+    $prefix: string.slice($string, 1, $index - 1);
+    $suffix: string.slice($string, $index + string.length($search));
+    @return $prefix + $replace + str-replace($suffix, $search, $replace);
+  }
+
+  @return $string;
 }
 
 @function hexToUrl($color) {

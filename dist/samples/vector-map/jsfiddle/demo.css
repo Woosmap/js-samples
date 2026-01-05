@@ -56,17 +56,17 @@ body {
   content: "";
 }
 
-.toggle-checkbox {
-  position: absolute;
-  visibility: hidden;
-}
-
 .toggle-checkbox:checked + .toggle-switch {
   background: #56c080;
 }
 
 .toggle-checkbox:checked + .toggle-switch:before {
   left: 30px;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
 }
 
 .toggle-label {

@@ -163,6 +163,10 @@ body {
   font-weight: 600;
 }
 
+.sectionHeader span {
+  font-size: 0.85em;
+  font-weight: 600;
+}
 .sectionHeader {
   background: #f1f1f1;
   display: flex;
@@ -172,10 +176,6 @@ body {
   margin: 20px -10px 5px;
   padding: 5px 10px;
   color: #222;
-}
-.sectionHeader span {
-  font-size: 0.85em;
-  font-weight: 600;
 }
 .sectionHeader:first-child {
   margin-top: 0;
@@ -200,14 +200,14 @@ ol#results.error {
   font-style: italic;
   font-weight: 600;
 }
+ol#results > table:hover {
+  cursor: pointer;
+  background-color: #f2f2f2;
+}
 ol#results > table {
   border: none;
   border-bottom: 1px solid #dfdfdf;
   padding: 5px;
-}
-ol#results > table:hover {
-  cursor: pointer;
-  background-color: #f2f2f2;
 }
 ol#results > table table.result:last-child {
   border: none;
@@ -241,7 +241,7 @@ ol#results > table td {
   align-items: center;
 }
 .btn:hover {
-  background: #0a2ffe;
+  background: rgb(10.2615384615, 46.8461538462, 253.7384615385);
 }
 
 .btnText {

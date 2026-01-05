@@ -168,6 +168,10 @@ body {
   cursor: crosshair !important;
 }
 
+.sectionHeader span {
+  font-size: 0.85em;
+  font-weight: 600;
+}
 .sectionHeader {
   background: #f1f1f1;
   display: flex;
@@ -177,10 +181,6 @@ body {
   margin: 20px -10px 5px;
   padding: 5px 10px;
   color: #222;
-}
-.sectionHeader span {
-  font-size: 0.85em;
-  font-weight: 600;
 }
 .sectionHeader:first-child {
   margin-top: 0;

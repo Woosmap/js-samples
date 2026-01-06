@@ -1,0 +1,37 @@
+{
+  "name": "map-clustering-stores",
+  "description": "Samples for Woosmap Map JS API",
+  "version": "1.45.2",
+  "keywords": [
+    "woosmap",
+    "javascript",
+    "map"
+  ],
+  "homepage": "https://github.com/woosmap/js-samples#readme",
+  "bugs": {
+    "url": "https://github.com/woosmap/js-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woosmap/js-samples.git"
+  },
+  "files": [],
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build --outDir dist --base './'",
+    "test": "tsc --no-emit",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/woosmap.map": "^1.4.23",
+    "typescript": "^5.3.3",
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "supercluster": "^8.0.1",
+    "@types/supercluster": "^7.1.3",
+    "@types/geojson": "^7946.0.16"
+  }
+}

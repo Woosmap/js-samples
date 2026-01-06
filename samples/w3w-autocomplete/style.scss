@@ -1,10 +1,10 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+@use "../../shared/scss/mixins" as *;
 
 /* [START woosmap_w3w_autocomplete] */
 @include meta.load-css("../../shared/scss/_default.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_input.scss");
 @include meta.load-css("../../shared/scss/_autocomplete_list.scss");
-@import "../../shared/scss/mixins.scss";
 
 #app {
   height: 100%;

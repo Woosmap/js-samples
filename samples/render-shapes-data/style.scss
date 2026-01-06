@@ -1,8 +1,8 @@
 @use 'sass:meta'; // To enable @use via meta.load-css and keep comments in order
+@use "../../shared/scss/mixins" as *;
 
 /* [START woosmap_render_shapes_data] */
 @include meta.load-css("../../shared/scss/_default.scss");
-@import "../../shared/scss/mixins.scss";
 
 #info {
   max-width: 200px;

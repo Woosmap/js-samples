@@ -1,22 +1,31 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+import fs from "node:fs";
+import path from "node:path";
+import { EventEmitter } from "node:events";
+import { fileURLToPath } from "node:url";
 
-const typescript = require("./src/engines/typescript/sample");
-const typescriptJSX = require("./src/engines/typescript/sample-jsx");
-const sass = require("./src/engines/sass");
-const stripRegionTags = require("./src/transforms/strip-region-tags");
-const yourAPIKey = require("./src/transforms/your-api-key");
-const format = require("./src/transforms/format");
-const minify = require("./src/transforms/minify");
-const Image = require("@11ty/eleventy-img");
-const fs = require("fs");
-const path = require("path");
-const vite = require("vite");
-const chalk = require("chalk");
-const prettier = require("prettier");
+import Image from "@11ty/eleventy-img";
+import chalk from "chalk";
+import prettier from "prettier";
+import { build as viteBuild } from "vite";
 
-module.exports = function (eleventyConfig) {
+import typescript from "./src/engines/typescript/sample.js";
+import typescriptJSX from "./src/engines/typescript/sample-jsx.js";
+import sass from "./src/engines/sass.js";
+import stripRegionTags from "./src/transforms/strip-region-tags.js";
+import yourAPIKey from "./src/transforms/your-api-key.js";
+import format from "./src/transforms/format.js";
+import minify from "./src/transforms/minify.js";
+
+dotenv.config();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("./shared/**/*");
   eleventyConfig.addWatchTarget(".env*");
+
+  eleventyConfig.configureErrorReporting({ allowMissingExtensions: true });
 
   eleventyConfig.addTemplateFormats("scss");
   eleventyConfig.addExtension("scss", sass);
@@ -28,6 +37,7 @@ module.exports = function (eleventyConfig) {
     });
     return metadata.svg[0].buffer.toString();
   });
+
   eleventyConfig.addTemplateFormats("ts");
   eleventyConfig.addExtension("ts", typescript);
   eleventyConfig.addTemplateFormats("tsx");
@@ -38,7 +48,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addTransform("minify", minify);
   eleventyConfig.addTransform("format", format);
 
-  eleventyConfig.addCollection("samples_ts", function (collectionApi) {
+  eleventyConfig.addCollection("samples_ts", (collectionApi) => {
     const samples = collectionApi.getFilteredByGlob("samples/*/index.ts*");
 
     if (samples.length === 0) {
@@ -47,23 +57,17 @@ module.exports = function (eleventyConfig) {
     return samples;
   });
 
-  // build sample iframes after building the site using vite and a plugin to
-  // inline assets such as css and js
   eleventyConfig.on("eleventy.after", async () => {
     console.log(chalk.green("[11ty.after] Building dist/samples/*/app"));
 
     const samplesPath = path.join(__dirname, "dist", "samples");
 
-    // get samples in dist folder
     const samples = fs
-      .readdirSync(samplesPath, {
-        withFileTypes: true,
-      })
+      .readdirSync(samplesPath, { withFileTypes: true })
       .filter((d) => d.isDirectory())
       .map((d) => d.name);
 
-    // remove warning https://stackoverflow.com/questions/8313628/node-js-request-how-to-emitter-setmaxlisteners
-    require("events").EventEmitter.defaultMaxListeners = samples.length * 2;
+    EventEmitter.defaultMaxListeners = samples.length * 2;
 
     const inlinePlugin = {
       name: "vite:singlefile",
@@ -86,8 +90,7 @@ module.exports = function (eleventyConfig) {
                 );
                 break;
               default:
-                console.error({ ctx, html });
-                throw new Error(`Expected asset, ${asset.name} to be inlined.`);
+                throw new Error(`Expected asset ${asset.name} to be inlined.`);
             }
           }
           return prettier.format(html, { parser: "html" });
@@ -95,9 +98,7 @@ module.exports = function (eleventyConfig) {
       },
     };
 
-    const config = {
-      // vite automatically loads the config file from the root and merges
-      // with the config specified here
+    const baseConfig = {
       plugins: [],
       base: "./",
       logLevel: "error",
@@ -109,14 +110,14 @@ module.exports = function (eleventyConfig) {
     await Promise.all(
       samples.map(async (sample) => {
         const root = path.join(samplesPath, sample, "app");
-        await vite.build({ ...config, root });
-        await vite.build({
-          ...config,
+        await viteBuild({ ...baseConfig, root });
+        await viteBuild({
+          ...baseConfig,
           build: {
-            ...config.build,
+            ...baseConfig.build,
             outDir: path.join(samplesPath, sample, "iframe"),
           },
-          plugins: [...(config.plugins || []), inlinePlugin],
+          plugins: [...(baseConfig.plugins || []), inlinePlugin],
           root,
         });
       }),
@@ -136,4 +137,4 @@ module.exports = function (eleventyConfig) {
       includes: "src/_includes",
     },
   };
-};
+}

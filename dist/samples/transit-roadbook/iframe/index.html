@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Transit Service With Roadbook</title>
@@ -69,25 +69,25 @@
           "https://images.woosmap.com/marker-blue.svg",
         );
         e.addListener("dragend", () => {
-          (d.origin = e.getPosition()), _(b, e.getPosition().toJSON()), g();
+          ((d.origin = e.getPosition()), _(b, e.getPosition().toJSON()), g());
         });
         const t = S(
           d.destination,
           "D",
           "https://images.woosmap.com/marker-red.svg",
         );
-        t.addListener("dragend", () => {
-          (d.destination = t.getPosition()),
+        (t.addListener("dragend", () => {
+          ((d.destination = t.getPosition()),
             _(y, t.getPosition().toJSON()),
-            g();
+            g());
         }),
           E.push(e),
-          E.push(t);
+          E.push(t));
       }
       function P() {
         const e = { lat: 45.4765, lng: 9.0553 },
           t = { lat: 45.4599, lng: 9.2822 };
-        return _(b, e), _(y, t), { origin: e, destination: t };
+        return (_(b, e), _(y, t), { origin: e, destination: t });
       }
       function _(e, t) {
         e.innerHTML = `<li><span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span></li>`;
@@ -97,8 +97,8 @@
           var u;
           const p = r.legs.reduce((k, H) => k + H.distance, 0),
             o = document.createElement("div");
-          (o.className = "directionTrip"),
-            c === 0 && o.classList.add("directionTrip__selected");
+          ((o.className = "directionTrip"),
+            c === 0 && o.classList.add("directionTrip__selected"));
           const h =
               ((u = r.legs.find(
                 (k) => k.start_location && k.start_location.name !== null,
@@ -124,7 +124,7 @@
         `),
             o.append(l(r)),
             o.addEventListener("click", () => {
-              a(e.routes[c]), T(c), M.setRouteIndex(c);
+              (a(e.routes[c]), T(c), M.setRouteIndex(c));
             }),
             a(e.routes[0]),
             o
@@ -164,19 +164,19 @@
         function a(r) {
           const c = document.getElementById("roadbook__container"),
             p = document.createElement("div");
-          (p.className = "trouteRoadbook__header"),
+          ((p.className = "trouteRoadbook__header"),
             (p.innerHTML = `
                                 <span class="trouteRoadbook__headerFromTo">
                                     <div class="trouteRoadbook__headerWaypoint"> From <span class="routeRoadbook__headerFrom">origin</span></div>
                                     <div class="trouteRoadbook__headerWaypoint"> To<span class="routeRoadbook__headerTo">destination</span></div>
-                                </span>`);
+                                </span>`));
           const o = document.createElement("div");
           o.className = "trouteRoadbook__body";
           const h = document.createElement("div");
-          (h.className = "trouteRoadbook__steps"),
+          ((h.className = "trouteRoadbook__steps"),
             r.legs.forEach((s) => {
               const u = document.createElement("div");
-              (u.className = "route"),
+              ((u.className = "route"),
                 (u.innerHTML = `
                 <div style="${s.travel_mode === "pedestrian" ? "background-color: #1aae1d" : `background-color: ${s.transport.color ? s.transport.color : "#c0bfbf"}`}" class="icon ${s.travel_mode === "pedestrian" ? "pedestrian" : f(s.transport.mode)}"></div>
                 <div class="details">
@@ -193,10 +193,10 @@
                     <div class="divider"></div><div>
                 </div>
                 `),
-                h.appendChild(u);
+                h.appendChild(u));
             }),
             o.appendChild(h),
-            c.replaceChildren(o);
+            c.replaceChildren(o));
         }
         function n(r) {
           return r < 1e3 ? `${r} m` : `${(r / 1e3).toFixed(2)} km`;
@@ -234,26 +234,28 @@
           return "pedestrian";
         }
         function T(r) {
-          document.querySelectorAll(".directionTrip__selected").forEach((c) => {
-            c.classList.remove("directionTrip__selected");
-          }),
-            t[r].classList.add("directionTrip__selected");
+          (document
+            .querySelectorAll(".directionTrip__selected")
+            .forEach((c) => {
+              c.classList.remove("directionTrip__selected");
+            }),
+            t[r].classList.add("directionTrip__selected"));
         }
         const w = document.querySelector(".tableContainer");
-        (w.innerHTML = ""),
+        ((w.innerHTML = ""),
           t.forEach((r) => w.appendChild(r)),
-          (w.style.display = "block");
+          (w.style.display = "block"));
       }
       function q(e, t) {
         const l = document.getElementById("infoMessage"),
           a = document.getElementById("roadbook__container");
         if (e === "") l.innerText = "Drag markers to update route";
         else {
-          (l.innerHTML = e), (l.style.display = "block");
+          ((l.innerHTML = e), (l.style.display = "block"));
           const n = document.querySelector(".tableContainer");
-          (n.innerHTML = ""),
+          ((n.innerHTML = ""),
             (n.style.display = "none"),
-            (a.innerHTML = `Error calculating transit route:", ${e}`);
+            (a.innerHTML = `Error calculating transit route:", ${e}`));
         }
         t !== "OK" && (a.innerHTML = "No route found");
       }
@@ -264,17 +266,17 @@
         M.setRoutes(e);
       }
       function g() {
-        R(),
+        (R(),
           N.route(d)
             .then(W)
             .catch((e) => {
-              console.error("Error calculating transit route:", e),
+              (console.error("Error calculating transit route:", e),
                 q(e, ""),
-                R();
-            });
+                R());
+            }));
       }
       function W(e) {
-        F(e.routes), D(), A(e), q("", e.status), R();
+        (F(e.routes), D(), A(e), q("", e.status), R());
       }
       function O(e) {
         return e.getTime && typeof e.getTime == "function";
@@ -292,7 +294,7 @@
             i.addEventListener("change", () => {
               switch (i.value) {
                 case "empty":
-                  delete d[e], (t.disabled = !0);
+                  (delete d[e], (t.disabled = !0));
                   break;
                 case "now":
                 case "datetime":
@@ -317,7 +319,7 @@
           t.addEventListener("change", () => {
             l && (l.checked = !0);
             const i = new Date(t.value);
-            (d[e] = O(i) ? i.getTime().toString() : void 0), g();
+            ((d[e] = O(i) ? i.getTime().toString() : void 0), g());
           }));
       }
       function I(e, t, l) {
@@ -325,26 +327,26 @@
         a.addEventListener("click", () => {
           var n, i;
           if (a.classList.contains("addLocation__selected")) {
-            a.classList.remove("addLocation__selected"),
+            (a.classList.remove("addLocation__selected"),
               (n = document.getElementById("map")) == null ||
                 n.classList.remove("cursor-crosshair"),
-              woosmap.map.event.clearListeners(v, "click");
+              woosmap.map.event.clearListeners(v, "click"));
             return;
           }
-          a.classList.add("addLocation__selected"),
+          (a.classList.add("addLocation__selected"),
             (i = document.getElementById("map")) == null ||
               i.classList.add("cursor-crosshair"),
             woosmap.map.event.addListenerOnce(v, "click", (m) => {
               var T;
-              (T = document.getElementById("map")) == null ||
+              ((T = document.getElementById("map")) == null ||
                 T.classList.remove("cursor-crosshair"),
-                a.classList.remove("addLocation__selected");
+                a.classList.remove("addLocation__selected"));
               const f = m.latlng;
-              t === b && (d.origin = f),
+              (t === b && (d.origin = f),
                 t === y && (d.destination = f),
                 _(t, f),
-                g();
-            });
+                g());
+            }));
         });
       }
       const $ = [],
@@ -370,7 +372,7 @@
           t = document.querySelector("#includeModes"),
           l = document.querySelector("#excludeModes");
         function a() {
-          ($.length = 0),
+          (($.length = 0),
             (L.length = 0),
             Object.keys(C).forEach((n) => {
               document.querySelector(
@@ -383,23 +385,23 @@
             $.length === 0 && L.length === 0
               ? delete d.modes
               : (d.modes = t.checked ? $ : L),
-            g();
+            g());
         }
-        e.forEach((n) => {
+        (e.forEach((n) => {
           n.addEventListener("change", a);
         }),
           t.addEventListener("change", a),
-          l.addEventListener("change", a);
+          l.addEventListener("change", a));
       }
       function z() {
-        B("departureTime"),
+        (B("departureTime"),
           B("arrivalTime"),
           j(),
           I(".addLocation__destinations", y, d.destination),
-          I(".addLocation__origins", b, d.origin);
+          I(".addLocation__origins", b, d.origin));
       }
       function J() {
-        (v = new woosmap.map.Map(document.getElementById("map"), {
+        ((v = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 45.482604, lng: 9.16924 },
           zoom: 11,
         })),
@@ -410,7 +412,7 @@
           (y = document.getElementById("destination")),
           (d = P()),
           z(),
-          g();
+          g());
       }
       window.initMap = J;
     </script>

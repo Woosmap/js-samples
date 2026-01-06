@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>MultiSearch Map Simple</title>
@@ -56,7 +56,7 @@
       };
       let m, l, n, r, p, a;
       function f() {
-        (l = document.getElementById("autocomplete-input")),
+        ((l = document.getElementById("autocomplete-input")),
           (n = document.getElementById("suggestions-list")),
           (r = document.getElementsByClassName("clear-searchButton")[0]),
           l &&
@@ -69,40 +69,40 @@
               }
             })),
           r.addEventListener("click", () => {
-            (l.value = ""),
+            ((l.value = ""),
               (n.style.display = "none"),
               (r.style.display = "none"),
               a && a.setMap(null),
-              l.focus();
+              l.focus());
           }),
-          (m = window.woosmap.multisearch(u));
+          (m = window.woosmap.multisearch(u)));
       }
       function y() {
-        (p = new window.woosmap.map.Map(document.getElementById("map"), {
+        ((p = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 4,
         })),
-          f();
+          f());
       }
       function g() {
         if (l && n) {
           const e = l.value;
-          e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+          (e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             e !== ""
               ? m.autocompleteMulti(e).then(
                   (t) => E(t),
                   (t) => console.error(`Error autocomplete localities: ${t}`),
                 )
-              : ((n.style.display = "none"), (r.style.display = "none"));
+              : ((n.style.display = "none"), (r.style.display = "none")));
         }
       }
       function h() {
         const e = document.createElement("li");
-        (e.innerHTML =
+        ((e.innerHTML =
           "<div class='prediction no-result'>No results found...</div>"),
           n.appendChild(e),
           (n.className = ""),
-          (n.style.display = "block");
+          (n.style.display = "block"));
       }
       function E(e) {
         l &&
@@ -112,16 +112,16 @@
             ? (e.forEach((t) => {
                 var c;
                 const s = document.createElement("li");
-                (s.innerHTML = (c = L(t)) != null ? c : ""),
+                ((s.innerHTML = (c = L(t)) != null ? c : ""),
                   s.addEventListener("click", () => {
                     var i;
-                    (l.value = (i = t.description) != null ? i : ""),
+                    ((l.value = (i = t.description) != null ? i : ""),
                       (n.style.display = "none"),
                       m.detailsMulti({ id: t.id, api: t.api }).then((o) => {
                         w(o);
-                      });
+                      }));
                   }),
-                  n.appendChild(s);
+                  n.appendChild(s));
               }),
               (n.className = e[0].api),
               (n.style.display = "block"),
@@ -132,10 +132,10 @@
         const t = "no-viewpoint",
           s = e.highlight;
         let c = "";
-        return (c += `<div class="prediction ${t}">${s}</div>`), c;
+        return ((c += `<div class="prediction ${t}">${s}</div>`), c);
       }
       function w(e) {
-        a && a.setMap(null),
+        (a && a.setMap(null),
           e != null &&
             e.geometry &&
             ((a = new woosmap.map.Marker({
@@ -146,7 +146,7 @@
               },
             })),
             a.setMap(p),
-            p.flyTo({ center: e.geometry.location, zoom: 14 }));
+            p.flyTo({ center: e.geometry.location, zoom: 14 })));
       }
       document.addEventListener("click", (e) => {
         !e.target.closest("#autocomplete-container") &&

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>MultiSearch Autofill Address Form</title>
@@ -62,7 +62,7 @@
       };
       let u, a, o, c, p, m, y, r, f;
       function h() {
-        a &&
+        (a &&
           o &&
           (a.addEventListener("input", v),
           a.addEventListener("keydown", (n) => {
@@ -72,7 +72,7 @@
             }
           })),
           c.addEventListener("click", () => {
-            (a.value = ""),
+            ((a.value = ""),
               (o.style.display = "none"),
               (c.style.display = "none"),
               (p.value = ""),
@@ -80,29 +80,29 @@
               (y.value = ""),
               (r.value = ""),
               (f.value = ""),
-              a.focus();
+              a.focus());
           }),
-          (u = window.woosmap.multisearch(g));
+          (u = window.woosmap.multisearch(g)));
       }
       function v() {
         if (a && o) {
           const n = a.value;
-          n.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+          (n.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             n !== ""
               ? u.autocompleteMulti(n).then(
                   (t) => k(t),
                   (t) => console.error(`Error autocomplete localities: ${t}`),
                 )
-              : ((o.style.display = "none"), (c.style.display = "none"));
+              : ((o.style.display = "none"), (c.style.display = "none")));
         }
       }
       function b() {
         const n = document.createElement("li");
-        (n.innerHTML =
+        ((n.innerHTML =
           "<div class='prediction no-result'>No results found...</div>"),
           o.appendChild(n),
           (o.className = ""),
-          (o.style.display = "block");
+          (o.style.display = "block"));
       }
       function k(n) {
         a &&
@@ -112,14 +112,14 @@
             ? (n.forEach((t) => {
                 var l;
                 const s = document.createElement("li");
-                (s.innerHTML = (l = E(t)) != null ? l : ""),
+                ((s.innerHTML = (l = E(t)) != null ? l : ""),
                   s.addEventListener("click", () => {
-                    (o.style.display = "none"),
+                    ((o.style.display = "none"),
                       u.detailsMulti({ id: t.id, api: t.api }).then((e) => {
                         L(e);
-                      });
+                      }));
                   }),
-                  o.appendChild(s);
+                  o.appendChild(s));
               }),
               (o.className = n[0].api),
               (o.style.display = "block"),
@@ -130,7 +130,7 @@
         const t = "no-viewpoint",
           s = n.highlight;
         let l = "";
-        return (l += `<div class="prediction ${t}">${s}</div>`), l;
+        return ((l += `<div class="prediction ${t}">${s}</div>`), l);
       }
       function L(n) {
         let t = "",
@@ -174,7 +174,7 @@
               break;
             }
           }
-        l && (m.value = l), t && (a.value = t), s && (p.value = s);
+        (l && (m.value = l), t && (a.value = t), s && (p.value = s));
       }
       document.addEventListener("click", (n) => {
         !n.target.closest("#autocomplete-container") &&
@@ -182,7 +182,7 @@
           (o.style.display = "none");
       });
       document.addEventListener("DOMContentLoaded", () => {
-        (a = document.getElementById("autocomplete-input")),
+        ((a = document.getElementById("autocomplete-input")),
           (o = document.getElementById("suggestions-list")),
           (c = document.getElementsByClassName("clear-searchButton")[0]),
           (p = document.querySelector("#address2")),
@@ -190,7 +190,7 @@
           (y = document.querySelector("#locality")),
           (r = document.querySelector("#state")),
           (f = document.querySelector("#country")),
-          h();
+          h());
       });
     </script>
     <style>

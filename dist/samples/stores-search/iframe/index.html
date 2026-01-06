@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Stores Search</title>
@@ -85,7 +85,7 @@
       function E(e) {
         const t = e.map(k),
           s = document.querySelector(".stores-list");
-        s && (s.innerHTML = t.join("")), M(e);
+        (s && (s.innerHTML = t.join("")), M(e));
       }
       function k(e, t) {
         const { name: s, address: i, contact: o, distance: n } = e.properties,
@@ -145,7 +145,7 @@
         e.features.length > 0 && (E(e.features), z(e.features, t), T(e));
       }
       function T(e) {
-        r.data.forEach((t) => r.data.remove(t)), r.data.addGeoJson(e);
+        (r.data.forEach((t) => r.data.remove(t)), r.data.addGeoJson(e));
       }
       function q(e) {
         const t = new woosmap.map.LatLngBounds();
@@ -171,11 +171,11 @@
             },
           });
           const s = q(e);
-          s.extend(t), c.setMap(r), r.fitBounds(s, {}, !0);
+          (s.extend(t), c.setMap(r), r.fitBounds(s, {}, !0));
         }
       }
       function A() {
-        (r = new window.woosmap.map.Map(document.getElementById("map"), L)),
+        ((r = new window.woosmap.map.Map(document.getElementById("map"), L)),
           (u = new woosmap.map.StoresOverlay(w)),
           u.setMap(r),
           r.data.setStyle((e) => ({
@@ -187,7 +187,7 @@
             e.latlng && d(e.latlng);
           }),
           (p = new woosmap.map.StoresService()),
-          (f = new woosmap.map.LocalitiesService());
+          (f = new woosmap.map.LocalitiesService()));
       }
       function h(e) {
         console.error("Error:", e);

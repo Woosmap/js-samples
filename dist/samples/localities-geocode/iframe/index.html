@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Localities Geocode</title>
@@ -40,7 +40,7 @@
       let a, i, c, p;
       const s = {};
       function g() {
-        (a = new window.woosmap.map.Map(document.getElementById("map"), {
+        ((a = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 12,
         })),
@@ -48,7 +48,7 @@
           (p = new woosmap.map.LocalitiesService()),
           a.addListener("click", (t) => {
             f(t.latlng);
-          });
+          }));
       }
       const n = document.getElementById("autocomplete-input"),
         l = document.getElementsByClassName("clear-searchButton")[0];
@@ -62,13 +62,13 @@
             : (l.style.display = "none");
         }));
       l.addEventListener("click", () => {
-        (n.value = ""),
+        ((n.value = ""),
           (l.style.display = "none"),
           i && (i.setMap(null), c.close()),
-          n.focus();
+          n.focus());
       });
       function f(t) {
-        t
+        (t
           ? ((s.latLng = t), delete s.address)
           : (n == null ? void 0 : n.value) !== "" &&
             ((s.address = n.value), delete s.latLng),
@@ -76,10 +76,10 @@
             p
               .geocode(s)
               .then((r) => y(r.results[0]))
-              .catch((r) => console.error("Error geocoding localities:", r));
+              .catch((r) => console.error("Error geocoding localities:", r)));
       }
       function y(t) {
-        i && (i.setMap(null), c.close()),
+        (i && (i.setMap(null), c.close()),
           t != null &&
             t.geometry &&
             ((i = new woosmap.map.Marker({
@@ -93,7 +93,7 @@
             c.setContent(`<span>${t.formatted_address}</span>`),
             c.open(a, i),
             a.setCenter(t.geometry.location),
-            a.setZoom(14));
+            a.setZoom(14)));
       }
       window.initMap = g;
     </script>

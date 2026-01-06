@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Indoor Directions Service</title>
@@ -39,16 +39,16 @@
       })();
       let c, l, n, a;
       function u() {
-        (a = "gdn_doc"),
+        ((a = "gdn_doc"),
           (c = new window.woosmap.map.Map(document.getElementById("map"), {
             center: { lat: 43.6066, lng: 3.9218 },
             zoom: 19.5,
           })),
-          (n = new woosmap.map.IndoorRenderer({ venue: a }));
+          (n = new woosmap.map.IndoorRenderer({ venue: a })));
         const d = new window.woosmap.map.IndoorService();
-        n.addListener("indoor_venue_loaded", (t) => {
+        (n.addListener("indoor_venue_loaded", (t) => {
           var r;
-          console.log(t),
+          (console.log(t),
             n !== null &&
               n.getVenue() !== null &&
               ((l = {
@@ -65,10 +65,10 @@
                 destinationId: null,
               }),
               d.directions(l, (i) => {
-                n.setDirections(i), p();
-              }));
+                (n.setDirections(i), p());
+              })));
         }),
-          n.setMap(c);
+          n.setMap(c));
       }
       const p = () => {
         document.querySelector(".progress").remove();

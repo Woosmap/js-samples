@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Map External Layer</title>
@@ -57,18 +57,18 @@
             alert("Value should be between 0 and 1");
             return;
           }
-          T(n.value), d(i.value, parseFloat(s.value));
+          (T(n.value), d(i.value, parseFloat(s.value)));
         };
-        (n = document.getElementById("woosmap-style-select")),
+        ((n = document.getElementById("woosmap-style-select")),
           (i = document.getElementById("layer-provider-select")),
           (s = document.getElementById("opacity-value-input")),
           n.addEventListener("change", e),
           i.addEventListener("change", e),
-          s.addEventListener("change", e);
+          s.addEventListener("change", e));
       }
       function T(r) {
         let e;
-        r == "retro"
+        (r == "retro"
           ? (e = g)
           : r == "lightgrey"
             ? (e = b)
@@ -79,7 +79,7 @@
             zoom: a.getZoom(),
             center: a.getCenter(),
             styles: e,
-          }));
+          })));
       }
       function d(r, e) {
         let o;

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Stores Overlay Query- Advanced</title>
@@ -43,7 +43,7 @@
           e = i.value,
           s = u.checked ? woosmap.map.query.and : woosmap.map.query.or;
         let r;
-        n !== "all" && e !== "all"
+        (n !== "all" && e !== "all"
           ? (r = s([
               woosmap.map.query.F("type", n),
               woosmap.map.query.F("tag", e),
@@ -53,7 +53,7 @@
             : e !== "all"
               ? (r = s([woosmap.map.query.F("tag", e)]))
               : (r = s([])),
-          d.setQuery(r.toString());
+          d.setQuery(r.toString()));
       }
       function m() {
         const n = { lat: 51.52, lng: -0.13 },
@@ -85,17 +85,17 @@
             zoom: 8,
             center: n,
           });
-        (d = new woosmap.map.StoresOverlay(s)), d.setMap(r), y();
+        ((d = new woosmap.map.StoresOverlay(s)), d.setMap(r), y());
       }
       function y() {
-        (a = document.getElementById("type")),
+        ((a = document.getElementById("type")),
           (i = document.getElementById("tag")),
           (u = document.getElementById("clauseAND")),
           (p = document.getElementById("clauseOR")),
           a.addEventListener("change", c),
           i.addEventListener("change", c),
           u.addEventListener("change", c),
-          p.addEventListener("change", c);
+          p.addEventListener("change", c));
       }
       window.initMap = m;
     </script>

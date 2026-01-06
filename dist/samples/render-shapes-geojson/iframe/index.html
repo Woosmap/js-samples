@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Render Shapes - GeoJSON data</title>
@@ -39,13 +39,13 @@
       })();
       let i;
       function a() {
-        (i = new window.woosmap.map.Map(document.getElementById("map"), {
+        ((i = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 53.51, lng: 8.15 },
           zoom: 4,
         })),
           i.data.loadGeoJson(
             "https://demo.woosmap.com/misc/data/europe.geojson.json",
-          );
+          ));
         const l = { fillColor: "#FFAB00", strokeWeight: 2 };
         i.data.setStyle((s) => {
           let o = l.fillColor;
@@ -67,7 +67,7 @@
               const o = i.data.getFeatureById(r);
               o && o.setProperty("highlighted", !1);
             }
-            s.feature.setProperty("highlighted", !0), (r = s.feature.getId());
+            (s.feature.setProperty("highlighted", !0), (r = s.feature.getId()));
           });
       }
       window.initMap = a;

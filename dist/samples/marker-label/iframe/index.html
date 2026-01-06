@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Marker Label</title>
@@ -48,21 +48,21 @@
             center: s,
           });
         let n = 1;
-        new window.woosmap.map.Marker({
+        (new window.woosmap.map.Marker({
           position: r.getCenter(),
           icon: o,
           label: { text: String(n), color: "white" },
           map: r,
         }),
           r.addListener("click", (e) => {
-            (n += 1),
+            ((n += 1),
               new window.woosmap.map.Marker({
                 position: e.latlng,
                 icon: o,
                 label: { text: String(n), color: "white" },
                 map: r,
-              });
-          });
+              }));
+          }));
       }
       window.initMap = c;
     </script>

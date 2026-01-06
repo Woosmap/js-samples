@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Distance Isochrone</title>
@@ -45,28 +45,28 @@
         u = { lat: 51.5, lng: -0.234 };
       function g(t, n, r) {
         const i = new window.woosmap.map.Marker({ position: t, icon: n });
-        return i.setMap(r), i;
+        return (i.setMap(r), i);
       }
       function y() {
-        (s = new window.woosmap.map.Map(document.getElementById("map"), {
+        ((s = new window.woosmap.map.Map(document.getElementById("map"), {
           zoom: 9,
           center: u,
         })),
           (w = new woosmap.map.DistanceService()),
           (c = g(u, h, s)),
           s.addListener("click", (n) => {
-            c.setMap(null), (c = g(n.latlng, h, s)), p(n.latlng);
-          });
+            (c.setMap(null), (c = g(n.latlng, h, s)), p(n.latlng));
+          }));
         const t = () => {
           p(c.getPosition().toJSON());
         };
-        (m = document.getElementById("isochrone-method-select")),
+        ((m = document.getElementById("isochrone-method-select")),
           (f = document.getElementById("isochrone-mode-select")),
           (a = document.getElementById("isochrone-distance-input")),
           m.addEventListener("change", t),
           f.addEventListener("change", t),
           a.addEventListener("change", t),
-          p(u);
+          p(u));
       }
       function p(t) {
         if (parseInt(a.value) > 120 || parseInt(a.value) <= 0) {
@@ -86,7 +86,7 @@
           });
       }
       function v(t) {
-        l && l.setMap(null),
+        (l && l.setMap(null),
           (l = new woosmap.map.Polyline({
             path: t.isoline.path || null,
             strokeColor: "#b71c1c",
@@ -94,7 +94,7 @@
             strokeWeight: 4,
           })),
           l.setMap(s),
-          I(t.isoline.path || null);
+          I(t.isoline.path || null));
       }
       function I(t) {
         const n = new woosmap.map.LatLngBounds();

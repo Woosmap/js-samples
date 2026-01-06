@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Indoor Navigation Widget</title>
@@ -39,12 +39,12 @@
       })();
       let d, t, a, l, u;
       function p() {
-        (u = "gdn_doc"),
+        ((u = "gdn_doc"),
           (d = new window.woosmap.map.Map(document.getElementById("map"), {
             center: { lat: 43.6066, lng: 3.9218 },
-          }));
+          })));
         const c = { venue: u, responsive: "desktop" };
-        (t = new woosmap.map.IndoorRenderer(c)),
+        ((t = new woosmap.map.IndoorRenderer(c)),
           t.setMap(d),
           t.addListener("indoor_venue_loaded", (i) => {
             l = new window.woosmap.map.IndoorService();
@@ -65,10 +65,10 @@
                 a.setMap(d),
                 f());
             });
-          });
+          }));
       }
       const m = () => {
-          a.setMap(null), t.setDirections(null);
+          (a.setMap(null), t.setDirections(null));
         },
         f = () => {
           document.querySelector(".progress").remove();

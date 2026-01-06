@@ -7,48 +7,39 @@ import React, {
   useRef,
   useState,
 } from "react";
-
 // Custom hook to load the Woosmap JavaScript API
 function useWoosmap(apiKey) {
   const [isLoaded, setIsLoaded] = useState(false);
-
   useEffect(() => {
     const script = document.createElement("script");
-
     script.src = `https://sdk.woosmap.com/map/map.js?key=${apiKey}`;
     script.onload = () => setIsLoaded(true);
     document.body.appendChild(script);
   }, [apiKey]);
   return isLoaded;
 }
-
 // Contexts for Woosmap and the map instance
 const MapContext = createContext(null);
 const MapInstanceContext = createContext(null);
-
 // This component uses the useWoosmap hook to load the Woosmap API and provides it through context.
 const WoosmapAPIProvider = ({ apiKey, children }) => {
   const isLoaded = useWoosmap(apiKey);
-
   if (!isLoaded) {
     return null;
   }
   return <MapContext.Provider value={woosmap}>{children}</MapContext.Provider>;
 };
-
 // This component creates a Woosmap map and provides it through context used by the <Marker/>
 const WoosmapMap = ({ center, zoom, children }) => {
   const mapRef = useRef(null);
   const woosmap = useContext(MapContext);
   const [mapInstance, setMapInstance] = useState(null);
-
   useEffect(() => {
     if (mapRef.current && !mapInstance) {
       const map = new woosmap.map.Map(mapRef.current, {
         zoom,
         center,
       });
-
       setMapInstance(map);
     }
   }, [woosmap, zoom, center]);
@@ -60,7 +51,6 @@ const WoosmapMap = ({ center, zoom, children }) => {
     </MapInstanceContext.Provider>
   );
 };
-
 // Custom SVG components
 const Icon1 = () => (
   <svg
@@ -95,21 +85,17 @@ const Icon3 = () => (
     <path d="m160-120q-33 0-56.5-23.5t-23.5-56.5v-120h800v120q0 33-23.5 56.5t-56.5 23.5zm0-120v40h640v-40zm320-180q-36 0-57 20t-77 20q-56 0-76-20t-56-20q-36 0-57 20t-77 20v-80q36 0 57-20t77-20q56 0 76 20t56 20q36 0 57-20t77-20q56 0 77 20t57 20q36 0 56-20t76-20q56 0 79 20t55 20v80q-56 0-75-20t-55-20q-36 0-58 20t-78 20q-56 0-77-20t-57-20zm-400-140v-40q0-115 108.5-177.5t291.5-62.5q183 0 291.5 62.5t108.5 177.5v40zm400-200q-124 0-207.5 31t-106.5 89h628q-23-58-106.5-89t-207.5-31z" />
   </svg>
 );
-
 // CustomMarker component
 const CustomMarker = ({ icon }) => {
   return <div className="custom-marker">{icon}</div>;
 };
-
 // Marker component
 const Marker = ({ position, icon }) => {
   const woosmap = useContext(MapContext);
   const mapInstance = useContext(MapInstanceContext);
   const [overlay, setOverlay] = useState(null);
-
   useEffect(() => {
     if (!woosmap || !mapInstance || !position) return;
-
     class CustomOverlay extends woosmap.map.OverlayView {
       position;
       containerDiv;
@@ -123,11 +109,8 @@ const Marker = ({ position, icon }) => {
       }
       onAdd() {
         const root = createRoot(this.containerDiv);
-
         root.render(this.icon);
-
         const panes = this.getPanes();
-
         panes.floatPane.appendChild(this.containerDiv);
         this.addEventListener("click", () => {
           alert("Marker clicked!");
@@ -136,12 +119,10 @@ const Marker = ({ position, icon }) => {
       draw() {
         const projection = this.getProjection();
         const point = projection.fromLatLngToDivPixel(this.position);
-
         if (point) {
           // Offset should depend on the style of your icon  - here it is positioned at the middle
           const offsetWidth = this.containerDiv.offsetWidth / 2; // 50% of div width
           const offsetHeight = this.containerDiv.offsetHeight / 2; // 50% of div height
-
           this.containerDiv.style.left = `${point.x - offsetWidth}px`;
           this.containerDiv.style.top = `${point.y - offsetHeight}px`;
         }
@@ -157,23 +138,19 @@ const Marker = ({ position, icon }) => {
         }
       }
     }
-
     if (overlay) {
       overlay.setMap(null);
       setOverlay(null);
     }
-
     const customOverlay = new CustomOverlay(
       position,
       <CustomMarker icon={icon} />,
     );
-
     customOverlay.setMap(mapInstance);
     setOverlay(customOverlay);
   }, [woosmap, position, mapInstance]);
   return null;
 };
-
 const App = () => {
   const initialPosition = {
     lat: 51.5,
@@ -195,10 +172,8 @@ const App = () => {
     </WoosmapAPIProvider>
   );
 };
-
 window.addEventListener("DOMContentLoaded", () => {
   const root = createRoot(document.getElementById("root"));
-
   root.render(<App />);
 });
 // [END woosmap_react_map_with_custom_overlay]

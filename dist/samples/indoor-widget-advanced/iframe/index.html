@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Indoor Widget - Explore more widget configuration options</title>
@@ -52,13 +52,13 @@
           },
           r = { units: "metric" },
           n = new woosmap.map.IndoorWidget(r, s);
-        n.setMap(c),
+        (n.setMap(c),
           n.addListener("indoor_feature_selected", (t) => {
             console.log("Feature: ", t);
           }),
           n.addListener("indoor_venue_loaded", (t) => {
-            console.log("Venue: ", t), l();
-          });
+            (console.log("Venue: ", t), l());
+          }));
       }
       const l = () => {
         document.querySelector(".progress").remove();

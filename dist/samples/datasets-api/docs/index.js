@@ -285,14 +285,14 @@ function bindResultsToPanel(features) {
 
       results.classList.remove("error");
       resultListItem.classList.add("result");
-      Object.keys(attributes).map((key) => {
+      (Object.keys(attributes).map((key) => {
         if (attributes[key]) {
           resultListItem.innerHTML =
             resultListItem.innerHTML +
             `<tr><td><b>${key} </b></td><td>${attributes[key]}</td></tr>`;
         }
       }),
-        results.appendChild(resultListItem);
+        results.appendChild(resultListItem));
     });
   } else {
     results.innerHTML = "No results found";

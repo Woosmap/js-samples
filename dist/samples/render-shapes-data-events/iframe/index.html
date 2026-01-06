@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Render Shapes - Handling Events</title>
@@ -83,11 +83,11 @@
             { lat: 30.16, lng: -98.81 },
             { lat: 29.07, lng: -98.81 },
           ];
-        a.data.add({ geometry: new woosmap.map.Data.Polygon([r, t]) }), c();
+        (a.data.add({ geometry: new woosmap.map.Data.Polygon([r, t]) }), c());
         for (let o = 0; o < i.length; o++) {
           const l = i[o];
           a.data.addListener(l, (e) => {
-            u(l), console.log(e.feature);
+            (u(l), console.log(e.feature));
           });
         }
       }

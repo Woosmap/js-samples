@@ -7,50 +7,41 @@ import React, {
   useRef,
   useState,
 } from "react";
-
 // Custom hook to load the Woosmap JavaScript API
 // This hook creates a script tag with the Woosmap map.js URL and appends it to the body of the document.
 // It sets the state to true when the script loads.
 function useWoosmap(apiKey) {
   const [isLoaded, setIsLoaded] = useState(false);
-
   useEffect(() => {
     const script = document.createElement("script");
-
     script.src = `https://sdk.woosmap.com/map/map.js?key=${apiKey}`;
     script.onload = () => setIsLoaded(true);
     document.body.appendChild(script);
   }, [apiKey]);
   return isLoaded;
 }
-
 // Contexts for Woosmap and the map instance
 const MapContext = createContext(null);
 const MapInstanceContext = createContext(null);
-
 // This component uses the useWoosmap hook to load the Woosmap API and provides it through context.
 const WoosmapAPIProvider = ({ apiKey, children }) => {
   const isLoaded = useWoosmap(apiKey);
-
   if (!isLoaded) {
     return null;
   }
   return <MapContext.Provider value={woosmap}>{children}</MapContext.Provider>;
 };
-
 // This component creates a Woosmap map and provides it through context used by the <Marker/>
 const WoosmapMap = ({ center, zoom, children }) => {
   const mapRef = useRef(null);
   const woosmap = useContext(MapContext);
   const [mapInstance, setMapInstance] = useState(null);
-
   useEffect(() => {
     if (mapRef.current && !mapInstance) {
       const map = new woosmap.map.Map(mapRef.current, {
         zoom,
         center,
       });
-
       setMapInstance(map);
     }
   }, [woosmap, zoom, center]);
@@ -62,19 +53,16 @@ const WoosmapMap = ({ center, zoom, children }) => {
     </MapInstanceContext.Provider>
   );
 };
-
 // This component creates a Woosmap marker to display the selected locality and flyTo it
 const Marker = ({ position }) => {
   const woosmap = useContext(MapContext);
   const mapInstance = useContext(MapInstanceContext);
   const [marker, setMarker] = useState(null);
-
   useEffect(() => {
     if (marker) {
       marker.setMap(null);
       setMarker(null);
     }
-
     if (mapInstance && position) {
       const localityMarker = new woosmap.map.Marker({
         position,
@@ -86,7 +74,6 @@ const Marker = ({ position }) => {
           },
         },
       });
-
       localityMarker.setMap(mapInstance);
       setMarker(localityMarker);
       mapInstance.flyTo({ center: position, zoom: 8 });
@@ -94,7 +81,6 @@ const Marker = ({ position }) => {
   }, [woosmap, position, mapInstance]);
   return null;
 };
-
 // This component creates an input field for searching localities and displays suggestions
 const LocalitiesAutocomplete = ({ onLocalitySelect }) => {
   const woosmap = useContext(MapContext);
@@ -102,48 +88,39 @@ const LocalitiesAutocomplete = ({ onLocalitySelect }) => {
   const [suggestions, setSuggestions] = useState([]);
   const localitiesService = useRef(null);
   const [shouldFetchSuggestions, setShouldFetchSuggestions] = useState(true);
-
   useEffect(() => {
     if (!shouldFetchSuggestions) {
       setShouldFetchSuggestions(true);
       return;
     }
-
     localitiesService.current = new woosmap.map.LocalitiesService();
-
     const fetchSuggestions = async () => {
       if (inputValue && inputValue.length > 0) {
         const suggestions = await localitiesService.current.autocomplete({
           input: inputValue,
           types: ["locality", "address", "postal_code"],
         });
-
         setSuggestions(suggestions.localities || []);
       } else {
         setSuggestions([]);
       }
     };
-
     fetchSuggestions();
   }, [woosmap, inputValue]);
-
   const handleSuggestionClick = async (suggestion) => {
     const localityDetails = await localitiesService.current.getDetails({
       publicId: suggestion.public_id,
     });
-
     onLocalitySelect(localityDetails);
     setShouldFetchSuggestions(false);
     setInputValue(suggestion.description);
     setSuggestions([]);
   };
-
   const handleClearSearch = () => {
     setInputValue("");
     setSuggestions([]);
     onLocalitySelect(null); // Add this line
   };
-
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && suggestions.length > 0) {
       e.preventDefault();
@@ -191,14 +168,12 @@ const LocalitiesAutocomplete = ({ onLocalitySelect }) => {
     </div>
   );
 };
-
 const App = () => {
   const initialPosition = {
     lat: 50.2176,
     lng: -0.8997,
   };
   const [selectedLocality, setSelectedLocality] = useState(null);
-
   const handleLocalitySelect = (localityDetails) => {
     if (localityDetails) {
       setSelectedLocality(localityDetails.result.geometry?.location);
@@ -215,10 +190,8 @@ const App = () => {
     </WoosmapAPIProvider>
   );
 };
-
 window.addEventListener("DOMContentLoaded", () => {
   const root = createRoot(document.getElementById("root"));
-
   root.render(<App />);
 });
 // [END woosmap_react_map_with_localities]

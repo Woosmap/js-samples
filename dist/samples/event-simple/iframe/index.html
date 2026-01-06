@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Handling Events</title>
@@ -50,7 +50,7 @@
               scaledSize: { height: 50, width: 32 },
             },
           });
-        r.setMap(o),
+        (r.setMap(o),
           o.addListener("click", ({ latlng: i }) => {
             o.panTo(i);
           }),
@@ -62,7 +62,7 @@
               url: "https://images.woosmap.com/icons/pin-green.png",
               scaledSize: { height: 42, width: 28 },
             });
-          });
+          }));
       }
       window.initMap = c;
     </script>

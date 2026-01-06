@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>
@@ -44,7 +44,7 @@
         L = ["postal_code"];
       let u, y, c, i, a, p;
       function v() {
-        c &&
+        (c &&
           i &&
           (c.addEventListener("input", M),
           c.addEventListener("keydown", (e) => {
@@ -54,13 +54,13 @@
             }
           })),
           a.addEventListener("click", () => {
-            (c.value = ""),
+            ((c.value = ""),
               (i.style.display = "none"),
               (a.style.display = "none"),
               c.focus(),
-              p.setMap(null);
+              p.setMap(null));
           }),
-          (y = C(_, 0));
+          (y = C(_, 0)));
       }
       function E() {
         u = new woosmap.map.Map(document.getElementById("map"), {
@@ -74,14 +74,14 @@
       function M() {
         if (c && i) {
           const e = c.value;
-          e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+          (e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             e !== ""
               ? y(e)
                   .then(({ localities: t }) => k(t))
                   .catch((t) =>
                     console.error("Error autocomplete localities:", t),
                   )
-              : ((i.style.display = "none"), (a.style.display = "none"));
+              : ((i.style.display = "none"), (a.style.display = "none")));
         }
       }
       function k(e) {
@@ -92,14 +92,14 @@
             ? (e.forEach((t) => {
                 var s;
                 const n = document.createElement("li");
-                (n.innerHTML = (s = g(t)) != null ? s : ""),
+                ((n.innerHTML = (s = g(t)) != null ? s : ""),
                   n.addEventListener("click", () => {
                     var o;
-                    (c.value = (o = t.description) != null ? o : ""),
+                    ((c.value = (o = t.description) != null ? o : ""),
                       b(t.public_id),
-                      (i.style.display = "none");
+                      (i.style.display = "none"));
                   }),
-                  i.appendChild(n);
+                  i.appendChild(n));
               }),
               (i.style.display = "block"),
               (a.style.display = "block"))
@@ -143,7 +143,7 @@
         return t.join("&");
       }
       function I(e) {
-        p && p.setMap(null),
+        (p && p.setMap(null),
           e &&
             e.geometry &&
             ((p = new woosmap.map.Marker({
@@ -154,7 +154,7 @@
               },
             })),
             p.setMap(u),
-            T(e));
+            T(e)));
       }
       function T(e) {
         let t;
@@ -169,17 +169,17 @@
               north: n.northeast.lat,
               west: n.southwest.lng,
             };
-          u.fitBounds(s), u.panTo(e.geometry.location);
+          (u.fitBounds(s), u.panTo(e.geometry.location));
         } else {
           let n = 17;
-          e.types[0] === "address" && (n = 18),
+          (e.types[0] === "address" && (n = 18),
             u.setZoom(n),
-            u.panTo(t.location);
+            u.panTo(t.location));
         }
       }
       function b(e) {
         B(e).then((t) => {
-          t.result.addresses && A(t.result.addresses), t && I(t.result);
+          (t.result.addresses && A(t.result.addresses), t && I(t.result));
         });
       }
       function A(e) {
@@ -190,13 +190,13 @@
             (e.list.forEach((t) => {
               var s;
               const n = document.createElement("li");
-              (n.innerHTML = (s = g(t)) != null ? s : ""),
+              ((n.innerHTML = (s = g(t)) != null ? s : ""),
                 n.addEventListener("click", () => {
                   var o;
-                  (c.value = (o = t.description) != null ? o : ""),
-                    b(t.public_id);
+                  ((c.value = (o = t.description) != null ? o : ""),
+                    b(t.public_id));
                 }),
-                i.appendChild(n);
+                i.appendChild(n));
             }),
             (i.style.display = "block"),
             (a.style.display = "block")));
@@ -212,7 +212,7 @@
           o = null;
         return function (...r) {
           return new Promise((l, d) => {
-            n !== null && clearTimeout(n),
+            (n !== null && clearTimeout(n),
               (s = l),
               (o = d),
               (n = setTimeout(() => {
@@ -223,15 +223,15 @@
                   .catch((f) => {
                     s === l && o === d && d(f);
                   });
-              }, t));
+              }, t)));
           });
         };
       }
       document.addEventListener("DOMContentLoaded", () => {
-        (c = document.getElementById("autocomplete-input")),
+        ((c = document.getElementById("autocomplete-input")),
           (i = document.getElementById("suggestions-list")),
           (a = document.getElementsByClassName("clear-searchButton")[0]),
-          v();
+          v());
       });
       window.initMap = E;
     </script>

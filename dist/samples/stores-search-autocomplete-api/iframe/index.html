@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Stores Search Autocomplete API</title>
@@ -40,7 +40,7 @@
       const p = "woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae";
       let y, r, i, a, u;
       function m() {
-        r &&
+        (r &&
           i &&
           (r.addEventListener("input", h),
           r.addEventListener("keydown", (t) => {
@@ -50,23 +50,23 @@
             }
           })),
           a.addEventListener("click", () => {
-            (r.value = ""),
+            ((r.value = ""),
               (i.style.display = "none"),
               (a.style.display = "none"),
               (u.style.display = "none"),
-              r.focus();
+              r.focus());
           }),
-          (y = $(v, 0));
+          (y = $(v, 0)));
       }
       function h() {
         if (r && i) {
           const t = r.value;
-          t.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+          (t.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             t !== ""
               ? y(t)
                   .then((e) => g(e))
                   .catch((e) => console.error("Error autocomplete stores:", e))
-              : ((i.style.display = "none"), (a.style.display = "none"));
+              : ((i.style.display = "none"), (a.style.display = "none")));
         }
       }
       function g({ predictions: t }) {
@@ -77,14 +77,14 @@
             ? (t.forEach((e) => {
                 var l;
                 const o = document.createElement("li");
-                (o.innerHTML = (l = E(e)) != null ? l : ""),
+                ((o.innerHTML = (l = E(e)) != null ? l : ""),
                   o.addEventListener("click", () => {
                     var n;
-                    (r.value = (n = e.name) != null ? n : ""),
+                    ((r.value = (n = e.name) != null ? n : ""),
                       b(e.store_id),
-                      (i.style.display = "none");
+                      (i.style.display = "none"));
                   }),
-                  i.appendChild(o);
+                  i.appendChild(o));
               }),
               (i.style.display = "block"),
               (a.style.display = "block"))
@@ -93,7 +93,10 @@
       function E(t) {
         const e = "no-viewpoint";
         let o = "";
-        return (o += `<div class="prediction ${e}">${t.highlighted}</div>`), o;
+        return (
+          (o += `<div class="prediction ${e}">${t.highlighted}</div>`),
+          o
+        );
       }
       function L(t) {
         u &&
@@ -127,7 +130,7 @@
           n = null;
         return function (...s) {
           return new Promise((c, d) => {
-            o !== null && clearTimeout(o),
+            (o !== null && clearTimeout(o),
               (l = c),
               (n = d),
               (o = setTimeout(() => {
@@ -138,16 +141,16 @@
                   .catch((f) => {
                     l === c && n === d && d(f);
                   });
-              }, e));
+              }, e)));
           });
         };
       }
       document.addEventListener("DOMContentLoaded", () => {
-        (r = document.getElementById("autocomplete-input")),
+        ((r = document.getElementById("autocomplete-input")),
           (i = document.getElementById("suggestions-list")),
           (a = document.getElementsByClassName("clear-searchButton")[0]),
           (u = document.getElementById("response-container")),
-          m();
+          m());
       });
     </script>
     <style>

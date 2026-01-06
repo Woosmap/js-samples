@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Distance Matrix</title>
@@ -52,15 +52,15 @@
         });
       }
       function p(o, t) {
-        o.forEach((i) => {
-          s.extend(i),
-            u.push(d(i, "O", "https://images.woosmap.com/marker-blue.svg"));
+        (o.forEach((i) => {
+          (s.extend(i),
+            u.push(d(i, "O", "https://images.woosmap.com/marker-blue.svg")));
         }),
           t.forEach((i) => {
-            s.extend(i),
-              u.push(d(i, "D", "https://images.woosmap.com/marker-red.svg"));
+            (s.extend(i),
+              u.push(d(i, "D", "https://images.woosmap.com/marker-red.svg")));
           }),
-          l.fitBounds(s, { top: 70, bottom: 40, left: 50, right: 50 }, !0);
+          l.fitBounds(s, { top: 70, bottom: 40, left: 50, right: 50 }, !0));
       }
       function f() {
         return {
@@ -92,13 +92,13 @@
           m.getDistanceMatrix(r).then(g));
       }
       function w() {
-        (l = new woosmap.map.Map(document.getElementById("map"), {
+        ((l = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 45.53, lng: 2.4 },
           zoom: 10,
         })),
           (m = new woosmap.map.DistanceService()),
           (s = new woosmap.map.LatLngBounds()),
-          h();
+          h());
       }
       window.initMap = w;
     </script>

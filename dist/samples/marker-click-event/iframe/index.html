@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Marker Click Event</title>
@@ -192,10 +192,10 @@
               lng: parseFloat(e.latlng.split(",")[1]),
             },
             a = new woosmap.map.Marker({ position: i, icon: n });
-          a.setMap(c), a.addListener("click", () => t(a, e));
+          (a.setMap(c), a.addListener("click", () => t(a, e)));
         });
         const t = (e, i) => {
-          s && s.setIcon(n), (s = e), e.setIcon(l);
+          (s && s.setIcon(n), (s = e), e.setIcon(l));
           const a = document.getElementById("info");
           a.innerHTML = `<strong>${i.cityName}</strong><span>: ${i.citizens}</span>`;
         };

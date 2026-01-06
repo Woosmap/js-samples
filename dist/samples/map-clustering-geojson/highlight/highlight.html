@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Highlight</title>
@@ -71,8 +71,8 @@
                   return "none";
                 },
                 setLanguage: function (e, t) {
-                  (e.className = e.className.replace(RegExp(n, "gi"), "")),
-                    e.classList.add("language-" + t);
+                  ((e.className = e.className.replace(RegExp(n, "gi"), "")),
+                    e.classList.add("language-" + t));
                 },
                 currentScript: function () {
                   if ("undefined" == typeof document) return null;
@@ -156,11 +156,11 @@
                   selector:
                     'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code',
                 };
-                a.hooks.run("before-highlightall", r),
+                (a.hooks.run("before-highlightall", r),
                   (r.elements = Array.prototype.slice.apply(
                     r.container.querySelectorAll(r.selector),
                   )),
-                  a.hooks.run("before-all-elements-highlight", r);
+                  a.hooks.run("before-all-elements-highlight", r));
                 for (var i, l = 0; (i = r.elements[l++]); )
                   a.highlightElement(i, !0 === n, r.callback);
               },
@@ -179,12 +179,12 @@
                   code: n.textContent,
                 };
                 function u(e) {
-                  (s.highlightedCode = e),
+                  ((s.highlightedCode = e),
                     a.hooks.run("before-insert", s),
                     (s.element.innerHTML = s.highlightedCode),
                     a.hooks.run("after-highlight", s),
                     a.hooks.run("complete", s),
-                    r && r.call(s.element);
+                    r && r.call(s.element));
                 }
                 if (
                   (a.hooks.run("before-sanity-check", s),
@@ -195,12 +195,13 @@
                   !s.code)
                 )
                   return (
-                    a.hooks.run("complete", s), void (r && r.call(s.element))
+                    a.hooks.run("complete", s),
+                    void (r && r.call(s.element))
                   );
                 if ((a.hooks.run("before-highlight", s), s.grammar))
                   if (t && e.Worker) {
                     var c = new Worker(a.filename);
-                    (c.onmessage = function (e) {
+                    ((c.onmessage = function (e) {
                       u(e.data);
                     }),
                       c.postMessage(
@@ -209,7 +210,7 @@
                           code: s.code,
                           immediateClose: !0,
                         }),
-                      );
+                      ));
                   } else u(a.highlight(s.code, s.grammar, s.language));
                 else u(a.util.encode(s.code));
               },
@@ -237,7 +238,7 @@
                   o(e, a, n, a.head, 0),
                   (function (e) {
                     for (var n = [], t = e.head.next; t !== e.tail; )
-                      n.push(t.value), (t = t.next);
+                      (n.push(t.value), (t = t.next));
                     return n;
                   })(a)
                 );
@@ -246,7 +247,7 @@
                 all: {},
                 add: function (e, n) {
                   var t = a.hooks.all;
-                  (t[e] = t[e] || []), t[e].push(n);
+                  ((t[e] = t[e] || []), t[e].push(n));
                 },
                 run: function (e, n) {
                   var t = a.hooks.all[e];
@@ -256,17 +257,17 @@
               Token: i,
             };
           function i(e, n, t, r) {
-            (this.type = e),
+            ((this.type = e),
               (this.content = n),
               (this.alias = t),
-              (this.length = 0 | (r || "").length);
+              (this.length = 0 | (r || "").length));
           }
           function l(e, n, t, r) {
             e.lastIndex = n;
             var a = e.exec(t);
             if (a && r && a[1]) {
               var i = a[1].length;
-              (a.index += i), (a[0] = a[0].slice(i));
+              ((a.index += i), (a[0] = a[0].slice(i)));
             }
             return a;
           }
@@ -310,8 +311,8 @@
                           C !== n.tail && (j < O || "string" == typeof C.value);
                           C = C.next
                         )
-                          L++, (j += C.value.length);
-                        L--, (E = e.slice(A, j)), (P.index -= A);
+                          (L++, (j += C.value.length));
+                        (L--, (E = e.slice(A, j)), (P.index -= A));
                       } else if (!(P = l(b, 0, E, m))) continue;
                       S = P.index;
                       var N = P[0],
@@ -328,8 +329,8 @@
                         L > 1)
                       ) {
                         var I = { cause: f + "," + d, reach: W };
-                        o(e, n, t, w.prev, A, I),
-                          g && I.reach > g.reach && (g.reach = I.reach);
+                        (o(e, n, t, w.prev, A, I),
+                          g && I.reach > g.reach && (g.reach = I.reach));
                       }
                     }
                   }
@@ -339,16 +340,16 @@
           function s() {
             var e = { value: null, prev: null, next: null },
               n = { value: null, prev: e, next: null };
-            (e.next = n), (this.head = e), (this.tail = n), (this.length = 0);
+            ((e.next = n), (this.head = e), (this.tail = n), (this.length = 0));
           }
           function u(e, n, t) {
             var r = n.next,
               a = { value: t, prev: n, next: r };
-            return (n.next = a), (r.prev = a), e.length++, a;
+            return ((n.next = a), (r.prev = a), e.length++, a);
           }
           function c(e, n, t) {
             for (var r = n.next, a = 0; a < t && r !== e.tail; a++) r = r.next;
-            (n.next = r), (r.prev = n), (e.length -= a);
+            ((n.next = r), (r.prev = n), (e.length -= a));
           }
           if (
             ((e.Prism = a),
@@ -372,11 +373,11 @@
                   language: t,
                 },
                 l = n.alias;
-              l &&
+              (l &&
                 (Array.isArray(l)
                   ? Array.prototype.push.apply(i.classes, l)
                   : i.classes.push(l)),
-                a.hooks.run("wrap", i);
+                a.hooks.run("wrap", i));
               var o = "";
               for (var s in i.attributes)
                 o +=
@@ -410,8 +411,8 @@
                         r = t.language,
                         i = t.code,
                         l = t.immediateClose;
-                      e.postMessage(a.highlight(i, a.languages[r], r)),
-                        l && e.close();
+                      (e.postMessage(a.highlight(i, a.languages[r], r)),
+                        l && e.close());
                     },
                     !1,
                   ),
@@ -436,11 +437,11 @@
           }
           return a;
         })(_self);
-      "undefined" != typeof module &&
+      ("undefined" != typeof module &&
         module.exports &&
         (module.exports = Prism),
-        "undefined" != typeof global && (global.Prism = Prism);
-      (Prism.languages.markup = {
+        "undefined" != typeof global && (global.Prism = Prism));
+      ((Prism.languages.markup = {
         comment: { pattern: /<!--(?:(?!<!--)[\s\S])*?-->/, greedy: !0 },
         prolog: { pattern: /<\?[\s\S]+?\?>/, greedy: !0 },
         doctype: {
@@ -503,12 +504,12 @@
         Object.defineProperty(Prism.languages.markup.tag, "addInlined", {
           value: function (a, e) {
             var s = {};
-            (s["language-" + e] = {
+            ((s["language-" + e] = {
               pattern: /(^<!\[CDATA\[)[\s\S]+?(?=\]\]>$)/i,
               lookbehind: !0,
               inside: Prism.languages[e],
             }),
-              (s.cdata = /^<!\[CDATA\[|\]\]>$/i);
+              (s.cdata = /^<!\[CDATA\[|\]\]>$/i));
             var t = {
               "included-cdata": {
                 pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
@@ -520,7 +521,7 @@
               inside: Prism.languages[e],
             };
             var n = {};
-            (n[a] = {
+            ((n[a] = {
               pattern: RegExp(
                 "(<__[^>]*>)(?:<!\\[CDATA\\[(?:[^\\]]|\\](?!\\]>))*\\]\\]>|(?!<!\\[CDATA\\[)[^])*?(?=</__>)".replace(
                   /__/g,
@@ -534,7 +535,7 @@
               greedy: !0,
               inside: t,
             }),
-              Prism.languages.insertBefore("markup", "cdata", n);
+              Prism.languages.insertBefore("markup", "cdata", n));
           },
         }),
         Object.defineProperty(Prism.languages.markup.tag, "addAttribute", {
@@ -574,11 +575,11 @@
         (Prism.languages.xml = Prism.languages.extend("markup", {})),
         (Prism.languages.ssml = Prism.languages.xml),
         (Prism.languages.atom = Prism.languages.xml),
-        (Prism.languages.rss = Prism.languages.xml);
+        (Prism.languages.rss = Prism.languages.xml));
       !(function (s) {
         var e =
           /(?:"(?:\\(?:\r\n|[\s\S])|[^"\\\r\n])*"|'(?:\\(?:\r\n|[\s\S])|[^'\\\r\n])*')/;
-        (s.languages.css = {
+        ((s.languages.css = {
           comment: /\/\*[\s\S]*?\*\//,
           atrule: {
             pattern: RegExp(
@@ -633,7 +634,7 @@
           },
           punctuation: /[(){};:,]/,
         }),
-          (s.languages.css.atrule.inside.rest = s.languages.css);
+          (s.languages.css.atrule.inside.rest = s.languages.css));
         var t = s.languages.markup;
         t &&
           (t.tag.addInlined("style", "css"),
@@ -666,7 +667,7 @@
         operator: /[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,
         punctuation: /[{}[\];(),.:]/,
       };
-      (Prism.languages.javascript = Prism.languages.extend("clike", {
+      ((Prism.languages.javascript = Prism.languages.extend("clike", {
         "class-name": [
           Prism.languages.clike["class-name"],
           {
@@ -792,7 +793,7 @@
             "on(?:abort|blur|change|click|composition(?:end|start|update)|dblclick|error|focus(?:in|out)?|key(?:down|up)|load|mouse(?:down|enter|leave|move|out|over|up)|reset|resize|scroll|select|slotchange|submit|unload|wheel)",
             "javascript",
           )),
-        (Prism.languages.js = Prism.languages.javascript);
+        (Prism.languages.js = Prism.languages.javascript));
       !(function (t) {
         var n = t.util.clone(t.languages.javascript),
           e = "(?:\\{<S>*\\.{3}(?:[^{}]|<BRACES>)*\\})";
@@ -811,7 +812,7 @@
             RegExp(t, n)
           );
         }
-        (e = a(e).source),
+        ((e = a(e).source),
           (t.languages.jsx = t.languages.extend("markup", n)),
           (t.languages.jsx.tag.pattern = a(
             "</?(?:[\\w.:-]+(?:<S>+(?:[\\w.:$-]+(?:=(?:\"(?:\\\\[^]|[^\\\\\"])*\"|'(?:\\\\[^]|[^\\\\'])*'|[^\\s{'\"/>=]+|<BRACES>))?|<SPREAD>))*<S>*/?)?>",
@@ -845,7 +846,7 @@
               },
             },
             t.languages.jsx.tag,
-          );
+          ));
         var s = function (t) {
             return t
               ? "string" == typeof t
@@ -889,7 +890,7 @@
                   0 === e[e.length - 1].openedBraces)
               ) {
                 var r = s(o);
-                a < n.length - 1 &&
+                (a < n.length - 1 &&
                   ("string" == typeof n[a + 1] ||
                     "plain-text" === n[a + 1].type) &&
                   ((r += s(n[a + 1])), n.splice(a + 1, 1)),
@@ -897,7 +898,7 @@
                     ("string" == typeof n[a - 1] ||
                       "plain-text" === n[a - 1].type) &&
                     ((r = s(n[a - 1]) + r), n.splice(a - 1, 1), a--),
-                  (n[a] = new t.Token("plain-text", r, null, r));
+                  (n[a] = new t.Token("plain-text", r, null, r)));
               }
               o.content && "string" != typeof o.content && g(o.content);
             }
@@ -907,7 +908,7 @@
         });
       })(Prism);
       !(function (e) {
-        (e.languages.typescript = e.languages.extend("javascript", {
+        ((e.languages.typescript = e.languages.extend("javascript", {
           "class-name": {
             pattern:
               /(\b(?:class|extends|implements|instanceof|interface|new|type)\s+)(?!keyof\b)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?:\s*<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>)?/,
@@ -924,9 +925,9 @@
             /\btype\b(?=\s*(?:[\{*]|$))/,
           ),
           delete e.languages.typescript.parameter,
-          delete e.languages.typescript["literal-property"];
+          delete e.languages.typescript["literal-property"]);
         var s = e.languages.extend("typescript", {});
-        delete s["class-name"],
+        (delete s["class-name"],
           (e.languages.typescript["class-name"].inside = s),
           e.languages.insertBefore("typescript", "function", {
             decorator: {
@@ -951,19 +952,19 @@
               },
             },
           }),
-          (e.languages.ts = e.languages.typescript);
+          (e.languages.ts = e.languages.typescript));
       })(Prism);
       !(function (e) {
         var a = e.util.clone(e.languages.typescript);
-        (e.languages.tsx = e.languages.extend("jsx", a)),
+        ((e.languages.tsx = e.languages.extend("jsx", a)),
           delete e.languages.tsx.parameter,
-          delete e.languages.tsx["literal-property"];
+          delete e.languages.tsx["literal-property"]);
         var t = e.languages.tsx.tag;
-        (t.pattern = RegExp(
+        ((t.pattern = RegExp(
           "(^|[^\\w$]|(?=</))(?:" + t.pattern.source + ")",
           t.pattern.flags,
         )),
-          (t.lookbehind = !0);
+          (t.lookbehind = !0));
       })(Prism);
       !(function () {
         if ("undefined" != typeof Prism && "undefined" != typeof document) {
@@ -985,13 +986,13 @@
             e = "data-src-status",
             i =
               'pre[data-src]:not([data-src-status="loaded"]):not([data-src-status="loading"])';
-          Prism.hooks.add("before-highlightall", function (t) {
+          (Prism.hooks.add("before-highlightall", function (t) {
             t.selector += ", " + i;
           }),
             Prism.hooks.add("before-sanity-check", function (a) {
               var n = a.element;
               if (n.matches(i)) {
-                (a.code = ""), n.setAttribute(e, "loading");
+                ((a.code = ""), n.setAttribute(e, "loading"));
                 var s = n.appendChild(document.createElement("CODE"));
                 s.textContent = "Loading…";
                 var r = n.getAttribute("data-src"),
@@ -1000,12 +1001,12 @@
                   var o = (/\.(\w+)$/.exec(r) || [, "none"])[1];
                   l = t[o] || o;
                 }
-                Prism.util.setLanguage(s, l), Prism.util.setLanguage(n, l);
+                (Prism.util.setLanguage(s, l), Prism.util.setLanguage(n, l));
                 var h = Prism.plugins.autoloader;
-                h && h.loadLanguages(l),
+                (h && h.loadLanguages(l),
                   (function (t, i, a) {
                     var r = new XMLHttpRequest();
-                    r.open("GET", t, !0),
+                    (r.open("GET", t, !0),
                       (r.onreadystatechange = function () {
                         4 == r.readyState &&
                           (r.status < 400 && r.responseText
@@ -1031,7 +1032,7 @@
                                   var a = t.split(/\r\n?|\n/g),
                                     r = i[0],
                                     l = null == i[1] ? a.length : i[1];
-                                  r < 0 && (r += a.length),
+                                  (r < 0 && (r += a.length),
                                     (r = Math.max(
                                       0,
                                       Math.min(r - 1, a.length),
@@ -1043,9 +1044,10 @@
                                       n.setAttribute(
                                         "data-start",
                                         String(r + 1),
-                                      );
+                                      ));
                                 }
-                                (s.textContent = t), Prism.highlightElement(s);
+                                ((s.textContent = t),
+                                  Prism.highlightElement(s));
                               })(r.responseText)
                             : r.status >= 400
                               ? a(
@@ -1056,10 +1058,10 @@
                                 )
                               : a("✖ Error: File does not exist or is empty"));
                       }),
-                      r.send(null);
+                      r.send(null));
                   })(r, 0, function (t) {
-                    n.setAttribute(e, "failed"), (s.textContent = t);
-                  });
+                    (n.setAttribute(e, "failed"), (s.textContent = t));
+                  }));
               }
             }),
             (Prism.plugins.fileHighlight = {
@@ -1067,26 +1069,299 @@
                 for (
                   var e, a = (t || document).querySelectorAll(i), n = 0;
                   (e = a[n++]);
-
                 )
                   Prism.highlightElement(e);
               },
-            });
+            }));
           var a = !1;
           Prism.fileHighlight = function () {
-            a ||
+            (a ||
               (console.warn(
                 "Prism.fileHighlight is deprecated. Use `Prism.plugins.fileHighlight.highlight` instead.",
               ),
               (a = !0)),
-              Prism.plugins.fileHighlight.highlight.apply(this, arguments);
+              Prism.plugins.fileHighlight.highlight.apply(this, arguments));
           };
         }
       })();
     </script>
     <style>
-      pre[class*="language-"], code[class*="language-"] {color: #24292f;font-size: 13px;text-shadow: none;font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;direction: ltr;text-align: left;white-space: pre;word-spacing: normal;word-break: normal;line-height: 1.5;-moz-tab-size: 4;-o-tab-size: 4;tab-size: 4;-webkit-hyphens: none;-moz-hyphens: none;-ms-hyphens: none;hyphens: none;}pre[class*="language-"]::selection, code[class*="language-"]::selection, pre[class*="language-"]::mozselection, code[class*="language-"]::mozselection {text-shadow: none;background: #9fc6e9;}@media print {pre[class*="language-"], code[class*="language-"] {text-shadow: none;}}pre[class*="language-"] {padding: 1.5em;margin: 0;overflow: auto; width: 100%;}:not(pre) > code[class*="language-"] {padding: .1em .3em;border-radius: .3em;color: #24292f;background: #eff1f3;}pre[data-line] {position: relative;}pre[class*="language-"] > code[class*="language-"] {position: relative;z-index: 1;}.line-highlight {position: absolute;left: 0;right: 0;padding: inherit 0;margin-top: 1em;background: #fff8c5;box-shadow: inset 5px 0 0 #eed888;z-index: 0;pointer-events: none;line-height: inherit;white-space: pre;}.namespace {opacity: .7;}.token.comment, .token.prolog, .token.doctype, .token.cdata {color: #6e7781;}.token.punctuation {color: #24292f;}.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol, .token.deleted {color: #0550ae;}.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted {color: #0a3069;}.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string {color: #0550ae;}.token.atrule, .token.attr-value, .token.keyword {color: #cf222e;}.token.function {color: #8250df;}.token.regex, .token.important, .token.variable {color: #0a3069;}.token.important, .token.bold {font-weight: bold;}.token.italic {font-style: italic;}.token.entity {cursor: help;}
-      .ContentSnippet-module--content-snippet{height:100%}.CodeSnippet-module--snippets-wrap{border-radius:4px;display:flex;}.CodeSnippet-module--snippets-multilang .CodeSnippet-module--snippets-wrap{display:none;width:100%;outline:0}.CodeSnippet-module--snippets-multilang .CodeSnippet-module--snippets-wrap[active]{display:flex}.ContentSnippet-module--code-snippet{background-color:#F6F8FA;overflow:hidden;display:flex;flex-direction:column;height:100%;width:100%}.CodeSnippet-module--snippets-multilang{display:flex;height:100%;width:100%;overflow:auto}.CodeSnippet-module--header{align-items:center;border-bottom:1px solid rgba(,29,28,29,0.13);box-sizing:border-box;display:flex;height:48px;justify-content:space-between;padding:0 18px;background-color:#fff}.CodeSnippet-module--header-title{color:#778589;flex-grow:0;font-family:Graphik Web,Helvetica Neue,Helvetica,Arial,Verdana,sans-serif;font-size:14px;font-style:normal;font-weight:500;line-height:15px;margin-right:8px;margin-top:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.CodeSnippet-module--header-buttons{display:inline-flex;flex-grow:1;justify-content:flex-end}.CodeSnippet-module--header--single{position:absolute;right:0;background:transparent;border:none;height:26px;padding:4px 4px 0}.CodeSnippet-module--header--single .CodeSnippet-module--copy-wrap{margin-left:6px}.CodeSnippet-module--header--multilang .CodeSnippet-module--language{cursor:pointer}.CodeSnippet-module--copy-wrap{display:flex;margin-left:15px}.CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet{background:transparent;border:0;color:#778589;cursor:pointer;outline:none;padding:0;transition:all .2s ease-in-out}.CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet-icon-wrap{display:inline-block;width:24px;height:24px}.CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet:hover,.CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet:focus{color:#F50157}.CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet .CodeSnippet-module--icon-check{display:none;padding:6px 3px!important}.CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet .CodeSnippet-module--icon-check path{fill:#F50157}.CodeSnippet-module--copy-wrap svg{padding-top:0!important}.CodeSnippet-module--language{color:#778589;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:500;margin-left:15px;line-height:48px;max-width:200px;text-align:center;transition:color .2s;position:relative}.CodeSnippet-module--language:after{border-radius:0;border-top:2px solid transparent;bottom:0;content:"";display:block;position:absolute;left:0;right:0}.CodeSnippet-module--language:focus,.CodeSnippet-module--language:hover{border-color:#778589}.CodeSnippet-module--language[active]{color:inherit}.CodeSnippet-module--language[active]:after{border-color:#F50157}
+      pre[class*="language-"],
+      code[class*="language-"] {
+        color: #24292f;
+        font-size: 13px;
+        text-shadow: none;
+        font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+        direction: ltr;
+        text-align: left;
+        white-space: pre;
+        word-spacing: normal;
+        word-break: normal;
+        line-height: 1.5;
+        -moz-tab-size: 4;
+        -o-tab-size: 4;
+        tab-size: 4;
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
+        hyphens: none;
+      }
+      pre[class*="language-"]::selection,
+      code[class*="language-"]::selection,
+      pre[class*="language-"]::mozselection,
+      code[class*="language-"]::mozselection {
+        text-shadow: none;
+        background: #9fc6e9;
+      }
+      @media print {
+        pre[class*="language-"],
+        code[class*="language-"] {
+          text-shadow: none;
+        }
+      }
+      pre[class*="language-"] {
+        padding: 1.5em;
+        margin: 0;
+        overflow: auto;
+        width: 100%;
+      }
+      :not(pre) > code[class*="language-"] {
+        padding: 0.1em 0.3em;
+        border-radius: 0.3em;
+        color: #24292f;
+        background: #eff1f3;
+      }
+      pre[data-line] {
+        position: relative;
+      }
+      pre[class*="language-"] > code[class*="language-"] {
+        position: relative;
+        z-index: 1;
+      }
+      .line-highlight {
+        position: absolute;
+        left: 0;
+        right: 0;
+        padding: inherit 0;
+        margin-top: 1em;
+        background: #fff8c5;
+        box-shadow: inset 5px 0 0 #eed888;
+        z-index: 0;
+        pointer-events: none;
+        line-height: inherit;
+        white-space: pre;
+      }
+      .namespace {
+        opacity: 0.7;
+      }
+      .token.comment,
+      .token.prolog,
+      .token.doctype,
+      .token.cdata {
+        color: #6e7781;
+      }
+      .token.punctuation {
+        color: #24292f;
+      }
+      .token.property,
+      .token.tag,
+      .token.boolean,
+      .token.number,
+      .token.constant,
+      .token.symbol,
+      .token.deleted {
+        color: #0550ae;
+      }
+      .token.selector,
+      .token.attr-name,
+      .token.string,
+      .token.char,
+      .token.builtin,
+      .token.inserted {
+        color: #0a3069;
+      }
+      .token.operator,
+      .token.entity,
+      .token.url,
+      .language-css .token.string,
+      .style .token.string {
+        color: #0550ae;
+      }
+      .token.atrule,
+      .token.attr-value,
+      .token.keyword {
+        color: #cf222e;
+      }
+      .token.function {
+        color: #8250df;
+      }
+      .token.regex,
+      .token.important,
+      .token.variable {
+        color: #0a3069;
+      }
+      .token.important,
+      .token.bold {
+        font-weight: bold;
+      }
+      .token.italic {
+        font-style: italic;
+      }
+      .token.entity {
+        cursor: help;
+      }
+      .ContentSnippet-module--content-snippet {
+        height: 100%;
+      }
+      .CodeSnippet-module--snippets-wrap {
+        border-radius: 4px;
+        display: flex;
+      }
+      .CodeSnippet-module--snippets-multilang
+        .CodeSnippet-module--snippets-wrap {
+        display: none;
+        width: 100%;
+        outline: 0;
+      }
+      .CodeSnippet-module--snippets-multilang
+        .CodeSnippet-module--snippets-wrap[active] {
+        display: flex;
+      }
+      .ContentSnippet-module--code-snippet {
+        background-color: #f6f8fa;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+      }
+      .CodeSnippet-module--snippets-multilang {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+      }
+      .CodeSnippet-module--header {
+        align-items: center;
+        border-bottom: 1px solid rgba(, 29, 28, 29, 0.13);
+        box-sizing: border-box;
+        display: flex;
+        height: 48px;
+        justify-content: space-between;
+        padding: 0 18px;
+        background-color: #fff;
+      }
+      .CodeSnippet-module--header-title {
+        color: #778589;
+        flex-grow: 0;
+        font-family:
+          Graphik Web,
+          Helvetica Neue,
+          Helvetica,
+          Arial,
+          Verdana,
+          sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 15px;
+        margin-right: 8px;
+        margin-top: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .CodeSnippet-module--header-buttons {
+        display: inline-flex;
+        flex-grow: 1;
+        justify-content: flex-end;
+      }
+      .CodeSnippet-module--header--single {
+        position: absolute;
+        right: 0;
+        background: transparent;
+        border: none;
+        height: 26px;
+        padding: 4px 4px 0;
+      }
+      .CodeSnippet-module--header--single .CodeSnippet-module--copy-wrap {
+        margin-left: 6px;
+      }
+      .CodeSnippet-module--header--multilang .CodeSnippet-module--language {
+        cursor: pointer;
+      }
+      .CodeSnippet-module--copy-wrap {
+        display: flex;
+        margin-left: 15px;
+      }
+      .CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet {
+        background: transparent;
+        border: 0;
+        color: #778589;
+        cursor: pointer;
+        outline: none;
+        padding: 0;
+        transition: all 0.2s ease-in-out;
+      }
+      .CodeSnippet-module--copy-wrap
+        .CodeSnippet-module--copy-snippet-icon-wrap {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+      }
+      .CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet:hover,
+      .CodeSnippet-module--copy-wrap .CodeSnippet-module--copy-snippet:focus {
+        color: #f50157;
+      }
+      .CodeSnippet-module--copy-wrap
+        .CodeSnippet-module--copy-snippet
+        .CodeSnippet-module--icon-check {
+        display: none;
+        padding: 6px 3px !important;
+      }
+      .CodeSnippet-module--copy-wrap
+        .CodeSnippet-module--copy-snippet
+        .CodeSnippet-module--icon-check
+        path {
+        fill: #f50157;
+      }
+      .CodeSnippet-module--copy-wrap svg {
+        padding-top: 0 !important;
+      }
+      .CodeSnippet-module--language {
+        color: #778589;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 500;
+        margin-left: 15px;
+        line-height: 48px;
+        max-width: 200px;
+        text-align: center;
+        transition: color 0.2s;
+        position: relative;
+      }
+      .CodeSnippet-module--language:after {
+        border-radius: 0;
+        border-top: 2px solid transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+      }
+      .CodeSnippet-module--language:focus,
+      .CodeSnippet-module--language:hover {
+        border-color: #778589;
+      }
+      .CodeSnippet-module--language[active] {
+        color: inherit;
+      }
+      .CodeSnippet-module--language[active]:after {
+        border-color: #f50157;
+      }
     </style>
     <style>
       html,

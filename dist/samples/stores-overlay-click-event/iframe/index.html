@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Stores Overlay Click Event</title>
@@ -60,7 +60,7 @@
             zoom: 13,
             center: c,
           });
-        new woosmap.map.StoresOverlay(s).setMap(n),
+        (new woosmap.map.StoresOverlay(s).setMap(n),
           window.woosmap.map.event.addListener(n, "store_selected", (e) => {
             const t = (o) =>
                 `${o.address.lines}, ${o.address.zipcode} ${o.address.city}`,
@@ -75,7 +75,7 @@
             }
             const d = document.getElementById("info");
             d.innerHTML = a(e.properties);
-          });
+          }));
       }
       window.initMap = l;
     </script>

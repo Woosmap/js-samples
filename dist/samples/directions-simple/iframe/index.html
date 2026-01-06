@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Directions Service</title>
@@ -41,19 +41,19 @@
       function f() {
         const o = new woosmap.map.DirectionsService(),
           t = new woosmap.map.DirectionsRenderer({});
-        (c = new woosmap.map.Map(document.getElementById("map"), {
+        ((c = new woosmap.map.Map(document.getElementById("map"), {
           zoom: 7,
           center: { lat: 43.5, lng: 2.4 },
         })),
-          t.setMap(c);
+          t.setMap(c));
         const r = () => {
           l(o, t);
         };
-        (d = document.getElementById("from")),
+        ((d = document.getElementById("from")),
           (s = document.getElementById("to")),
           d.addEventListener("change", r),
           s.addEventListener("change", r),
-          l(o, t);
+          l(o, t));
       }
       function l(o, t) {
         const r = (i) => {

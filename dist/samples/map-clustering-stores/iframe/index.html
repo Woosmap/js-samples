@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Map Clustering with Stores</title>
@@ -68,10 +68,10 @@
         constructor(t, e = 64, s = Float64Array, r) {
           if (isNaN(t) || t < 0)
             throw new Error(`Unpexpected numItems value: ${t}.`);
-          (this.numItems = +t),
+          ((this.numItems = +t),
             (this.nodeSize = Math.min(Math.max(+e, 2), 65535)),
             (this.ArrayType = s),
-            (this.IndexArrayType = t < 65536 ? Uint16Array : Uint32Array);
+            (this.IndexArrayType = t < 65536 ? Uint16Array : Uint32Array));
           const n = z.indexOf(this.ArrayType),
             c = t * 2 * this.ArrayType.BYTES_PER_ELEMENT,
             l = t * this.IndexArrayType.BYTES_PER_ELEMENT,
@@ -132,11 +132,11 @@
             const d = (u + a) >> 1,
               y = c[2 * d],
               g = c[2 * d + 1];
-            y >= t && y <= s && g >= e && g <= r && h.push(n[d]),
+            (y >= t && y <= s && g >= e && g <= r && h.push(n[d]),
               (p === 0 ? t <= y : e <= g) &&
                 (o.push(u), o.push(d - 1), o.push(1 - p)),
               (p === 0 ? s >= y : r >= g) &&
-                (o.push(d + 1), o.push(a), o.push(1 - p));
+                (o.push(d + 1), o.push(a), o.push(1 - p)));
           }
           return h;
         }
@@ -159,11 +159,11 @@
             const d = (u + a) >> 1,
               y = n[2 * d],
               g = n[2 * d + 1];
-            k(y, g, t, e) <= h && o.push(r[d]),
+            (k(y, g, t, e) <= h && o.push(r[d]),
               (p === 0 ? t - s <= y : e - s <= g) &&
                 (l.push(u), l.push(d - 1), l.push(1 - p)),
               (p === 0 ? t + s >= y : e + s >= g) &&
-                (l.push(d + 1), l.push(a), l.push(1 - p));
+                (l.push(d + 1), l.push(a), l.push(1 - p)));
           }
           return o;
         }
@@ -171,9 +171,9 @@
       function N(i, t, e, s, r, n) {
         if (r - s <= e) return;
         const c = (s + r) >> 1;
-        K(i, t, c, s, r, n),
+        (K(i, t, c, s, r, n),
           N(i, t, e, s, c - 1, 1 - n),
-          N(i, t, e, c + 1, r, 1 - n);
+          N(i, t, e, c + 1, r, 1 - n));
       }
       function K(i, t, e, s, r, n) {
         for (; r > s; ) {
@@ -197,17 +197,17 @@
             for (b(i, t, l, o), l++, o--; t[2 * l + n] < c; ) l++;
             for (; t[2 * o + n] > c; ) o--;
           }
-          t[2 * s + n] === c ? b(i, t, s, o) : (o++, b(i, t, o, r)),
+          (t[2 * s + n] === c ? b(i, t, s, o) : (o++, b(i, t, o, r)),
             o <= e && (s = o + 1),
-            e <= o && (r = o - 1);
+            e <= o && (r = o - 1));
         }
       }
       function b(i, t, e, s) {
-        F(i, e, s), F(t, 2 * e, 2 * s), F(t, 2 * e + 1, 2 * s + 1);
+        (F(i, e, s), F(t, 2 * e, 2 * s), F(t, 2 * e + 1, 2 * s + 1));
       }
       function F(i, t, e) {
         const s = i[t];
-        (i[t] = i[e]), (i[e] = s);
+        ((i[t] = i[e]), (i[e] = s));
       }
       function k(i, t, e, s) {
         const r = i - e,
@@ -236,16 +236,16 @@
         G = 6;
       class Q {
         constructor(t) {
-          (this.options = Object.assign(Object.create(Y), t)),
+          ((this.options = Object.assign(Object.create(Y), t)),
             (this.trees = new Array(this.options.maxZoom + 1)),
             (this.stride = this.options.reduce ? 7 : 6),
-            (this.clusterProps = []);
+            (this.clusterProps = []));
         }
         load(t) {
           const { log: e, minZoom: s, maxZoom: r } = this.options;
           e && console.time("total time");
           const n = `prepare ${t.length} points`;
-          e && console.time(n), (this.points = t);
+          (e && console.time(n), (this.points = t));
           const c = [];
           for (let o = 0; o < t.length; o++) {
             const h = t[o];
@@ -253,22 +253,22 @@
             const [p, a] = h.geometry.coordinates,
               u = W(O(p)),
               d = W(S(a));
-            c.push(u, d, 1 / 0, o, -1, 1), this.options.reduce && c.push(0);
+            (c.push(u, d, 1 / 0, o, -1, 1), this.options.reduce && c.push(0));
           }
           let l = (this.trees[r + 1] = this._createTree(c));
           e && console.timeEnd(n);
           for (let o = r; o >= s; o--) {
             const h = +Date.now();
-            (l = this.trees[o] = this._createTree(this._cluster(l, o))),
+            ((l = this.trees[o] = this._createTree(this._cluster(l, o))),
               e &&
                 console.log(
                   "z%d: %d clusters in %dms",
                   o,
                   l.numItems,
                   +Date.now() - h,
-                );
+                ));
           }
-          return e && console.timeEnd("total time"), this;
+          return (e && console.timeEnd("total time"), this);
         }
         getClusters(t, e) {
           let s = ((((t[0] + 180) % 360) + 360) % 360) - 180;
@@ -276,7 +276,7 @@
           let n =
             t[2] === 180 ? 180 : ((((t[2] + 180) % 360) + 360) % 360) - 180;
           const c = Math.max(-90, Math.min(90, t[3]));
-          if (t[2] - t[0] >= 360) (s = -180), (n = 180);
+          if (t[2] - t[0] >= 360) ((s = -180), (n = 180));
           else if (s > n) {
             const a = this.getClusters([s, r, 180, c], e),
               u = this.getClusters([-180, r, n, c], e);
@@ -321,9 +321,9 @@
           return a;
         }
         getLeaves(t, e, s) {
-          (e = e || 10), (s = s || 0);
+          ((e = e || 10), (s = s || 0));
           const r = [];
-          return this._appendLeaves(r, t, e, s, 0), r;
+          return (this._appendLeaves(r, t, e, s, 0), r);
         }
         getTile(t, e, s) {
           const r = this.trees[this._limitZoom(t)],
@@ -397,19 +397,20 @@
             Float32Array,
           );
           for (let s = 0; s < t.length; s += this.stride) e.add(t[s], t[s + 1]);
-          return e.finish(), (e.data = t), e;
+          return (e.finish(), (e.data = t), e);
         }
         _addTileFeatures(t, e, s, r, n, c) {
           for (const l of t) {
             const o = l * this.stride,
               h = e[o + x] > 1;
             let p, a, u;
-            if (h) (p = J(e, o, this.clusterProps)), (a = e[o]), (u = e[o + 1]);
+            if (h)
+              ((p = J(e, o, this.clusterProps)), (a = e[o]), (u = e[o + 1]));
             else {
               const g = this.points[e[o + E]];
               p = g.properties;
               const [f, m] = g.geometry.coordinates;
-              (a = O(f)), (u = S(m));
+              ((a = O(f)), (u = S(m)));
             }
             const d = {
               type: 1,
@@ -422,11 +423,11 @@
               tags: p,
             };
             let y;
-            h || this.options.generateId
+            (h || this.options.generateId
               ? (y = e[o + E])
               : (y = this.points[e[o + E]].id),
               y !== void 0 && (d.id = y),
-              c.features.push(d);
+              c.features.push(d));
           }
         }
         _limitZoom(t) {
@@ -469,7 +470,7 @@
                 if (o[M + A] <= e) continue;
                 o[M + A] = e;
                 const j = o[M + x];
-                (m += o[M] * j),
+                ((m += o[M] * j),
                   (w += o[M + 1] * j),
                   (o[M + C] = L),
                   n &&
@@ -477,11 +478,11 @@
                       ((T = this._map(o, a, !0)),
                       (R = this.clusterProps.length),
                       this.clusterProps.push(T)),
-                    n(T, this._map(o, M)));
+                    n(T, this._map(o, M))));
               }
-              (o[a + C] = L),
+              ((o[a + C] = L),
                 h.push(m / f, w / f, 1 / 0, L, -1, f),
-                n && h.push(R);
+                n && h.push(R));
             } else {
               for (let m = 0; m < p; m++) h.push(o[a + m]);
               if (f > 1)
@@ -559,7 +560,7 @@
       const tt = "https://images.woosmap.com/dot-green.svg",
         et = { radius: 30, extent: 256, maxZoom: 15, minPoints: 2 };
       function st() {
-        (I = new woosmap.map.InfoWindow({})),
+        ((I = new woosmap.map.InfoWindow({})),
           (_ = new window.woosmap.map.Map(document.getElementById("map"), {
             center: { lat: 53.3485, lng: -6.257 },
             zoom: 12,
@@ -627,9 +628,9 @@
             ],
           })),
           nt().then((i) => {
-            ($ = new Q(et).load(i)), v();
+            (($ = new Q(et).load(i)), v());
           }),
-          ot();
+          ot());
       }
       function nt() {
         const i = [],
@@ -649,17 +650,17 @@
               )
               .catch((n) => {
                 throw (
-                  (console.error(n),
-                  new Error(`Error getting all stores: ${n.message}`))
+                  console.error(n),
+                  new Error(`Error getting all stores: ${n.message}`)
                 );
               })
           );
         return s();
       }
       function ot() {
-        _.addListener("dragend", U(v, 20)),
+        (_.addListener("dragend", U(v, 20)),
           _.addListener("zoom_changed", U(v, 20)),
-          window.addEventListener("resize", U(v, 100));
+          window.addEventListener("resize", U(v, 100)));
       }
       function v() {
         rt();
@@ -712,7 +713,7 @@
           c.addListener("click", (l) => {
             I.close();
             const o = $.getClusterExpansionZoom(i.properties.cluster_id);
-            _.setCenter(c.getPosition()), _.setZoom(o);
+            (_.setCenter(c.getPosition()), _.setZoom(o));
           }),
           c
         );
@@ -725,7 +726,7 @@
         });
         return (
           e.addListener("click", () => {
-            I.setContent(`<h3>${i.properties.name}</h3>`), I.open(_, e);
+            (I.setContent(`<h3>${i.properties.name}</h3>`), I.open(_, e));
           }),
           e
         );
@@ -733,10 +734,10 @@
       function U(i, t) {
         let e;
         return (...s) => {
-          clearTimeout(e),
+          (clearTimeout(e),
             (e = setTimeout(() => {
               i(...s);
-            }, t));
+            }, t)));
         };
       }
       window.initMap = st;

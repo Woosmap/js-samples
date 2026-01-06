@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Woosmap for What3Words</title>
@@ -64,9 +64,9 @@
         e.style.display = t;
       }
       function _(e) {
-        b && b.classList.remove("selected"),
+        (b && b.classList.remove("selected"),
           (b = e),
-          b.classList.add("selected");
+          b.classList.add("selected"));
       }
       function P(e) {
         if (e.geometry.viewport) {
@@ -77,16 +77,16 @@
               north: t.northeast.lat,
               west: t.southwest.lng,
             };
-          d.fitBounds(o), d.panTo(e.geometry.location);
+          (d.fitBounds(o), d.panTo(e.geometry.location));
         } else {
           let t = 17;
-          e.types[0] === "address" && (t = 18),
+          (e.types[0] === "address" && (t = 18),
             d.setZoom(t),
-            d.panTo(e.geometry.location);
+            d.panTo(e.geometry.location));
         }
       }
       function N(e) {
-        u && u.setMap(null),
+        (u && u.setMap(null),
           (u = new woosmap.map.Marker({
             position: e.geometry.location,
             icon: {
@@ -95,7 +95,7 @@
             },
           })),
           u.setMap(d),
-          P(e);
+          P(e));
       }
       function O(e) {
         const t = [];
@@ -128,7 +128,7 @@
         C.innerHTML = t.join("");
       }
       function k(e, t) {
-        _(e),
+        (_(e),
           H(t)
             .then((o) => {
               const s = o.result;
@@ -136,24 +136,24 @@
             })
             .catch((o) => {
               console.error(o);
-            });
+            }));
       }
       function W(e, t) {
-        _(e), l(r), p(L), c(m), c(w);
+        (_(e), l(r), p(L), c(m), c(w));
         const o = document.createElement("ul");
-        t.forEach((s, n) => {
+        (t.forEach((s, n) => {
           const i = document.createElement("li");
-          (i.className = "address"),
+          ((i.className = "address"),
             i.addEventListener("click", (a) => {
               k(i, s.public_id);
             }),
             (i.innerHTML = `<span class='pin'></span><span>${s.description}</span>`),
-            o.appendChild(i);
+            o.appendChild(i));
         }),
-          L.appendChild(o);
+          L.appendChild(o));
       }
       function B() {
-        l(w), l(m), l(g), c(r);
+        (l(w), l(m), l(g), c(r));
       }
       function x(e) {
         B();
@@ -162,24 +162,24 @@
           s = document.createDocumentFragment();
         if (!Array.isArray(e) || e.length === 0) {
           const n = document.createElement("li");
-          (n.className = "not-found"),
+          ((n.className = "not-found"),
             (n.textContent =
               "what3words address invalid or no street address found within 200m of its location."),
-            o.appendChild(n);
+            o.appendChild(n));
         } else
           e.forEach((n, i) => {
             const a = document.createElement("li");
-            (a.className = "address"),
+            ((a.className = "address"),
               a.addEventListener("click", (h) => {
                 n.public_id ? k(a, n.public_id) : W(a, n.sub_buildings);
               }),
               (a.innerHTML = `<span class='${n.public_id ? "pin" : "arrow"}'></span><span>${n.description}</span>`),
-              s.appendChild(a);
+              s.appendChild(a));
           });
-        o.appendChild(s), t.appendChild(o);
+        (o.appendChild(s), t.appendChild(o));
       }
       function F(e) {
-        l(y),
+        (l(y),
           c(r),
           l(g),
           p(S),
@@ -189,14 +189,14 @@
             })
             .catch((t) => {
               console.error(t);
-            });
+            }));
       }
       function R(e) {
-        (document.querySelector(".words").innerHTML = e.words),
+        ((document.querySelector(".words").innerHTML = e.words),
           (document.querySelector(".nearest").innerHTML =
             `Nearest place : ${e.nearestPlace}`),
           (f.value = `///${e.words}`),
-          F(e.words);
+          F(e.words));
       }
       function j() {
         const e = f.value;
@@ -206,10 +206,10 @@
           l(w),
           (e.match(/[.]/g) || []).length !== 2)
         ) {
-          l(y), l(r), l(m);
+          (l(y), l(r), l(m));
           return;
         }
-        c(M),
+        (c(M),
           l(r),
           l(m),
           l(g),
@@ -218,30 +218,31 @@
               p(v);
               const o = document.createElement("ul");
               if (t)
-                t.forEach((s) => {
+                (t.forEach((s) => {
                   const n = document.createElement("li");
-                  (n.className = "suggestion"),
+                  ((n.className = "suggestion"),
                     (n.id = s.rank.toString()),
                     (n.innerHTML = `<div class="words">${s.words}</div><div class="nearest">Nearest place : ${s.nearestPlace}</div>`),
                     (n.dataset.word = s.words),
                     (n.onclick = () => {
                       R(s);
                     }),
-                    o.appendChild(n);
+                    o.appendChild(n));
                 }),
-                  v.appendChild(o);
+                  v.appendChild(o));
               else {
                 const s = document.createElement("div");
-                (s.innerHTML = "Failed to load suggestions"), v.appendChild(s);
+                ((s.innerHTML = "Failed to load suggestions"),
+                  v.appendChild(s));
               }
               c(y, "flex");
             })
             .catch((t) => {
               console.error(t);
-            });
+            }));
       }
       function z() {
-        (d = new woosmap.map.Map(document.getElementById("map"), {
+        ((d = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 48.8534, lng: 2.3488 },
           disableDefaultUI: !0,
           gestureHandling: "greedy",
@@ -249,10 +250,10 @@
           styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
         })),
           (A = Y(q, 0)),
-          K();
+          K());
       }
       function U() {
-        l(y),
+        (l(y),
           l(r),
           l(m),
           l(g),
@@ -263,10 +264,10 @@
           p(C),
           (f.value = ""),
           u && u.setMap(null),
-          f.focus();
+          f.focus());
       }
       function K() {
-        (f = document.getElementById("autocomplete-input")),
+        ((f = document.getElementById("autocomplete-input")),
           (g = document.querySelector(".addressDetails")),
           (r = document.querySelector(".address-list-container")),
           (S = document.getElementById("address-suggestions")),
@@ -282,7 +283,7 @@
           (E = document.querySelector(".clear-searchButton")),
           w.addEventListener("click", B),
           f.addEventListener("input", j),
-          E.addEventListener("click", U);
+          E.addEventListener("click", U));
       }
       function Y(e, t) {
         let o = null,
@@ -290,7 +291,7 @@
           n = null;
         return function (...i) {
           return new Promise((a, h) => {
-            o !== null && clearTimeout(o),
+            (o !== null && clearTimeout(o),
               (s = a),
               (n = h),
               (o = setTimeout(() => {
@@ -301,7 +302,7 @@
                   .catch(($) => {
                     s === a && n === h && h($);
                   });
-              }, t));
+              }, t)));
           });
         };
       }

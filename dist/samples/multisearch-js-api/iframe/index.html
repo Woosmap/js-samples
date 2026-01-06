@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>MultiSearch JS API</title>
@@ -55,7 +55,7 @@
       };
       let p, s, i, a, r;
       function m() {
-        s &&
+        (s &&
           i &&
           (s.addEventListener("input", f),
           s.addEventListener("keydown", (e) => {
@@ -65,33 +65,33 @@
             }
           })),
           a.addEventListener("click", () => {
-            (s.value = ""),
+            ((s.value = ""),
               (i.style.display = "none"),
               (a.style.display = "none"),
               (r.style.display = "none"),
-              s.focus();
+              s.focus());
           }),
-          (p = window.woosmap.multisearch(u));
+          (p = window.woosmap.multisearch(u)));
       }
       function f() {
         if (s && i) {
           const e = s.value;
-          e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+          (e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             e !== ""
               ? p.autocompleteMulti(e).then(
                   (t) => g(t),
                   (t) => console.error(`Error autocomplete localities: ${t}`),
                 )
-              : ((i.style.display = "none"), (a.style.display = "none"));
+              : ((i.style.display = "none"), (a.style.display = "none")));
         }
       }
       function y() {
         const e = document.createElement("li");
-        (e.innerHTML =
+        ((e.innerHTML =
           "<div class='prediction no-result'>No results found...</div>"),
           i.appendChild(e),
           (i.className = ""),
-          (i.style.display = "block");
+          (i.style.display = "block"));
       }
       function g(e) {
         s &&
@@ -101,16 +101,16 @@
             ? (e.forEach((t) => {
                 var c;
                 const l = document.createElement("li");
-                (l.innerHTML = (c = h(t)) != null ? c : ""),
+                ((l.innerHTML = (c = h(t)) != null ? c : ""),
                   l.addEventListener("click", () => {
                     var n;
-                    (s.value = (n = t.description) != null ? n : ""),
+                    ((s.value = (n = t.description) != null ? n : ""),
                       (i.style.display = "none"),
                       p.detailsMulti({ id: t.id, api: t.api }).then((o) => {
                         E(o);
-                      });
+                      }));
                   }),
-                  i.appendChild(l);
+                  i.appendChild(l));
               }),
               (i.className = e[0].api),
               (i.style.display = "block"),
@@ -121,7 +121,7 @@
         const t = "no-viewpoint",
           l = e.highlight;
         let c = "";
-        return (c += `<div class="prediction ${t}">${l}</div>`), c;
+        return ((c += `<div class="prediction ${t}">${l}</div>`), c);
       }
       function E(e) {
         r &&
@@ -134,11 +134,11 @@
           (i.style.display = "none");
       });
       document.addEventListener("DOMContentLoaded", () => {
-        (s = document.getElementById("autocomplete-input")),
+        ((s = document.getElementById("autocomplete-input")),
           (i = document.getElementById("suggestions-list")),
           (a = document.getElementsByClassName("clear-searchButton")[0]),
           (r = document.getElementById("response-container")),
-          m();
+          m());
       });
     </script>
     <style>

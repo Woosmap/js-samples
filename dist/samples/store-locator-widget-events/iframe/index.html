@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Store Locator Widget - Events</title>
@@ -81,11 +81,11 @@
       }
       function n(t) {
         const e = document.getElementById(t);
-        e.classList.remove("inactive"),
+        (e.classList.remove("inactive"),
           e.classList.add("event", "active"),
           window.setTimeout(() => {
-            e.classList.remove("active"), e.classList.add("inactive");
-          }, 1e3);
+            (e.classList.remove("active"), e.classList.add("inactive"));
+          }, 1e3));
       }
       function d() {
         return window.innerWidth < 500;
@@ -95,36 +95,36 @@
           "map",
           "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
         );
-        a(),
+        (a(),
           t.listenOn(t.HANDLED_EVENT.SELECT_STORE, (e) => {
-            console.log(e), n("SELECT_STORE");
+            (console.log(e), n("SELECT_STORE"));
           }),
           t.listenOn(t.HANDLED_EVENT.PHONE_CLICK, (e, i) => {
-            console.log(e, i), n("PHONE_CLICK");
+            (console.log(e, i), n("PHONE_CLICK"));
           }),
           t.listenOn(t.HANDLED_EVENT.EMAIL_CLICK, (e, i) => {
-            console.log(e, i), n("EMAIL_CLICK");
+            (console.log(e, i), n("EMAIL_CLICK"));
           }),
           t.listenOn(t.HANDLED_EVENT.LOCATION_SELECTED, (e) => {
-            console.log(e), n("LOCATION_SELECTED");
+            (console.log(e), n("LOCATION_SELECTED"));
           }),
           t.listenOn(t.HANDLED_EVENT.GEOCODE, (e) => {
-            console.log(e), n("GEOCODE");
+            (console.log(e), n("GEOCODE"));
           }),
           t.listenOn(t.HANDLED_EVENT.AUTOCOMPLETE, (e) => {
-            console.log(e), n("AUTOCOMPLETE");
+            (console.log(e), n("AUTOCOMPLETE"));
           }),
           t.listenOn(t.HANDLED_EVENT.GET_DIRECTIONS, (e, i, r) => {
-            console.log(e, i, r), n("GET_DIRECTIONS");
+            (console.log(e, i, r), n("GET_DIRECTIONS"));
           }),
           t.listenOn(t.HANDLED_EVENT.SELECT_DIRECTION, (e) => {
-            console.log(e), n("SELECT_DIRECTION");
+            (console.log(e), n("SELECT_DIRECTION"));
           }),
           t.listenOn(t.HANDLED_EVENT.FAVORITED, (e) => {
-            console.log(e), n("FAVORITED");
+            (console.log(e), n("FAVORITED"));
           }),
           t.setConf(c),
-          t.render(d());
+          t.render(d()));
       }
       O();
     </script>

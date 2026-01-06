@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Distance Matrix - Advanced</title>
@@ -64,35 +64,35 @@
         h = [];
       }
       function q(e, n) {
-        _(),
+        (_(),
           e.forEach((t, o) => {
-            f.extend(t),
+            (f.extend(t),
               h.push(
                 w(
                   t,
                   (o + 1).toString(),
                   "https://images.woosmap.com/marker-blue.svg",
                 ),
-              );
+              ));
           }),
           n.forEach((t, o) => {
-            f.extend(t),
+            (f.extend(t),
               h.push(
                 w(
                   t,
                   (o + 1).toString(),
                   "https://images.woosmap.com/marker-red.svg",
                 ),
-              );
+              ));
           }),
-          m.fitBounds(f, { top: 70, bottom: 40, left: 50, right: 50 }, !0);
+          m.fitBounds(f, { top: 70, bottom: 40, left: 50, right: 50 }, !0));
       }
       function O() {
-        d.push({ lat: 51.6511, lng: -0.1615 }, { lat: 51.4269, lng: -0.0955 }),
+        (d.push({ lat: 51.6511, lng: -0.1615 }, { lat: 51.4269, lng: -0.0955 }),
           l.push(
             { lat: 51.4855, lng: -0.3179 },
             { lat: 51.5146, lng: -0.0212 },
-          );
+          ));
         for (const e of d) L(v, e);
         for (const e of l) L(y, e);
         return {
@@ -109,24 +109,24 @@
         const t = document.createElement("li");
         t.innerHTML = `<span>lat: ${n.lat.toFixed(4)}, lng: ${n.lng.toFixed(4)}<span>`;
         const o = document.createElement("button");
-        o.classList.add("clear-searchButton"),
+        (o.classList.add("clear-searchButton"),
           (o.innerHTML =
             '<svg class="clear-icon" viewBox="0 0 24 24"><path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path></svg> '),
           o.addEventListener("click", () => {
-            e.removeChild(t),
+            (e.removeChild(t),
               e === v ? d.splice(d.indexOf(n), 1) : l.splice(l.indexOf(n), 1),
-              c();
+              c());
           }),
           t.appendChild(o),
-          e.appendChild(t);
+          e.appendChild(t));
       }
       function A(e) {
-        q(i.origins, i.destinations), I(e), S(""), E();
+        (q(i.origins, i.destinations), I(e), S(""), E());
       }
       function I(e) {
         let n =
           "<table><thead><tr><th>From</th><th>To</th><th>Time</th><th>Distance</th></tr></thead><tbody>";
-        e.rows.forEach((o, a) => {
+        (e.rows.forEach((o, a) => {
           o.elements.forEach((s, r) => {
             if (s.status === "OK") {
               const p = s.duration ? s.duration.text : "N/A",
@@ -137,13 +137,13 @@
             }
           });
         }),
-          (n += "</tbody></table>");
+          (n += "</tbody></table>"));
         const t = document.querySelector(".tableContainer");
-        (t.innerHTML = n), (t.style.display = "block"), D(t);
+        ((t.innerHTML = n), (t.style.display = "block"), D(t));
       }
       function D(e) {
         e.querySelectorAll("tr").forEach((t) => {
-          t.addEventListener("mouseover", () => {
+          (t.addEventListener("mouseover", () => {
             var s, r;
             const o =
                 (s = t.dataset.start) == null
@@ -151,7 +151,7 @@
                   : s.split(",").map(Number),
               a =
                 (r = t.dataset.end) == null ? void 0 : r.split(",").map(Number);
-            u && u.setMap(null),
+            (u && u.setMap(null),
               !(!o || !a) &&
                 ((u = new woosmap.map.Polyline({
                   path: [
@@ -163,43 +163,43 @@
                   strokeOpacity: 1,
                   strokeWeight: 2,
                 })),
-                u.setMap(m));
+                u.setMap(m)));
           }),
             t.addEventListener("mouseout", () => {
               u && (u.setMap(null), (u = null));
-            });
+            }));
         });
       }
       function S(e) {
         const n = document.getElementById("errorMessage");
         if (e === "") n.style.display = "none";
         else {
-          (n.innerHTML = e), (n.style.display = "block");
+          ((n.innerHTML = e), (n.style.display = "block"));
           const t = document.querySelector(".tableContainer");
-          (t.innerHTML = ""), (t.style.display = "none");
+          ((t.innerHTML = ""), (t.style.display = "none"));
         }
       }
       function E() {
         document.querySelector(".linear-progress").classList.toggle("hide");
       }
       function c() {
-        E(),
+        (E(),
           T.getDistanceMatrix(i)
             .then(A)
             .catch((e) => {
-              console.error("Error calculating distances:", e), S(e), E();
-            });
+              (console.error("Error calculating distances:", e), S(e), E());
+            }));
       }
       function $(e) {
-        document
+        (document
           .querySelectorAll(".travelMode")
           .forEach((n) => n.classList.remove("travelMode__selected")),
-          e.classList.add("travelMode__selected");
+          e.classList.add("travelMode__selected"));
       }
       function H() {
         document.querySelectorAll(".travelMode").forEach((e) =>
           e.addEventListener("click", () => {
-            $(e), (i.travelMode = e.dataset.travelmode), c();
+            ($(e), (i.travelMode = e.dataset.travelmode), c());
           }),
         );
       }
@@ -209,10 +209,10 @@
             const n = document.getElementById("avoidHighways"),
               t = document.getElementById("avoidTolls"),
               o = document.getElementById("avoidFerries");
-            (i.avoidHighways = n.checked),
+            ((i.avoidHighways = n.checked),
               (i.avoidTolls = t.checked),
               (i.avoidFerries = o.checked),
-              c();
+              c());
           }),
         );
       }
@@ -221,28 +221,28 @@
           .querySelectorAll('input[name="distanceUnits"]')
           .forEach((e) => {
             e.addEventListener("change", () => {
-              (i.unitSystem = e.value), c();
+              ((i.unitSystem = e.value), c());
             });
           });
       }
       function N() {
         document.querySelectorAll('input[name="method"]').forEach((e) => {
           e.addEventListener("change", () => {
-            (i.method = e.value), c();
+            ((i.method = e.value), c());
           });
         });
       }
       function R() {
         document.querySelectorAll('input[name="elements"]').forEach((e) => {
           e.addEventListener("change", () => {
-            (i.elements = e.value), c();
+            ((i.elements = e.value), c());
           });
         });
       }
       function F() {
         const e = document.getElementById("language");
         e.addEventListener("change", () => {
-          (i.language = e.value), c();
+          ((i.language = e.value), c());
         });
       }
       function b(e) {
@@ -259,10 +259,10 @@
               t.addEventListener("change", () => {
                 switch (t.value) {
                   case "empty":
-                    delete i.departureTime, (e.disabled = !0);
+                    (delete i.departureTime, (e.disabled = !0));
                     break;
                   case "now":
-                    (i.departureTime = "now"), (e.disabled = !0);
+                    ((i.departureTime = "now"), (e.disabled = !0));
                     break;
                   case "datetime":
                     if (e.value) {
@@ -278,10 +278,10 @@
           e.addEventListener("change", () => {
             n && (n.checked = !0);
             const t = new Date(e.value);
-            (i.departureTime = b(t)
+            ((i.departureTime = b(t)
               ? Math.floor(t.getTime() / 1e3).toString()
               : void 0),
-              c();
+              c());
           }));
       }
       function M(e, n, t) {
@@ -289,27 +289,27 @@
         o.addEventListener("click", () => {
           var a, s;
           if (o.classList.contains("addLocation__selected")) {
-            o.classList.remove("addLocation__selected"),
+            (o.classList.remove("addLocation__selected"),
               (a = document.getElementById("map")) == null ||
                 a.classList.remove("cursor-crosshair"),
-              woosmap.map.event.clearListeners(m, "click");
+              woosmap.map.event.clearListeners(m, "click"));
             return;
           }
-          o.classList.add("addLocation__selected"),
+          (o.classList.add("addLocation__selected"),
             (s = document.getElementById("map")) == null ||
               s.classList.add("cursor-crosshair"),
             woosmap.map.event.addListenerOnce(m, "click", (r) => {
               var g;
-              (g = document.getElementById("map")) == null ||
+              ((g = document.getElementById("map")) == null ||
                 g.classList.remove("cursor-crosshair"),
-                o.classList.remove("addLocation__selected");
+                o.classList.remove("addLocation__selected"));
               const p = r.latlng;
-              t.push(p), L(n, p), c();
-            });
+              (t.push(p), L(n, p), c());
+            }));
         });
       }
       function U() {
-        H(),
+        (H(),
           C(),
           x(),
           N(),
@@ -319,10 +319,10 @@
           (v = document.getElementById("origins")),
           (y = document.getElementById("destinations")),
           M(".addLocation__destinations", y, l),
-          M(".addLocation__origins", v, d);
+          M(".addLocation__origins", v, d));
       }
       function z() {
-        (m = new woosmap.map.Map(document.getElementById("map"), {
+        ((m = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.4855, lng: -0.3179 },
           zoom: 6,
         })),
@@ -330,7 +330,7 @@
           (f = new woosmap.map.LatLngBounds()),
           U(),
           (i = O()),
-          c();
+          c());
       }
       window.initMap = z;
     </script>

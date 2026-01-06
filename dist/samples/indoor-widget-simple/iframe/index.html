@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Indoor Widget</title>
@@ -39,25 +39,25 @@
       })();
       let s;
       function c() {
-        console.log("init map"),
-          (s = new window.woosmap.map.Map(document.getElementById("map"), {}));
+        (console.log("init map"),
+          (s = new window.woosmap.map.Map(document.getElementById("map"), {})));
         const d = { defaultFloor: 0, venue: "gdn_doc", responsive: "desktop" },
           r = { units: "metric" },
           n = new woosmap.map.IndoorWidget(r, d);
-        n.setMap(s),
+        (n.setMap(s),
           n.addListener("indoor_feature_selected", (t) => {
             console.log("Feature: ", t);
           }),
           n.addListener("indoor_venue_loaded", (t) => {
-            console.log("Venue: ", t),
+            (console.log("Venue: ", t),
               s.fitBounds(
                 new woosmap.map.LatLngBounds(
                   { lat: 48.88115758013444, lng: 2.3562935123187856 },
                   { lat: 48.87945292784522, lng: 2.3539262034398405 },
                 ),
               ),
-              l();
-          });
+              l());
+          }));
       }
       const l = () => {
         document.querySelector(".progress").remove();

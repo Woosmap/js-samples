@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Localities Nearby POI</title>
@@ -109,7 +109,7 @@
               const i = s.split(".");
               let t = n;
               i.forEach((o) => {
-                (t[o] = t[o] || {}), (t = t[o]);
+                ((t[o] = t[o] || {}), (t = t[o]));
               });
             }),
             n
@@ -121,23 +121,23 @@
             const t = n ? `${n}.${i}` : i,
               o = document.createElement("li"),
               a = document.createElement("input");
-            (a.type = "checkbox"),
+            ((a.type = "checkbox"),
               (a.id = `type-${t}`),
               (a.name = "types"),
               a.classList.add("type"),
-              (a.value = t);
+              (a.value = t));
             const l = document.createElement("label");
-            (l.htmlFor = `type-${t}`),
+            ((l.htmlFor = `type-${t}`),
               (l.textContent = i),
               o.appendChild(a),
-              o.appendChild(l);
+              o.appendChild(l));
             const L = M(e[i], t);
-            L && o.appendChild(L), s.appendChild(o);
+            (L && o.appendChild(L), s.appendChild(o));
           }
           return s.childElementCount ? s : null;
         };
       function C() {
-        (u = new window.woosmap.map.Map(document.getElementById("map"), {
+        ((u = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 40.71399, lng: -74.00499 },
           zoom: 14,
           styles: [
@@ -168,12 +168,12 @@
             },
           })),
           w(),
-          h();
+          h());
       }
       function I() {
         const e = _(v),
           n = M(e);
-        document.querySelector(".typesOptions__list").appendChild(n),
+        (document.querySelector(".typesOptions__list").appendChild(n),
           document.querySelectorAll(".type").forEach((s) =>
             s.addEventListener("click", (i) => {
               const t = i.target,
@@ -183,7 +183,7 @@
                       .filter((l) => l !== t)
                       .flatMap((l) => Array.from(l.querySelectorAll(".type")))
                   : [];
-              t.checked
+              (t.checked
                 ? (g.add(t.value),
                   a.length > 0 &&
                     a.forEach((l) => {
@@ -194,9 +194,9 @@
                     a.forEach((l) => {
                       l.disabled = !1;
                     })),
-                h();
+                h());
             }),
-          );
+          ));
       }
       function k(e, n) {
         const s = document.getElementById("radius-label");
@@ -204,15 +204,15 @@
           ? (s.innerHTML = `${e}&thinsp;m`)
           : s && (s.innerHTML = `${e / 1e3}&thinsp;km`);
         const i = Math.round(18 - (Math.log(e / 10) / Math.log(5e4 / 10)) * 11);
-        u.flyTo({ center: n || m.getCenter(), zoom: i }),
+        (u.flyTo({ center: n || m.getCenter(), zoom: i }),
           (r.radius = e),
-          h(new woosmap.map.LatLng(n || m.getCenter()));
+          h(new woosmap.map.LatLng(n || m.getCenter())));
       }
       function w() {
         var n, s, i;
-        (p = document.querySelector("#results")), I();
+        ((p = document.querySelector("#results")), I());
         const e = H(k, 300);
-        (n = document.getElementById("radius")) == null ||
+        ((n = document.getElementById("radius")) == null ||
           n.addEventListener("input", (t) => {
             const o = parseInt(t.target.value);
             e(o);
@@ -220,15 +220,15 @@
           (s = document.getElementById("page-previous")) == null ||
             s.addEventListener("click", B),
           (i = document.getElementById("page-next")) == null ||
-            i.addEventListener("click", T);
+            i.addEventListener("click", T));
       }
       function B() {
         let e = !0;
-        r.page && r.page > 1 && (r.page--, (e = !1)), h(null, e);
+        (r.page && r.page > 1 && (r.page--, (e = !1)), h(null, e));
       }
       function T() {
         let e = !0;
-        r.page && (r.page++, (e = !1)), h(null, e);
+        (r.page && (r.page++, (e = !1)), h(null, e));
       }
       function h(e = null, n = !0) {
         const s = e || u.getCenter();
@@ -251,11 +251,11 @@
           return;
         }
         E.nearby(r).then((i) => {
-          q(s, r.radius), A(i, s);
+          (q(s, r.radius), A(i, s));
         });
       }
       function q(e, n) {
-        m && m.setMap(null),
+        (m && m.setMap(null),
           (m = new woosmap.map.Circle({
             map: u,
             center: e,
@@ -265,11 +265,11 @@
             strokeWeight: 2,
             fillColor: "#3283c5",
             fillOpacity: 0.2,
-          }));
+          })));
       }
       function x(e) {
         var n, s, i, t;
-        e.next_page
+        (e.next_page
           ? (n = document.getElementById("page-next")) == null ||
             n.removeAttribute("disabled")
           : (s = document.getElementById("page-next")) == null ||
@@ -278,10 +278,10 @@
             ? (i = document.getElementById("page-previous")) == null ||
               i.removeAttribute("disabled")
             : (t = document.getElementById("page-previous")) == null ||
-              t.setAttribute("disabled", "true");
+              t.setAttribute("disabled", "true"));
       }
       function A(e, n) {
-        x(e.pagination),
+        (x(e.pagination),
           e.results.forEach((s) => {
             const i = P(
                 n.lat(),
@@ -290,14 +290,14 @@
                 s.geometry.location.lng,
               ),
               t = document.createElement("li");
-            (t.innerHTML = `
+            ((t.innerHTML = `
         <b>${s.name}</b>
         <i>${s.types}</i>
         
         <span class="distance">${i.toFixed(0)}m</span>
     `),
               t.addEventListener("click", () => {
-                u.setCenter({
+                (u.setCenter({
                   lat: s.geometry.location.lat,
                   lng: s.geometry.location.lng,
                 }),
@@ -305,10 +305,10 @@
                     lat: s.geometry.location.lat,
                     lng: s.geometry.location.lng,
                   }),
-                  y.setMap(u);
+                  y.setMap(u));
               }),
-              p.appendChild(t);
-          });
+              p.appendChild(t));
+          }));
       }
       function P(e, n, s, i) {
         const o = (s * Math.PI) / 180 - (e * Math.PI) / 180,
@@ -336,11 +336,11 @@
           }
         }));
       b.addEventListener("click", () => {
-        (d.value = ""),
+        ((d.value = ""),
           (c.style.display = "none"),
           (b.style.display = "none"),
           y && y.setMap(null),
-          d.focus();
+          d.focus());
       });
       function S() {
         d &&
@@ -373,14 +373,14 @@
             ? (e.localities.forEach((n) => {
                 var i;
                 const s = document.createElement("li");
-                (s.textContent = (i = n.description) != null ? i : ""),
+                ((s.textContent = (i = n.description) != null ? i : ""),
                   s.addEventListener("click", () => {
                     var t;
-                    (d.value = (t = n.description) != null ? t : ""),
+                    ((d.value = (t = n.description) != null ? t : ""),
                       (c.style.display = "none"),
-                      $(n.public_id);
+                      $(n.public_id));
                   }),
-                  c.appendChild(s);
+                  c.appendChild(s));
               }),
               (c.style.display = "block"),
               (b.style.display = "block"))
@@ -395,9 +395,9 @@
         let s;
         return function (...t) {
           const o = () => {
-            clearTimeout(s), e(...t);
+            (clearTimeout(s), e(...t));
           };
-          clearTimeout(s), (s = setTimeout(o, n));
+          (clearTimeout(s), (s = setTimeout(o, n)));
         };
       }
       document.addEventListener("DOMContentLoaded", () => {
@@ -407,7 +407,7 @@
           console.error("Elements not found in the DOM.");
           return;
         }
-        n.addEventListener("blur", () => {
+        (n.addEventListener("blur", () => {
           const t = i(n.textContent || "");
           t !== null
             ? ((e.value = t.toString()), k(t))
@@ -415,7 +415,7 @@
         }),
           n.addEventListener("keypress", (t) => {
             t.key === "Enter" && (t.preventDefault(), n.blur());
-          });
+          }));
         const s = (t) => (t >= 1e3 ? `${t / 1e3} km` : `${t} m`),
           i = (t) => {
             const o = t.match(/^(\d+(?:\.\d+)?)\s*km$/i),

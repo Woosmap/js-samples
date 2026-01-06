@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Geolocation Api</title>
@@ -43,7 +43,7 @@
         fetch(`https://api.woosmap.com/geolocation/position/?key=${f}`)
           .then((o) => o.json())
           .then((o) => {
-            p(o), u(o);
+            (p(o), u(o));
           });
       }
       function p({ latitude: o, accuracy: e, longitude: n, viewport: r }) {
@@ -73,7 +73,7 @@
             north: r.northeast.lat,
             west: r.southwest.lng,
           };
-          l.fitBounds(a), m(a);
+          (l.fitBounds(a), m(a));
         }
         new woosmap.map.Marker({
           position: s,

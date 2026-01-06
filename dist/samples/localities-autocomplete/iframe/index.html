@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Localities autocomplete and details</title>
@@ -39,14 +39,14 @@
       })();
       let m, a, u, g, d, h;
       function w() {
-        (m = new window.woosmap.map.Map(document.getElementById("map"), {
+        ((m = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 4,
         })),
           (u = new woosmap.map.InfoWindow({})),
           (g = new window.woosmap.map.LocalitiesService()),
           (d = { input: "", types: ["locality", "address", "postal_code"] }),
-          (h = b(g.autocomplete, 0));
+          (h = b(g.autocomplete, 0)));
       }
       const r = document.getElementById("autocomplete-input"),
         i = document.getElementById("suggestions-list"),
@@ -61,11 +61,11 @@
           }
         }));
       f.addEventListener("click", () => {
-        (r.value = ""),
+        ((r.value = ""),
           (i.style.display = "none"),
           (f.style.display = "none"),
           a && (a.setMap(null), u.close()),
-          r.focus();
+          r.focus());
       });
       function E() {
         r &&
@@ -85,7 +85,7 @@
           .catch((n) => console.error("Error getting locality details:", n));
       }
       function v(e) {
-        a && (a.setMap(null), u.close()),
+        (a && (a.setMap(null), u.close()),
           e != null &&
             e.geometry &&
             ((a = new woosmap.map.Marker({
@@ -98,7 +98,7 @@
             a.setMap(m),
             u.setContent(`<span>${e.formatted_address}</span>`),
             u.open(m, a),
-            m.flyTo({ center: e.geometry.location, zoom: 14 }));
+            m.flyTo({ center: e.geometry.location, zoom: 14 })));
       }
       function M(e) {
         r &&
@@ -108,14 +108,14 @@
             ? (e.localities.forEach((n) => {
                 var l;
                 const s = document.createElement("li");
-                (s.textContent = (l = n.description) != null ? l : ""),
+                ((s.textContent = (l = n.description) != null ? l : ""),
                   s.addEventListener("click", () => {
                     var t;
-                    (r.value = (t = n.description) != null ? t : ""),
+                    ((r.value = (t = n.description) != null ? t : ""),
                       (i.style.display = "none"),
-                      L(n.public_id);
+                      L(n.public_id));
                   }),
-                  i.appendChild(s);
+                  i.appendChild(s));
               }),
               (i.style.display = "block"),
               (f.style.display = "block"))
@@ -132,7 +132,7 @@
           t = null;
         return function (...o) {
           return new Promise((c, p) => {
-            s !== null && clearTimeout(s),
+            (s !== null && clearTimeout(s),
               (l = c),
               (t = p),
               (s = setTimeout(() => {
@@ -143,7 +143,7 @@
                   .catch((y) => {
                     l === c && t === p && p(y);
                   });
-              }, n));
+              }, n)));
           });
         };
       }

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Store Locator Widget - Custom Filters</title>
@@ -108,7 +108,7 @@
       }
       function c(r = "", i = "") {
         const o = document.createElement("div");
-        return (o.className = r), (o.innerHTML = i), o;
+        return ((o.className = r), (o.innerHTML = i), o);
       }
       function u(r, i) {
         const o = c("filters-list", `<div class='filter-group'>${r}</div>`);
@@ -134,10 +134,10 @@
           "map",
           "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
         );
-        r.setConf(l),
+        (r.setConf(l),
           r.setFilterPanelRenderer(u),
           r.setFilterRenderer(p),
-          r.render(d());
+          r.render(d()));
       }
       m();
     </script>

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Stores List</title>
@@ -107,10 +107,10 @@
       function f(e) {
         const t = e.map(O),
           o = document.querySelector(".stores-list");
-        o &&
+        (o &&
           ((o.innerHTML = `<p style="padding: 0 0.8rem; font-size: 17px">Results: <strong>${e.length}</strong> stores in bounds</p>`),
           (o.innerHTML += t.join(""))),
-          $(e);
+          $(e));
       }
       function O(e, t) {
         const { name: o, address: s, contact: r } = e.properties,
@@ -165,7 +165,7 @@
         t && B(t);
       }
       function B(e) {
-        c && c.setMap(null),
+        (c && c.setMap(null),
           e &&
             ((c = new woosmap.map.Marker({
               position: e,
@@ -176,7 +176,7 @@
             })),
             c.setMap(i),
             i.setCenter(e),
-            i.setZoom(8));
+            i.setZoom(8)));
       }
       function g(e) {
         const t = document.querySelector(".stores-list");
@@ -197,18 +197,18 @@
       function T(e, t) {
         let o;
         return (...s) => {
-          clearTimeout(o), (o = setTimeout(() => e(...s), t));
+          (clearTimeout(o), (o = setTimeout(() => e(...s), t)));
         };
       }
       function k() {
-        (i = new window.woosmap.map.Map(document.getElementById("map"), S)),
+        ((i = new window.woosmap.map.Map(document.getElementById("map"), S)),
           (d = new woosmap.map.StoresOverlay(w)),
           d.setMap(i),
           i.addListener(
             "bounds_changed",
             T(() => {
               const e = i.getBounds();
-              (u = E(m, e)), f(u);
+              ((u = E(m, e)), f(u));
             }, 50),
           ),
           window.woosmap.map.event.addListener(i, "store_selected", (e) => {
@@ -220,8 +220,8 @@
           (h = new woosmap.map.StoresService()),
           (v = new woosmap.map.LocalitiesService()),
           M().then((e) => {
-            (m = e), f(e);
-          });
+            ((m = e), f(e));
+          }));
       }
       function P(e) {
         console.error("Error:", e);

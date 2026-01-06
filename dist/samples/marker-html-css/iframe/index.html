@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Marker HTML CSS</title>
@@ -55,23 +55,23 @@
             d(this, "latlng");
             d(this, "html");
             d(this, "div", null);
-            (this.latlng = e),
+            ((this.latlng = e),
               (this.html = `<div class="popover-content">
                       <span class="icon">️</span>
                       <span class="price">${p.price}</span>
                     </div>
                      <div class="popover-arrow-shadow"></div>
                      <div class="popover-arrow"></div>`),
-              this.setMap(o);
+              this.setMap(o));
           }
           createDiv() {
-            (this.div = document.createElement("div")),
+            ((this.div = document.createElement("div")),
               (this.div.style.position = "absolute"),
               (this.div.className = "popover"),
               this.html && (this.div.innerHTML = this.html),
               woosmap.map.event.addDomListener(this.div, "click", () => {
                 woosmap.map.event.trigger(this, "click");
-              });
+              }));
           }
           appendDivToOverlay() {
             const e = this.getPanes();
@@ -86,8 +86,8 @@
             if (e && this.div) {
               const p = this.div.offsetWidth / 2,
                 v = this.div.offsetHeight + 6;
-              (this.div.style.left = `${e.x - p}px`),
-                (this.div.style.top = `${e.y - v}px`);
+              ((this.div.style.left = `${e.x - p}px`),
+                (this.div.style.top = `${e.y - v}px`));
             }
           }
           draw() {
@@ -134,13 +134,13 @@
             map: r,
             data: a,
           });
-          e.addEventListener("click", () => {
-            i.forEach((o) => {
+          (e.addEventListener("click", () => {
+            (i.forEach((o) => {
               o.div && o.div.classList.remove("active");
             }),
-              e.div && e.div.classList.add("active");
+              e.div && e.div.classList.add("active"));
           }),
-            i.push(e);
+            i.push(e));
         });
       }
       window.initMap = m;

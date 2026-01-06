@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Indoor Map Renderer (Explore configuration options)</title>
@@ -49,10 +49,10 @@
           highlightPOIByRef: "tropiques",
           useInfoWindow: !0,
         });
-        t.addListener("indoor_venue_loaded", (r) => {
-          console.log(r), l();
+        (t.addListener("indoor_venue_loaded", (r) => {
+          (console.log(r), l());
         }),
-          t.setMap(s);
+          t.setMap(s));
       }
       const l = () => {
         document.querySelector(".progress").remove();

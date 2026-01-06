@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>InfoWindow Simple</title>
@@ -53,12 +53,12 @@
             map: r,
           }),
           t = new woosmap.map.InfoWindow({});
-        t.setOffset(new woosmap.map.Point(0, -50)),
+        (t.setOffset(new woosmap.map.Point(0, -50)),
           t.setContent(n),
           t.open(r, i.position),
           i.addListener("click", () => {
             t.open(r, i.getPosition());
-          });
+          }));
       }
       window.initMap = a;
     </script>

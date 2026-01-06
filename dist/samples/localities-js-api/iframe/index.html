@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Localities JS API</title>
@@ -43,7 +43,7 @@
         'postal_code:"{name} ({postal_town}) - {administrative_area_level_0}"';
       let u, r, i, d, c;
       function f() {
-        r &&
+        (r &&
           i &&
           (r.addEventListener("input", m),
           r.addEventListener("keydown", (n) => {
@@ -53,20 +53,20 @@
             }
           })),
           d.addEventListener("click", () => {
-            (r.value = ""),
+            ((r.value = ""),
               (i.style.display = "none"),
               (d.style.display = "none"),
               (c.style.display = "none"),
-              r.focus();
+              r.focus());
           }),
           (u = new window.woosmap.localities.AutocompleteService(
             "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
-          ));
+          )));
       }
       function m() {
         if (r && i) {
           const n = r.value;
-          n.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+          (n.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             n !== ""
               ? u.autocomplete(
                   { input: n, custom_description: p },
@@ -76,7 +76,7 @@
                   },
                   0,
                 )
-              : ((i.style.display = "none"), (d.style.display = "none"));
+              : ((i.style.display = "none"), (d.style.display = "none")));
         }
       }
       function y({ localities: n }) {
@@ -87,14 +87,14 @@
             ? (n.forEach((e) => {
                 var l;
                 const s = document.createElement("li");
-                (s.innerHTML = (l = g(e)) != null ? l : ""),
+                ((s.innerHTML = (l = g(e)) != null ? l : ""),
                   s.addEventListener("click", () => {
                     var t;
-                    (r.value = (t = e.description) != null ? t : ""),
+                    ((r.value = (t = e.description) != null ? t : ""),
                       (i.style.display = "none"),
-                      u.getDetails(e.public_id, h);
+                      u.getDetails(e.public_id, h));
                   }),
-                  i.appendChild(s);
+                  i.appendChild(s));
               }),
               (i.style.display = "block"),
               (d.style.display = "block"))
@@ -109,7 +109,7 @@
           ? (t = v(e.description, l.description))
           : (t = e.description);
         let o = "";
-        return (o += `<div class="prediction ${s}">${t}</div>`), o;
+        return ((o += `<div class="prediction ${s}">${t}</div>`), o);
       }
       function h(n) {
         c &&
@@ -125,11 +125,11 @@
         return n;
       }
       document.addEventListener("DOMContentLoaded", () => {
-        (r = document.getElementById("autocomplete-input")),
+        ((r = document.getElementById("autocomplete-input")),
           (i = document.getElementById("suggestions-list")),
           (d = document.getElementsByClassName("clear-searchButton")[0]),
           (c = document.getElementById("response-container")),
-          f();
+          f());
       });
     </script>
     <style>

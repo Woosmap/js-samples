@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Draw Shapes - Handling Events</title>
@@ -112,11 +112,11 @@
           zoom: 6.5,
         });
         const n = new window.woosmap.map.Drawing({});
-        n.addControl(a),
+        (n.addControl(a),
           window.woosmap.map.event.addListenerOnce(a, "idle", () => {
             n.add(d);
           }),
-          l();
+          l());
         for (let t = 0; t < i.length; t++) {
           const r = i[t];
           n.addListener(r, () => {

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Draw Shapes</title>
@@ -50,7 +50,7 @@
         const d = new window.woosmap.map.Drawing({});
         d.addControl(a);
         const o = document.getElementById("getDrawData");
-        (o.onclick = function () {
+        ((o.onclick = function () {
           const r = d.getAll();
           p &&
             c &&
@@ -522,8 +522,8 @@
             d.add(r);
           }),
           (i.onclick = function () {
-            c.classList.toggle("closed"), i.classList.toggle("closed");
-          });
+            (c.classList.toggle("closed"), i.classList.toggle("closed"));
+          }));
       }
       window.initMap = l;
     </script>

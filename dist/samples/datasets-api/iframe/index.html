@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>
@@ -42,7 +42,7 @@
       let o, l, p, f, E, y, c, r, m, b, h, S, d, M;
       const L = "fd2732a6-714d-4894-98ef-c0c7744a399c";
       function T() {
-        (o = new woosmap.map.Map(document.getElementById("map"), {
+        ((o = new woosmap.map.Map(document.getElementById("map"), {
           gestureHandling: "auto",
           defaultStyle: "streets",
         })),
@@ -55,19 +55,19 @@
           O(),
           I(),
           D(),
-          F();
+          F());
       }
       function I() {
-        (p = new woosmap.map.DatasetsOverlay(L)),
+        ((p = new woosmap.map.DatasetsOverlay(L)),
           (f = new woosmap.map.DatasetsService(L)),
           p.setMap(o),
           (E = new window.woosmap.map.LocalitiesService()),
           (y = { input: "", types: ["locality", "address", "postal_code"] }),
           (S = R(E.autocomplete, 0)),
-          B();
+          B());
       }
       function O() {
-        (l = new woosmap.map.Drawing({
+        ((l = new woosmap.map.Drawing({
           controls: { combine_features: !1, uncombine_features: !1 },
         })),
           l.addControl(o),
@@ -79,17 +79,17 @@
             await g(l.getAll());
           }),
           l.addListener("draw.delete", () => {
-            o.data.forEach((e) => {
+            (o.data.forEach((e) => {
               o.data.remove(e);
             }),
-              (d.innerHTML = "");
+              (d.innerHTML = ""));
           }),
           l.addListener("draw.update", async (e) => {
             await g(e);
-          });
+          }));
       }
       function B() {
-        (c = document.getElementById("autocomplete-input")),
+        ((c = document.getElementById("autocomplete-input")),
           (r = document.getElementById("suggestions-list")),
           (m = document.getElementsByClassName("clear-searchButton")[0]),
           c &&
@@ -102,22 +102,22 @@
               }
             })),
           m.addEventListener("click", () => {
-            (c.value = ""),
+            ((c.value = ""),
               (r.style.display = "none"),
               (m.style.display = "none"),
               (d.innerHTML = ""),
-              c.focus();
-          });
+              c.focus());
+          }));
       }
       function D() {
-        (d = document.querySelector("#results")),
+        ((d = document.querySelector("#results")),
           (M = document.getElementById("btnReset")),
           (M.onclick = function () {
             H();
-          });
+          }));
       }
       function H() {
-        p.setMap(null),
+        (p.setMap(null),
           (p = new woosmap.map.DatasetsOverlay(L)),
           (f = new woosmap.map.DatasetsService(L)),
           p.setMap(o),
@@ -131,7 +131,7 @@
           (c.value = ""),
           (r.style.display = "none"),
           (m.style.display = "none"),
-          (d.innerHTML = "");
+          (d.innerHTML = ""));
       }
       function A() {
         c &&
@@ -161,7 +161,7 @@
             },
             properties: {},
           };
-          l.add(n), g({ features: [n] });
+          (l.add(n), g({ features: [n] }));
         }
       }
       function k(e) {
@@ -172,21 +172,21 @@
             ? (e.localities.forEach((n) => {
                 var s;
                 const a = document.createElement("li");
-                (a.textContent = (s = n.description) != null ? s : ""),
+                ((a.textContent = (s = n.description) != null ? s : ""),
                   a.addEventListener("click", () => {
                     var t;
-                    (c.value = (t = n.description) != null ? t : ""),
+                    ((c.value = (t = n.description) != null ? t : ""),
                       (r.style.display = "none"),
-                      C(n.public_id);
+                      C(n.public_id));
                   }),
-                  r.appendChild(a);
+                  r.appendChild(a));
               }),
               (r.style.display = "block"),
               (m.style.display = "block"))
             : (r.style.display = "none"));
       }
       function F() {
-        (b = document.getElementById("dataset")),
+        ((b = document.getElementById("dataset")),
           (h = document.getElementById("operator")),
           b.addEventListener("change", (e) => {
             const n = e.target;
@@ -195,13 +195,13 @@
           h.addEventListener("change", async (e) => {
             const n = l.getAll();
             await g(n);
-          });
+          }));
       }
       async function N(e) {
-        p.setMap(null),
+        (p.setMap(null),
           (p = new woosmap.map.DatasetsOverlay(e)),
           (f = new woosmap.map.DatasetsService(e)),
-          p.setMap(o);
+          p.setMap(o));
         const n = l.getAll();
         await g(n);
       }
@@ -224,25 +224,25 @@
         await n(e.features[0].geometry, h.value)
           .then((a) => {
             const s = [];
-            q(a.features),
+            (q(a.features),
               o.data.forEach((t) => {
                 o.data.remove(t);
-              });
+              }));
             for (const t of a.features)
               s.push({ type: "Feature", geometry: t.geometry });
             o.data.addGeoJson({ type: "FeatureCollection", features: s });
           })
           .catch((a) => {
-            (d.innerHTML = a), d.classList.add("error");
+            ((d.innerHTML = a), d.classList.add("error"));
           });
       }
       function q(e) {
-        (d.innerHTML = ""),
+        ((d.innerHTML = ""),
           e.length > 0
             ? e.map((n) => {
                 const a = n.attributes,
                   s = document.createElement("table");
-                d.classList.remove("error"),
+                (d.classList.remove("error"),
                   s.classList.add("result"),
                   Object.keys(a).map((t) => {
                     a[t] &&
@@ -250,9 +250,9 @@
                         s.innerHTML +
                         `<tr><td><b>${t} </b></td><td>${a[t]}</td></tr>`);
                   }),
-                  d.appendChild(s);
+                  d.appendChild(s));
               })
-            : ((d.innerHTML = "No results found"), d.classList.add("error"));
+            : ((d.innerHTML = "No results found"), d.classList.add("error")));
       }
       function R(e, n) {
         let a = null,
@@ -260,7 +260,7 @@
           t = null;
         return function (...i) {
           return new Promise((u, w) => {
-            a !== null && clearTimeout(a),
+            (a !== null && clearTimeout(a),
               (s = u),
               (t = w),
               (a = setTimeout(() => {
@@ -271,7 +271,7 @@
                   .catch((v) => {
                     s === u && t === w && w(v);
                   });
-              }, n));
+              }, n)));
           });
         };
       }

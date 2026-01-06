@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Localities Api - Details Endpoint</title>
@@ -41,7 +41,7 @@
         g = "woos-48c80350-88aa-333e-835a-07f4b658a9a4";
       let h, l, c, u, p, d, f, v;
       function S() {
-        (p = new woosmap.map.Map(document.getElementById("map"), {
+        ((p = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 48.8534, lng: 2.3488 },
           disableDefaultUI: !0,
           gestureHandling: "greedy",
@@ -49,10 +49,10 @@
           styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
         })),
           M(),
-          B();
+          B());
       }
       function _(t) {
-        d && d.setMap(null),
+        (d && d.setMap(null),
           t &&
             t.geometry &&
             ((d = new woosmap.map.Marker({
@@ -63,7 +63,7 @@
               },
             })),
             d.setMap(p),
-            R(t));
+            R(t)));
       }
       function $(t, e = "block") {
         t.style.display = e;
@@ -109,7 +109,7 @@
         f.innerHTML = e.join("");
       }
       function M() {
-        (l = document.getElementById("autocomplete-input")),
+        ((l = document.getElementById("autocomplete-input")),
           (c = document.getElementById("suggestions-list")),
           (u = document.getElementsByClassName("clear-searchButton")[0]),
           (v = document.querySelector(".addressDetails")),
@@ -124,14 +124,14 @@
               }
             })),
           u.addEventListener("click", () => {
-            (l.value = ""),
+            ((l.value = ""),
               (c.style.display = "none"),
               (u.style.display = "none"),
               (f.style.display = "none"),
               l.focus(),
-              d.setMap(null);
+              d.setMap(null));
           }),
-          (h = C(q, 0));
+          (h = C(q, 0)));
       }
       function b() {
         if (l && c) {
@@ -155,14 +155,14 @@
             ? (t.forEach((e) => {
                 var s;
                 const o = document.createElement("li");
-                (o.innerHTML = (s = A(e)) != null ? s : ""),
+                ((o.innerHTML = (s = A(e)) != null ? s : ""),
                   o.addEventListener("click", () => {
                     var n;
-                    (l.value = (n = e.description) != null ? n : ""),
+                    ((l.value = (n = e.description) != null ? n : ""),
                       j(e.public_id),
-                      (c.style.display = "none");
+                      (c.style.display = "none"));
                   }),
-                  c.appendChild(o);
+                  c.appendChild(o));
               }),
               (c.style.display = "block"),
               (u.style.display = "block"))
@@ -177,7 +177,7 @@
           ? (n = T(e.description, s.description))
           : (n = e.description);
         let i = "";
-        return (i += `<div class="prediction ${o}">${n}</div>`), i;
+        return ((i += `<div class="prediction ${o}">${n}</div>`), i);
       }
       function T(t, e) {
         e = e.reverse();
@@ -217,7 +217,7 @@
           n = null;
         return function (...i) {
           return new Promise((a, y) => {
-            o !== null && clearTimeout(o),
+            (o !== null && clearTimeout(o),
               (s = a),
               (n = y),
               (o = setTimeout(() => {
@@ -228,12 +228,12 @@
                   .catch((m) => {
                     s === a && n === y && y(m);
                   });
-              }, e));
+              }, e)));
           });
         };
       }
       function B() {
-        document.querySelectorAll(".country").forEach((s) => {
+        (document.querySelectorAll(".country").forEach((s) => {
           if (
             (s.addEventListener("click", () => {
               P(s);
@@ -246,7 +246,7 @@
         }),
           document
             .querySelectorAll(".dropdown .dropdown-button")
-            .forEach((s) => s.addEventListener("click", H));
+            .forEach((s) => s.addEventListener("click", H)));
         const o = document.querySelectorAll(".dropdown");
         document.addEventListener("click", (s) => {
           o.forEach((n) => {
@@ -261,12 +261,12 @@
       }
       function L(t) {
         const e = t.querySelector(".dropdown-content");
-        e == null || e.classList.remove("visible"),
-          t.classList.remove("active");
+        (e == null || e.classList.remove("visible"),
+          t.classList.remove("active"));
       }
       function I(t) {
         const e = t.querySelector(".dropdown-content");
-        e == null || e.classList.add("visible"), t.classList.add("active");
+        (e == null || e.classList.add("visible"), t.classList.add("active"));
       }
       function P(t) {
         const e = t.classList.toggle("active"),
@@ -286,7 +286,7 @@
       }
       function j(t) {
         N(t).then((e) => {
-          E(e.result), $(v), e && _(e.result);
+          (E(e.result), $(v), e && _(e.result));
         });
       }
       function R(t) {
@@ -302,12 +302,12 @@
               north: o.northeast.lat,
               west: o.southwest.lng,
             };
-          p.fitBounds(s), p.panTo(t.geometry.location);
+          (p.fitBounds(s), p.panTo(t.geometry.location));
         } else {
           let o = 17;
-          t.types[0] === "address" && (o = 18),
+          (t.types[0] === "address" && (o = 18),
             p.setZoom(o),
-            p.panTo(e.location);
+            p.panTo(e.location));
         }
       }
       function N(t) {

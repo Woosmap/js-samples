@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>MultiSearch Map Advanced</title>
@@ -65,7 +65,7 @@
       };
       let f, c, n, p, d, l, r;
       function y() {
-        (c = document.getElementById("autocomplete-input")),
+        ((c = document.getElementById("autocomplete-input")),
           (n = document.getElementById("suggestions-list")),
           (p = document.getElementsByClassName("clear-searchButton")[0]),
           c &&
@@ -78,42 +78,42 @@
               }
             })),
           p.addEventListener("click", () => {
-            (c.value = ""),
+            ((c.value = ""),
               (n.style.display = "none"),
               (p.style.display = "none"),
               l && l.setMap(null),
               r && r.close(),
-              c.focus();
+              c.focus());
           }),
-          (f = window.woosmap.multisearch(u));
+          (f = window.woosmap.multisearch(u)));
       }
       function g() {
-        (d = new window.woosmap.map.Map(document.getElementById("map"), {
+        ((d = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 4,
         })),
           (r = new woosmap.map.InfoWindow({})),
-          y();
+          y());
       }
       function h() {
         if (c && n) {
           const e = c.value;
-          e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
+          (e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             e !== ""
               ? f.autocompleteMulti(e).then(
                   (t) => L(t),
                   (t) => console.error(`Error autocomplete localities: ${t}`),
                 )
-              : ((n.style.display = "none"), (p.style.display = "none"));
+              : ((n.style.display = "none"), (p.style.display = "none")));
         }
       }
       function w() {
         const e = document.createElement("li");
-        (e.innerHTML =
+        ((e.innerHTML =
           "<div class='prediction no-result'>No results found...</div>"),
           n.appendChild(e),
           (n.className = ""),
-          (n.style.display = "block");
+          (n.style.display = "block"));
       }
       function L(e) {
         c &&
@@ -123,17 +123,17 @@
             ? (e.forEach((t) => {
                 var a;
                 const i = document.createElement("li");
-                (i.className = `${t.api}-api`),
+                ((i.className = `${t.api}-api`),
                   (i.innerHTML = (a = v(t)) != null ? a : ""),
                   i.addEventListener("click", () => {
                     var o;
-                    (c.value = (o = t.description) != null ? o : ""),
+                    ((c.value = (o = t.description) != null ? o : ""),
                       (n.style.display = "none"),
                       f.detailsMulti({ id: t.id, api: t.api }).then((s) => {
                         b(s, t.api);
-                      });
+                      }));
                   }),
-                  n.appendChild(i);
+                  n.appendChild(i));
               }),
               (n.className = e[0].api),
               (n.style.display = "block"),
@@ -173,9 +173,9 @@
       }
       function b(e, t) {
         if ((l && l.setMap(null), r && r.close(), e != null && e.geometry)) {
-          (l = k(e)), l.setMap(d);
+          ((l = k(e)), l.setMap(d));
           const i = E(e, t);
-          r.setOffset(new woosmap.map.Point(0, -50)),
+          (r.setOffset(new woosmap.map.Point(0, -50)),
             r.setContent(i),
             l.addListener("click", () => {
               r.open(d, l.getPosition());
@@ -184,7 +184,7 @@
             d.setZoom(14),
             woosmap.map.event.addListenerOnce(d, "idle", () => {
               r.open(d, l.position);
-            });
+            }));
         }
       }
       document.addEventListener("click", (e) => {

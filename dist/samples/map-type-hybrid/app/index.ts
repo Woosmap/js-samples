@@ -8,16 +8,16 @@ function initMap(): void {
   };
 
   // The map, initialized with hybrid satellite view
-  // @ts-ignore - mapTypeId available since Map JS API v1.33
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
     zoom: 16,
     center: position,
+    // @ts-expect-error mapTypeId available since Map JS API v1.33
     mapTypeId: woosmap.map.MapTypeId.HYBRID,
   });
 
   // Listen for map type changes via the built-in control
   map.addListener("mapTypeId_changed", () => {
-    // @ts-ignore - getMapTypeId available since Map JS API v1.33
+    // @ts-expect-error getMapTypeId available since Map JS API v1.33
     console.log("Map type switched to:", map.getMapTypeId());
   });
 }

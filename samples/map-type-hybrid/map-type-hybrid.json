@@ -1,0 +1,14 @@
+{
+  "title": "Map Type Hybrid",
+  "description": "Initialize a map with the hybrid satellite view and use the built-in map type control to switch between roadmap and satellite.",
+  "category": "Map Basics",
+  "callback": "initMap",
+  "tag": "map_type_hybrid",
+  "name": "map-type-hybrid",
+  "pagination": {
+    "data": "mode",
+    "size": 1,
+    "alias": "mode"
+  },
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+}

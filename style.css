@@ -1,0 +1,277 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#container {
+  height: 100%;
+  display: flex;
+}
+
+#sidebar {
+  flex-basis: 12rem;
+  flex-grow: 1;
+  max-width: 30rem;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+#map {
+  flex-basis: 70vw;
+  flex-grow: 5;
+  height: 100%;
+}
+
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+  height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#autocomplete-container {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  background: #fff;
+  border-radius: 12px;
+  padding: 0 12px;
+  max-width: 320px;
+  width: 100%;
+  height: 42px;
+  border: none;
+  box-sizing: border-box;
+  align-items: center;
+  cursor: text;
+  font-size: 15px;
+}
+
+#autocomplete-container .search-icon, #autocomplete-container .clear-icon {
+  color: inherit;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+#autocomplete-container .clear-icon {
+  transform: scale(1.3);
+}
+
+#autocomplete-input {
+  box-sizing: border-box;
+  padding: 0;
+  height: 40px;
+  line-height: 24px;
+  vertical-align: top;
+  transition-property: color;
+  transition-duration: 0.3s;
+  width: 100%;
+  text-overflow: ellipsis;
+  background: transparent;
+  border-radius: 0;
+  border: 0;
+  margin: 0 8px;
+  outline: 0;
+  overflow: visible;
+  appearance: textfield;
+  font-size: 100%;
+}
+
+.clear-searchButton {
+  display: none;
+  height: 18px;
+  width: 22px;
+  background: none;
+  border: none;
+  vertical-align: middle;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+#suggestions-list {
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+  position: absolute;
+  max-width: 320px;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  list-style: none;
+  max-height: 80vh;
+  margin: 5px 0 0;
+  padding: 0;
+  display: none;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+#suggestions-list.visible {
+  display: block;
+}
+
+#suggestions-list li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#suggestions-list li:hover {
+  background-color: #f2f2f2;
+}
+
+#sidebar {
+  flex-basis: 18rem;
+  box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1;
+}
+
+#innerWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 0 10px 40px;
+}
+
+#mapContainer {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 70vw;
+  flex-grow: 5;
+  position: relative;
+}
+
+#map.cursor-crosshair .mapboxgl-canvas-container {
+  cursor: crosshair !important;
+}
+
+.sectionHeader span {
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.sectionHeader {
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eeeeee;
+  margin: 20px -10px 5px;
+  padding: 5px 10px;
+  color: #222;
+}
+.sectionHeader:first-child {
+  margin-top: 0;
+}
+
+.typesOptions {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  font-size: 13px;
+}
+.typesOptions__list {
+  width: 100%;
+  height: 100%;
+  max-height: 30vh;
+  overflow: scroll;
+}
+.typesOptions__list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.typesOptions__list ul li {
+  padding: 3px 0;
+}
+.typesOptions__list ul li input[type=checkbox] {
+  margin-right: 3px;
+}
+.typesOptions__list ul li input[type=checkbox]:disabled {
+  box-shadow: inset 0 0 20px #999;
+}
+.typesOptions__list ul li label {
+  margin-left: 3px;
+  font-size: 0.85em;
+}
+.typesOptions__list ul li ul {
+  margin-left: 10px;
+  padding-left: 5px;
+  border-left: 1px solid #ddd;
+}
+.typesOptions__input {
+  height: 24px;
+  display: flex;
+  align-items: baseline;
+}
+
+.radius__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.radius__container > label {
+  padding-left: 10px;
+}
+
+#page-previous {
+  margin-right: 5px;
+}
+
+ol#results {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+}
+ol#results > li {
+  margin-top: 10px;
+  background-color: white;
+  font-size: 10pt;
+  line-height: 1.2rem;
+  padding: 5px;
+}
+ol#results > li > * {
+  display: block;
+}
+ol#results > li > .distance {
+  padding-top: 0.2rem;
+  font-weight: lighter;
+}
+ol#results > li:hover {
+  cursor: pointer;
+  background-color: #f2f2f2;
+}
+
+#radius {
+  flex: 1; /* Take all remaining space */
+}
+
+#radius-label {
+  border: 1px dashed #ccc;
+  outline: none;
+}
+

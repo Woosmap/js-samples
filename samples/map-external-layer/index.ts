@@ -5,6 +5,7 @@ let map: woosmap.map.Map;
 let styleSelect: HTMLSelectElement;
 let layerSelect: HTMLSelectElement;
 let opacityInput: HTMLInputElement;
+let opacityDisplay: HTMLElement;
 
 const centerLatLng: woosmap.map.LatLngLiteral = {
   lat: 45.126643,
@@ -17,6 +18,7 @@ function initMap() {
     {
       zoom: 15.64,
       center: centerLatLng,
+      mapTypeControl: true,
       styles: STYLE_PRESETS.lightgrey,
     },
   );
@@ -30,21 +32,27 @@ function initMap() {
   opacityInput = document.getElementById(
     "opacity-value-input",
   ) as HTMLInputElement;
+  opacityDisplay = document.getElementById(
+    "opacity-value-display",
+  ) as HTMLElement;
 
+  updateOpacityDisplay();
   applyLayer(layerSelect.value, readOpacity());
 
   styleSelect.addEventListener("change", onStyleChange);
   layerSelect.addEventListener("change", onLayerChange);
+  opacityInput.addEventListener("input", updateOpacityDisplay);
   opacityInput.addEventListener("change", onOpacityChange);
+}
+
+function updateOpacityDisplay() {
+  const opacity = parseFloat(opacityInput.value);
+  opacityDisplay.textContent = `${Math.round(opacity * 100)}%`;
 }
 
 function readOpacity(): number {
   const opacity = parseFloat(opacityInput.value);
-  if (isNaN(opacity) || opacity < 0 || opacity > 1) {
-    alert("Opacity should be between 0 and 1");
-    return 1;
-  }
-  return opacity;
+  return isNaN(opacity) ? 1 : opacity;
 }
 
 function onStyleChange() {
@@ -72,6 +80,7 @@ function applyStyle(name: string) {
     {
       zoom: map.getZoom(),
       center: map.getCenter(),
+      mapTypeControl: true,
       styles,
     },
   );

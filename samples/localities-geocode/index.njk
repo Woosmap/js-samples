@@ -14,9 +14,30 @@
             </button>
         </div>
 
-        <div id="instructions">
-            Enter an address to geocode or click on the map to reverse geocode.
-        </div>
+        <aside id="response-panel" data-empty="true">
+            <div class="panel-header">
+                <div class="panel-title">Geocode response</div>
+                <div class="panel-hint">
+                    Enter an address to geocode or click on the map to reverse geocode.
+                </div>
+            </div>
+            <div class="summary"></div>
+            <div class="address-components"></div>
+            <details class="raw-json-details">
+                <summary>
+                    <span>Raw JSON</span>
+                    <button id="copy-raw-json" class="copy-btn" type="button" title="Copy" aria-label="Copy raw JSON">
+                        <svg class="icon-copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                            <path fill="currentColor" d="m18.6 7.494-.625-.112a20.62 20.62 0 0 0-2.261-.264V4.982A2.328 2.328 0 0 0 13.8 2.688l-.626-.113a20.28 20.28 0 0 0-7.188 0l-.624.113A2.327 2.327 0 0 0 3.44 4.982v8.885a2.331 2.331 0 0 0 2.742 2.295 19.243 19.243 0 0 1 2.065-.244v2.756a2.329 2.329 0 0 0 2.742 2.294 19.142 19.142 0 0 1 6.793 0 2.33 2.33 0 0 0 2.742-2.294V9.789A2.33 2.33 0 0 0 18.6 7.494zM5.985 15.059a1.211 1.211 0 0 1-1.425-1.192V4.982a1.209 1.209 0 0 1 1-1.192l.624-.112a19.142 19.142 0 0 1 6.793 0l.625.112a1.211 1.211 0 0 1 1 1.192v8.885a1.213 1.213 0 0 1-1.426 1.192 20.358 20.358 0 0 0-4.293-.29.54.54 0 0 0-.072-.014.54.54 0 0 0-.113.023 20.3 20.3 0 0 0-2.713.281zM19.4 18.674a1.211 1.211 0 0 1-1.425 1.192 20.275 20.275 0 0 0-7.187 0A1.222 1.222 0 0 1 9.8 19.6a1.209 1.209 0 0 1-.434-.929v-2.803a19.126 19.126 0 0 1 3.608.294 2.409 2.409 0 0 0 .413.036 2.332 2.332 0 0 0 2.33-2.331V8.24a19.561 19.561 0 0 1 2.064.245l.625.112a1.209 1.209 0 0 1 1 1.192z"></path>
+                        </svg>
+                        <svg class="icon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 9" width="14" height="10" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.026 0.188287C12.2771 0.439342 12.2771 0.846374 12.026 1.09743L4.31172 8.81172C4.06067 9.06276 3.65363 9.06276 3.40258 8.81172L0.188287 5.59743C-0.0627622 5.3464 -0.0627622 4.93934 0.188287 4.6883C0.439342 4.43726 0.846374 4.43726 1.09743 4.6883L3.85715 7.44803L11.1169 0.188287C11.3679 -0.0627622 11.775 -0.0627622 12.026 0.188287Z" fill="currentColor"></path>
+                        </svg>
+                    </button>
+                </summary>
+                <pre><code id="raw-json"></code></pre>
+            </details>
+        </aside>
 
         <div id="map"></div>
     </div>

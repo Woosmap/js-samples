@@ -117,13 +117,10 @@ body {
   text-decoration: none;
 }
 
-#instructions {
-  max-width: 300px;
-  font-size: 17px;
-  padding: 10px;
+#response-panel {
   position: absolute;
-  bottom: 50px;
-  left: 0;
+  right: 10px;
+  bottom: 25px;
   background-color: #fff;
   border-radius: 3px;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
@@ -131,5 +128,110 @@ body {
   padding: 5px;
   overflow: hidden;
   z-index: 1;
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(40vh - 25px);
+  overflow-y: auto;
+  padding: 0;
+  font-size: 13px;
+}
+#response-panel .panel-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+#response-panel .panel-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+#response-panel .panel-hint {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+}
+#response-panel .section-title {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 14px 12px 8px 12px;
+}
+#response-panel .summary,
+#response-panel .address-components {
+  background-color: #fff;
+}
+#response-panel .address-components {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+#response-panel .option-detail {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 12px 8px 12px;
+  margin: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+#response-panel .option-detail-label {
+  color: rgba(0, 0, 0, 0.5);
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+#response-panel .bold {
+  font-weight: 700;
+}
+#response-panel .raw-json-details {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+#response-panel .raw-json-details summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-weight: 600;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#response-panel .raw-json-details .copy-btn {
+  background: transparent;
+  border: 0;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5);
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease-in-out;
+}
+#response-panel .raw-json-details .copy-btn:hover, #response-panel .raw-json-details .copy-btn:focus {
+  color: #3d5afe;
+  outline: none;
+}
+#response-panel .raw-json-details .copy-btn .icon-check {
+  display: none;
+  color: #2e7d32;
+}
+#response-panel .raw-json-details .copy-btn.copied {
+  color: #2e7d32;
+}
+#response-panel .raw-json-details .copy-btn.copied .icon-copy {
+  display: none;
+}
+#response-panel .raw-json-details .copy-btn.copied .icon-check {
+  display: inline-block;
+}
+#response-panel .raw-json-details pre {
+  margin: 0 10px 10px 10px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  background-color: #fafafa;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  font-size: 12px;
+  font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+#response-panel[data-empty=true] .summary,
+#response-panel[data-empty=true] .address-components,
+#response-panel[data-empty=true] .raw-json-details {
+  display: none;
 }
 

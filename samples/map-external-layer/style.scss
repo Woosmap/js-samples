@@ -7,26 +7,79 @@
 #app {
     height: 100%;
 }
+
 #selector {
-    @include map-panel($top: 0px, $left: 0);
+    @include map-panel($top: 0, $left: 0);
+    width: 220px;
+    padding: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-select{
-    width: 100px;
-}
-input {
-    width: 92px;
+.panel-title {
+    margin: 0 0 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #5f6368;
 }
 
 .select-container {
-    padding: 2px 0;
-    width: 100%;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 
-#selector span {
-    padding: 0 5px;
+.select-container .label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #202124;
+    margin-bottom: 4px;
+}
+
+.select-container select {
+    width: 100%;
+    height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    padding: 0 8px;
+    font-size: 0.8125rem;
+    background: #fff;
+    cursor: pointer;
+
+    &:hover {
+        border-color: #b8bcc1;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #1a73e8;
+    }
+}
+
+.opacity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.opacity-control input[type="range"] {
+    flex: 1;
+    accent-color: #1a73e8;
+    cursor: pointer;
+}
+
+#opacity-value-display {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8125rem;
+    color: #5f6368;
+    min-width: 36px;
+    text-align: right;
 }
 
 /* [END woosmap_map_external_layer] */

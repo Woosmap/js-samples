@@ -13,34 +13,41 @@
     <!-- [START woosmap_map_external_layer_div] -->
     <div id="app">
       <div id="selector">
-        <div class="select-container">
-          <span>Woosmap Style </span>
+        <h3 class="panel-title">Map options</h3>
+
+        <label class="select-container">
+          <span class="label">Map style</span>
           <select id="woosmap-style-select">
             <option value="default">Default</option>
-            <option value="lightgrey">Light Grey</option>
+            <option value="lightgrey" selected>Light Grey</option>
             <option value="night">Transit By Night</option>
             <option value="retro">Retro</option>
           </select>
-        </div>
-        <div class="select-container">
-          <span>Third party layer </span>
+        </label>
+
+        <label class="select-container">
+          <span class="label">Overlay layer</span>
           <select id="layer-provider-select">
-            <option value="satellite">ArcGIS Satellite view</option>
+            <option value="pistes">OpenSnowMap ski runs</option>
             <option value="temperature">OpenWeather temperature</option>
             <option value="precipitation">OpenWeather precipitation</option>
           </select>
-        </div>
-        <div class="select-container">
-          <span>Opacity </span>
-          <input
-            id="opacity-value-input"
-            type="number"
-            value="1"
-            step="0.1"
-            min="0"
-            max="1"
-          />
-        </div>
+        </label>
+
+        <label class="select-container">
+          <span class="label">Opacity</span>
+          <div class="opacity-control">
+            <input
+              id="opacity-value-input"
+              type="range"
+              value="1"
+              step="0.05"
+              min="0"
+              max="1"
+            />
+            <span id="opacity-value-display">100%</span>
+          </div>
+        </label>
       </div>
       <div id="map"></div>
     </div>

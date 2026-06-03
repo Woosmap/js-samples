@@ -1,88 +1,92 @@
 const openWeatherMapKey = "723abb7941260adc84c92a1f526bdabb";
 let map;
-let styleSelect, layerSelect;
+let styleSelect;
+let layerSelect;
 let opacityInput;
+let opacityDisplay;
 const centerLatLng = {
-  lat: 39.15253,
-  lng: -97.74332,
+  lat: 45.126643,
+  lng: 6.073999,
 };
 
 function initMap() {
   map = new window.woosmap.map.Map(document.getElementById("map"), {
-    zoom: 3,
+    zoom: 15.64,
     center: centerLatLng,
-    styles: [],
+    mapTypeControl: true,
+    styles: STYLE_PRESETS.lightgrey,
   });
-
-  const imageMapType = new woosmap.map.ImageMapType({
-    url: "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png",
-    tileSize: new woosmap.map.Size(256, 256),
-    maxZoom: 19,
-  });
-
-  map.overlayMapTypes.insertAt(0, imageMapType);
-
-  const onChangeHandler = () => {
-    if (
-      parseFloat(opacityInput.value) > 1 ||
-      parseFloat(opacityInput.value) < 0
-    ) {
-      alert("Value should be between 0 and 1");
-      return;
-    }
-
-    changeStyle(styleSelect.value);
-    changeLayer(layerSelect.value, parseFloat(opacityInput.value));
-  };
-
   styleSelect = document.getElementById("woosmap-style-select");
   layerSelect = document.getElementById("layer-provider-select");
   opacityInput = document.getElementById("opacity-value-input");
-  styleSelect.addEventListener("change", onChangeHandler);
-  layerSelect.addEventListener("change", onChangeHandler);
-  opacityInput.addEventListener("change", onChangeHandler);
+  opacityDisplay = document.getElementById("opacity-value-display");
+  updateOpacityDisplay();
+  applyLayer(layerSelect.value, readOpacity());
+  styleSelect.addEventListener("change", onStyleChange);
+  layerSelect.addEventListener("change", onLayerChange);
+  opacityInput.addEventListener("input", updateOpacityDisplay);
+  opacityInput.addEventListener("change", onOpacityChange);
 }
 
-function changeStyle(name) {
-  let styles;
+function updateOpacityDisplay() {
+  const opacity = parseFloat(opacityInput.value);
 
-  if (name == "retro") {
-    styles = retroStyles;
-  } else if (name == "lightgrey") {
-    styles = lightgreyStyles;
-  } else if (name == "night") {
-    styles = nightStyles;
-  } else {
-    styles = [];
+  opacityDisplay.textContent = `${Math.round(opacity * 100)}%`;
+}
+
+function readOpacity() {
+  const opacity = parseFloat(opacityInput.value);
+  return isNaN(opacity) ? 1 : opacity;
+}
+
+function onStyleChange() {
+  applyStyle(styleSelect.value);
+  // Recreating the map wipes overlays — reapply the current layer.
+  applyLayer(layerSelect.value, readOpacity());
+}
+
+function onLayerChange() {
+  const view = LAYER_VIEWS[layerSelect.value];
+
+  if (view) {
+    map.flyTo(view);
   }
+
+  applyLayer(layerSelect.value, readOpacity());
+}
+
+function onOpacityChange() {
+  applyLayer(layerSelect.value, readOpacity());
+}
+
+function applyStyle(name) {
+  const styles = STYLE_PRESETS[name] ?? [];
 
   map = new window.woosmap.map.Map(document.getElementById("map"), {
     zoom: map.getZoom(),
     center: map.getCenter(),
-    styles: styles,
+    mapTypeControl: true,
+    styles,
   });
 }
 
-function changeLayer(provider, opacity) {
-  let url;
+function applyLayer(provider, opacity) {
+  map.overlayMapTypes.clear();
 
-  if (provider == "temperature") {
-    url = `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}?appid=${openWeatherMapKey}`;
-  } else if (provider == "precipitation") {
-    url = `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}?appid=${openWeatherMapKey}`;
-  } else {
-    url = `https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png`;
+  const config = LAYER_CONFIGS[provider];
+
+  if (!config) {
+    return;
   }
 
-  const imageMapType = new woosmap.map.ImageMapType({
-    url: url,
-    tileSize: new woosmap.map.Size(256, 256),
-    maxZoom: 19,
-    opacity: opacity,
-    name: "Layer",
-  });
-
-  map.overlayMapTypes.insertAt(0, imageMapType);
+  map.overlayMapTypes.insertAt(
+    0,
+    new woosmap.map.ImageMapType({
+      ...config,
+      tileSize: new woosmap.map.Size(256, 256),
+      opacity,
+    }),
+  );
 }
 
 const nightStyles = [
@@ -366,5 +370,36 @@ const lightgreyStyles = [
     stylers: [{ color: "#9e9e9e" }],
   },
 ];
+const STYLE_PRESETS = {
+  retro: retroStyles,
+  lightgrey: lightgreyStyles,
+  night: nightStyles,
+};
+const LAYER_CONFIGS = {
+  pistes: {
+    url: "https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png",
+    name: "OpenSnowMap",
+    maxZoom: 19,
+  },
+  temperature: {
+    url: `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}?appid=${openWeatherMapKey}`,
+    name: "Temperature",
+    maxZoom: 19,
+  },
+  precipitation: {
+    url: `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}?appid=${openWeatherMapKey}`,
+    name: "Precipitation",
+    maxZoom: 19,
+  },
+};
+const US_VIEW = {
+  center: { lat: 39.8283, lng: -98.5795 },
+  zoom: 4,
+};
+const LAYER_VIEWS = {
+  pistes: { center: { lat: 45.126643, lng: 6.073999 }, zoom: 15.64 },
+  temperature: US_VIEW,
+  precipitation: US_VIEW,
+};
 
 window.initMap = initMap;

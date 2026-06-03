@@ -75,6 +75,45 @@
   }
 }
 
+@mixin copy-button(
+  $color: rgba(0, 0, 0, 0.5),
+  $hover-color: #3d5afe,
+  $success-color: #2e7d32,
+  $padding: 2px 4px
+) {
+  background: transparent;
+  border: 0;
+  padding: $padding;
+  cursor: pointer;
+  color: $color;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease-in-out;
+
+  &:hover,
+  &:focus {
+    color: $hover-color;
+    outline: none;
+  }
+
+  .icon-check {
+    display: none;
+    color: $success-color;
+  }
+
+  &.copied {
+    color: $success-color;
+
+    .icon-copy {
+      display: none;
+    }
+
+    .icon-check {
+      display: inline-block;
+    }
+  }
+}
+
 @mixin progress($width: 70px, $height:70px, $borderColor: #f3f3f3, $borderTopColor: #444444) {
   position: fixed;
   top: 0;

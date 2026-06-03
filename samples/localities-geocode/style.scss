@@ -17,11 +17,108 @@
   @include actionText($color: #fff);
 }
 
-#instructions {
-  max-width: 300px;
-  font-size: 17px;
-  padding: 10px;
-  @include map-panel($bottom: 50px, $left: 0);
+#response-panel {
+  @include map-panel($bottom: 25px, $right: 10px);
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(40vh - 25px);
+  overflow-y: auto;
+  padding: 0;
+  font-size: 13px;
+
+  .panel-header {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .panel-title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .panel-hint {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+  }
+
+  .section-title {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 14px 12px 8px 12px;
+  }
+
+  .summary,
+  .address-components {
+    background-color: #fff;
+  }
+
+  .address-components {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+
+  .option-detail {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 12px 8px 12px;
+    margin: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+
+    &-label {
+      color: rgba(0, 0, 0, 0.5);
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+  }
+
+  .bold {
+    font-weight: 700;
+  }
+
+  .raw-json-details {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+    summary {
+      cursor: pointer;
+      padding: 10px 14px;
+      font-weight: 600;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .copy-btn {
+      @include copy-button;
+    }
+
+    pre {
+      margin: 0 10px 10px 10px;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      background-color: #fafafa;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      font-size: 12px;
+      font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",
+        "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono",
+        "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier,
+        monospace;
+    }
+  }
+
+  &[data-empty="true"] {
+    .summary,
+    .address-components,
+    .raw-json-details {
+      display: none;
+    }
+  }
 }
 
 /* [END woosmap_localities_geocode] */

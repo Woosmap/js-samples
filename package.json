@@ -36,6 +36,8 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-img": "^6.0.4",
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
     "@types/geojson": "^7946.0.16",
     "@types/supercluster": "^7.1.3",

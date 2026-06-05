@@ -131,7 +131,7 @@ const Marker: React.FC<{
   useEffect(() => {
     if (!woosmap || !mapInstance || !position) return;
 
-    class CustomOverlay extends woosmap.map.OverlayView {
+    class CustomOverlay extends (woosmap.map.OverlayView as new () => any) {
       private position: woosmap.map.LatLngLiteral;
       private containerDiv: HTMLDivElement;
       private icon: React.ReactNode;

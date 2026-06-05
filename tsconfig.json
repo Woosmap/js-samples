@@ -8,7 +8,8 @@
     "moduleResolution": "Bundler",
     "jsx": "preserve",
     "esModuleInterop": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "types": ["woosmap.map", "geojson", "supercluster"]
   },
   "include": ["samples/**/*", "src/**/*"],
   "exclude": ["node_modules", "./dist"]

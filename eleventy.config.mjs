@@ -72,21 +72,28 @@ export default function (eleventyConfig) {
     const inlinePlugin = {
       name: "vite:singlefile",
       transformIndexHtml: {
-        enforce: "post",
-        transform(html, ctx) {
+        order: "post",
+        handler(html, ctx) {
+          // Inlined content may contain a literal "</style>" or "</script>"
+          // (e.g. SVG data URIs in CSS) that would prematurely close the host
+          // raw-text element. Escape the slash so the HTML tokenizer doesn't
+          // match an end tag; "\/" still decodes back to "/" in CSS and JS.
+          const escapeRawText = (code) =>
+            String(code).replace(/<\/(script|style)/gi, "<\\/$1");
+
           for (const asset of Object.values(ctx.bundle)) {
             switch (asset.name) {
               case "index.css":
                 html = html.replace(
                   /<link rel="stylesheet" crossorigin href="\.\/assets\/index-.+\.css">/gm,
-                  () => `<style>${asset.source.trim()}</style>`,
+                  () => `<style>${escapeRawText(asset.source.trim())}</style>`,
                 );
                 break;
               case "index":
                 html = html.replace(
                   /<script type="module" crossorigin src="\.\/assets\/index-.+\.js"><\/script>/gm,
                   () =>
-                    `<script type="module" crossorigin>${asset.code.trim()}</script>`,
+                    `<script type="module" crossorigin>${escapeRawText(asset.code.trim())}</script>`,
                 );
                 break;
               default:

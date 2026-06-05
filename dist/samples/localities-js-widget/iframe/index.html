@@ -13,51 +13,51 @@
 
     <script type="module" crossorigin>
       (function () {
-        const o = document.createElement("link").relList;
-        if (o && o.supports && o.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const i of t.addedNodes)
-                i.tagName === "LINK" && i.rel === "modulepreload" && s(i);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function n(e) {
-          const t = {};
+        function t(e) {
+          let t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
             t
           );
         }
-        function s(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = n(e);
-          fetch(e.href, t);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      function c() {
-        const r = document.getElementById("response-container"),
-          o = new window.woosmap.localities.Autocomplete(
-            "autocomplete-input",
+      function e() {
+        let e = document.getElementById(`response-container`),
+          t = new window.woosmap.localities.Autocomplete(
+            `autocomplete-input`,
             {},
           );
-        o.addListener("selected_suggestion", () => {
-          const n = o.getSelectedSuggestionDetails();
-          r &&
-            ((r.innerHTML = `<code>${JSON.stringify(n, null, 2)}</code>`),
-            (r.style.display = "block"));
+        t.addListener(`selected_suggestion`, () => {
+          let n = t.getSelectedSuggestionDetails();
+          e &&
+            ((e.innerHTML = `<code>${JSON.stringify(n, null, 2)}</code>`),
+            (e.style.display = `block`));
         });
       }
-      document.addEventListener("DOMContentLoaded", () => {
-        c();
+      document.addEventListener(`DOMContentLoaded`, () => {
+        e();
       });
     </script>
     <style>
@@ -76,9 +76,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -90,57 +92,57 @@
         overflow-y: hidden;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-input {
         box-sizing: border-box;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0;
+        padding: 0 12px;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        padding: 0 12px;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .localities-input-wrapper,
       .localities-input-container {
         width: 100%;
       }
       pre {
-        display: none;
-        margin: 70px 10px;
-        max-height: calc(100vh - 110px);
-        padding: 10px;
-        border: 3px solid #c8c8c8;
-        background-color: #fff;
-        border-radius: 8px;
         white-space: pre-wrap;
-        overflow-x: auto;
+        background-color: #fff;
+        border: 3px solid #c8c8c8;
+        border-radius: 8px;
+        max-height: calc(100vh - 110px);
+        margin: 70px 10px;
+        padding: 10px;
         font-family:
           Consolas,
           Andale Mono WT,
@@ -155,6 +157,8 @@
           Courier New,
           Courier,
           monospace;
+        display: none;
+        overflow-x: auto;
       }
     </style>
   </head>

@@ -7,226 +7,226 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const r of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(r);
-        new MutationObserver((r) => {
-          for (const n of r)
-            if (n.type === "childList")
-              for (const a of n.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && s(a);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function o(r) {
-          const n = {};
+        function t(e) {
+          let t = {};
           return (
-            r.integrity && (n.integrity = r.integrity),
-            r.referrerPolicy && (n.referrerPolicy = r.referrerPolicy),
-            r.crossOrigin === "use-credentials"
-              ? (n.credentials = "include")
-              : r.crossOrigin === "anonymous"
-                ? (n.credentials = "omit")
-                : (n.credentials = "same-origin"),
-            n
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function s(r) {
-          if (r.ep) return;
-          r.ep = !0;
-          const n = o(r);
-          fetch(r.href, n);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let i,
-        c = null,
-        d,
-        h,
-        v,
-        u = [],
-        m = [];
-      const w = {
+      var e,
+        t = null,
+        n,
+        r,
+        i,
+        a = [],
+        o = [],
+        s = {
           breakPoint: 14,
           rules: [],
           default: {
-            color: "#55baa6",
+            color: `#55baa6`,
             size: 10,
             minSize: 3,
-            icon: { url: "https://images.woosmap.com/marker-green.svg" },
-            selectedIcon: { url: "https://images.woosmap.com/marker-red.svg" },
+            icon: { url: `https://images.woosmap.com/marker-green.svg` },
+            selectedIcon: { url: `https://images.woosmap.com/marker-red.svg` },
           },
         },
-        S = {
+        c = {
           zoom: 5,
           center: { lat: 46.5, lng: 1.4 },
-          styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }],
+          styles: [{ featureType: `all`, stylers: [{ saturation: -100 }] }],
         },
-        l = document.getElementById("autocomplete-input"),
-        p = document.getElementById("submit-button");
+        l = document.getElementById(`autocomplete-input`),
+        u = document.getElementById(`submit-button`);
       l &&
-        p &&
-        (l.addEventListener("keydown", L), p.addEventListener("click", b));
-      function L(e) {
-        e.key === "Enter" && y();
+        u &&
+        (l.addEventListener(`keydown`, d), u.addEventListener(`click`, f));
+      function d(e) {
+        e.key === `Enter` && y(null);
       }
-      function b() {
-        y();
+      function f() {
+        y(null);
       }
-      function E(e, t) {
-        return e.filter((o) =>
+      function p(e, t) {
+        return e.filter((e) =>
           t
             ? t.contains({
-                lat: o.geometry.coordinates[1],
-                lng: o.geometry.coordinates[0],
+                lat: e.geometry.coordinates[1],
+                lng: e.geometry.coordinates[0],
               })
             : !1,
         );
       }
-      function M() {
-        const e = [],
+      function m() {
+        let e = [],
           t = { storesByPage: 300 };
-        function o(s) {
+        function n(i) {
           return (
-            s && (t.page = s),
-            h
+            i && (t.page = i),
+            r
               .search(t)
               .then(
                 (r) => (
                   e.push(...r.features),
                   t.page === r.pagination.pageCount
                     ? e
-                    : o(r.pagination.page + 1)
+                    : n(r.pagination.page + 1)
                 ),
               )
-              .catch((r) => {
-                throw (console.error(r), new Error("Error getting all stores"));
+              .catch((e) => {
+                throw (console.error(e), Error(`Error getting all stores`));
               })
           );
         }
-        return o();
+        return n();
       }
-      function f(e) {
-        const t = e.map(O),
-          o = document.querySelector(".stores-list");
-        (o &&
-          ((o.innerHTML = `<p style="padding: 0 0.8rem; font-size: 17px">Results: <strong>${e.length}</strong> stores in bounds</p>`),
-          (o.innerHTML += t.join(""))),
-          $(e));
+      function h(e) {
+        let t = e.map(g),
+          n = document.querySelector(`.stores-list`);
+        (n &&
+          ((n.innerHTML = `<p style="padding: 0 0.8rem; font-size: 17px">Results: <strong>${e.length}</strong> stores in bounds</p>`),
+          (n.innerHTML += t.join(``))),
+          _(e));
       }
-      function O(e, t) {
-        const { name: o, address: s, contact: r } = e.properties,
-          n = r.phone
-            ? `<div class='store-contact'><a href='tel:${r.phone}'>${r.phone}</a></div>`
-            : "",
-          a = r.website
-            ? `<div class='store-website'><a href='${r.website}' target="_blank">go to website</a></div>`
-            : "";
+      function g(e, t) {
+        let { name: n, address: r, contact: i } = e.properties,
+          a = i.phone
+            ? `<div class='store-contact'><a href='tel:${i.phone}'>${i.phone}</a></div>`
+            : ``,
+          o = i.website
+            ? `<div class='store-website'><a href='${i.website}' target="_blank">go to website</a></div>`
+            : ``;
         return `
     <div class='controls summary-store-card' data-index=${t} data-store-id="${e.properties.store_id}">
       <div>
-        <div><strong>${o}</strong></div>
+        <div><strong>${n}</strong></div>
         <div>
-          <div class='store-address'>${(s && s.lines && s.lines.join(", ")) || "Address not available"}</div>
-          ${n}
+          <div class='store-address'>${(r && r.lines && r.lines.join(`, `)) || `Address not available`}</div>
           ${a}
+          ${o}
         </div>
       </div>
     </div>`;
       }
-      function $(e) {
-        document.querySelectorAll(".summary-store-card").forEach((t) => {
-          t.addEventListener("click", () => {
-            d.setSelection(e[t.dataset.index]);
-            const o = document.querySelector(".stores-list");
-            o &&
-              (Array.from(o.children).forEach((s) =>
-                s.classList.remove("active"),
+      function _(e) {
+        document.querySelectorAll(`.summary-store-card`).forEach((t) => {
+          t.addEventListener(`click`, () => {
+            n.setSelection(e[t.dataset.index]);
+            let r = document.querySelector(`.stores-list`);
+            r &&
+              (Array.from(r.children).forEach((e) =>
+                e.classList.remove(`active`),
               ),
-              t.classList.add("active"));
+              t.classList.add(`active`));
           });
         });
       }
-      function A(e) {
-        return l ? { address: l.value } : null;
+      function v(e) {
+        return l ? (e ? { latLng: e } : { address: l.value }) : null;
       }
       function y(e) {
-        const t = A();
+        let t = v(e);
         t &&
-          v
+          i
             .geocode(t)
-            .then((o) => q(o))
-            .catch(P);
+            .then((e) => b(e))
+            .catch(T);
       }
-      function q(e) {
-        var o, s;
-        const t =
-          (s = (o = e.results[0]) == null ? void 0 : o.geometry) == null
+      function b(e) {
+        var t;
+        let n =
+          (t = e.results[0]) == null || (t = t.geometry) == null
             ? void 0
-            : s.location;
-        t && B(t);
+            : t.location;
+        n && x(n);
       }
-      function B(e) {
-        (c && c.setMap(null),
-          e &&
-            ((c = new woosmap.map.Marker({
-              position: e,
+      function x(n) {
+        (t && t.setMap(null),
+          n &&
+            ((t = new woosmap.map.Marker({
+              position: n,
               icon: {
-                url: "https://images.woosmap.com/marker.png",
+                url: `https://images.woosmap.com/marker.png`,
                 scaledSize: { height: 50, width: 32 },
               },
             })),
-            c.setMap(i),
-            i.setCenter(e),
-            i.setZoom(8)));
+            t.setMap(e),
+            e.setCenter(n),
+            e.setZoom(8)));
       }
-      function g(e) {
-        const t = document.querySelector(".stores-list");
+      function S(e) {
+        let t = document.querySelector(`.stores-list`);
         if (t)
           if (e) {
-            const o = Array.from(t.children).find(
-              (s) => s.getAttribute("data-store-id") == e,
+            let n = Array.from(t.children).find(
+              (t) => t.getAttribute(`data-store-id`) == e,
             );
-            o &&
-              (Array.from(t.children).forEach((s) =>
-                s.classList.remove("active"),
+            n &&
+              (Array.from(t.children).forEach((e) =>
+                e.classList.remove(`active`),
               ),
-              o.scrollIntoView({ block: "nearest" }),
-              o.classList.add("active"));
+              n.scrollIntoView({ block: `nearest` }),
+              n.classList.add(`active`));
           } else
-            Array.from(t.children).forEach((o) => o.classList.remove("active"));
+            Array.from(t.children).forEach((e) => e.classList.remove(`active`));
       }
-      function T(e, t) {
-        let o;
-        return (...s) => {
-          (clearTimeout(o), (o = setTimeout(() => e(...s), t)));
+      function C(e, t) {
+        let n;
+        return (...r) => {
+          (clearTimeout(n), (n = setTimeout(() => e(...r), t)));
         };
       }
-      function k() {
-        ((i = new window.woosmap.map.Map(document.getElementById("map"), S)),
-          (d = new woosmap.map.StoresOverlay(w)),
-          d.setMap(i),
-          i.addListener(
-            "bounds_changed",
-            T(() => {
-              const e = i.getBounds();
-              ((u = E(m, e)), f(u));
+      function w() {
+        ((e = new window.woosmap.map.Map(document.getElementById(`map`), c)),
+          (n = new woosmap.map.StoresOverlay(s)),
+          n.setMap(e),
+          e.addListener(
+            `bounds_changed`,
+            C(() => {
+              let t = e.getBounds();
+              ((a = p(o, t)), h(a));
             }, 50),
           ),
-          window.woosmap.map.event.addListener(i, "store_selected", (e) => {
-            g(e.properties.store_id);
+          window.woosmap.map.event.addListener(e, `store_selected`, (e) => {
+            S(e.properties.store_id);
           }),
-          window.woosmap.map.event.addListener(i, "store_unselected", () => {
-            g();
+          window.woosmap.map.event.addListener(e, `store_unselected`, () => {
+            S();
           }),
-          (h = new woosmap.map.StoresService()),
-          (v = new woosmap.map.LocalitiesService()),
-          M().then((e) => {
-            ((m = e), f(e));
+          (r = new woosmap.map.StoresService()),
+          (i = new woosmap.map.LocalitiesService()),
+          m().then((e) => {
+            ((o = e), h(e));
           }));
       }
-      function P(e) {
-        console.error("Error:", e);
+      function T(e) {
+        console.error(`Error:`, e);
       }
-      window.initMap = k;
+      window.initMap = w;
     </script>
     <style>
       html,
@@ -241,9 +241,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -255,42 +257,39 @@
         display: flex;
       }
       #sidebar {
-        flex-basis: 12rem;
+        box-sizing: border-box;
         flex-grow: 1;
+        flex-basis: 12rem;
         max-width: 30rem;
         height: 100%;
-        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-basis: 70vw;
         flex-grow: 5;
+        flex-basis: 70vw;
         height: 100%;
       }
       .btn {
+        box-sizing: border-box;
+        color: #202124;
+        cursor: pointer;
         background: #3d5afe;
         border: 0;
         border-radius: 4px;
+        align-items: center;
+        height: 40px;
+        padding: 0 15px;
+        font-size: 14px;
+        font-weight: 600;
+        transition:
+          background 0.3s,
+          color 0.3s;
+        display: inline;
+        position: relative;
         box-shadow:
           0 2px 2px #00000024,
           0 1px 5px #0000001f,
           0 3px 1px -2px #0003;
-        -webkit-transition:
-          background 0.3s,
-          color 0.3s;
-        transition:
-          background 0.3s,
-          color 0.3s;
-        box-sizing: border-box;
-        font-size: 14px;
-        color: #202124;
-        cursor: pointer;
-        display: inline;
-        font-weight: 600;
-        height: 40px;
-        padding: 0 15px;
-        position: relative;
-        align-items: center;
       }
       .btn:hover {
         background: #0a2ffe;
@@ -298,26 +297,25 @@
       .btnText {
         color: #fff;
         cursor: pointer;
+        letter-spacing: 0;
         font-size: 0.875rem;
         font-weight: 500;
-        letter-spacing: 0;
         line-height: 1.25rem;
       }
       .btnText:hover {
         text-decoration: none;
       }
       #sidebar {
-        flex-basis: 25rem;
-        box-shadow: 0 -2px 4px #0000001f;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
         z-index: 1;
+        flex-direction: column;
+        flex-basis: 25rem;
+        display: flex;
+        overflow: hidden;
+        box-shadow: 0 -2px 4px #0000001f;
       }
       #stores-panel {
-        overflow: hidden;
+        scroll-behavior: smooth;
         background: #fff;
-        overflow-y: auto;
         font-family:
           -apple-system,
           BlinkMacSystemFont,
@@ -330,58 +328,59 @@
           Droid Sans,
           Helvetica Neue,
           sans-serif;
-        scroll-behavior: smooth;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       #stores-panel h3 {
-        padding: 2rem 1.3rem 1.3rem;
-        margin-bottom: 0;
         outline: 0;
+        margin-bottom: 0;
+        padding: 2rem 1.3rem 1.3rem;
       }
       #stores-panel ul {
-        margin: 0 !important;
         padding: 0;
         list-style: none;
+        margin: 0 !important;
       }
       #stores-panel button {
         border: none;
       }
       #search-container {
-        padding: 1rem 0.5rem;
         background: #fafbfc;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid #0003;
+        padding: 1rem 0.5rem;
       }
       #search-container #search-input-container {
-        display: flex;
         justify-content: space-between;
+        display: flex;
       }
       #search-container h3 {
         margin-top: 0;
       }
       input {
-        padding: 0.6em;
-        border: 1px solid #ccc;
-        box-shadow: inset 0 1px 3px #ddd;
-        border-radius: 4px;
         vertical-align: middle;
-        font-weight: 400;
         letter-spacing: 0.01em;
-        font-size: 1em;
-        display: inline-block;
         box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
         width: 100%;
         margin-right: 5px;
+        padding: 0.6em;
+        font-size: 1em;
+        font-weight: 400;
+        display: inline-block;
+        box-shadow: inset 0 1px 3px #ddd;
       }
       input[type="text"]:focus {
-        outline: 0;
         border-color: #03a9f4;
+        outline: 0;
       }
       .summary-store-card {
-        display: flex;
-        padding: 0.8rem;
         vertical-align: middle;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        justify-content: space-between;
         cursor: pointer;
+        border-bottom: 1px solid #00000014;
+        justify-content: space-between;
+        padding: 0.8rem;
+        display: flex;
       }
       .summary-store-card:hover {
         background-color: #0000000a;
@@ -394,18 +393,18 @@
       }
       .store-contact a,
       .store-website a {
-        padding: 0.2em 0;
-        margin-left: 20px;
         color: #1d1d1d;
+        margin-left: 20px;
+        padding: 0.2em 0;
       }
       .store-contact a:before,
       .store-website a:before {
         content: "";
-        background-size: 16px 16px;
-        background-repeat: no-repeat;
-        padding-right: 20px;
         vertical-align: middle;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
         margin-left: -20px;
+        padding-right: 20px;
       }
       .store-contact a:before {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z'/%3E%3C/svg%3E");

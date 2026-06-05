@@ -7,97 +7,96 @@
 
     <script type="module" crossorigin>
       (function () {
-        const e = document.createElement("link").relList;
-        if (e && e.supports && e.supports("modulepreload")) return;
-        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          r(t);
-        new MutationObserver((t) => {
-          for (const o of t)
-            if (o.type === "childList")
-              for (const l of o.addedNodes)
-                l.tagName === "LINK" && l.rel === "modulepreload" && r(l);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(t) {
-          const o = {};
+        function t(e) {
+          let t = {};
           return (
-            t.integrity && (o.integrity = t.integrity),
-            t.referrerPolicy && (o.referrerPolicy = t.referrerPolicy),
-            t.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : t.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function r(t) {
-          if (t.ep) return;
-          t.ep = !0;
-          const o = s(t);
-          fetch(t.href, o);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let a, i, u, p, d;
-      function c() {
-        const n = a.value,
-          e = i.value,
-          s = u.checked ? woosmap.map.query.and : woosmap.map.query.or;
-        let r;
-        (n !== "all" && e !== "all"
-          ? (r = s([
-              woosmap.map.query.F("type", n),
-              woosmap.map.query.F("tag", e),
-            ]))
-          : n !== "all"
-            ? (r = s([woosmap.map.query.F("type", n)]))
-            : e !== "all"
-              ? (r = s([woosmap.map.query.F("tag", e)]))
-              : (r = s([])),
-          d.setQuery(r.toString()));
+      var e, t, n, r, i;
+      function a() {
+        let r = e.value,
+          a = t.value,
+          o = n.checked ? woosmap.map.query.and : woosmap.map.query.or,
+          s;
+        ((s = o(
+          r !== `all` && a !== `all`
+            ? [woosmap.map.query.F(`type`, r), woosmap.map.query.F(`tag`, a)]
+            : r === `all`
+              ? a === `all`
+                ? []
+                : [woosmap.map.query.F(`tag`, a)]
+              : [woosmap.map.query.F(`type`, r)],
+        )),
+          i.setQuery(s.toString()));
       }
-      function m() {
-        const n = { lat: 51.52, lng: -0.13 },
-          e = {
-            url: "https://images.woosmap.com/marker-blue.svg",
+      function o() {
+        let e = { lat: 51.52, lng: -0.13 },
+          t = {
+            url: `https://images.woosmap.com/marker-blue.svg`,
             scaledSize: { height: 40, width: 34 },
           },
-          s = {
+          n = {
             breakPoint: 18,
             rules: [
-              { type: "bose_store", color: "#2d2d2d", icon: e },
-              { type: "professional_systems", color: "#733f00", icon: e },
-              { type: "bose_excellence_centre", color: "#ef8900", icon: e },
-              { type: "bose_reseller", color: "#607c92", icon: e },
-              { type: "bose_factory_store", color: "#607c92", icon: e },
+              { type: `bose_store`, color: `#2d2d2d`, icon: t },
+              { type: `professional_systems`, color: `#733f00`, icon: t },
+              { type: `bose_excellence_centre`, color: `#ef8900`, icon: t },
+              { type: `bose_reseller`, color: `#607c92`, icon: t },
+              { type: `bose_factory_store`, color: `#607c92`, icon: t },
             ],
             default: {
-              color: "#2D2D2D",
+              color: `#2D2D2D`,
               size: 11,
               minSize: 3,
-              icon: e,
+              icon: t,
               selectedIcon: {
-                url: "https://images.woosmap.com/marker-red.svg",
+                url: `https://images.woosmap.com/marker-red.svg`,
                 scaledSize: { height: 50, width: 43 },
               },
             },
           },
-          r = new woosmap.map.Map(document.getElementById("map"), {
+          r = new woosmap.map.Map(document.getElementById(`map`), {
             zoom: 8,
-            center: n,
+            center: e,
           });
-        ((d = new woosmap.map.StoresOverlay(s)), d.setMap(r), y());
+        ((i = new woosmap.map.StoresOverlay(n)), i.setMap(r), s());
       }
-      function y() {
-        ((a = document.getElementById("type")),
-          (i = document.getElementById("tag")),
-          (u = document.getElementById("clauseAND")),
-          (p = document.getElementById("clauseOR")),
-          a.addEventListener("change", c),
-          i.addEventListener("change", c),
-          u.addEventListener("change", c),
-          p.addEventListener("change", c));
+      function s() {
+        ((e = document.getElementById(`type`)),
+          (t = document.getElementById(`tag`)),
+          (n = document.getElementById(`clauseAND`)),
+          (r = document.getElementById(`clauseOR`)),
+          e.addEventListener(`change`, a),
+          t.addEventListener(`change`, a),
+          n.addEventListener(`change`, a),
+          r.addEventListener(`change`, a));
       }
-      window.initMap = m;
+      window.initMap = o;
     </script>
     <style>
       #map {
@@ -115,9 +114,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -125,57 +126,57 @@
           Noto Color Emoji;
       }
       #map-panel {
+        z-index: 1;
+        background-color: #fff;
+        border-radius: 3px;
+        max-width: 280px;
+        margin: 10px;
+        padding: 0;
         position: absolute;
         top: 0;
         left: 0;
-        background-color: #fff;
-        border-radius: 3px;
-        box-shadow: 0 0 0 2px #0000001a;
-        margin: 10px;
         overflow: hidden;
-        z-index: 1;
-        max-width: 280px;
-        padding: 0;
+        box-shadow: 0 0 0 2px #0000001a;
       }
       #innerWrapper {
-        display: flex;
         flex-direction: column;
         flex-grow: 1;
-        overflow: hidden;
-        overflow-y: auto;
         padding: 0 10px 10px;
         font-size: 0.85em;
+        display: flex;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       .sectionHeader {
-        font-weight: 600;
+        color: #222;
         background: #eee;
-        border-bottom: 1px solid #eeeeee;
+        border-bottom: 1px solid #eee;
         margin: 0 -10px 10px;
         padding: 5px 10px;
-        color: #222;
+        font-weight: 600;
       }
       select {
+        vertical-align: middle;
+        letter-spacing: 0.01em;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
         margin: 0.25em 0 0.7em;
         padding: 0.5em 0.6em;
-        border: 1px solid #ccc;
-        box-shadow: inset 0 1px 3px #ddd;
-        border-radius: 4px;
-        vertical-align: middle;
-        font-weight: 400;
-        letter-spacing: 0.01em;
         font-size: 1em;
+        font-weight: 400;
         display: inline-block;
-        box-sizing: border-box;
-        width: 100%;
+        box-shadow: inset 0 1px 3px #ddd;
       }
       input[type="select"]:focus {
-        outline: 0;
         border-color: #03a9f4;
+        outline: 0;
       }
       select {
-        height: 2.25em;
-        border: 1px solid #ccc;
         background-color: #fff;
+        border: 1px solid #ccc;
+        height: 2.25em;
       }
       .options__header {
         font-weight: 600;
@@ -183,9 +184,9 @@
         display: flex;
       }
       .options__input {
+        align-items: baseline;
         height: 24px;
         display: flex;
-        align-items: baseline;
       }
     </style>
   </head>

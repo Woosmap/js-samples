@@ -7,51 +7,50 @@
 
     <script type="module" crossorigin>
       (function () {
-        const r = document.createElement("link").relList;
-        if (r && r.supports && r.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const o of t.addedNodes)
-                o.tagName === "LINK" && o.rel === "modulepreload" && s(o);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function i(e) {
-          const t = {};
+        function t(e) {
+          let t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
             t
           );
         }
-        function s(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = i(e);
-          fetch(e.href, t);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      function c() {
-        const n = { lat: 51.52, lng: -0.13 },
-          r = new woosmap.map.Map(document.getElementById("map"), {
-            zoom: 13,
-            center: n,
-          });
+      function e() {
+        let e = new woosmap.map.Map(document.getElementById(`map`), {
+          zoom: 13,
+          center: { lat: 51.52, lng: -0.13 },
+        });
         new woosmap.map.Marker({
-          position: r.getCenter(),
+          position: e.getCenter(),
           icon: {
-            url: "https://images.woosmap.com/marker.png",
+            url: `https://images.woosmap.com/marker.png`,
             scaledSize: { height: 50, width: 32 },
           },
-        }).setMap(r);
+        }).setMap(e);
       }
-      window.initMap = c;
+      window.initMap = e;
     </script>
     <style>
       #map {
@@ -69,9 +68,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,

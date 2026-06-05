@@ -6,88 +6,123 @@
     <meta charset="utf-8" />
 
     <script type="module" crossorigin>
-      var h = Object.defineProperty;
-      var f = (n, s, r) =>
-        s in n
-          ? h(n, s, {
-              enumerable: !0,
-              configurable: !0,
-              writable: !0,
-              value: r,
-            })
-          : (n[s] = r);
-      var d = (n, s, r) => f(n, typeof s != "symbol" ? s + "" : s, r);
       (function () {
-        const s = document.createElement("link").relList;
-        if (s && s.supports && s.supports("modulepreload")) return;
-        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          l(t);
-        new MutationObserver((t) => {
-          for (const i of t)
-            if (i.type === "childList")
-              for (const a of i.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && l(a);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function r(t) {
-          const i = {};
+        function t(e) {
+          let t = {};
           return (
-            t.integrity && (i.integrity = t.integrity),
-            t.referrerPolicy && (i.referrerPolicy = t.referrerPolicy),
-            t.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
-              : t.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function l(t) {
-          if (t.ep) return;
-          t.ep = !0;
-          const i = r(t);
-          fetch(t.href, i);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      function m() {
-        class n extends woosmap.map.OverlayView {
-          constructor({ latlng: e, map: o, data: p }) {
-            super();
-            d(this, "latlng");
-            d(this, "html");
-            d(this, "div", null);
-            ((this.latlng = e),
+      function e(t) {
+        "@babel/helpers - typeof";
+        return (
+          (e =
+            typeof Symbol == `function` && typeof Symbol.iterator == `symbol`
+              ? function (e) {
+                  return typeof e;
+                }
+              : function (e) {
+                  return e &&
+                    typeof Symbol == `function` &&
+                    e.constructor === Symbol &&
+                    e !== Symbol.prototype
+                    ? `symbol`
+                    : typeof e;
+                }),
+          e(t)
+        );
+      }
+      function t(t, n) {
+        if (e(t) != `object` || !t) return t;
+        var r = t[Symbol.toPrimitive];
+        if (r !== void 0) {
+          var i = r.call(t, n || `default`);
+          if (e(i) != `object`) return i;
+          throw TypeError(`@@toPrimitive must return a primitive value.`);
+        }
+        return (n === `string` ? String : Number)(t);
+      }
+      function n(n) {
+        var r = t(n, `string`);
+        return e(r) == `symbol` ? r : r + ``;
+      }
+      function r(e, t, r) {
+        return (
+          (t = n(t)) in e
+            ? Object.defineProperty(e, t, {
+                value: r,
+                enumerable: !0,
+                configurable: !0,
+                writable: !0,
+              })
+            : (e[t] = r),
+          e
+        );
+      }
+      function i() {
+        class e extends woosmap.map.OverlayView {
+          constructor({ latlng: e, map: t, data: n }) {
+            (super(),
+              r(this, `latlng`, void 0),
+              r(this, `html`, void 0),
+              r(this, `div`, null),
+              (this.latlng = e),
               (this.html = `<div class="popover-content">
                       <span class="icon">️</span>
-                      <span class="price">${p.price}</span>
+                      <span class="price">${n.price}</span>
                     </div>
                      <div class="popover-arrow-shadow"></div>
                      <div class="popover-arrow"></div>`),
-              this.setMap(o));
+              this.setMap(t));
           }
           createDiv() {
-            ((this.div = document.createElement("div")),
-              (this.div.style.position = "absolute"),
-              (this.div.className = "popover"),
+            ((this.div = document.createElement(`div`)),
+              (this.div.style.position = `absolute`),
+              (this.div.className = `popover`),
               this.html && (this.div.innerHTML = this.html),
-              woosmap.map.event.addDomListener(this.div, "click", () => {
-                woosmap.map.event.trigger(this, "click");
+              woosmap.map.event.addDomListener(this.div, `click`, () => {
+                woosmap.map.event.trigger(this, `click`);
               }));
           }
           appendDivToOverlay() {
-            const e = this.getPanes();
+            let e = this.getPanes();
             e && this.div && e.floatPane.appendChild(this.div);
           }
           positionDiv() {
-            var o;
-            const e =
-              (o = this.getProjection()) == null
+            var e;
+            let t =
+              (e = this.getProjection()) == null
                 ? void 0
-                : o.fromLatLngToDivPixel(this.latlng);
-            if (e && this.div) {
-              const p = this.div.offsetWidth / 2,
-                v = this.div.offsetHeight + 6;
-              ((this.div.style.left = `${e.x - p}px`),
-                (this.div.style.top = `${e.y - v}px`));
+                : e.fromLatLngToDivPixel(this.latlng);
+            if (t && this.div) {
+              let e = this.div.offsetWidth / 2,
+                n = this.div.offsetHeight + 6;
+              ((this.div.style.left = `${t.x - e}px`),
+                (this.div.style.top = `${t.y - n}px`));
             }
           }
           draw() {
@@ -104,46 +139,45 @@
           getPosition() {
             return this.latlng;
           }
-          addEventListener(e, o) {
-            this.div && this.div.addEventListener(e, o);
+          addEventListener(e, t) {
+            this.div && this.div.addEventListener(e, t);
           }
         }
-        const s = { lat: 51.5074, lng: -0.1278 },
-          r = new woosmap.map.Map(document.getElementById("map"), {
+        let t = new woosmap.map.Map(document.getElementById(`map`), {
             zoom: 13,
-            center: s,
+            center: { lat: 51.5074, lng: -0.1278 },
           }),
-          l = [
-            { price: "100 €" },
-            { price: "200 €" },
-            { price: "300 €" },
-            { price: "400 €" },
-            { price: "500 €" },
+          n = [
+            { price: `100 €` },
+            { price: `200 €` },
+            { price: `300 €` },
+            { price: `400 €` },
+            { price: `500 €` },
           ],
-          t = [
+          i = [
             { lat: 51.5074, lng: -0.1278 },
             { lat: 51.5174, lng: -0.1378 },
             { lat: 51.4974, lng: -0.1178 },
             { lat: 51.5074, lng: -0.1478 },
             { lat: 51.5074, lng: -0.1078 },
           ],
-          i = [];
-        l.forEach((a, c) => {
-          const e = new n({
-            latlng: new woosmap.map.LatLng(t[c].lat, t[c].lng),
-            map: r,
-            data: a,
+          a = [];
+        n.forEach((n, r) => {
+          let o = new e({
+            latlng: new woosmap.map.LatLng(i[r].lat, i[r].lng),
+            map: t,
+            data: n,
           });
-          (e.addEventListener("click", () => {
-            (i.forEach((o) => {
-              o.div && o.div.classList.remove("active");
+          (o.addEventListener(`click`, () => {
+            (a.forEach((e) => {
+              e.div && e.div.classList.remove(`active`);
             }),
-              e.div && e.div.classList.add("active"));
+              o.div && o.div.classList.add(`active`));
           }),
-            i.push(e));
+            a.push(o));
         });
       }
-      window.initMap = m;
+      window.initMap = i;
     </script>
     <style>
       #map {
@@ -161,9 +195,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -171,71 +207,71 @@
           Noto Color Emoji;
       }
       .popover {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         pointer-events: auto;
         cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        display: inline-flex;
+        position: relative;
       }
       .popover .popover-content {
-        display: flex;
-        align-items: center;
-        background-color: #fff;
         color: #1d1d1d;
-        padding: 6px 8px;
+        z-index: 1;
+        background-color: #fff;
         border-radius: 20px;
+        align-items: center;
+        padding: 6px 8px;
         font-family: Roboto, Arial, sans-serif;
         font-size: 15px;
         font-weight: 500;
+        display: flex;
         box-shadow: 0 2px 4px #0003;
-        z-index: 1;
       }
       .popover .popover-content .icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         background-color: #f50057;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        margin-right: 6px;
         background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjRkZGRkZGIj48cGF0aCBkPSJNNDAtMjAwdi02MDBoODB2NDAwaDMyMHYtMzIwaDMyMHE2NiAwIDExMyA0N3Q0NyAxMTN2MzYwaC04MHYtMTIwSDEyMHYxMjBINDBabTI0MC0yNDBxLTUwIDAtODUtMzV0LTM1LTg1cTAtNTAgMzUtODV0ODUtMzVxNTAgMCA4NSAzNXQzNSA4NXEwIDUwLTM1IDg1dC04NSAzNVoiLz48L3N2Zz4=);
+        background-position: 50%;
         background-repeat: no-repeat;
         background-size: 16px 16px;
-        background-position: center;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+        margin-right: 6px;
+        display: inline-flex;
       }
       .popover .popover-content .price {
         white-space: nowrap;
       }
       .popover .popover-arrow-shadow {
+        filter: blur(2px);
+        z-index: 0;
+        border-top: 7px solid #0003;
+        border-left: 7px solid #0000;
+        border-right: 7px solid #0000;
+        width: 0;
+        height: 0;
         position: absolute;
         bottom: -7px;
         left: 50%;
         transform: translate(-50%);
-        width: 0;
-        height: 0;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        border-top: 7px solid rgba(0, 0, 0, 0.2);
-        filter: blur(2px);
-        z-index: 0;
       }
       .popover .popover-arrow {
+        z-index: 1;
+        border-top: 6px solid #fff;
+        border-left: 6px solid #0000;
+        border-right: 6px solid #0000;
+        width: 0;
+        height: 0;
         position: absolute;
         bottom: -6px;
         left: 50%;
         transform: translate(-50%);
-        width: 0;
-        height: 0;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        border-top: 6px solid #fff;
-        z-index: 1;
       }
       .popover.active .popover-content {
-        background-color: #f50057;
         color: #fff;
+        background-color: #f50057;
       }
       .popover.active .popover-content .icon {
         background-color: #fff;

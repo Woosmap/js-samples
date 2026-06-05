@@ -7,52 +7,52 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const o of e)
-            if (o.type === "childList")
-              for (const c of o.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && s(c);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function r(e) {
-          const o = {};
+        function t(e) {
+          let t = {};
           return (
-            e.integrity && (o.integrity = e.integrity),
-            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function s(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const o = r(e);
-          fetch(e.href, o);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let a;
-      const i = [
-          "draw.create",
-          "draw.delete",
-          "draw.modechange",
-          "draw.selectionchange",
-          "draw.update",
-          "draw.combine",
-          "draw.uncombine",
+      var e,
+        t = [
+          `draw.create`,
+          `draw.delete`,
+          `draw.modechange`,
+          `draw.selectionchange`,
+          `draw.update`,
+          `draw.combine`,
+          `draw.uncombine`,
         ],
-        d = {
-          type: "FeatureCollection",
+        n = {
+          type: `FeatureCollection`,
           features: [
             {
-              id: "c40c2c23ce0c89dbc445b4dcc5913754",
-              type: "Feature",
+              id: `c40c2c23ce0c89dbc445b4dcc5913754`,
+              type: `Feature`,
               properties: {},
               geometry: {
                 coordinates: [
@@ -69,12 +69,12 @@
                     [-98.73532642865247, 30.126769329207107],
                   ],
                 ],
-                type: "Polygon",
+                type: `Polygon`,
               },
             },
             {
-              id: "56cc82cc895f6cb52d87f75a7e94a904",
-              type: "Feature",
+              id: `56cc82cc895f6cb52d87f75a7e94a904`,
+              type: `Feature`,
               properties: {},
               geometry: {
                 coordinates: [
@@ -86,45 +86,45 @@
                     [-98.27139781722337, 33.638565671747955],
                   ],
                 ],
-                type: "Polygon",
+                type: `Polygon`,
               },
             },
           ],
         };
-      function l() {
-        const n = document.getElementById("sidebar");
-        let t = "";
-        for (let r = 0; r < i.length; r++)
-          t += `<div class="event" id="${i[r]}">${i[r]}</div>`;
-        n && (n.innerHTML = t);
+      function r() {
+        let e = document.getElementById(`sidebar`),
+          n = ``;
+        for (let e = 0; e < t.length; e++)
+          n += `<div class="event" id="${t[e]}">${t[e]}</div>`;
+        e && (e.innerHTML = n);
       }
-      function u(n) {
-        const t = document.getElementById(n);
+      function i(e) {
+        let t = document.getElementById(e);
         t &&
-          ((t.className = "event active"),
+          ((t.className = `event active`),
           setTimeout(() => {
-            t.className = "event inactive";
+            t.className = `event inactive`;
           }, 1e3));
       }
-      function p() {
-        a = new window.woosmap.map.Map(document.getElementById("map"), {
+      function a() {
+        e = new window.woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 31.54350013250679, lng: -97.13238669872247 },
           zoom: 6.5,
         });
-        const n = new window.woosmap.map.Drawing({});
-        (n.addControl(a),
-          window.woosmap.map.event.addListenerOnce(a, "idle", () => {
-            n.add(d);
+        let a = new window.woosmap.map.Drawing({});
+        (a.addControl(e),
+          window.woosmap.map.event.addListenerOnce(e, `idle`, () => {
+            a.add(n);
           }),
-          l());
-        for (let t = 0; t < i.length; t++) {
-          const r = i[t];
-          n.addListener(r, () => {
-            u(r);
+          r());
+        for (let e = 0; e < t.length; e++) {
+          let n = t[e];
+          a.addListener(n, () => {
+            i(n);
           });
         }
       }
-      window.initMap = p;
+      window.initMap = a;
     </script>
     <style>
       html,
@@ -139,9 +139,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -153,16 +155,16 @@
         display: flex;
       }
       #sidebar {
-        flex-basis: 12rem;
+        box-sizing: border-box;
         flex-grow: 1;
+        flex-basis: 12rem;
         max-width: 30rem;
         height: 100%;
-        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-basis: 70vw;
         flex-grow: 5;
+        flex-basis: 70vw;
         height: 100%;
       }
       .events {
@@ -171,14 +173,14 @@
           monospace;
       }
       .event {
-        transition: background-color 0.5s ease-out;
         padding: 0.5em;
-        overflow: hidden;
         font-size: 14px;
+        transition: background-color 0.5s ease-out;
+        overflow: hidden;
       }
       .active {
-        background-color: #fd0;
         color: #000;
+        background-color: #fd0;
       }
       .inactive {
         background-color: #fff;

@@ -7,77 +7,77 @@
 
     <script type="module" crossorigin>
       (function () {
-        const s = document.createElement("link").relList;
-        if (s && s.supports && s.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          i(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const r of t.addedNodes)
-                r.tagName === "LINK" && r.rel === "modulepreload" && i(r);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function n(e) {
-          const t = {};
+        function t(e) {
+          let t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
             t
           );
         }
-        function i(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = n(e);
-          fetch(e.href, t);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      function l() {
-        const c = { lat: 51.52, lng: -0.13 },
-          s = {
+      function e() {
+        let e = { lat: 51.52, lng: -0.13 },
+          t = {
             breakPoint: 14,
             rules: [],
             default: {
-              color: "#008a2f",
+              color: `#008a2f`,
               size: 8,
               minSize: 1,
               icon: {
-                url: "https://images.woosmap.com/starbucks-marker.svg",
+                url: `https://images.woosmap.com/starbucks-marker.svg`,
                 scaledSize: { height: 40, width: 34 },
               },
               selectedIcon: {
-                url: "https://images.woosmap.com/starbucks-marker-selected.svg",
+                url: `https://images.woosmap.com/starbucks-marker-selected.svg`,
                 scaledSize: { height: 50, width: 43 },
               },
             },
           },
-          n = new woosmap.map.Map(document.getElementById("map"), {
+          n = new woosmap.map.Map(document.getElementById(`map`), {
             zoom: 13,
-            center: c,
+            center: e,
           });
-        (new woosmap.map.StoresOverlay(s).setMap(n),
-          window.woosmap.map.event.addListener(n, "store_selected", (e) => {
-            const t = (o) =>
-                `${o.address.lines}, ${o.address.zipcode} ${o.address.city}`,
-              r = (o) =>
-                `Phone: <a href='${o.contact.phone}'>${o.contact.phone}</a>`;
-            function a(o) {
+        (new woosmap.map.StoresOverlay(t).setMap(n),
+          window.woosmap.map.event.addListener(n, `store_selected`, (e) => {
+            let t = (e) =>
+                `${e.address.lines}, ${e.address.zipcode} ${e.address.city}`,
+              n = (e) =>
+                `Phone: <a href='${e.contact.phone}'>${e.contact.phone}</a>`;
+            function r(e) {
               return `<div>
-                  <span><strong>${o.name}</strong></span>
-                  <p>${t(o)}</p>
-                  <span>${r(o)}</span>
+                  <span><strong>${e.name}</strong></span>
+                  <p>${t(e)}</p>
+                  <span>${n(e)}</span>
                 </div>`;
             }
-            const d = document.getElementById("info");
-            d.innerHTML = a(e.properties);
+            let i = document.getElementById(`info`);
+            i.innerHTML = r(e.properties);
           }));
       }
-      window.initMap = l;
+      window.initMap = e;
     </script>
     <style>
       #map {
@@ -95,9 +95,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -105,17 +107,17 @@
           Noto Color Emoji;
       }
       #info {
+        z-index: 1;
+        background-color: #fff;
+        border-radius: 3px;
         max-width: 300px;
+        margin: 10px;
+        padding: 5px;
         position: absolute;
         top: 0;
         left: 0;
-        background-color: #fff;
-        border-radius: 3px;
-        box-shadow: 0 0 0 2px #0000001a;
-        margin: 10px;
-        padding: 5px;
         overflow: hidden;
-        z-index: 1;
+        box-shadow: 0 0 0 2px #0000001a;
       }
     </style>
   </head>

@@ -7,37 +7,37 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const r of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(r);
-        new MutationObserver((r) => {
-          for (const o of r)
-            if (o.type === "childList")
-              for (const c of o.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && s(c);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function e(r) {
-          const o = {};
+        function t(e) {
+          let t = {};
           return (
-            r.integrity && (o.integrity = r.integrity),
-            r.referrerPolicy && (o.referrerPolicy = r.referrerPolicy),
-            r.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : r.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function s(r) {
-          if (r.ep) return;
-          r.ep = !0;
-          const o = e(r);
-          fetch(r.href, o);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const k = [
+      var e = [
           Int8Array,
           Uint8Array,
           Uint8ClampedArray,
@@ -48,173 +48,178 @@
           Float32Array,
           Float64Array,
         ],
-        Z = 1,
-        O = 8;
-      class B {
-        static from(t) {
-          if (!(t instanceof ArrayBuffer))
-            throw new Error("Data must be an instance of ArrayBuffer.");
-          const [e, s] = new Uint8Array(t, 0, 2);
-          if (e !== 219)
-            throw new Error("Data does not appear to be in a KDBush format.");
-          const r = s >> 4;
-          if (r !== Z) throw new Error(`Got v${r} data when expected v${Z}.`);
-          const o = k[s & 15];
-          if (!o) throw new Error("Unrecognized array type.");
-          const [c] = new Uint16Array(t, 2, 1),
-            [l] = new Uint32Array(t, 4, 1);
-          return new B(l, c, o, t);
-        }
-        constructor(t, e = 64, s = Float64Array, r) {
-          if (isNaN(t) || t < 0)
-            throw new Error(`Unpexpected numItems value: ${t}.`);
-          ((this.numItems = +t),
-            (this.nodeSize = Math.min(Math.max(+e, 2), 65535)),
-            (this.ArrayType = s),
-            (this.IndexArrayType = t < 65536 ? Uint16Array : Uint32Array));
-          const o = k.indexOf(this.ArrayType),
-            c = t * 2 * this.ArrayType.BYTES_PER_ELEMENT,
-            l = t * this.IndexArrayType.BYTES_PER_ELEMENT,
-            n = (8 - (l % 8)) % 8;
-          if (o < 0) throw new Error(`Unexpected typed array class: ${s}.`);
-          r && r instanceof ArrayBuffer
-            ? ((this.data = r),
-              (this.ids = new this.IndexArrayType(this.data, O, t)),
-              (this.coords = new this.ArrayType(this.data, O + l + n, t * 2)),
-              (this._pos = t * 2),
-              (this._finished = !0))
-            : ((this.data = new ArrayBuffer(O + c + l + n)),
-              (this.ids = new this.IndexArrayType(this.data, O, t)),
-              (this.coords = new this.ArrayType(this.data, O + l + n, t * 2)),
-              (this._pos = 0),
-              (this._finished = !1),
-              new Uint8Array(this.data, 0, 2).set([219, (Z << 4) + o]),
-              (new Uint16Array(this.data, 2, 1)[0] = e),
-              (new Uint32Array(this.data, 4, 1)[0] = t));
-        }
-        add(t, e) {
-          const s = this._pos >> 1;
-          return (
-            (this.ids[s] = s),
-            (this.coords[this._pos++] = t),
-            (this.coords[this._pos++] = e),
-            s
-          );
-        }
-        finish() {
-          const t = this._pos >> 1;
-          if (t !== this.numItems)
-            throw new Error(`Added ${t} items when expected ${this.numItems}.`);
-          return (
-            N(this.ids, this.coords, this.nodeSize, 0, this.numItems - 1, 0),
-            (this._finished = !0),
-            this
-          );
-        }
-        range(t, e, s, r) {
-          if (!this._finished)
-            throw new Error("Data not yet indexed - call index.finish().");
-          const { ids: o, coords: c, nodeSize: l } = this,
-            n = [0, o.length - 1, 0],
-            h = [];
-          for (; n.length; ) {
-            const p = n.pop() || 0,
-              a = n.pop() || 0,
-              u = n.pop() || 0;
-            if (a - u <= l) {
-              for (let f = u; f <= a; f++) {
-                const g = c[2 * f],
-                  w = c[2 * f + 1];
-                g >= t && g <= s && w >= e && w <= r && h.push(o[f]);
+        t = 1,
+        n = 8,
+        r = class r {
+          static from(n) {
+            if (!(n instanceof ArrayBuffer))
+              throw Error(`Data must be an instance of ArrayBuffer.`);
+            let [i, a] = new Uint8Array(n, 0, 2);
+            if (i !== 219)
+              throw Error(`Data does not appear to be in a KDBush format.`);
+            let o = a >> 4;
+            if (o !== t) throw Error(`Got v${o} data when expected v${t}.`);
+            let s = e[a & 15];
+            if (!s) throw Error(`Unrecognized array type.`);
+            let [c] = new Uint16Array(n, 2, 1),
+              [l] = new Uint32Array(n, 4, 1);
+            return new r(l, c, s, n);
+          }
+          constructor(r, i = 64, a = Float64Array, o) {
+            if (isNaN(r) || r < 0)
+              throw Error(`Unpexpected numItems value: ${r}.`);
+            ((this.numItems = +r),
+              (this.nodeSize = Math.min(Math.max(+i, 2), 65535)),
+              (this.ArrayType = a),
+              (this.IndexArrayType = r < 65536 ? Uint16Array : Uint32Array));
+            let s = e.indexOf(this.ArrayType),
+              c = r * 2 * this.ArrayType.BYTES_PER_ELEMENT,
+              l = r * this.IndexArrayType.BYTES_PER_ELEMENT,
+              u = (8 - (l % 8)) % 8;
+            if (s < 0) throw Error(`Unexpected typed array class: ${a}.`);
+            o && o instanceof ArrayBuffer
+              ? ((this.data = o),
+                (this.ids = new this.IndexArrayType(this.data, n, r)),
+                (this.coords = new this.ArrayType(this.data, n + l + u, r * 2)),
+                (this._pos = r * 2),
+                (this._finished = !0))
+              : ((this.data = new ArrayBuffer(n + c + l + u)),
+                (this.ids = new this.IndexArrayType(this.data, n, r)),
+                (this.coords = new this.ArrayType(this.data, n + l + u, r * 2)),
+                (this._pos = 0),
+                (this._finished = !1),
+                new Uint8Array(this.data, 0, 2).set([219, (t << 4) + s]),
+                (new Uint16Array(this.data, 2, 1)[0] = i),
+                (new Uint32Array(this.data, 4, 1)[0] = r));
+          }
+          add(e, t) {
+            let n = this._pos >> 1;
+            return (
+              (this.ids[n] = n),
+              (this.coords[this._pos++] = e),
+              (this.coords[this._pos++] = t),
+              n
+            );
+          }
+          finish() {
+            let e = this._pos >> 1;
+            if (e !== this.numItems)
+              throw Error(`Added ${e} items when expected ${this.numItems}.`);
+            return (
+              i(this.ids, this.coords, this.nodeSize, 0, this.numItems - 1, 0),
+              (this._finished = !0),
+              this
+            );
+          }
+          range(e, t, n, r) {
+            if (!this._finished)
+              throw Error(`Data not yet indexed - call index.finish().`);
+            let { ids: i, coords: a, nodeSize: o } = this,
+              s = [0, i.length - 1, 0],
+              c = [];
+            for (; s.length; ) {
+              let l = s.pop() || 0,
+                u = s.pop() || 0,
+                d = s.pop() || 0;
+              if (u - d <= o) {
+                for (let o = d; o <= u; o++) {
+                  let s = a[2 * o],
+                    l = a[2 * o + 1];
+                  s >= e && s <= n && l >= t && l <= r && c.push(i[o]);
+                }
+                continue;
               }
-              continue;
+              let f = (d + u) >> 1,
+                p = a[2 * f],
+                m = a[2 * f + 1];
+              (p >= e && p <= n && m >= t && m <= r && c.push(i[f]),
+                (l === 0 ? e <= p : t <= m) &&
+                  (s.push(d), s.push(f - 1), s.push(1 - l)),
+                (l === 0 ? n >= p : r >= m) &&
+                  (s.push(f + 1), s.push(u), s.push(1 - l)));
             }
-            const d = (u + a) >> 1,
-              y = c[2 * d],
-              m = c[2 * d + 1];
-            (y >= t && y <= s && m >= e && m <= r && h.push(o[d]),
-              (p === 0 ? t <= y : e <= m) &&
-                (n.push(u), n.push(d - 1), n.push(1 - p)),
-              (p === 0 ? s >= y : r >= m) &&
-                (n.push(d + 1), n.push(a), n.push(1 - p)));
+            return c;
           }
-          return h;
-        }
-        within(t, e, s) {
-          if (!this._finished)
-            throw new Error("Data not yet indexed - call index.finish().");
-          const { ids: r, coords: o, nodeSize: c } = this,
-            l = [0, r.length - 1, 0],
-            n = [],
-            h = s * s;
-          for (; l.length; ) {
-            const p = l.pop() || 0,
-              a = l.pop() || 0,
-              u = l.pop() || 0;
-            if (a - u <= c) {
-              for (let f = u; f <= a; f++)
-                z(o[2 * f], o[2 * f + 1], t, e) <= h && n.push(r[f]);
-              continue;
+          within(e, t, n) {
+            if (!this._finished)
+              throw Error(`Data not yet indexed - call index.finish().`);
+            let { ids: r, coords: i, nodeSize: a } = this,
+              o = [0, r.length - 1, 0],
+              s = [],
+              l = n * n;
+            for (; o.length; ) {
+              let u = o.pop() || 0,
+                d = o.pop() || 0,
+                f = o.pop() || 0;
+              if (d - f <= a) {
+                for (let n = f; n <= d; n++)
+                  c(i[2 * n], i[2 * n + 1], e, t) <= l && s.push(r[n]);
+                continue;
+              }
+              let p = (f + d) >> 1,
+                m = i[2 * p],
+                h = i[2 * p + 1];
+              (c(m, h, e, t) <= l && s.push(r[p]),
+                (u === 0 ? e - n <= m : t - n <= h) &&
+                  (o.push(f), o.push(p - 1), o.push(1 - u)),
+                (u === 0 ? e + n >= m : t + n >= h) &&
+                  (o.push(p + 1), o.push(d), o.push(1 - u)));
             }
-            const d = (u + a) >> 1,
-              y = o[2 * d],
-              m = o[2 * d + 1];
-            (z(y, m, t, e) <= h && n.push(r[d]),
-              (p === 0 ? t - s <= y : e - s <= m) &&
-                (l.push(u), l.push(d - 1), l.push(1 - p)),
-              (p === 0 ? t + s >= y : e + s >= m) &&
-                (l.push(d + 1), l.push(a), l.push(1 - p)));
+            return s;
           }
-          return n;
-        }
+        };
+      function i(e, t, n, r, o, s) {
+        if (o - r <= n) return;
+        let c = (r + o) >> 1;
+        (a(e, t, c, r, o, s),
+          i(e, t, n, r, c - 1, 1 - s),
+          i(e, t, n, c + 1, o, 1 - s));
       }
-      function N(i, t, e, s, r, o) {
-        if (r - s <= e) return;
-        const c = (s + r) >> 1;
-        (H(i, t, c, s, r, o),
-          N(i, t, e, s, c - 1, 1 - o),
-          N(i, t, e, c + 1, r, 1 - o));
-      }
-      function H(i, t, e, s, r, o) {
-        for (; r > s; ) {
-          if (r - s > 600) {
-            const h = r - s + 1,
-              p = e - s + 1,
-              a = Math.log(h),
-              u = 0.5 * Math.exp((2 * a) / 3),
+      function a(e, t, n, r, i, s) {
+        for (; i > r; ) {
+          if (i - r > 600) {
+            let o = i - r + 1,
+              c = n - r + 1,
+              l = Math.log(o),
+              u = 0.5 * Math.exp((2 * l) / 3),
               d =
                 0.5 *
-                Math.sqrt((a * u * (h - u)) / h) *
-                (p - h / 2 < 0 ? -1 : 1),
-              y = Math.max(s, Math.floor(e - (p * u) / h + d)),
-              m = Math.min(r, Math.floor(e + ((h - p) * u) / h + d));
-            H(i, t, e, y, m, o);
+                Math.sqrt((l * u * (o - u)) / o) *
+                (c - o / 2 < 0 ? -1 : 1);
+            a(
+              e,
+              t,
+              n,
+              Math.max(r, Math.floor(n - (c * u) / o + d)),
+              Math.min(i, Math.floor(n + ((o - c) * u) / o + d)),
+              s,
+            );
           }
-          const c = t[2 * e + o];
-          let l = s,
-            n = r;
-          for (b(i, t, s, e), t[2 * r + o] > c && b(i, t, s, r); l < n; ) {
-            for (b(i, t, l, n), l++, n--; t[2 * l + o] < c; ) l++;
-            for (; t[2 * n + o] > c; ) n--;
+          let c = t[2 * n + s],
+            l = r,
+            u = i;
+          for (o(e, t, r, n), t[2 * i + s] > c && o(e, t, r, i); l < u; ) {
+            for (o(e, t, l, u), l++, u--; t[2 * l + s] < c; ) l++;
+            for (; t[2 * u + s] > c; ) u--;
           }
-          (t[2 * s + o] === c ? b(i, t, s, n) : (n++, b(i, t, n, r)),
-            n <= e && (s = n + 1),
-            e <= n && (r = n - 1));
+          (t[2 * r + s] === c ? o(e, t, r, u) : (u++, o(e, t, u, i)),
+            u <= n && (r = u + 1),
+            n <= u && (i = u - 1));
         }
       }
-      function b(i, t, e, s) {
-        (F(i, e, s), F(t, 2 * e, 2 * s), F(t, 2 * e + 1, 2 * s + 1));
+      function o(e, t, n, r) {
+        (s(e, n, r), s(t, 2 * n, 2 * r), s(t, 2 * n + 1, 2 * r + 1));
       }
-      function F(i, t, e) {
-        const s = i[t];
-        ((i[t] = i[e]), (i[e] = s));
+      function s(e, t, n) {
+        let r = e[t];
+        ((e[t] = e[n]), (e[n] = r));
       }
-      function z(i, t, e, s) {
-        const r = i - e,
-          o = t - s;
-        return r * r + o * o;
+      function c(e, t, n, r) {
+        let i = e - n,
+          a = t - r;
+        return i * i + a * a;
       }
-      const Y = {
+      var l = {
           minZoom: 0,
           maxZoom: 16,
           minPoints: 2,
@@ -224,503 +229,508 @@
           log: !1,
           generateId: !1,
           reduce: null,
-          map: (i) => i,
+          map: (e) => e,
         },
-        W =
+        u =
           Math.fround ||
-          ((i) => (t) => ((i[0] = +t), i[0]))(new Float32Array(1)),
-        A = 2,
-        E = 3,
-        C = 4,
-        x = 5,
-        J = 6;
-      class Q {
-        constructor(t) {
-          ((this.options = Object.assign(Object.create(Y), t)),
-            (this.trees = new Array(this.options.maxZoom + 1)),
-            (this.stride = this.options.reduce ? 7 : 6),
-            (this.clusterProps = []));
-        }
-        load(t) {
-          const { log: e, minZoom: s, maxZoom: r } = this.options;
-          e && console.time("total time");
-          const o = `prepare ${t.length} points`;
-          (e && console.time(o), (this.points = t));
-          const c = [];
-          for (let n = 0; n < t.length; n++) {
-            const h = t[n];
-            if (!h.geometry) continue;
-            const [p, a] = h.geometry.coordinates,
-              u = W(P(p)),
-              d = W(S(a));
-            (c.push(u, d, 1 / 0, n, -1, 1), this.options.reduce && c.push(0));
+          ((e) => (t) => ((e[0] = +t), e[0]))(new Float32Array(1)),
+        d = 2,
+        f = 3,
+        p = 4,
+        m = 5,
+        h = 6,
+        g = class {
+          constructor(e) {
+            ((this.options = Object.assign(Object.create(l), e)),
+              (this.trees = Array(this.options.maxZoom + 1)),
+              (this.stride = this.options.reduce ? 7 : 6),
+              (this.clusterProps = []));
           }
-          let l = (this.trees[r + 1] = this._createTree(c));
-          e && console.timeEnd(o);
-          for (let n = r; n >= s; n--) {
-            const h = +Date.now();
-            ((l = this.trees[n] = this._createTree(this._cluster(l, n))),
-              e &&
-                console.log(
-                  "z%d: %d clusters in %dms",
+          load(e) {
+            let { log: t, minZoom: n, maxZoom: r } = this.options;
+            t && console.time(`total time`);
+            let i = `prepare ${e.length} points`;
+            (t && console.time(i), (this.points = e));
+            let a = [];
+            for (let t = 0; t < e.length; t++) {
+              let n = e[t];
+              if (!n.geometry) continue;
+              let [r, i] = n.geometry.coordinates,
+                o = u(y(r)),
+                s = u(b(i));
+              (a.push(o, s, 1 / 0, t, -1, 1), this.options.reduce && a.push(0));
+            }
+            let o = (this.trees[r + 1] = this._createTree(a));
+            t && console.timeEnd(i);
+            for (let e = r; e >= n; e--) {
+              let n = +Date.now();
+              ((o = this.trees[e] = this._createTree(this._cluster(o, e))),
+                t &&
+                  console.log(
+                    `z%d: %d clusters in %dms`,
+                    e,
+                    o.numItems,
+                    +Date.now() - n,
+                  ));
+            }
+            return (t && console.timeEnd(`total time`), this);
+          }
+          getClusters(e, t) {
+            let n = ((((e[0] + 180) % 360) + 360) % 360) - 180,
+              r = Math.max(-90, Math.min(90, e[1])),
+              i =
+                e[2] === 180 ? 180 : ((((e[2] + 180) % 360) + 360) % 360) - 180,
+              a = Math.max(-90, Math.min(90, e[3]));
+            if (e[2] - e[0] >= 360) ((n = -180), (i = 180));
+            else if (n > i) {
+              let e = this.getClusters([n, r, 180, a], t),
+                o = this.getClusters([-180, r, i, a], t);
+              return e.concat(o);
+            }
+            let o = this.trees[this._limitZoom(t)],
+              s = o.range(y(n), b(a), y(i), b(r)),
+              c = o.data,
+              l = [];
+            for (let e of s) {
+              let t = this.stride * e;
+              l.push(
+                c[t + m] > 1
+                  ? _(c, t, this.clusterProps)
+                  : this.points[c[t + f]],
+              );
+            }
+            return l;
+          }
+          getChildren(e) {
+            let t = this._getOriginId(e),
+              n = this._getOriginZoom(e),
+              r = `No cluster with the specified id.`,
+              i = this.trees[n];
+            if (!i) throw Error(r);
+            let a = i.data;
+            if (t * this.stride >= a.length) throw Error(r);
+            let o = this.options.radius / (this.options.extent * 2 ** (n - 1)),
+              s = a[t * this.stride],
+              c = a[t * this.stride + 1],
+              l = i.within(s, c, o),
+              u = [];
+            for (let t of l) {
+              let n = t * this.stride;
+              a[n + p] === e &&
+                u.push(
+                  a[n + m] > 1
+                    ? _(a, n, this.clusterProps)
+                    : this.points[a[n + f]],
+                );
+            }
+            if (u.length === 0) throw Error(r);
+            return u;
+          }
+          getLeaves(e, t, n) {
+            ((t = t || 10), (n = n || 0));
+            let r = [];
+            return (this._appendLeaves(r, e, t, n, 0), r);
+          }
+          getTile(e, t, n) {
+            let r = this.trees[this._limitZoom(e)],
+              i = 2 ** e,
+              { extent: a, radius: o } = this.options,
+              s = o / a,
+              c = (n - s) / i,
+              l = (n + 1 + s) / i,
+              u = { features: [] };
+            return (
+              this._addTileFeatures(
+                r.range((t - s) / i, c, (t + 1 + s) / i, l),
+                r.data,
+                t,
+                n,
+                i,
+                u,
+              ),
+              t === 0 &&
+                this._addTileFeatures(
+                  r.range(1 - s / i, c, 1, l),
+                  r.data,
+                  i,
                   n,
-                  l.numItems,
-                  +Date.now() - h,
-                ));
-          }
-          return (e && console.timeEnd("total time"), this);
-        }
-        getClusters(t, e) {
-          let s = ((((t[0] + 180) % 360) + 360) % 360) - 180;
-          const r = Math.max(-90, Math.min(90, t[1]));
-          let o =
-            t[2] === 180 ? 180 : ((((t[2] + 180) % 360) + 360) % 360) - 180;
-          const c = Math.max(-90, Math.min(90, t[3]));
-          if (t[2] - t[0] >= 360) ((s = -180), (o = 180));
-          else if (s > o) {
-            const a = this.getClusters([s, r, 180, c], e),
-              u = this.getClusters([-180, r, o, c], e);
-            return a.concat(u);
-          }
-          const l = this.trees[this._limitZoom(e)],
-            n = l.range(P(s), S(c), P(o), S(r)),
-            h = l.data,
-            p = [];
-          for (const a of n) {
-            const u = this.stride * a;
-            p.push(
-              h[u + x] > 1 ? G(h, u, this.clusterProps) : this.points[h[u + E]],
+                  i,
+                  u,
+                ),
+              t === i - 1 &&
+                this._addTileFeatures(
+                  r.range(0, c, s / i, l),
+                  r.data,
+                  -1,
+                  n,
+                  i,
+                  u,
+                ),
+              u.features.length ? u : null
             );
           }
-          return p;
-        }
-        getChildren(t) {
-          const e = this._getOriginId(t),
-            s = this._getOriginZoom(t),
-            r = "No cluster with the specified id.",
-            o = this.trees[s];
-          if (!o) throw new Error(r);
-          const c = o.data;
-          if (e * this.stride >= c.length) throw new Error(r);
-          const l =
-              this.options.radius / (this.options.extent * Math.pow(2, s - 1)),
-            n = c[e * this.stride],
-            h = c[e * this.stride + 1],
-            p = o.within(n, h, l),
-            a = [];
-          for (const u of p) {
-            const d = u * this.stride;
-            c[d + C] === t &&
-              a.push(
-                c[d + x] > 1
-                  ? G(c, d, this.clusterProps)
-                  : this.points[c[d + E]],
-              );
-          }
-          if (a.length === 0) throw new Error(r);
-          return a;
-        }
-        getLeaves(t, e, s) {
-          ((e = e || 10), (s = s || 0));
-          const r = [];
-          return (this._appendLeaves(r, t, e, s, 0), r);
-        }
-        getTile(t, e, s) {
-          const r = this.trees[this._limitZoom(t)],
-            o = Math.pow(2, t),
-            { extent: c, radius: l } = this.options,
-            n = l / c,
-            h = (s - n) / o,
-            p = (s + 1 + n) / o,
-            a = { features: [] };
-          return (
-            this._addTileFeatures(
-              r.range((e - n) / o, h, (e + 1 + n) / o, p),
-              r.data,
-              e,
-              s,
-              o,
-              a,
-            ),
-            e === 0 &&
-              this._addTileFeatures(
-                r.range(1 - n / o, h, 1, p),
-                r.data,
-                o,
-                s,
-                o,
-                a,
-              ),
-            e === o - 1 &&
-              this._addTileFeatures(
-                r.range(0, h, n / o, p),
-                r.data,
-                -1,
-                s,
-                o,
-                a,
-              ),
-            a.features.length ? a : null
-          );
-        }
-        getClusterExpansionZoom(t) {
-          let e = this._getOriginZoom(t) - 1;
-          for (; e <= this.options.maxZoom; ) {
-            const s = this.getChildren(t);
-            if ((e++, s.length !== 1)) break;
-            t = s[0].properties.cluster_id;
-          }
-          return e;
-        }
-        _appendLeaves(t, e, s, r, o) {
-          const c = this.getChildren(e);
-          for (const l of c) {
-            const n = l.properties;
-            if (
-              (n && n.cluster
-                ? o + n.point_count <= r
-                  ? (o += n.point_count)
-                  : (o = this._appendLeaves(t, n.cluster_id, s, r, o))
-                : o < r
-                  ? o++
-                  : t.push(l),
-              t.length === s)
-            )
-              break;
-          }
-          return o;
-        }
-        _createTree(t) {
-          const e = new B(
-            (t.length / this.stride) | 0,
-            this.options.nodeSize,
-            Float32Array,
-          );
-          for (let s = 0; s < t.length; s += this.stride) e.add(t[s], t[s + 1]);
-          return (e.finish(), (e.data = t), e);
-        }
-        _addTileFeatures(t, e, s, r, o, c) {
-          for (const l of t) {
-            const n = l * this.stride,
-              h = e[n + x] > 1;
-            let p, a, u;
-            if (h)
-              ((p = K(e, n, this.clusterProps)), (a = e[n]), (u = e[n + 1]));
-            else {
-              const m = this.points[e[n + E]];
-              p = m.properties;
-              const [f, g] = m.geometry.coordinates;
-              ((a = P(f)), (u = S(g)));
+          getClusterExpansionZoom(e) {
+            let t = this._getOriginZoom(e) - 1;
+            for (; t <= this.options.maxZoom; ) {
+              let n = this.getChildren(e);
+              if ((t++, n.length !== 1)) break;
+              e = n[0].properties.cluster_id;
             }
-            const d = {
-              type: 1,
-              geometry: [
-                [
-                  Math.round(this.options.extent * (a * o - s)),
-                  Math.round(this.options.extent * (u * o - r)),
-                ],
-              ],
-              tags: p,
-            };
-            let y;
-            (h || this.options.generateId
-              ? (y = e[n + E])
-              : (y = this.points[e[n + E]].id),
-              y !== void 0 && (d.id = y),
-              c.features.push(d));
+            return t;
           }
-        }
-        _limitZoom(t) {
-          return Math.max(
-            this.options.minZoom,
-            Math.min(Math.floor(+t), this.options.maxZoom + 1),
-          );
-        }
-        _cluster(t, e) {
-          const {
-              radius: s,
-              extent: r,
-              reduce: o,
-              minPoints: c,
-            } = this.options,
-            l = s / (r * Math.pow(2, e)),
-            n = t.data,
-            h = [],
-            p = this.stride;
-          for (let a = 0; a < n.length; a += p) {
-            if (n[a + A] <= e) continue;
-            n[a + A] = e;
-            const u = n[a],
-              d = n[a + 1],
-              y = t.within(n[a], n[a + 1], l),
-              m = n[a + x];
-            let f = m;
-            for (const g of y) {
-              const w = g * p;
-              n[w + A] > e && (f += n[w + x]);
+          _appendLeaves(e, t, n, r, i) {
+            let a = this.getChildren(t);
+            for (let t of a) {
+              let a = t.properties;
+              if (
+                (a && a.cluster
+                  ? i + a.point_count <= r
+                    ? (i += a.point_count)
+                    : (i = this._appendLeaves(e, a.cluster_id, n, r, i))
+                  : i < r
+                    ? i++
+                    : e.push(t),
+                e.length === n)
+              )
+                break;
             }
-            if (f > m && f >= c) {
-              let g = u * m,
-                w = d * m,
-                T,
-                $ = -1;
-              const L = (((a / p) | 0) << 5) + (e + 1) + this.points.length;
-              for (const V of y) {
-                const M = V * p;
-                if (n[M + A] <= e) continue;
-                n[M + A] = e;
-                const j = n[M + x];
-                ((g += n[M] * j),
-                  (w += n[M + 1] * j),
-                  (n[M + C] = L),
-                  o &&
-                    (T ||
-                      ((T = this._map(n, a, !0)),
-                      ($ = this.clusterProps.length),
-                      this.clusterProps.push(T)),
-                    o(T, this._map(n, M))));
+            return i;
+          }
+          _createTree(e) {
+            let t = new r(
+              (e.length / this.stride) | 0,
+              this.options.nodeSize,
+              Float32Array,
+            );
+            for (let n = 0; n < e.length; n += this.stride)
+              t.add(e[n], e[n + 1]);
+            return (t.finish(), (t.data = e), t);
+          }
+          _addTileFeatures(e, t, n, r, i, a) {
+            for (let o of e) {
+              let e = o * this.stride,
+                s = t[e + m] > 1,
+                c,
+                l,
+                u;
+              if (s)
+                ((c = v(t, e, this.clusterProps)), (l = t[e]), (u = t[e + 1]));
+              else {
+                let n = this.points[t[e + f]];
+                c = n.properties;
+                let [r, i] = n.geometry.coordinates;
+                ((l = y(r)), (u = b(i)));
               }
-              ((n[a + C] = L),
-                h.push(g / f, w / f, 1 / 0, L, -1, f),
-                o && h.push($));
-            } else {
-              for (let g = 0; g < p; g++) h.push(n[a + g]);
-              if (f > 1)
-                for (const g of y) {
-                  const w = g * p;
-                  if (!(n[w + A] <= e)) {
-                    n[w + A] = e;
-                    for (let T = 0; T < p; T++) h.push(n[w + T]);
-                  }
-                }
+              let d = {
+                  type: 1,
+                  geometry: [
+                    [
+                      Math.round(this.options.extent * (l * i - n)),
+                      Math.round(this.options.extent * (u * i - r)),
+                    ],
+                  ],
+                  tags: c,
+                },
+                p;
+              ((p =
+                s || this.options.generateId
+                  ? t[e + f]
+                  : this.points[t[e + f]].id),
+                p !== void 0 && (d.id = p),
+                a.features.push(d));
             }
           }
-          return h;
-        }
-        _getOriginId(t) {
-          return (t - this.points.length) >> 5;
-        }
-        _getOriginZoom(t) {
-          return (t - this.points.length) % 32;
-        }
-        _map(t, e, s) {
-          if (t[e + x] > 1) {
-            const c = this.clusterProps[t[e + J]];
-            return s ? Object.assign({}, c) : c;
+          _limitZoom(e) {
+            return Math.max(
+              this.options.minZoom,
+              Math.min(Math.floor(+e), this.options.maxZoom + 1),
+            );
           }
-          const r = this.points[t[e + E]].properties,
-            o = this.options.map(r);
-          return s && o === r ? Object.assign({}, o) : o;
-        }
-      }
-      function G(i, t, e) {
+          _cluster(e, t) {
+            let {
+                radius: n,
+                extent: r,
+                reduce: i,
+                minPoints: a,
+              } = this.options,
+              o = n / (r * 2 ** t),
+              s = e.data,
+              c = [],
+              l = this.stride;
+            for (let n = 0; n < s.length; n += l) {
+              if (s[n + d] <= t) continue;
+              s[n + d] = t;
+              let r = s[n],
+                u = s[n + 1],
+                f = e.within(s[n], s[n + 1], o),
+                h = s[n + m],
+                g = h;
+              for (let e of f) {
+                let n = e * l;
+                s[n + d] > t && (g += s[n + m]);
+              }
+              if (g > h && g >= a) {
+                let e = r * h,
+                  a = u * h,
+                  o,
+                  _ = -1,
+                  v = (((n / l) | 0) << 5) + (t + 1) + this.points.length;
+                for (let r of f) {
+                  let c = r * l;
+                  if (s[c + d] <= t) continue;
+                  s[c + d] = t;
+                  let u = s[c + m];
+                  ((e += s[c] * u),
+                    (a += s[c + 1] * u),
+                    (s[c + p] = v),
+                    i &&
+                      (o ||
+                        ((o = this._map(s, n, !0)),
+                        (_ = this.clusterProps.length),
+                        this.clusterProps.push(o)),
+                      i(o, this._map(s, c))));
+                }
+                ((s[n + p] = v),
+                  c.push(e / g, a / g, 1 / 0, v, -1, g),
+                  i && c.push(_));
+              } else {
+                for (let e = 0; e < l; e++) c.push(s[n + e]);
+                if (g > 1)
+                  for (let e of f) {
+                    let n = e * l;
+                    if (!(s[n + d] <= t)) {
+                      s[n + d] = t;
+                      for (let e = 0; e < l; e++) c.push(s[n + e]);
+                    }
+                  }
+              }
+            }
+            return c;
+          }
+          _getOriginId(e) {
+            return (e - this.points.length) >> 5;
+          }
+          _getOriginZoom(e) {
+            return (e - this.points.length) % 32;
+          }
+          _map(e, t, n) {
+            if (e[t + m] > 1) {
+              let r = this.clusterProps[e[t + h]];
+              return n ? Object.assign({}, r) : r;
+            }
+            let r = this.points[e[t + f]].properties,
+              i = this.options.map(r);
+            return n && i === r ? Object.assign({}, i) : i;
+          }
+        };
+      function _(e, t, n) {
         return {
-          type: "Feature",
-          id: i[t + E],
-          properties: K(i, t, e),
-          geometry: { type: "Point", coordinates: [q(i[t]), X(i[t + 1])] },
+          type: `Feature`,
+          id: e[t + f],
+          properties: v(e, t, n),
+          geometry: { type: `Point`, coordinates: [x(e[t]), S(e[t + 1])] },
         };
       }
-      function K(i, t, e) {
-        const s = i[t + x],
-          r =
-            s >= 1e4
-              ? `${Math.round(s / 1e3)}k`
-              : s >= 1e3
-                ? `${Math.round(s / 100) / 10}k`
-                : s,
-          o = i[t + J],
-          c = o === -1 ? {} : Object.assign({}, e[o]);
-        return Object.assign(c, {
+      function v(e, t, n) {
+        let r = e[t + m],
+          i =
+            r >= 1e4
+              ? `${Math.round(r / 1e3)}k`
+              : r >= 1e3
+                ? `${Math.round(r / 100) / 10}k`
+                : r,
+          a = e[t + h],
+          o = a === -1 ? {} : Object.assign({}, n[a]);
+        return Object.assign(o, {
           cluster: !0,
-          cluster_id: i[t + E],
-          point_count: s,
-          point_count_abbreviated: r,
+          cluster_id: e[t + f],
+          point_count: r,
+          point_count_abbreviated: i,
         });
       }
-      function P(i) {
-        return i / 360 + 0.5;
+      function y(e) {
+        return e / 360 + 0.5;
       }
-      function S(i) {
-        const t = Math.sin((i * Math.PI) / 180),
-          e = 0.5 - (0.25 * Math.log((1 + t) / (1 - t))) / Math.PI;
-        return e < 0 ? 0 : e > 1 ? 1 : e;
+      function b(e) {
+        let t = Math.sin((e * Math.PI) / 180),
+          n = 0.5 - (0.25 * Math.log((1 + t) / (1 - t))) / Math.PI;
+        return n < 0 ? 0 : n > 1 ? 1 : n;
       }
-      function q(i) {
-        return (i - 0.5) * 360;
+      function x(e) {
+        return (e - 0.5) * 360;
       }
-      function X(i) {
-        const t = ((180 - i * 360) * Math.PI) / 180;
+      function S(e) {
+        let t = ((180 - e * 360) * Math.PI) / 180;
         return (360 * Math.atan(Math.exp(t))) / Math.PI - 90;
       }
-      let _,
-        v,
-        R,
-        D = [];
-      const tt = "https://demo.woosmap.com/misc/data/uk-all-pubs.geojson",
-        et = "https://images.woosmap.com/dot-green.svg",
-        st = { radius: 40, extent: 256, maxZoom: 14, minPoints: 5 };
-      function nt() {
-        ((v = new woosmap.map.InfoWindow({})),
-          (_ = new window.woosmap.map.Map(document.getElementById("map"), {
+      var C,
+        w,
+        T,
+        E = [],
+        D = `https://demo.woosmap.com/misc/data/uk-all-pubs.geojson`,
+        O = `https://images.woosmap.com/dot-green.svg`,
+        k = { radius: 40, extent: 256, maxZoom: 14, minPoints: 5 };
+      function A() {
+        ((w = new woosmap.map.InfoWindow({})),
+          (C = new window.woosmap.map.Map(document.getElementById(`map`), {
             center: { lat: 55.5, lng: -4 },
             zoom: 5.7,
             styles: [
-              { elementType: "geometry", stylers: [{ color: "#f6f6f6" }] },
-              { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+              { elementType: `geometry`, stylers: [{ color: `#f6f6f6` }] },
+              { elementType: `labels.icon`, stylers: [{ visibility: `off` }] },
               {
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#616161" }],
+                elementType: `labels.text.fill`,
+                stylers: [{ color: `#616161` }],
               },
               {
-                elementType: "labels.text.stroke",
-                stylers: [{ color: "#f5f5f5" }],
+                elementType: `labels.text.stroke`,
+                stylers: [{ color: `#f5f5f5` }],
               },
               {
-                featureType: "administrative.land_parcel",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#bdbdbd" }],
+                featureType: `administrative.land_parcel`,
+                elementType: `labels.text.fill`,
+                stylers: [{ color: `#bdbdbd` }],
               },
               {
-                featureType: "road",
-                elementType: "geometry",
-                stylers: [{ color: "#ffffff" }],
+                featureType: `road`,
+                elementType: `geometry`,
+                stylers: [{ color: `#ffffff` }],
               },
               {
-                featureType: "road.arterial",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#757575" }],
+                featureType: `road.arterial`,
+                elementType: `labels.text.fill`,
+                stylers: [{ color: `#757575` }],
               },
               {
-                featureType: "road.highway",
-                elementType: "geometry",
-                stylers: [{ color: "#dadada" }],
+                featureType: `road.highway`,
+                elementType: `geometry`,
+                stylers: [{ color: `#dadada` }],
               },
               {
-                featureType: "road.highway",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#616161" }],
+                featureType: `road.highway`,
+                elementType: `labels.text.fill`,
+                stylers: [{ color: `#616161` }],
               },
               {
-                featureType: "road.local",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#9e9e9e" }],
+                featureType: `road.local`,
+                elementType: `labels.text.fill`,
+                stylers: [{ color: `#9e9e9e` }],
               },
               {
-                featureType: "transit.line",
-                elementType: "geometry",
-                stylers: [{ color: "#e5e5e5" }],
+                featureType: `transit.line`,
+                elementType: `geometry`,
+                stylers: [{ color: `#e5e5e5` }],
               },
               {
-                featureType: "transit.station",
-                elementType: "geometry",
-                stylers: [{ color: "#eeeeee" }],
+                featureType: `transit.station`,
+                elementType: `geometry`,
+                stylers: [{ color: `#eeeeee` }],
               },
               {
-                featureType: "water",
-                elementType: "geometry",
-                stylers: [{ color: "#c9c9c9" }],
+                featureType: `water`,
+                elementType: `geometry`,
+                stylers: [{ color: `#c9c9c9` }],
               },
               {
-                featureType: "water",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#9e9e9e" }],
+                featureType: `water`,
+                elementType: `labels.text.fill`,
+                stylers: [{ color: `#9e9e9e` }],
               },
             ],
           })),
-          ot(tt).then((i) => {
-            const t = i.features;
-            ((R = new Q(st).load(t)), I());
+          j(D).then((e) => {
+            let t = e.features;
+            ((T = new g(k).load(t)), N());
           }),
-          rt());
+          M());
       }
-      function ot(i) {
-        return fetch(i).then((t) => t.json());
+      function j(e) {
+        return fetch(e).then((e) => e.json());
       }
-      function rt() {
-        (_.addListener("dragend", U(I, 20)),
-          _.addListener("zoom_changed", U(I, 20)),
-          window.addEventListener("resize", U(I, 100)));
+      function M() {
+        (C.addListener(`dragend`, R(N, 20)),
+          C.addListener(`zoom_changed`, R(N, 20)),
+          window.addEventListener(`resize`, R(N, 100)));
       }
-      function I() {
-        it();
-        const i = _.getBounds(),
+      function N() {
+        P();
+        let e = C.getBounds(),
           t = [
-            i.getSouthWest().lng(),
-            i.getSouthWest().lat(),
-            i.getNorthEast().lng(),
-            i.getNorthEast().lat(),
+            e.getSouthWest().lng(),
+            e.getSouthWest().lat(),
+            e.getNorthEast().lng(),
+            e.getNorthEast().lat(),
           ],
-          e = R.getClusters(t, _.getZoom());
-        for (const s of e) {
-          const r = {
-            lat: s.geometry.coordinates[1],
-            lng: s.geometry.coordinates[0],
+          n = T.getClusters(t, C.getZoom());
+        for (let e of n) {
+          let t = {
+            lat: e.geometry.coordinates[1],
+            lng: e.geometry.coordinates[0],
           };
-          D.push(ct(s, r));
+          E.push(F(e, t));
         }
       }
-      function it() {
-        for (const i of D) i.setMap(null);
-        D = [];
+      function P() {
+        for (let e of E) e.setMap(null);
+        E = [];
       }
-      function ct(i, t) {
-        return i.properties.cluster ? at(i, t) : lt(i, t);
+      function F(e, t) {
+        return e.properties.cluster ? I(e, t) : L(e, t);
       }
-      function at(i, t) {
-        const e = i.properties.point_count,
-          s = e < 80 ? "#0B9D58" : e < 500 ? "#F5B300" : "#DA0A40",
-          r = e < 80 ? 45 : e < 400 ? 55 : 65,
-          o = window.btoa(`
-<svg fill="${s}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+      function I(e, t) {
+        let n = e.properties.point_count,
+          r = n < 80 ? `#0B9D58` : n < 500 ? `#F5B300` : `#DA0A40`,
+          i = n < 80 ? 45 : n < 400 ? 55 : 65,
+          a = window.btoa(`
+<svg fill="${r}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
   <circle cx="120" cy="120" opacity=".8" r="70" />
   <circle cx="120" cy="120" opacity=".3" r="80" />
   <circle cx="120" cy="120" opacity=".2" r="110" />
 </svg>`),
-          c = new window.woosmap.map.Marker({
+          o = new window.woosmap.map.Marker({
             label: {
-              text: i.properties.point_count_abbreviated,
-              color: "white",
+              text: e.properties.point_count_abbreviated,
+              color: `white`,
             },
             position: t,
             icon: {
-              url: `data:image/svg+xml;base64,${o}`,
-              scaledSize: new window.woosmap.map.Size(r, r),
+              url: `data:image/svg+xml;base64,${a}`,
+              scaledSize: new window.woosmap.map.Size(i, i),
             },
-            map: _,
+            map: C,
           });
         return (
-          c.addListener("click", (l) => {
-            v.close();
-            const n = R.getClusterExpansionZoom(i.properties.cluster_id);
-            (_.setCenter(c.getPosition()), _.setZoom(n));
+          o.addListener(`click`, (t) => {
+            w.close();
+            let n = T.getClusterExpansionZoom(e.properties.cluster_id);
+            (C.setCenter(o.getPosition()), C.setZoom(n));
           }),
-          c
+          o
         );
       }
-      function lt(i, t) {
-        const e = new window.woosmap.map.Marker({
-          icon: { url: et, scaledSize: { height: 20, width: 20 } },
+      function L(e, t) {
+        let n = new window.woosmap.map.Marker({
+          icon: { url: O, scaledSize: { height: 20, width: 20 } },
           position: t,
-          map: _,
+          map: C,
         });
         return (
-          e.addListener("click", () => {
-            (v.setContent(`<h3>${i.properties.name}</h3>`), v.open(_, e));
+          n.addListener(`click`, () => {
+            (w.setContent(`<h3>${e.properties.name}</h3>`), w.open(C, n));
           }),
-          e
+          n
         );
       }
-      function U(i, t) {
-        let e;
-        return (...s) => {
-          (clearTimeout(e),
-            (e = setTimeout(() => {
-              i(...s);
+      function R(e, t) {
+        let n;
+        return (...r) => {
+          (clearTimeout(n),
+            (n = setTimeout(() => {
+              e(...r);
             }, t)));
         };
       }
-      window.initMap = nt;
+      window.initMap = A;
     </script>
     <style>
       #map {
@@ -738,9 +748,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,

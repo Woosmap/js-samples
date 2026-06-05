@@ -7,198 +7,194 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const s of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(s);
-        new MutationObserver((s) => {
-          for (const n of s)
-            if (n.type === "childList")
-              for (const a of n.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && o(a);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function i(s) {
-          const n = {};
+        function t(e) {
+          let t = {};
           return (
-            s.integrity && (n.integrity = s.integrity),
-            s.referrerPolicy && (n.referrerPolicy = s.referrerPolicy),
-            s.crossOrigin === "use-credentials"
-              ? (n.credentials = "include")
-              : s.crossOrigin === "anonymous"
-                ? (n.credentials = "omit")
-                : (n.credentials = "same-origin"),
-            n
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function o(s) {
-          if (s.ep) return;
-          s.ep = !0;
-          const n = i(s);
-          fetch(s.href, n);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let u, c, m, w;
-      const l = {};
-      function E() {
-        ((u = new window.woosmap.map.Map(document.getElementById("map"), {
+      var e,
+        t,
+        n,
+        r,
+        i = {};
+      function a() {
+        ((e = new window.woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 12,
         })),
-          (m = new woosmap.map.InfoWindow({})),
-          (w = new woosmap.map.LocalitiesService()),
-          u.addListener("click", (e) => {
-            h(e.latlng);
+          (n = new woosmap.map.InfoWindow({})),
+          (r = new woosmap.map.LocalitiesService()),
+          e.addListener(`click`, (e) => {
+            c(e.latlng);
           }));
       }
-      const p = document.getElementById("autocomplete-input"),
-        g = document.getElementsByClassName("clear-searchButton")[0];
-      p &&
-        (p.addEventListener("keydown", (e) => {
-          e.key === "Enter" && h(null);
+      var o = document.getElementById(`autocomplete-input`),
+        s = document.getElementsByClassName(`clear-searchButton`)[0];
+      (o &&
+        (o.addEventListener(`keydown`, (e) => {
+          e.key === `Enter` && c(null);
         }),
-        p.addEventListener("input", () => {
-          p.value !== ""
-            ? (g.style.display = "block")
-            : (g.style.display = "none");
+        o.addEventListener(`input`, () => {
+          o.value === ``
+            ? (s.style.display = `none`)
+            : (s.style.display = `block`);
+        })),
+        s.addEventListener(`click`, () => {
+          ((o.value = ``),
+            (s.style.display = `none`),
+            t && (t.setMap(null), n.close()),
+            m(),
+            o.focus());
         }));
-      g.addEventListener("click", () => {
-        ((p.value = ""),
-          (g.style.display = "none"),
-          c && (c.setMap(null), m.close()),
-          S(),
-          p.focus());
-      });
-      function h(e) {
+      function c(e) {
         (e
-          ? ((l.latLng = e), delete l.address)
-          : (p == null ? void 0 : p.value) !== "" &&
-            ((l.address = p.value), delete l.latLng),
-          (l.latLng || l.address) &&
-            w
-              .geocode(l)
-              .then((t) => v(t.results[0]))
-              .catch((t) => console.error("Error geocoding localities:", t)));
+          ? ((i.latLng = e), delete i.address)
+          : (o == null ? void 0 : o.value) !== `` &&
+            ((i.address = o.value), delete i.latLng),
+          (i.latLng || i.address) &&
+            r
+              .geocode(i)
+              .then((e) => l(e.results[0]))
+              .catch((e) => console.error(`Error geocoding localities:`, e)));
       }
-      function v(e) {
-        (c && (c.setMap(null), m.close()),
-          e != null &&
-            e.geometry &&
-            ((c = new woosmap.map.Marker({
-              position: e.geometry.location,
+      function l(r) {
+        (t && (t.setMap(null), n.close()),
+          r != null &&
+            r.geometry &&
+            ((t = new woosmap.map.Marker({
+              position: r.geometry.location,
               icon: {
-                url: "https://images.woosmap.com/marker.png",
+                url: `https://images.woosmap.com/marker.png`,
                 scaledSize: { height: 50, width: 32 },
               },
             })),
-            c.setMap(u),
-            m.setContent(`<span>${e.formatted_address}</span>`),
-            m.open(u, c),
-            u.setCenter(e.geometry.location),
-            M(e)));
+            t.setMap(e),
+            n.setContent(`<span>${r.formatted_address}</span>`),
+            n.open(e, t),
+            e.setCenter(r.geometry.location),
+            f(r)));
+      }
+      function u(e) {
+        return e
+          .replace(/&/g, `&amp;`)
+          .replace(/</g, `&lt;`)
+          .replace(/>/g, `&gt;`)
+          .replace(/"/g, `&quot;`)
+          .replace(/'/g, `&#39;`);
       }
       function d(e) {
-        return e
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#39;");
+        return Array.isArray(e) ? e.join(`, `) : e;
       }
-      function $(e) {
-        return Array.isArray(e) ? e.join(", ") : e;
-      }
-      function M(e) {
-        const t = document.getElementById("response-panel"),
-          i = t == null ? void 0 : t.querySelector(".summary"),
-          o = t == null ? void 0 : t.querySelector(".address-components"),
-          s = document.getElementById("raw-json");
-        if (!t || !i || !o || !s) return;
-        t.dataset.empty = "false";
-        const n = [];
+      function f(e) {
+        let t = document.getElementById(`response-panel`),
+          n = t == null ? void 0 : t.querySelector(`.summary`),
+          r = t == null ? void 0 : t.querySelector(`.address-components`),
+          i = document.getElementById(`raw-json`);
+        if (!t || !n || !r || !i) return;
+        t.dataset.empty = `false`;
+        let a = [];
         if (
-          (n.push(
-            `<p class='option-detail'><span class='option-detail-label'>Formatted address:</span><span class='bold'>${d(e.formatted_address)}</span></p>`,
+          (a.push(
+            `<p class='option-detail'><span class='option-detail-label'>Formatted address:</span><span class='bold'>${u(e.formatted_address)}</span></p>`,
           ),
           e.types &&
             e.types.length &&
-            n.push(
-              `<p class='option-detail'><span class='option-detail-label'>Types:</span><span class='bold'>${d(e.types.join(", "))}</span></p>`,
+            a.push(
+              `<p class='option-detail'><span class='option-detail-label'>Types:</span><span class='bold'>${u(e.types.join(`, `))}</span></p>`,
             ),
           e.public_id &&
-            n.push(
-              `<p class='option-detail'><span class='option-detail-label'>Public ID:</span><span class='bold'>${d(e.public_id)}</span></p>`,
+            a.push(
+              `<p class='option-detail'><span class='option-detail-label'>Public ID:</span><span class='bold'>${u(e.public_id)}</span></p>`,
             ),
-          typeof e.distance == "number" &&
-            n.push(
+          typeof e.distance == `number` &&
+            a.push(
               `<p class='option-detail'><span class='option-detail-label'>Distance (m):</span><span class='bold'>${e.distance}</span></p>`,
             ),
           e.geometry)
         ) {
-          const { geometry: a } = e;
+          let { geometry: t } = e;
           if (
-            (a.location_type &&
-              n.push(
-                `<p class='option-detail'><span class='option-detail-label'>Location type:</span><span class='bold'>${d(a.location_type)}</span></p>`,
+            (t.location_type &&
+              a.push(
+                `<p class='option-detail'><span class='option-detail-label'>Location type:</span><span class='bold'>${u(t.location_type)}</span></p>`,
               ),
-            n.push(
-              `<p class='option-detail'><span class='option-detail-label'>Latitude:</span><span class='bold'>${a.location.lat}</span></p>`,
-              `<p class='option-detail'><span class='option-detail-label'>Longitude:</span><span class='bold'>${a.location.lng}</span></p>`,
+            a.push(
+              `<p class='option-detail'><span class='option-detail-label'>Latitude:</span><span class='bold'>${t.location.lat}</span></p>`,
+              `<p class='option-detail'><span class='option-detail-label'>Longitude:</span><span class='bold'>${t.location.lng}</span></p>`,
             ),
-            a.viewport)
+            t.viewport)
           ) {
-            const { viewport: r } = a;
-            n.push(
-              `<p class='option-detail'><span class='option-detail-label'>Viewport NE:</span><span class='bold'>${r.northeast.lat}, ${r.northeast.lng}</span></p>`,
-              `<p class='option-detail'><span class='option-detail-label'>Viewport SW:</span><span class='bold'>${r.southwest.lat}, ${r.southwest.lng}</span></p>`,
+            let { viewport: e } = t;
+            a.push(
+              `<p class='option-detail'><span class='option-detail-label'>Viewport NE:</span><span class='bold'>${e.northeast.lat}, ${e.northeast.lng}</span></p>`,
+              `<p class='option-detail'><span class='option-detail-label'>Viewport SW:</span><span class='bold'>${e.southwest.lat}, ${e.southwest.lng}</span></p>`,
             );
           }
         }
-        if (
-          ((i.innerHTML = `<div class='section-title'>Summary</div>${n.join("")}`),
-          e.address_components && e.address_components.length)
-        ) {
-          const a = e.address_components
-            .map((r) => {
-              var y;
-              const b = d(
-                  ((y = r.types[0]) != null ? y : "").replace(/_/g, " "),
-                ),
-                L = d($(r.long_name));
-              return `<p class='option-detail'><span class='option-detail-label'>${b}:</span><span class='bold'>${L}</span></p>`;
-            })
-            .join("");
-          o.innerHTML = `<div class='section-title'>Address components</div>${a}`;
-        } else o.innerHTML = "";
-        s.textContent = JSON.stringify(e, null, 2);
+        ((n.innerHTML = `<div class='section-title'>Summary</div>${a.join(``)}`),
+          e.address_components && e.address_components.length
+            ? (r.innerHTML = `<div class='section-title'>Address components</div>${e.address_components
+                .map((e) => {
+                  var t;
+                  return `<p class='option-detail'><span class='option-detail-label'>${u(((t = e.types[0]) == null ? `` : t).replace(/_/g, ` `))}:</span><span class='bold'>${u(d(e.long_name))}</span></p>`;
+                })
+                .join(``)}`)
+            : (r.innerHTML = ``),
+          (i.textContent = JSON.stringify(e, null, 2)));
       }
-      const f = document.getElementById("copy-raw-json");
-      f &&
-        f.addEventListener("click", (e) => {
-          var o;
+      var p = document.getElementById(`copy-raw-json`);
+      p &&
+        p.addEventListener(`click`, (e) => {
+          var t;
           (e.preventDefault(), e.stopPropagation());
-          const t = document.getElementById("raw-json"),
-            i = (o = t == null ? void 0 : t.textContent) != null ? o : "";
-          i &&
+          let n = document.getElementById(`raw-json`),
+            r = (t = n == null ? void 0 : n.textContent) == null ? `` : t;
+          r &&
             navigator.clipboard
-              .writeText(i)
+              .writeText(r)
               .then(() => {
-                (f.classList.add("copied"),
-                  window.setTimeout(() => f.classList.remove("copied"), 1500));
+                (p.classList.add(`copied`),
+                  window.setTimeout(() => p.classList.remove(`copied`), 1500));
               })
-              .catch((s) => console.error("Failed to copy raw JSON:", s));
+              .catch((e) => console.error(`Failed to copy raw JSON:`, e));
         });
-      function S() {
-        const e = document.getElementById("response-panel");
+      function m() {
+        let e = document.getElementById(`response-panel`);
         if (!e) return;
-        e.dataset.empty = "true";
-        const t = e.querySelector(".summary"),
-          i = e.querySelector(".address-components"),
-          o = document.getElementById("raw-json");
-        (t && (t.innerHTML = ""),
-          i && (i.innerHTML = ""),
-          o && (o.textContent = ""));
+        e.dataset.empty = `true`;
+        let t = e.querySelector(`.summary`),
+          n = e.querySelector(`.address-components`),
+          r = document.getElementById(`raw-json`);
+        (t && (t.innerHTML = ``),
+          n && (n.innerHTML = ``),
+          r && (r.textContent = ``));
       }
-      window.initMap = E;
+      window.initMap = a;
     </script>
     <style>
       #map {
@@ -216,9 +212,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -226,92 +224,91 @@
           Noto Color Emoji;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        padding: 0 12px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        border-radius: 12px;
-        padding: 0 12px;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        padding: 0;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0 8px;
+        padding: 0;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0 8px;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .clear-searchButton {
-        display: none;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: none;
       }
       #app {
         height: 100%;
       }
       .btn {
+        box-sizing: border-box;
+        color: #202124;
+        cursor: pointer;
         background: #3d5afe;
         border: 0;
         border-radius: 4px;
+        align-items: center;
+        height: 38px;
+        padding: 0 15px;
+        font-size: 14px;
+        font-weight: 600;
+        transition:
+          background 0.3s,
+          color 0.3s;
+        display: inline;
+        position: relative;
         box-shadow:
           0 2px 2px #00000024,
           0 1px 5px #0000001f,
           0 3px 1px -2px #0003;
-        -webkit-transition:
-          background 0.3s,
-          color 0.3s;
-        transition:
-          background 0.3s,
-          color 0.3s;
-        box-sizing: border-box;
-        font-size: 14px;
-        color: #202124;
-        cursor: pointer;
-        display: inline;
-        font-weight: 600;
-        height: 38px;
-        padding: 0 15px;
-        position: relative;
-        align-items: center;
       }
       .btn:hover {
         background: #0a2ffe;
@@ -319,39 +316,39 @@
       .btnText {
         color: #fff;
         cursor: pointer;
+        letter-spacing: 0;
         font-size: 0.875rem;
         font-weight: 500;
-        letter-spacing: 0;
         line-height: 1.25rem;
       }
       .btnText:hover {
         text-decoration: none;
       }
       #response-panel {
-        position: absolute;
-        right: 10px;
-        bottom: 25px;
+        z-index: 1;
         background-color: #fff;
         border-radius: 3px;
-        box-shadow: 0 0 0 2px #0000001a;
-        margin: 10px;
-        overflow: hidden;
-        z-index: 1;
         width: 360px;
         max-width: calc(100vw - 40px);
         max-height: calc(40vh - 25px);
-        overflow-y: auto;
+        margin: 10px;
         padding: 0;
         font-size: 13px;
+        position: absolute;
+        bottom: 25px;
+        right: 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-shadow: 0 0 0 2px #0000001a;
       }
       #response-panel .panel-header {
+        border-bottom: 1px solid #00000014;
         padding: 12px 14px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       }
       #response-panel .panel-title {
-        font-weight: 700;
-        font-size: 14px;
         margin-bottom: 4px;
+        font-size: 14px;
+        font-weight: 700;
       }
       #response-panel .panel-hint {
         color: #0009;
@@ -359,10 +356,10 @@
       }
       #response-panel .section-title {
         color: #00000080;
-        font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 1px;
         padding: 14px 12px 8px;
+        font-size: 10px;
       }
       #response-panel .summary,
       #response-panel .address-components {
@@ -372,43 +369,45 @@
         background-color: #00000008;
       }
       #response-panel .option-detail {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0 12px 8px;
-        margin: 0;
         overflow-wrap: anywhere;
         word-break: break-word;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0 12px 8px;
+        display: flex;
       }
       #response-panel .option-detail-label {
         color: #00000080;
-        margin-right: 4px;
         flex-shrink: 0;
+        margin-right: 4px;
       }
       #response-panel .bold {
         font-weight: 700;
       }
       #response-panel .raw-json-details {
-        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        border-top: 1px solid #00000014;
       }
       #response-panel .raw-json-details summary {
         cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
         padding: 10px 14px;
         font-weight: 600;
-        user-select: none;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
       }
       #response-panel .raw-json-details .copy-btn {
-        background: transparent;
-        border: 0;
-        padding: 2px 4px;
         cursor: pointer;
         color: #00000080;
-        display: inline-flex;
+        background: 0 0;
+        border: 0;
         align-items: center;
+        padding: 2px 4px;
         transition: color 0.2s ease-in-out;
+        display: inline-flex;
       }
       #response-panel .raw-json-details .copy-btn:hover,
       #response-panel .raw-json-details .copy-btn:focus {
@@ -416,8 +415,8 @@
         outline: none;
       }
       #response-panel .raw-json-details .copy-btn .icon-check {
-        display: none;
         color: #2e7d32;
+        display: none;
       }
       #response-panel .raw-json-details .copy-btn.copied {
         color: #2e7d32;
@@ -429,14 +428,12 @@
         display: inline-block;
       }
       #response-panel .raw-json-details pre {
+        white-space: pre-wrap;
+        background-color: #fafafa;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
         margin: 0 10px 10px;
         padding: 10px;
-        border: 1px solid #e0e0e0;
-        background-color: #fafafa;
-        border-radius: 6px;
-        white-space: pre-wrap;
-        overflow-x: auto;
-        font-size: 12px;
         font-family:
           Consolas,
           Andale Mono WT,
@@ -451,6 +448,8 @@
           Courier New,
           Courier,
           monospace;
+        font-size: 12px;
+        overflow-x: auto;
       }
       #response-panel[data-empty="true"] .summary,
       #response-panel[data-empty="true"] .address-components,

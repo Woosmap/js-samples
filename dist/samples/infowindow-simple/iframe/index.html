@@ -7,60 +7,60 @@
 
     <script type="module" crossorigin>
       (function () {
-        const n = document.createElement("link").relList;
-        if (n && n.supports && n.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          t(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const o of e)
-            if (o.type === "childList")
-              for (const s of o.addedNodes)
-                s.tagName === "LINK" && s.rel === "modulepreload" && t(s);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function i(e) {
-          const o = {};
+        function t(e) {
+          let t = {};
           return (
-            e.integrity && (o.integrity = e.integrity),
-            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function t(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const o = i(e);
-          fetch(e.href, o);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      function a() {
-        const r = new woosmap.map.Map(document.getElementById("map"), {
+      function e() {
+        let e = new woosmap.map.Map(document.getElementById(`map`), {
             zoom: 10,
             center: { lat: 51.57, lng: -0.13 },
           }),
-          n =
-            "<div class='info-content'><h2>London</h2><div class='london-img'></div><p>London is the capital and largest city of England and the United Kingdom. <a href='https://en.wikipedia.org/wiki/London'>Wikipedia →</a></p></div>",
-          i = new window.woosmap.map.Marker({
+          t = new window.woosmap.map.Marker({
             position: { lat: 51.515, lng: -0.13 },
             icon: {
-              url: "https://images.woosmap.com/marker.png",
+              url: `https://images.woosmap.com/marker.png`,
               scaledSize: { height: 50, width: 32 },
             },
-            map: r,
+            map: e,
           }),
-          t = new woosmap.map.InfoWindow({});
-        (t.setOffset(new woosmap.map.Point(0, -50)),
-          t.setContent(n),
-          t.open(r, i.position),
-          i.addListener("click", () => {
-            t.open(r, i.getPosition());
+          n = new woosmap.map.InfoWindow({});
+        (n.setOffset(new woosmap.map.Point(0, -50)),
+          n.setContent(
+            `<div class='info-content'><h2>London</h2><div class='london-img'></div><p>London is the capital and largest city of England and the United Kingdom. <a href='https://en.wikipedia.org/wiki/London'>Wikipedia →</a></p></div>`,
+          ),
+          n.open(e, t.position),
+          t.addListener(`click`, () => {
+            n.open(e, t.getPosition());
           }));
       }
-      window.initMap = a;
+      window.initMap = e;
     </script>
     <style>
       #map {
@@ -78,9 +78,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -88,15 +90,15 @@
           Noto Color Emoji;
       }
       .info-content {
-        font-size: 14px;
         max-width: 300px;
         height: 100%;
+        font-size: 14px;
       }
       .london-img {
         background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/London_Skyline_%28125508655%29.jpeg/556px-London_Skyline_%28125508655%29.jpeg);
+        background-size: cover;
         width: 100%;
         height: 90px;
-        background-size: cover;
       }
     </style>
   </head>

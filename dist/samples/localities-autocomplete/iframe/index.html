@@ -7,147 +7,147 @@
 
     <script type="module" crossorigin>
       (function () {
-        const n = document.createElement("link").relList;
-        if (n && n.supports && n.supports("modulepreload")) return;
-        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          l(t);
-        new MutationObserver((t) => {
-          for (const o of t)
-            if (o.type === "childList")
-              for (const c of o.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && l(c);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(t) {
-          const o = {};
+        function t(e) {
+          let t = {};
           return (
-            t.integrity && (o.integrity = t.integrity),
-            t.referrerPolicy && (o.referrerPolicy = t.referrerPolicy),
-            t.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : t.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function l(t) {
-          if (t.ep) return;
-          t.ep = !0;
-          const o = s(t);
-          fetch(t.href, o);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let m, a, u, g, d, h;
-      function w() {
-        ((m = new window.woosmap.map.Map(document.getElementById("map"), {
+      var e, t, n, r, i, a;
+      function o() {
+        ((e = new window.woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 4,
         })),
-          (u = new woosmap.map.InfoWindow({})),
-          (g = new window.woosmap.map.LocalitiesService()),
-          (d = { input: "", types: ["locality", "address", "postal_code"] }),
-          (h = b(g.autocomplete, 0)));
+          (n = new woosmap.map.InfoWindow({})),
+          (r = new window.woosmap.map.LocalitiesService()),
+          (i = { input: ``, types: [`locality`, `address`, `postal_code`] }),
+          (a = m(r.autocomplete, 0)));
       }
-      const r = document.getElementById("autocomplete-input"),
-        i = document.getElementById("suggestions-list"),
-        f = document.getElementsByClassName("clear-searchButton")[0];
-      r &&
-        i &&
-        (r.addEventListener("input", E),
-        r.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            const n = i.querySelector("li");
-            n && n.click();
+      var s = document.getElementById(`autocomplete-input`),
+        c = document.getElementById(`suggestions-list`),
+        l = document.getElementsByClassName(`clear-searchButton`)[0];
+      (s &&
+        c &&
+        (s.addEventListener(`input`, u),
+        s.addEventListener(`keydown`, (e) => {
+          if (e.key === `Enter`) {
+            let e = c.querySelector(`li`);
+            e && e.click();
           }
+        })),
+        l.addEventListener(`click`, () => {
+          ((s.value = ``),
+            (c.style.display = `none`),
+            (l.style.display = `none`),
+            t && (t.setMap(null), n.close()),
+            s.focus());
         }));
-      f.addEventListener("click", () => {
-        ((r.value = ""),
-          (i.style.display = "none"),
-          (f.style.display = "none"),
-          a && (a.setMap(null), u.close()),
-          r.focus());
-      });
-      function E() {
-        r &&
-          i &&
-          ((d.input = r.value),
-          d.input
-            ? h(d)
-                .then((e) => M(e))
+      function u() {
+        s &&
+          c &&
+          ((i.input = s.value),
+          i.input
+            ? a(i)
+                .then((e) => p(e))
                 .catch((e) =>
-                  console.error("Error autocomplete localities:", e),
+                  console.error(`Error autocomplete localities:`, e),
                 )
-            : ((i.style.display = "none"), (f.style.display = "none")));
+            : ((c.style.display = `none`), (l.style.display = `none`)));
       }
-      function L(e) {
-        g.getDetails({ publicId: e })
-          .then((n) => v(n.result))
-          .catch((n) => console.error("Error getting locality details:", n));
+      function d(e) {
+        r.getDetails({ publicId: e })
+          .then((e) => f(e.result))
+          .catch((e) => console.error(`Error getting locality details:`, e));
       }
-      function v(e) {
-        (a && (a.setMap(null), u.close()),
-          e != null &&
-            e.geometry &&
-            ((a = new woosmap.map.Marker({
-              position: e.geometry.location,
+      function f(r) {
+        (t && (t.setMap(null), n.close()),
+          r != null &&
+            r.geometry &&
+            ((t = new woosmap.map.Marker({
+              position: r.geometry.location,
               icon: {
-                url: "https://images.woosmap.com/marker.png",
+                url: `https://images.woosmap.com/marker.png`,
                 scaledSize: { height: 50, width: 32 },
               },
             })),
-            a.setMap(m),
-            u.setContent(`<span>${e.formatted_address}</span>`),
-            u.open(m, a),
-            m.flyTo({ center: e.geometry.location, zoom: 14 })));
+            t.setMap(e),
+            n.setContent(`<span>${r.formatted_address}</span>`),
+            n.open(e, t),
+            e.flyTo({ center: r.geometry.location, zoom: 14 })));
       }
-      function M(e) {
-        r &&
-          i &&
-          ((i.innerHTML = ""),
-          e.localities.length > 0 && d.input
-            ? (e.localities.forEach((n) => {
-                var l;
-                const s = document.createElement("li");
-                ((s.textContent = (l = n.description) != null ? l : ""),
-                  s.addEventListener("click", () => {
+      function p(e) {
+        s &&
+          c &&
+          ((c.innerHTML = ``),
+          e.localities.length > 0 && i.input
+            ? (e.localities.forEach((e) => {
+                var t;
+                let n = document.createElement(`li`);
+                ((n.textContent = (t = e.description) == null ? `` : t),
+                  n.addEventListener(`click`, () => {
                     var t;
-                    ((r.value = (t = n.description) != null ? t : ""),
-                      (i.style.display = "none"),
-                      L(n.public_id));
+                    ((s.value = (t = e.description) == null ? `` : t),
+                      (c.style.display = `none`),
+                      d(e.public_id));
                   }),
-                  i.appendChild(s));
+                  c.appendChild(n));
               }),
-              (i.style.display = "block"),
-              (f.style.display = "block"))
-            : (i.style.display = "none"));
+              (c.style.display = `block`),
+              (l.style.display = `block`))
+            : (c.style.display = `none`));
       }
-      document.addEventListener("click", (e) => {
-        !e.target.closest("#autocomplete-container") &&
-          i &&
-          (i.style.display = "none");
+      document.addEventListener(`click`, (e) => {
+        !e.target.closest(`#autocomplete-container`) &&
+          c &&
+          (c.style.display = `none`);
       });
-      function b(e, n) {
-        let s = null,
-          l = null,
-          t = null;
-        return function (...o) {
-          return new Promise((c, p) => {
-            (s !== null && clearTimeout(s),
-              (l = c),
-              (t = p),
-              (s = setTimeout(() => {
-                e(...o)
-                  .then((y) => {
-                    l === c && t === p && c(y);
+      function m(e, t) {
+        let n = null,
+          r = null,
+          i = null;
+        return function (...a) {
+          return new Promise((o, s) => {
+            (n !== null && clearTimeout(n),
+              (r = o),
+              (i = s),
+              (n = setTimeout(() => {
+                e(...a)
+                  .then((e) => {
+                    r === o && i === s && o(e);
                   })
-                  .catch((y) => {
-                    l === c && t === p && p(y);
+                  .catch((e) => {
+                    r === o && i === s && s(e);
                   });
-              }, n)));
+              }, t)));
           });
         };
       }
-      window.initMap = w;
+      window.initMap = o;
     </script>
     <style>
       #map {
@@ -165,9 +165,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -175,92 +177,94 @@
           Noto Color Emoji;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        padding: 0 12px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        border-radius: 12px;
-        padding: 0 12px;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        padding: 0;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0 8px;
+        padding: 0;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0 8px;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .clear-searchButton {
-        display: none;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: none;
       }
       #suggestions-list {
-        border-radius: 12px;
-        box-shadow:
-          0 2px 4px #0003,
-          0 -1px #00000005;
         box-sizing: border-box;
-        position: absolute;
-        max-width: 320px;
-        width: 100%;
-        top: 100%;
-        left: 0;
         z-index: 1;
-        list-style: none;
+        background-color: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 320px;
         max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
+        list-style: none;
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
         overflow-y: auto;
-        background-color: #fff;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
       }
       #suggestions-list.visible {
         display: block;
       }
       #suggestions-list li {
-        padding: 12px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        padding: 12px;
+        transition: background-color 0.3s;
       }
       #suggestions-list li:hover {
         background-color: #f2f2f2;

@@ -7,335 +7,334 @@
 
     <script type="module" crossorigin>
       (function () {
-        const n = document.createElement("link").relList;
-        if (n && n.supports && n.supports("modulepreload")) return;
-        for (const a of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(a);
-        new MutationObserver((a) => {
-          for (const s of a)
-            if (s.type === "childList")
-              for (const r of s.addedNodes)
-                r.tagName === "LINK" && r.rel === "modulepreload" && o(r);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(a) {
-          const s = {};
+        function t(e) {
+          let t = {};
           return (
-            a.integrity && (s.integrity = a.integrity),
-            a.referrerPolicy && (s.referrerPolicy = a.referrerPolicy),
-            a.crossOrigin === "use-credentials"
-              ? (s.credentials = "include")
-              : a.crossOrigin === "anonymous"
-                ? (s.credentials = "omit")
-                : (s.credentials = "same-origin"),
-            s
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function o(a) {
-          if (a.ep) return;
-          a.ep = !0;
-          const s = t(a);
-          fetch(a.href, s);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let m,
-        f,
-        T,
-        i,
-        h = [],
-        v,
-        y;
-      const d = [],
-        l = [];
-      let u = null;
-      function w(e, n, t) {
+      var e,
+        t,
+        n,
+        r,
+        i = [],
+        a,
+        o,
+        s = [],
+        c = [],
+        l = null;
+      function u(t, n, r) {
         return new woosmap.map.Marker({
-          map: m,
-          position: e,
+          map: e,
+          position: t,
           icon: {
-            url: t,
+            url: r,
             labelOrigin: new woosmap.map.Point(13, 15),
             scaledSize: { height: 38, width: 26 },
           },
-          label: { text: n, color: "white" },
+          label: { text: n, color: `white` },
         });
       }
-      function _() {
-        for (const e of h) e.setMap(null);
-        h = [];
+      function d() {
+        for (let e of i) e.setMap(null);
+        i = [];
       }
-      function q(e, n) {
-        (_(),
-          e.forEach((t, o) => {
-            (f.extend(t),
-              h.push(
-                w(
-                  t,
-                  (o + 1).toString(),
-                  "https://images.woosmap.com/marker-blue.svg",
+      function f(n, r) {
+        (d(),
+          n.forEach((e, n) => {
+            (t.extend(e),
+              i.push(
+                u(
+                  e,
+                  (n + 1).toString(),
+                  `https://images.woosmap.com/marker-blue.svg`,
                 ),
               ));
           }),
-          n.forEach((t, o) => {
-            (f.extend(t),
-              h.push(
-                w(
-                  t,
-                  (o + 1).toString(),
-                  "https://images.woosmap.com/marker-red.svg",
+          r.forEach((e, n) => {
+            (t.extend(e),
+              i.push(
+                u(
+                  e,
+                  (n + 1).toString(),
+                  `https://images.woosmap.com/marker-red.svg`,
                 ),
               ));
           }),
-          m.fitBounds(f, { top: 70, bottom: 40, left: 50, right: 50 }, !0));
+          e.fitBounds(t, { top: 70, bottom: 40, left: 50, right: 50 }, !0));
       }
-      function O() {
-        (d.push({ lat: 51.6511, lng: -0.1615 }, { lat: 51.4269, lng: -0.0955 }),
-          l.push(
+      function p() {
+        (s.push({ lat: 51.6511, lng: -0.1615 }, { lat: 51.4269, lng: -0.0955 }),
+          c.push(
             { lat: 51.4855, lng: -0.3179 },
             { lat: 51.5146, lng: -0.0212 },
           ));
-        for (const e of d) L(v, e);
-        for (const e of l) L(y, e);
+        for (let e of s) m(a, e);
+        for (let e of c) m(o, e);
         return {
-          origins: d,
-          destinations: l,
+          origins: s,
+          destinations: c,
           travelMode: woosmap.map.TravelMode.DRIVING,
           unitSystem: woosmap.map.UnitSystem.METRIC,
           avoidHighways: !1,
           avoidTolls: !1,
-          elements: "duration_distance",
+          elements: `duration_distance`,
         };
       }
-      function L(e, n) {
-        const t = document.createElement("li");
-        t.innerHTML = `<span>lat: ${n.lat.toFixed(4)}, lng: ${n.lng.toFixed(4)}<span>`;
-        const o = document.createElement("button");
-        (o.classList.add("clear-searchButton"),
-          (o.innerHTML =
-            '<svg class="clear-icon" viewBox="0 0 24 24"><path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path></svg> '),
-          o.addEventListener("click", () => {
-            (e.removeChild(t),
-              e === v ? d.splice(d.indexOf(n), 1) : l.splice(l.indexOf(n), 1),
-              c());
+      function m(e, t) {
+        let n = document.createElement(`li`);
+        n.innerHTML = `<span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span>`;
+        let r = document.createElement(`button`);
+        (r.classList.add(`clear-searchButton`),
+          (r.innerHTML = `<svg class="clear-icon" viewBox="0 0 24 24"><path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path></svg> `),
+          r.addEventListener(`click`, () => {
+            (e.removeChild(n),
+              e === a ? s.splice(s.indexOf(t), 1) : c.splice(c.indexOf(t), 1),
+              b());
           }),
-          t.appendChild(o),
-          e.appendChild(t));
+          n.appendChild(r),
+          e.appendChild(n));
       }
-      function A(e) {
-        (q(i.origins, i.destinations), I(e), S(""), E());
+      function h(e) {
+        (f(r.origins, r.destinations), g(e), v(``), y());
       }
-      function I(e) {
-        let n =
-          "<table><thead><tr><th>From</th><th>To</th><th>Time</th><th>Distance</th></tr></thead><tbody>";
-        (e.rows.forEach((o, a) => {
-          o.elements.forEach((s, r) => {
-            if (s.status === "OK") {
-              const p = s.duration ? s.duration.text : "N/A",
-                g = `${d[a].lat},${d[a].lng}`,
-                k = `${l[r].lat},${l[r].lng}`,
-                B = s.distance ? s.distance.text : "N/A";
-              n += `<tr data-start=${g} data-end=${k}><td><span>${a + 1}</span></td><td><span>${r + 1}</span></td><td>${p}</td><td>${B}</td></tr>`;
+      function g(e) {
+        let t = `<table><thead><tr><th>From</th><th>To</th><th>Time</th><th>Distance</th></tr></thead><tbody>`;
+        (e.rows.forEach((e, n) => {
+          e.elements.forEach((e, r) => {
+            if (e.status === `OK`) {
+              let i = e.duration ? e.duration.text : `N/A`,
+                a = `${s[n].lat},${s[n].lng}`,
+                o = `${c[r].lat},${c[r].lng}`,
+                l = e.distance ? e.distance.text : `N/A`;
+              t += `<tr data-start=${a} data-end=${o}><td><span>${n + 1}</span></td><td><span>${r + 1}</span></td><td>${i}</td><td>${l}</td></tr>`;
             }
           });
         }),
-          (n += "</tbody></table>"));
-        const t = document.querySelector(".tableContainer");
-        ((t.innerHTML = n), (t.style.display = "block"), D(t));
+          (t += `</tbody></table>`));
+        let n = document.querySelector(`.tableContainer`);
+        ((n.innerHTML = t), (n.style.display = `block`), _(n));
       }
-      function D(e) {
-        e.querySelectorAll("tr").forEach((t) => {
-          (t.addEventListener("mouseover", () => {
-            var s, r;
-            const o =
-                (s = t.dataset.start) == null
+      function _(t) {
+        t.querySelectorAll(`tr`).forEach((t) => {
+          (t.addEventListener(`mouseover`, () => {
+            var n, r;
+            let i =
+                (n = t.dataset.start) == null
                   ? void 0
-                  : s.split(",").map(Number),
+                  : n.split(`,`).map(Number),
               a =
-                (r = t.dataset.end) == null ? void 0 : r.split(",").map(Number);
-            (u && u.setMap(null),
-              !(!o || !a) &&
-                ((u = new woosmap.map.Polyline({
+                (r = t.dataset.end) == null ? void 0 : r.split(`,`).map(Number);
+            (l && l.setMap(null),
+              !(!i || !a) &&
+                ((l = new woosmap.map.Polyline({
                   path: [
-                    { lat: o[0], lng: o[1] },
+                    { lat: i[0], lng: i[1] },
                     { lat: a[0], lng: a[1] },
                   ],
                   geodesic: !0,
-                  strokeColor: "#252525",
+                  strokeColor: `#252525`,
                   strokeOpacity: 1,
                   strokeWeight: 2,
                 })),
-                u.setMap(m)));
+                l.setMap(e)));
           }),
-            t.addEventListener("mouseout", () => {
-              u && (u.setMap(null), (u = null));
+            t.addEventListener(`mouseout`, () => {
+              l && (l.setMap(null), (l = null));
             }));
         });
       }
-      function S(e) {
-        const n = document.getElementById("errorMessage");
-        if (e === "") n.style.display = "none";
+      function v(e) {
+        let t = document.getElementById(`errorMessage`);
+        if (e === ``) t.style.display = `none`;
         else {
-          ((n.innerHTML = e), (n.style.display = "block"));
-          const t = document.querySelector(".tableContainer");
-          ((t.innerHTML = ""), (t.style.display = "none"));
+          ((t.innerHTML = e), (t.style.display = `block`));
+          let n = document.querySelector(`.tableContainer`);
+          ((n.innerHTML = ``), (n.style.display = `none`));
         }
       }
-      function E() {
-        document.querySelector(".linear-progress").classList.toggle("hide");
+      function y() {
+        document.querySelector(`.linear-progress`).classList.toggle(`hide`);
       }
-      function c() {
-        (E(),
-          T.getDistanceMatrix(i)
-            .then(A)
+      function b() {
+        (y(),
+          n
+            .getDistanceMatrix(r)
+            .then(h)
             .catch((e) => {
-              (console.error("Error calculating distances:", e), S(e), E());
+              (console.error(`Error calculating distances:`, e), v(e), y());
             }));
       }
-      function $(e) {
+      function x(e) {
         (document
-          .querySelectorAll(".travelMode")
-          .forEach((n) => n.classList.remove("travelMode__selected")),
-          e.classList.add("travelMode__selected"));
+          .querySelectorAll(`.travelMode`)
+          .forEach((e) => e.classList.remove(`travelMode__selected`)),
+          e.classList.add(`travelMode__selected`));
       }
-      function H() {
-        document.querySelectorAll(".travelMode").forEach((e) =>
-          e.addEventListener("click", () => {
-            ($(e), (i.travelMode = e.dataset.travelmode), c());
+      function S() {
+        document.querySelectorAll(`.travelMode`).forEach((e) =>
+          e.addEventListener(`click`, () => {
+            (x(e), (r.travelMode = e.dataset.travelmode), b());
           }),
         );
       }
       function C() {
-        document.querySelectorAll(".avoid").forEach((e) =>
-          e.addEventListener("click", () => {
-            const n = document.getElementById("avoidHighways"),
-              t = document.getElementById("avoidTolls"),
-              o = document.getElementById("avoidFerries");
-            ((i.avoidHighways = n.checked),
-              (i.avoidTolls = t.checked),
-              (i.avoidFerries = o.checked),
-              c());
+        document.querySelectorAll(`.avoid`).forEach((e) =>
+          e.addEventListener(`click`, () => {
+            let e = document.getElementById(`avoidHighways`),
+              t = document.getElementById(`avoidTolls`),
+              n = document.getElementById(`avoidFerries`);
+            ((r.avoidHighways = e.checked),
+              (r.avoidTolls = t.checked),
+              (r.avoidFerries = n.checked),
+              b());
           }),
         );
       }
-      function x() {
+      function w() {
         document
-          .querySelectorAll('input[name="distanceUnits"]')
+          .querySelectorAll(`input[name="distanceUnits"]`)
           .forEach((e) => {
-            e.addEventListener("change", () => {
-              ((i.unitSystem = e.value), c());
+            e.addEventListener(`change`, () => {
+              ((r.unitSystem = e.value), b());
             });
           });
       }
-      function N() {
-        document.querySelectorAll('input[name="method"]').forEach((e) => {
-          e.addEventListener("change", () => {
-            ((i.method = e.value), c());
+      function T() {
+        document.querySelectorAll(`input[name="method"]`).forEach((e) => {
+          e.addEventListener(`change`, () => {
+            ((r.method = e.value), b());
           });
         });
       }
-      function R() {
-        document.querySelectorAll('input[name="elements"]').forEach((e) => {
-          e.addEventListener("change", () => {
-            ((i.elements = e.value), c());
+      function E() {
+        document.querySelectorAll(`input[name="elements"]`).forEach((e) => {
+          e.addEventListener(`change`, () => {
+            ((r.elements = e.value), b());
           });
         });
       }
-      function F() {
-        const e = document.getElementById("language");
-        e.addEventListener("change", () => {
-          ((i.language = e.value), c());
+      function D() {
+        let e = document.getElementById(`language`);
+        e.addEventListener(`change`, () => {
+          ((r.language = e.value), b());
         });
       }
-      function b(e) {
-        return e.getTime && typeof e.getTime == "function";
+      function O(e) {
+        return e.getTime && typeof e.getTime == `function`;
       }
-      function P() {
-        const e = document.getElementById("departure-time"),
-          n = document.getElementById("datetime");
+      function k() {
+        let e = document.getElementById(`departure-time`),
+          t = document.getElementById(`datetime`);
         e &&
           ((e.disabled = !0),
           document
-            .querySelectorAll('input[name="departureTime"]')
+            .querySelectorAll(`input[name="departureTime"]`)
             .forEach((t) => {
-              t.addEventListener("change", () => {
+              t.addEventListener(`change`, () => {
                 switch (t.value) {
-                  case "empty":
-                    (delete i.departureTime, (e.disabled = !0));
+                  case `empty`:
+                    (delete r.departureTime, (e.disabled = !0));
                     break;
-                  case "now":
-                    ((i.departureTime = "now"), (e.disabled = !0));
+                  case `now`:
+                    ((r.departureTime = `now`), (e.disabled = !0));
                     break;
-                  case "datetime":
+                  case `datetime`:
                     if (e.value) {
-                      const a = new Date(e.value);
-                      i.departureTime = b(a) ? a : void 0;
-                    } else i.departureTime = void 0;
+                      let t = new Date(e.value);
+                      r.departureTime = O(t) ? t : void 0;
+                    } else r.departureTime = void 0;
                     e.disabled = !1;
                     break;
                 }
-                c();
+                b();
               });
             }),
-          e.addEventListener("change", () => {
-            n && (n.checked = !0);
-            const t = new Date(e.value);
-            ((i.departureTime = b(t)
-              ? Math.floor(t.getTime() / 1e3).toString()
+          e.addEventListener(`change`, () => {
+            t && (t.checked = !0);
+            let n = new Date(e.value);
+            ((r.departureTime = O(n)
+              ? Math.floor(n.getTime() / 1e3).toString()
               : void 0),
-              c());
+              b());
           }));
       }
-      function M(e, n, t) {
-        const o = document.querySelector(e);
-        o.addEventListener("click", () => {
-          var a, s;
-          if (o.classList.contains("addLocation__selected")) {
-            (o.classList.remove("addLocation__selected"),
-              (a = document.getElementById("map")) == null ||
-                a.classList.remove("cursor-crosshair"),
-              woosmap.map.event.clearListeners(m, "click"));
+      function A(t, n, r) {
+        let i = document.querySelector(t);
+        i.addEventListener(`click`, () => {
+          var t;
+          if (i.classList.contains(`addLocation__selected`)) {
+            var a;
+            (i.classList.remove(`addLocation__selected`),
+              (a = document.getElementById(`map`)) == null ||
+                a.classList.remove(`cursor-crosshair`),
+              woosmap.map.event.clearListeners(e, `click`));
             return;
           }
-          (o.classList.add("addLocation__selected"),
-            (s = document.getElementById("map")) == null ||
-              s.classList.add("cursor-crosshair"),
-            woosmap.map.event.addListenerOnce(m, "click", (r) => {
-              var g;
-              ((g = document.getElementById("map")) == null ||
-                g.classList.remove("cursor-crosshair"),
-                o.classList.remove("addLocation__selected"));
-              const p = r.latlng;
-              (t.push(p), L(n, p), c());
+          (i.classList.add(`addLocation__selected`),
+            (t = document.getElementById(`map`)) == null ||
+              t.classList.add(`cursor-crosshair`),
+            woosmap.map.event.addListenerOnce(e, `click`, (e) => {
+              var t;
+              ((t = document.getElementById(`map`)) == null ||
+                t.classList.remove(`cursor-crosshair`),
+                i.classList.remove(`addLocation__selected`));
+              let a = e.latlng;
+              (r.push(a), m(n, a), b());
             }));
         });
       }
-      function U() {
-        (H(),
+      function j() {
+        (S(),
           C(),
-          x(),
-          N(),
-          R(),
-          P(),
-          F(),
-          (v = document.getElementById("origins")),
-          (y = document.getElementById("destinations")),
-          M(".addLocation__destinations", y, l),
-          M(".addLocation__origins", v, d));
+          w(),
+          T(),
+          E(),
+          k(),
+          D(),
+          (a = document.getElementById(`origins`)),
+          (o = document.getElementById(`destinations`)),
+          A(`.addLocation__destinations`, o, c),
+          A(`.addLocation__origins`, a, s));
       }
-      function z() {
-        ((m = new woosmap.map.Map(document.getElementById("map"), {
+      function M() {
+        ((e = new woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 51.4855, lng: -0.3179 },
           zoom: 6,
         })),
-          (T = new woosmap.map.DistanceService()),
-          (f = new woosmap.map.LatLngBounds()),
-          U(),
-          (i = O()),
-          c());
+          (n = new woosmap.map.DistanceService()),
+          (t = new woosmap.map.LatLngBounds()),
+          j(),
+          (r = p()),
+          b());
       }
-      window.initMap = z;
+      window.initMap = M;
     </script>
     <style>
-      @charset "UTF-8";
       html,
       body {
         height: 100%;
@@ -348,9 +347,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -362,35 +363,35 @@
         display: flex;
       }
       #sidebar {
-        flex-basis: 12rem;
+        box-sizing: border-box;
         flex-grow: 1;
+        flex-basis: 12rem;
         max-width: 30rem;
         height: 100%;
-        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-basis: 70vw;
         flex-grow: 5;
+        flex-basis: 70vw;
         height: 100%;
       }
       #sidebar {
+        z-index: 1;
         flex-basis: 18rem;
         box-shadow: 0 -2px 4px #0000001f;
-        z-index: 1;
       }
       #mapContainer {
-        display: flex;
         flex-direction: column;
-        flex-basis: 70vw;
         flex-grow: 5;
+        flex-basis: 70vw;
+        display: flex;
         position: relative;
       }
       .tableContainer {
-        max-height: 35%;
         min-height: 150px;
-        overflow-y: auto;
+        max-height: 35%;
         font-size: 13px;
+        overflow-y: auto;
       }
       .tableContainer table {
         border-collapse: collapse;
@@ -403,9 +404,10 @@
         background-color: #fff;
       }
       .tableContainer thead th {
+        z-index: 1;
+        position: -webkit-sticky;
         position: sticky;
         top: 0;
-        z-index: 1;
       }
       .tableContainer th {
         background: #eee;
@@ -421,17 +423,17 @@
       }
       .tableContainer tr td:first-child span,
       .tableContainer tr td:nth-child(2) span {
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
         color: #fff;
         text-align: center;
-        display: inline-block;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: contain;
         width: 20px;
         height: 20px;
         font-size: 80%;
         font-weight: 600;
         line-height: 14px;
+        display: inline-block;
       }
       .tableContainer tr td:first-child span {
         background-image: url(https://images.woosmap.com/marker-blue.svg);
@@ -440,57 +442,56 @@
         position: relative;
       }
       .tableContainer tr td:first-child:after {
-        position: absolute;
-        right: 0;
         color: #222;
         content: "→";
+        position: absolute;
         top: 12px;
+        right: 0;
       }
       .tableContainer tr td:nth-child(2) span {
         background-image: url(https://images.woosmap.com/marker-red.svg);
       }
       #innerWrapper {
-        display: flex;
         flex-direction: column;
         flex-grow: 1;
-        overflow: hidden;
-        overflow-y: auto;
         padding: 0 10px 40px;
+        display: flex;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       input,
       select {
+        box-sizing: border-box;
         font-family: inherit;
         font-size: 100%;
-        box-sizing: border-box;
       }
       .travelModeSelector {
-        display: flex;
-        align-content: flex-start;
-        justify-content: space-between;
-        max-width: 140px;
         text-align: center;
+        place-content: flex-start space-between;
+        max-width: 140px;
         height: 48px;
+        display: flex;
       }
       .travelModeSelector .travelMode {
-        position: relative;
-        display: inline-block;
         text-align: center;
         z-index: 0;
+        display: inline-block;
+        position: relative;
       }
       .travelModeSelector .travelMode button {
-        display: flex;
         cursor: pointer;
-        background: transparent;
+        font: inherit;
+        vertical-align: baseline;
+        background: 0 0;
         border: 0;
         border-radius: 0;
-        font: inherit;
-        list-style: none;
-        margin: 0;
         outline: 0;
-        overflow: visible;
+        margin: 0;
         padding: 0;
-        vertical-align: baseline;
+        list-style: none;
+        display: flex;
         position: relative;
+        overflow: visible;
       }
       .travelModeSelector .travelMode .iconTravelMode {
         width: 24px;
@@ -544,25 +545,28 @@
       .travelModeSelector .travelMode:after,
       .travelModeSelector .travelMode button:after {
         content: "";
-        border-radius: 100%;
-        position: absolute;
-        inset: 0;
         z-index: -1;
-        margin: 6px 3px 5px;
-        height: 36px;
+        border-radius: 100%;
         width: 36px;
+        height: 36px;
+        margin: 6px 3px 5px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
       .travelModeSelector .travelMode:hover button:after {
         background-color: #3c40430a;
       }
       .directionsOptions {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        height: 100%;
         background: #fff;
-        display: flex;
+        height: 100%;
+        margin: 0;
+        padding: 0;
         font-size: 13px;
+        list-style: none;
+        display: flex;
       }
       .directionsOptions__list {
         width: 50%;
@@ -574,9 +578,9 @@
         display: flex;
       }
       .directionsOptions__input {
+        align-items: baseline;
         height: 24px;
         display: flex;
-        align-items: baseline;
       }
       .directionsOptions__content {
         padding: 10px 0;
@@ -585,10 +589,10 @@
         padding-top: 0;
       }
       .addLocation {
-        font-size: 0.75em;
-        display: flex;
         color: #222;
         cursor: pointer;
+        font-size: 0.75em;
+        display: flex;
       }
       .addLocation:hover {
         text-decoration: underline;
@@ -607,46 +611,46 @@
         font-weight: 600;
       }
       .sectionHeader {
+        color: #222;
         background: #f1f1f1;
-        display: flex;
-        align-items: center;
+        border-bottom: 1px solid #eee;
         justify-content: space-between;
-        border-bottom: 1px solid #eeeeee;
+        align-items: center;
         margin: 20px -10px 5px;
         padding: 5px 10px;
-        color: #222;
+        display: flex;
       }
       .sectionHeader:first-child {
         margin-top: 0;
       }
       .customCounter {
+        width: 100%;
         margin: 0;
         padding: 0;
         list-style-type: none;
-        width: 100%;
       }
       .customCounter li {
         counter-increment: step-counter;
-        line-height: 14px;
-        height: 22px;
-        display: flex;
         align-items: center;
+        height: 22px;
+        line-height: 14px;
+        display: flex;
       }
       .customCounter li span {
         flex-grow: 1;
       }
       .customCounter li:before {
         content: counter(step-counter);
-        margin-right: 5px;
-        font-size: 80%;
         color: #fff;
+        text-align: center;
         background-position: bottom;
-        font-weight: 600;
+        background-repeat: no-repeat;
+        background-size: contain;
         width: 20px;
         height: 20px;
-        text-align: center;
-        background-size: contain;
-        background-repeat: no-repeat;
+        margin-right: 5px;
+        font-size: 80%;
+        font-weight: 600;
       }
       .customCounter__destinations li:before {
         background-image: url(https://images.woosmap.com/marker-red.svg);
@@ -655,52 +659,52 @@
         background-image: url(https://images.woosmap.com/marker-blue.svg);
       }
       .clear-searchButton {
-        display: block;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: block;
       }
       .clear-searchButton .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #map.cursor-crosshair .mapboxgl-canvas-container {
         cursor: crosshair !important;
       }
       #errorMessage {
         color: #ff1744;
-        font-size: 12px;
+        z-index: 1;
+        background-color: #fff;
+        border-radius: 3px;
         max-width: 200px;
+        margin: 10px;
+        padding: 5px;
+        font-size: 12px;
         display: none;
         position: absolute;
         top: 0;
-        background-color: #fff;
-        border-radius: 3px;
-        box-shadow: 0 0 0 2px #0000001a;
-        margin: 10px;
-        padding: 5px;
         overflow: hidden;
-        z-index: 1;
+        box-shadow: 0 0 0 2px #0000001a;
       }
       .linear-progress {
-        position: absolute;
-        width: 100%;
         z-index: 2;
-        bottom: 0;
-        height: 4px;
         border-radius: 3px;
+        width: 100%;
+        height: 4px;
+        position: absolute;
+        bottom: 0;
         overflow: hidden;
       }
       .progress {
+        background: linear-gradient(90deg, #3d5afe, #3d5afe);
         height: 100%;
-        animation: progress 1.5s infinite;
-        background: linear-gradient(to right, #3d5afe, #3d5afe);
+        animation: 1.5s infinite progress;
         transform: translate(-100%);
       }
       @keyframes progress {

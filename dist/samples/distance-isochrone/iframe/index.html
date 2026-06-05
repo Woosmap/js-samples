@@ -7,103 +7,109 @@
 
     <script type="module" crossorigin>
       (function () {
-        const n = document.createElement("link").relList;
-        if (n && n.supports && n.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          i(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const o of e)
-            if (o.type === "childList")
-              for (const d of o.addedNodes)
-                d.tagName === "LINK" && d.rel === "modulepreload" && i(d);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function r(e) {
-          const o = {};
+        function t(e) {
+          let t = {};
           return (
-            e.integrity && (o.integrity = e.integrity),
-            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function i(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const o = r(e);
-          fetch(e.href, o);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let s, m, f, a, c, l, w;
-      const h = {
-          url: "https://images.woosmap.com/icons/pin-red.png",
+      var e,
+        t,
+        n,
+        r,
+        i,
+        a,
+        o,
+        s = {
+          url: `https://images.woosmap.com/icons/pin-red.png`,
           scaledSize: { height: 38, width: 26 },
         },
-        u = { lat: 51.5, lng: -0.234 };
-      function g(t, n, r) {
-        const i = new window.woosmap.map.Marker({ position: t, icon: n });
-        return (i.setMap(r), i);
+        c = { lat: 51.5, lng: -0.234 };
+      function l(e, t, n) {
+        let r = new window.woosmap.map.Marker({ position: e, icon: t });
+        return (r.setMap(n), r);
       }
-      function y() {
-        ((s = new window.woosmap.map.Map(document.getElementById("map"), {
+      function u() {
+        ((e = new window.woosmap.map.Map(document.getElementById(`map`), {
           zoom: 9,
-          center: u,
+          center: c,
         })),
-          (w = new woosmap.map.DistanceService()),
-          (c = g(u, h, s)),
-          s.addListener("click", (n) => {
-            (c.setMap(null), (c = g(n.latlng, h, s)), p(n.latlng));
+          (o = new woosmap.map.DistanceService()),
+          (i = l(c, s, e)),
+          e.addListener(`click`, (t) => {
+            (i.setMap(null), (i = l(t.latlng, s, e)), d(t.latlng));
           }));
-        const t = () => {
-          p(c.getPosition().toJSON());
+        let a = () => {
+          d(i.getPosition().toJSON());
         };
-        ((m = document.getElementById("isochrone-method-select")),
-          (f = document.getElementById("isochrone-mode-select")),
-          (a = document.getElementById("isochrone-distance-input")),
-          m.addEventListener("change", t),
-          f.addEventListener("change", t),
-          a.addEventListener("change", t),
-          p(u));
+        ((t = document.getElementById(`isochrone-method-select`)),
+          (n = document.getElementById(`isochrone-mode-select`)),
+          (r = document.getElementById(`isochrone-distance-input`)),
+          t.addEventListener(`change`, a),
+          n.addEventListener(`change`, a),
+          r.addEventListener(`change`, a),
+          d(c));
       }
-      function p(t) {
-        if (parseInt(a.value) > 120 || parseInt(a.value) <= 0) {
-          alert("Value should be between 1 and 120");
+      function d(e) {
+        if (parseInt(r.value) > 120 || parseInt(r.value) <= 0) {
+          alert(`Value should be between 1 and 120`);
           return;
         }
-        const n = {
-          origin: t,
-          method: m.value,
-          travelMode: f.value,
-          value: parseInt(a.value),
+        let i = {
+          origin: e,
+          method: t.value,
+          travelMode: n.value,
+          value: parseInt(r.value),
         };
-        w.getDistanceIsochrone(n)
-          .then(v)
-          .catch((r) => {
-            console.error(r);
+        o.getDistanceIsochrone(i)
+          .then(f)
+          .catch((e) => {
+            console.error(e);
           });
       }
-      function v(t) {
-        (l && l.setMap(null),
-          (l = new woosmap.map.Polyline({
+      function f(t) {
+        (a && a.setMap(null),
+          (a = new woosmap.map.Polyline({
             path: t.isoline.path || null,
-            strokeColor: "#b71c1c",
+            strokeColor: `#b71c1c`,
             strokeOpacity: 0.8,
             strokeWeight: 4,
           })),
-          l.setMap(s),
-          I(t.isoline.path || null));
+          a.setMap(e),
+          p(t.isoline.path || null));
       }
-      function I(t) {
-        const n = new woosmap.map.LatLngBounds();
+      function p(t) {
+        let n = new woosmap.map.LatLngBounds();
         if (t) {
-          for (const r of t) n.extend(r);
-          s.fitBounds(n);
+          for (let e of t) n.extend(e);
+          e.fitBounds(n);
         }
       }
-      window.initMap = y;
+      window.initMap = u;
     </script>
     <style>
       #map {
@@ -121,9 +127,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -134,16 +142,16 @@
         height: 100%;
       }
       #selector {
+        z-index: 1;
+        background-color: #fff;
+        border-radius: 3px;
+        margin: 10px;
+        padding: 5px;
         position: absolute;
         top: 0;
         left: 0;
-        background-color: #fff;
-        border-radius: 3px;
-        box-shadow: 0 0 0 2px #0000001a;
-        margin: 10px;
-        padding: 5px;
         overflow: hidden;
-        z-index: 1;
+        box-shadow: 0 0 0 2px #0000001a;
       }
       select {
         width: 100px;
@@ -152,10 +160,10 @@
         width: 92px;
       }
       .select-container {
-        padding: 2px 0;
-        width: 100%;
-        display: flex;
         justify-content: space-between;
+        width: 100%;
+        padding: 2px 0;
+        display: flex;
       }
       #selector span {
         padding: 0 5px;

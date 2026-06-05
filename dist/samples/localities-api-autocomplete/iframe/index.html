@@ -7,162 +7,166 @@
 
     <script type="module" crossorigin>
       (function () {
-        const e = document.createElement("link").relList;
-        if (e && e.supports && e.supports("modulepreload")) return;
-        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(t);
-        new MutationObserver((t) => {
-          for (const i of t)
-            if (i.type === "childList")
-              for (const l of i.addedNodes)
-                l.tagName === "LINK" && l.rel === "modulepreload" && s(l);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function o(t) {
-          const i = {};
+        function t(e) {
+          let t = {};
           return (
-            t.integrity && (i.integrity = t.integrity),
-            t.referrerPolicy && (i.referrerPolicy = t.referrerPolicy),
-            t.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
-              : t.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function s(t) {
-          if (t.ep) return;
-          t.ep = !0;
-          const i = o(t);
-          fetch(t.href, i);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const m = [],
-        y = "woos-48c80350-88aa-333e-835a-07f4b658a9a4";
-      let p, r, c, d, u;
-      function g() {
+      var e = [],
+        t = `woos-48c80350-88aa-333e-835a-07f4b658a9a4`,
+        n,
+        r,
+        i,
+        a,
+        o;
+      function s() {
         (r &&
-          c &&
-          (r.addEventListener("input", h),
-          r.addEventListener("keydown", (n) => {
-            if (n.key === "Enter") {
-              const e = c.querySelector("li");
+          i &&
+          (r.addEventListener(`input`, c),
+          r.addEventListener(`keydown`, (e) => {
+            if (e.key === `Enter`) {
+              let e = i.querySelector(`li`);
               e && e.click();
             }
           })),
-          d.addEventListener("click", () => {
-            ((r.value = ""),
-              (c.style.display = "none"),
-              (d.style.display = "none"),
-              (u.style.display = "none"),
+          a.addEventListener(`click`, () => {
+            ((r.value = ``),
+              (i.style.display = `none`),
+              (a.style.display = `none`),
+              (o.style.display = `none`),
               r.focus());
           }),
-          (p = w($, 0)));
+          (n = h(p, 0)));
       }
-      function h() {
-        if (r && c) {
-          const n = r.value;
-          n.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
-          const o = m.map(({ id: s }) => `country:${s}`).join("|");
-          n !== ""
-            ? p(n, o, y)
-                .then(({ localities: s }) => b(s))
-                .catch((s) =>
-                  console.error("Error autocomplete localities:", s),
-                )
-            : ((c.style.display = "none"), (d.style.display = "none"));
+      function c() {
+        if (r && i) {
+          let o = r.value;
+          o.replace(`"`, `\\"`).replace(/^\s+|\s+$/g, ``);
+          let s = e.map(({ id: e }) => `country:${e}`).join(`|`);
+          o === ``
+            ? ((i.style.display = `none`), (a.style.display = `none`))
+            : n(o, s, t)
+                .then(({ localities: e }) => l(e))
+                .catch((e) =>
+                  console.error(`Error autocomplete localities:`, e),
+                );
         }
       }
-      function b(n) {
+      function l(e) {
         r &&
-          c &&
-          ((c.innerHTML = ""),
-          n.length > 0
-            ? (n.forEach((e) => {
-                var s;
-                const o = document.createElement("li");
-                ((o.innerHTML = (s = L(e)) != null ? s : ""),
-                  o.addEventListener("click", () => {
+          i &&
+          ((i.innerHTML = ``),
+          e.length > 0
+            ? (e.forEach((e) => {
+                var t;
+                let n = document.createElement(`li`);
+                ((n.innerHTML = (t = u(e)) == null ? `` : t),
+                  n.addEventListener(`click`, () => {
                     var t;
-                    ((r.value = (t = e.description) != null ? t : ""),
-                      (c.style.display = "none"),
-                      E(e));
+                    ((r.value = (t = e.description) == null ? `` : t),
+                      (i.style.display = `none`),
+                      d(e));
                   }),
-                  c.appendChild(o));
+                  i.appendChild(n));
               }),
-              (c.style.display = "block"),
-              (d.style.display = "block"))
-            : (c.style.display = "none"));
+              (i.style.display = `block`),
+              (a.style.display = `block`))
+            : (i.style.display = `none`));
       }
-      function L(n) {
-        const e = n,
-          o = "no-viewpoint",
-          s = e.matched_substrings;
-        let t = "";
-        e.matched_substrings && e.matched_substrings.description
-          ? (t = v(e.description, s.description))
-          : (t = e.description);
-        let i = "";
-        return ((i += `<div class="prediction ${o}">${t}</div>`), i);
+      function u(e) {
+        let t = e,
+          n = t.matched_substrings,
+          r = ``;
+        r =
+          t.matched_substrings && t.matched_substrings.description
+            ? f(t.description, n.description)
+            : t.description;
+        let i = ``;
+        return ((i += `<div class="prediction no-viewpoint">${r}</div>`), i);
       }
-      function E(n) {
-        u &&
-          ((u.innerHTML = `<code>${JSON.stringify(n, null, 2)}</code>`),
-          (u.style.display = "block"));
+      function d(e) {
+        o &&
+          ((o.innerHTML = `<code>${JSON.stringify(e, null, 2)}</code>`),
+          (o.style.display = `block`));
       }
-      function v(n, e) {
-        e = e.reverse();
-        for (const o of e) {
-          const s = n.substring(o.offset, o.offset + o.length);
-          n = `${n.substring(0, o.offset)}<span class='bold'>${s}</span>${n.substring(o.offset + o.length)}`;
+      function f(e, t) {
+        t = t.reverse();
+        for (let n of t) {
+          let t = e.substring(n.offset, n.offset + n.length);
+          e = `${e.substring(0, n.offset)}<span class='bold'>${t}</span>${e.substring(n.offset + n.length)}`;
         }
-        return n;
+        return e;
       }
-      function $(n, e, o) {
-        const s = { key: o, input: n, types: "locality|postal_code" };
+      function p(e, t, n) {
+        let r = { key: n, input: e, types: `locality|postal_code` };
         return (
-          e !== "" && s.components && (s.components = e),
+          t !== `` && r.components && (r.components = t),
           fetch(
-            `https://api.woosmap.com/localities/autocomplete/?${O(s)}`,
-          ).then((t) => t.json())
+            `https://api.woosmap.com/localities/autocomplete/?${m(r)}`,
+          ).then((e) => e.json())
         );
       }
-      function O(n) {
-        const e = [];
-        for (const o in n)
-          if (n[o]) {
-            const s = n[o];
-            e.push(`${encodeURIComponent(o)}=${encodeURIComponent(s)}`);
+      function m(e) {
+        let t = [];
+        for (let n in e)
+          if (e[n]) {
+            let r = e[n];
+            t.push(`${encodeURIComponent(n)}=${encodeURIComponent(r)}`);
           }
-        return e.join("&");
+        return t.join(`&`);
       }
-      function w(n, e) {
-        let o = null,
-          s = null,
-          t = null;
-        return function (...i) {
-          return new Promise((l, a) => {
-            (o !== null && clearTimeout(o),
-              (s = l),
-              (t = a),
-              (o = setTimeout(() => {
-                n(...i)
-                  .then((f) => {
-                    s === l && t === a && l(f);
+      function h(e, t) {
+        let n = null,
+          r = null,
+          i = null;
+        return function (...a) {
+          return new Promise((o, s) => {
+            (n !== null && clearTimeout(n),
+              (r = o),
+              (i = s),
+              (n = setTimeout(() => {
+                e(...a)
+                  .then((e) => {
+                    r === o && i === s && o(e);
                   })
-                  .catch((f) => {
-                    s === l && t === a && a(f);
+                  .catch((e) => {
+                    r === o && i === s && s(e);
                   });
-              }, e)));
+              }, t)));
           });
         };
       }
-      document.addEventListener("DOMContentLoaded", () => {
-        ((r = document.getElementById("autocomplete-input")),
-          (c = document.getElementById("suggestions-list")),
-          (d = document.getElementsByClassName("clear-searchButton")[0]),
-          (u = document.getElementById("response-container")),
-          g());
+      document.addEventListener(`DOMContentLoaded`, () => {
+        ((r = document.getElementById(`autocomplete-input`)),
+          (i = document.getElementById(`suggestions-list`)),
+          (a = document.getElementsByClassName(`clear-searchButton`)[0]),
+          (o = document.getElementById(`response-container`)),
+          s());
       });
     </script>
     <style>
@@ -181,9 +185,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -191,92 +197,94 @@
           Noto Color Emoji;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        padding: 0 12px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        border-radius: 12px;
-        padding: 0 12px;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        padding: 0;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0 8px;
+        padding: 0;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0 8px;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .clear-searchButton {
-        display: none;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: none;
       }
       #suggestions-list {
-        border-radius: 12px;
-        box-shadow:
-          0 2px 4px #0003,
-          0 -1px #00000005;
         box-sizing: border-box;
-        position: absolute;
-        max-width: 320px;
-        width: 100%;
-        top: 100%;
-        left: 0;
         z-index: 1;
-        list-style: none;
+        background-color: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 320px;
         max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
+        list-style: none;
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
         overflow-y: auto;
-        background-color: #fff;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
       }
       #suggestions-list.visible {
         display: block;
       }
       #suggestions-list li {
-        padding: 12px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        padding: 12px;
+        transition: background-color 0.3s;
       }
       #suggestions-list li:hover {
         background-color: #f2f2f2;
@@ -286,30 +294,27 @@
         overflow: hidden;
       }
       #app {
-        display: flex;
         flex-direction: column;
-        overflow: hidden;
         height: 100vh;
         padding: 10px;
+        display: flex;
+        overflow: hidden;
       }
       .search-container {
-        position: relative;
         min-height: 45px;
+        position: relative;
       }
       .search-container #autocomplete-container {
         top: 0;
         left: 0;
       }
       pre {
-        display: none;
+        background-color: #fff;
+        border: 3px solid #c8c8c8;
+        border-radius: 8px;
         margin-top: 10px;
         margin-bottom: 20px;
         padding: 10px;
-        border: 3px solid #c8c8c8;
-        background-color: #fff;
-        border-radius: 8px;
-        overflow-y: auto;
-        overflow-x: auto;
         font-family:
           Consolas,
           Andale Mono WT,
@@ -324,16 +329,18 @@
           Courier New,
           Courier,
           monospace;
+        display: none;
+        overflow: auto;
       }
       .bold {
         font-weight: 700;
       }
       .title {
-        margin-block-end: 0;
+        margin-bottom: 0;
         font-weight: 500;
       }
       .note {
-        margin-block-start: 4px;
+        margin-top: 4px;
         font-size: 13px;
       }
     </style>

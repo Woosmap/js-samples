@@ -7,70 +7,70 @@
 
     <script type="module" crossorigin>
       (function () {
-        const r = document.createElement("link").relList;
-        if (r && r.supports && r.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const n of t.addedNodes)
-                n.tagName === "LINK" && n.rel === "modulepreload" && o(n);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(e) {
-          const t = {};
+        function t(e) {
+          let t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
             t
           );
         }
-        function o(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = s(e);
-          fetch(e.href, t);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let i;
-      function a() {
-        ((i = new window.woosmap.map.Map(document.getElementById("map"), {
+      var e;
+      function t() {
+        ((e = new window.woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 53.51, lng: 8.15 },
           zoom: 4,
         })),
-          i.data.loadGeoJson(
-            "https://demo.woosmap.com/misc/data/europe.geojson.json",
+          e.data.loadGeoJson(
+            `https://demo.woosmap.com/misc/data/europe.geojson.json`,
           ));
-        const l = { fillColor: "#FFAB00", strokeWeight: 2 };
-        i.data.setStyle((s) => {
-          let o = l.fillColor;
+        let t = { fillColor: `#FFAB00`, strokeWeight: 2 };
+        e.data.setStyle((e) => {
+          let n = t.fillColor;
           return (
-            s.getProperty("highlighted") && (o = "#C51162"),
+            e.getProperty(`highlighted`) && (n = `#C51162`),
             {
-              fillColor: o,
-              strokeColor: o,
+              fillColor: n,
+              strokeColor: n,
               strokeOpacity: 1,
-              strokeWeight: l.strokeWeight,
+              strokeWeight: t.strokeWeight,
             }
           );
         });
-        let r;
-        i &&
-          i.data &&
-          i.data.addListener("click", (s) => {
-            if (r) {
-              const o = i.data.getFeatureById(r);
-              o && o.setProperty("highlighted", !1);
+        let n;
+        e &&
+          e.data &&
+          e.data.addListener(`click`, (t) => {
+            if (n) {
+              let t = e.data.getFeatureById(n);
+              t && t.setProperty(`highlighted`, !1);
             }
-            (s.feature.setProperty("highlighted", !0), (r = s.feature.getId()));
+            (t.feature.setProperty(`highlighted`, !0), (n = t.feature.getId()));
           });
       }
-      window.initMap = a;
+      window.initMap = t;
     </script>
     <style>
       #map {
@@ -88,9 +88,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,

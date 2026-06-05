@@ -9,137 +9,136 @@
 
     <script type="module" crossorigin>
       (function () {
-        const i = document.createElement("link").relList;
-        if (i && i.supports && i.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
           n(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const s of t.addedNodes)
-                s.tagName === "LINK" && s.rel === "modulepreload" && n(s);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function o(e) {
-          const t = {};
+        function t(e) {
+          let t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
             t
           );
         }
         function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = o(e);
-          fetch(e.href, t);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const a = [
-          { key: "WF", en: "Wireless Hotspot" },
-          { key: "CD", en: "Mobile Payment" },
-          { key: "DT", en: "Drive-Thru" },
-          { key: "DR", en: "Digital Rewards" },
-          { key: "hrs24", en: "Open 24 hours per day" },
-          { key: "WA", en: "Oven-warmed Food" },
-          { key: "LB", en: "LaBoulange" },
-          { key: "XO", en: "Mobile Order and Pay" },
-          { key: "VS", en: "Verismo" },
-          { key: "NB", en: "Nitro Cold Brew" },
-          { key: "CL", en: "Starbucks Reserve-Clover Brewed" },
-        ],
-        l = {
-          maps: {
-            provider: "woosmap",
-            localities: { types: [], componentRestrictions: { country: "gb" } },
-          },
-          filters: {
-            filters: [
-              {
-                propertyType: "tag",
-                title: { en: "Amenities" },
-                choices: a,
-                innerOperator: "or",
+      var e = {
+        maps: {
+          provider: `woosmap`,
+          localities: { types: [], componentRestrictions: { country: `gb` } },
+        },
+        filters: {
+          filters: [
+            {
+              propertyType: `tag`,
+              title: { en: `Amenities` },
+              choices: [
+                { key: `WF`, en: `Wireless Hotspot` },
+                { key: `CD`, en: `Mobile Payment` },
+                { key: `DT`, en: `Drive-Thru` },
+                { key: `DR`, en: `Digital Rewards` },
+                { key: `hrs24`, en: `Open 24 hours per day` },
+                { key: `WA`, en: `Oven-warmed Food` },
+                { key: `LB`, en: `LaBoulange` },
+                { key: `XO`, en: `Mobile Order and Pay` },
+                { key: `VS`, en: `Verismo` },
+                { key: `NB`, en: `Nitro Cold Brew` },
+                { key: `CL`, en: `Starbucks Reserve-Clover Brewed` },
+              ],
+              innerOperator: `or`,
+            },
+            {
+              propertyType: `custom`,
+              title: { en: `Country` },
+              choices: [
+                { key: `country:="US"`, en: `United States` },
+                { key: `country:="GB"`, en: `United Kingdom` },
+                { key: `country:="DE"`, en: `Germany` },
+                { key: `country:="FR"`, en: `France` },
+              ],
+              innerOperator: `or`,
+            },
+          ],
+          outerOperator: `and`,
+        },
+        theme: { primary_color: `#008248` },
+        woosmapview: {
+          initialCenter: { lat: 54, lng: -3 },
+          initialZoom: 7,
+          breakPoint: 11,
+          style: {
+            default: {
+              icon: {
+                url: `https://demo.woosmap.com/storelocator/images/markers/starbucks-marker.svg`,
+                scaledSize: { height: 47, width: 40 },
               },
-              {
-                propertyType: "custom",
-                title: { en: "Country" },
-                choices: [
-                  { key: 'country:="US"', en: "United States" },
-                  { key: 'country:="GB"', en: "United Kingdom" },
-                  { key: 'country:="DE"', en: "Germany" },
-                  { key: 'country:="FR"', en: "France" },
-                ],
-                innerOperator: "or",
+              numberedIcon: {
+                url: `https://demo.woosmap.com/storelocator/images/markers/starbucks-marker.svg`,
+                scaledSize: { height: 47, width: 40 },
               },
-            ],
-            outerOperator: "and",
-          },
-          theme: { primary_color: "#008248" },
-          woosmapview: {
-            initialCenter: { lat: 54, lng: -3 },
-            initialZoom: 7,
-            breakPoint: 11,
-            style: {
-              default: {
-                icon: {
-                  url: "https://demo.woosmap.com/storelocator/images/markers/starbucks-marker.svg",
-                  scaledSize: { height: 47, width: 40 },
-                },
-                numberedIcon: {
-                  url: "https://demo.woosmap.com/storelocator/images/markers/starbucks-marker.svg",
-                  scaledSize: { height: 47, width: 40 },
-                },
-                selectedIcon: {
-                  url: "https://demo.woosmap.com/storelocator/images/markers/starbucks-marker-selected.svg",
-                  scaledSize: { height: 71, width: 61 },
-                },
+              selectedIcon: {
+                url: `https://demo.woosmap.com/storelocator/images/markers/starbucks-marker-selected.svg`,
+                scaledSize: { height: 71, width: 61 },
               },
             },
-            tileStyle: { color: "#008248", size: 15, minSize: 6 },
           },
-        };
-      function d() {
+          tileStyle: { color: `#008248`, size: 15, minSize: 6 },
+        },
+      };
+      function t() {
         return window.innerWidth < 500;
       }
-      function c(r = "", i = "") {
-        const o = document.createElement("div");
-        return ((o.className = r), (o.innerHTML = i), o);
+      function n(e = ``, t = ``) {
+        let n = document.createElement(`div`);
+        return ((n.className = e), (n.innerHTML = t), n);
       }
-      function u(r, i) {
-        const o = c("filters-list", `<div class='filter-group'>${r}</div>`);
+      function r(e, t) {
+        let r = n(`filters-list`, `<div class='filter-group'>${e}</div>`);
         return (
-          i.forEach((n) => {
-            o.appendChild(n);
+          t.forEach((e) => {
+            r.appendChild(e);
           }),
-          o
+          r
         );
       }
-      function p(r, i, o) {
-        var e;
-        const n = r.startsWith("country")
-          ? `${(e = r.split("=").pop()) == null ? void 0 : e.replace(/[",]+/g, "")} country`
-          : r;
-        return c(
-          o ? "active" : "",
-          `<button><div class='icon-service icon-${n}'></div><div class='flex-grow'>${i}</div><div class='active-icon-wrapper'></div></button>`,
+      function i(e, t, r) {
+        var i;
+        let a = e.startsWith(`country`)
+          ? `${(i = e.split(`=`).pop()) == null ? void 0 : i.replace(/[",]+/g, ``)} country`
+          : e;
+        return n(
+          r ? `active` : ``,
+          `<button><div class='icon-service icon-${a}'></div><div class='flex-grow'>${t}</div><div class='active-icon-wrapper'></div></button>`,
         );
       }
-      function m() {
-        const r = new window.WebApp(
-          "map",
-          "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
+      function a() {
+        let n = new window.WebApp(
+          `map`,
+          `woos-48c80350-88aa-333e-835a-07f4b658a9a4`,
         );
-        (r.setConf(l),
-          r.setFilterPanelRenderer(u),
-          r.setFilterRenderer(p),
-          r.render(d()));
+        (n.setConf(e),
+          n.setFilterPanelRenderer(r),
+          n.setFilterRenderer(i),
+          n.render(t()));
       }
-      m();
+      a();
     </script>
     <style>
       #map {
@@ -157,9 +156,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -168,45 +169,39 @@
       }
       button {
         color: #1d1d1d;
-        margin: 6px 0;
-        align-items: center;
-        border-radius: 32px;
         cursor: pointer;
-        display: flex;
         height: 32px;
-        padding: 0 12px;
-        border: 1px solid #dadce0;
         font: inherit;
-        list-style: none;
-        outline: 0;
-        overflow: visible;
         vertical-align: baseline;
         background: #fff;
+        border: 1px solid #dadce0;
+        border-radius: 32px;
+        outline: 0;
+        align-items: center;
+        margin: 6px 0;
+        padding: 0 12px;
+        list-style: none;
+        display: flex;
+        overflow: visible;
       }
       .filter-group {
-        padding: 0.8rem 10px;
-        font-size: 0.8rem;
-        background: #008248;
         text-transform: uppercase;
         color: #fff;
+        background: #008248;
+        padding: 0.8rem 10px;
+        font-size: 0.8rem;
       }
       .title-filters {
         font-size: 1.1rem;
       }
       .filters-list button {
-        position: relative;
         text-align: left;
-        width: 100%;
-        border-radius: 0;
-        padding: 1.5rem 10px;
-        margin: 0;
         border: none;
-      }
-      .active-icon-wrapper {
-        width: 21px;
-        height: 21px;
-        display: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' focusable='false' style='width: 21px;height: 21px;'%3E%3Cpath d='M4.29 12.104c-.277-.308-.75-.332-1.06-.054-.306.278-.33.752-.053 1.06l4.485 4.963c.29.322.795.33 1.096.017L20.414 6.003c.288-.298.28-.773-.02-1.06-.297-.288-.772-.28-1.06.02L8.237 16.47 4.29 12.105z' fill='%2300a862' %3E%3C/path%3E%3C/svg%3E");
+        border-radius: 0;
+        width: 100%;
+        margin: 0;
+        padding: 1.5rem 10px;
+        position: relative;
       }
       .active button {
         background: #00a86226;
@@ -218,16 +213,16 @@
         flex-grow: 1;
       }
       .active-icon-wrapper {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' focusable='false' style='width: 21px;height: 21px;'%3E%3Cpath d='M4.29 12.104c-.277-.308-.75-.332-1.06-.054-.306.278-.33.752-.053 1.06l4.485 4.963c.29.322.795.33 1.096.017L20.414 6.003c.288-.298.28-.773-.02-1.06-.297-.288-.772-.28-1.06.02L8.237 16.47 4.29 12.105z' fill='%2300a862' %3E%3C/path%3E%3C/svg%3E");
         width: 21px;
         height: 21px;
         display: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' focusable='false' style='width: 21px;height: 21px;'%3E%3Cpath d='M4.29 12.104c-.277-.308-.75-.332-1.06-.054-.306.278-.33.752-.053 1.06l4.485 4.963c.29.322.795.33 1.096.017L20.414 6.003c.288-.298.28-.773-.02-1.06-.297-.288-.772-.28-1.06.02L8.237 16.47 4.29 12.105z' fill='%2300a862' %3E%3C/path%3E%3C/svg%3E");
       }
       .icon-service {
+        vertical-align: middle;
         width: 28px;
         height: 28px;
         margin-right: 12px;
-        vertical-align: middle;
         position: relative;
       }
       .icon-WF {

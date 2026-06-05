@@ -9,190 +9,194 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
-          a(o);
-        new MutationObserver((o) => {
-          for (const s of o)
-            if (s.type === "childList")
-              for (const m of s.addedNodes)
-                m.tagName === "LINK" && m.rel === "modulepreload" && a(m);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function i(o) {
-          const s = {};
+        function t(e) {
+          let t = {};
           return (
-            o.integrity && (s.integrity = o.integrity),
-            o.referrerPolicy && (s.referrerPolicy = o.referrerPolicy),
-            o.crossOrigin === "use-credentials"
-              ? (s.credentials = "include")
-              : o.crossOrigin === "anonymous"
-                ? (s.credentials = "omit")
-                : (s.credentials = "same-origin"),
-            s
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function a(o) {
-          if (o.ep) return;
-          o.ep = !0;
-          const s = i(o);
-          fetch(o.href, s);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const u = {
-        apiOrder: ["store", "localities", "places"],
-        debounceTime: 100,
-        localities: {
-          key: "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
-          fallbackBreakpoint: 0.4,
-          params: {
-            components: { country: ["gb", "fr", "de"] },
-            language: "en",
-            types: ["locality", "postal_code", "address"],
+      var e = {
+          apiOrder: [`store`, `localities`, `places`],
+          debounceTime: 100,
+          localities: {
+            key: `woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09`,
+            fallbackBreakpoint: 0.4,
+            params: {
+              components: { country: [`gb`, `fr`, `de`] },
+              language: `en`,
+              types: [`locality`, `postal_code`, `address`],
+            },
+          },
+          store: {
+            key: `woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09`,
+            fallbackBreakpoint: !1,
+            params: { query: `type:bose_store` },
+          },
+          places: {
+            key: `AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA`,
+            fallbackBreakpoint: 1,
+            minInputLength: 10,
+            params: { components: { country: [`gb`, `fr`, `de`] } },
           },
         },
-        store: {
-          key: "woos-c562b391-2e0d-33f5-80c6-0cfd1e5bea09",
-          fallbackBreakpoint: !1,
-          params: { query: "type:bose_store" },
-        },
-        places: {
-          key: "AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA",
-          fallbackBreakpoint: 1,
-          minInputLength: 10,
-          params: { components: { country: ["gb", "fr", "de"] } },
-        },
-      };
-      let f, c, n, p, d, l, r;
-      function y() {
-        ((c = document.getElementById("autocomplete-input")),
-          (n = document.getElementById("suggestions-list")),
-          (p = document.getElementsByClassName("clear-searchButton")[0]),
-          c &&
-            n &&
-            (c.addEventListener("input", h),
-            c.addEventListener("keydown", (e) => {
-              if (e.key === "Enter") {
-                const t = n.querySelector("li");
-                t && t.click();
+        t,
+        n,
+        r,
+        i,
+        a,
+        o,
+        s;
+      function c() {
+        ((n = document.getElementById(`autocomplete-input`)),
+          (r = document.getElementById(`suggestions-list`)),
+          (i = document.getElementsByClassName(`clear-searchButton`)[0]),
+          n &&
+            r &&
+            (n.addEventListener(`input`, u),
+            n.addEventListener(`keydown`, (e) => {
+              if (e.key === `Enter`) {
+                let e = r.querySelector(`li`);
+                e && e.click();
               }
             })),
-          p.addEventListener("click", () => {
-            ((c.value = ""),
-              (n.style.display = "none"),
-              (p.style.display = "none"),
-              l && l.setMap(null),
-              r && r.close(),
-              c.focus());
+          i.addEventListener(`click`, () => {
+            ((n.value = ``),
+              (r.style.display = `none`),
+              (i.style.display = `none`),
+              o && o.setMap(null),
+              s && s.close(),
+              n.focus());
           }),
-          (f = window.woosmap.multisearch(u)));
+          (t = window.woosmap.multisearch(e)));
       }
-      function g() {
-        ((d = new window.woosmap.map.Map(document.getElementById("map"), {
+      function l() {
+        ((a = new window.woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 4,
         })),
-          (r = new woosmap.map.InfoWindow({})),
-          y());
+          (s = new woosmap.map.InfoWindow({})),
+          c());
       }
-      function h() {
-        if (c && n) {
-          const e = c.value;
-          (e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
-            e !== ""
-              ? f.autocompleteMulti(e).then(
-                  (t) => L(t),
-                  (t) => console.error(`Error autocomplete localities: ${t}`),
-                )
-              : ((n.style.display = "none"), (p.style.display = "none")));
+      function u() {
+        if (n && r) {
+          let e = n.value;
+          (e.replace(`"`, `\\"`).replace(/^\s+|\s+$/g, ``),
+            e === ``
+              ? ((r.style.display = `none`), (i.style.display = `none`))
+              : t.autocompleteMulti(e).then(
+                  (e) => f(e),
+                  (e) => console.error(`Error autocomplete localities: ${e}`),
+                ));
         }
       }
-      function w() {
-        const e = document.createElement("li");
-        ((e.innerHTML =
-          "<div class='prediction no-result'>No results found...</div>"),
-          n.appendChild(e),
-          (n.className = ""),
-          (n.style.display = "block"));
+      function d() {
+        let e = document.createElement(`li`);
+        ((e.innerHTML = `<div class='prediction no-result'>No results found...</div>`),
+          r.appendChild(e),
+          (r.className = ``),
+          (r.style.display = `block`));
       }
-      function L(e) {
-        c &&
-          n &&
-          ((n.innerHTML = ""),
+      function f(e) {
+        n &&
+          r &&
+          ((r.innerHTML = ``),
           e.length > 0
-            ? (e.forEach((t) => {
-                var a;
-                const i = document.createElement("li");
-                ((i.className = `${t.api}-api`),
-                  (i.innerHTML = (a = v(t)) != null ? a : ""),
-                  i.addEventListener("click", () => {
-                    var o;
-                    ((c.value = (o = t.description) != null ? o : ""),
-                      (n.style.display = "none"),
-                      f.detailsMulti({ id: t.id, api: t.api }).then((s) => {
-                        b(s, t.api);
+            ? (e.forEach((e) => {
+                var i;
+                let a = document.createElement(`li`);
+                ((a.className = `${e.api}-api`),
+                  (a.innerHTML = (i = p(e)) == null ? `` : i),
+                  a.addEventListener(`click`, () => {
+                    var i;
+                    ((n.value = (i = e.description) == null ? `` : i),
+                      (r.style.display = `none`),
+                      t.detailsMulti({ id: e.id, api: e.api }).then((t) => {
+                        g(t, e.api);
                       }));
                   }),
-                  n.appendChild(i));
+                  r.appendChild(a));
               }),
-              (n.className = e[0].api),
-              (n.style.display = "block"),
-              (p.style.display = "block"))
-            : w());
+              (r.className = e[0].api),
+              (r.style.display = `block`),
+              (i.style.display = `block`))
+            : d());
       }
-      function v(e) {
-        const t = "no-viewpoint",
-          i = e.highlight;
-        let a = "";
+      function p(e) {
+        let t = e.highlight,
+          n = ``;
         return (
-          (a += `<div class="api-icon"></div><div class="prediction ${t}">${i}</div>`),
-          a
+          (n += `<div class="api-icon"></div><div class="prediction no-viewpoint">${t}</div>`),
+          n
         );
       }
-      function k(e) {
+      function m(e) {
         return new woosmap.map.Marker({
           position: e.geometry.location,
           icon: {
-            url: "https://images.woosmap.com/marker.png",
+            url: `https://images.woosmap.com/marker.png`,
             scaledSize: { height: 50, width: 32 },
           },
         });
       }
-      function E(e, t) {
-        let i = "";
+      function h(e, t) {
+        let n = ``;
         return (
           e.address_components &&
-            e.address_components.forEach((a) => {
-              i += `<p>${a.long_name} (${a.short_name})</p>`;
+            e.address_components.forEach((e) => {
+              n += `<p>${e.long_name} (${e.short_name})</p>`;
             }),
-          `<div class="info-content">${t ? `<div>api: <strong>${t}</strong></div>` : ""}
-      ${e.name ? `<p>${e.name}</p>` : ""}
-      ${e.formatted_address ? `<p>${e.formatted_address}</p>` : ""}
-      ${i}</div>`
+          `<div class="info-content">${t ? `<div>api: <strong>${t}</strong></div>` : ``}
+      ${e.name ? `<p>${e.name}</p>` : ``}
+      ${e.formatted_address ? `<p>${e.formatted_address}</p>` : ``}
+      ${n}</div>`
         );
       }
-      function b(e, t) {
-        if ((l && l.setMap(null), r && r.close(), e != null && e.geometry)) {
-          ((l = k(e)), l.setMap(d));
-          const i = E(e, t);
-          (r.setOffset(new woosmap.map.Point(0, -50)),
-            r.setContent(i),
-            l.addListener("click", () => {
-              r.open(d, l.getPosition());
+      function g(e, t) {
+        if ((o && o.setMap(null), s && s.close(), e != null && e.geometry)) {
+          ((o = m(e)), o.setMap(a));
+          let n = h(e, t);
+          (s.setOffset(new woosmap.map.Point(0, -50)),
+            s.setContent(n),
+            o.addListener(`click`, () => {
+              s.open(a, o.getPosition());
             }),
-            d.setCenter(e.geometry.location, { top: 150 }),
-            d.setZoom(14),
-            woosmap.map.event.addListenerOnce(d, "idle", () => {
-              r.open(d, l.position);
+            a.setCenter(e.geometry.location, { top: 150 }),
+            a.setZoom(14),
+            woosmap.map.event.addListenerOnce(a, `idle`, () => {
+              s.open(a, o.position);
             }));
         }
       }
-      document.addEventListener("click", (e) => {
-        !e.target.closest("#autocomplete-container") &&
-          n &&
-          (n.style.display = "none");
-      });
-      window.initMap = g;
+      (document.addEventListener(`click`, (e) => {
+        !e.target.closest(`#autocomplete-container`) &&
+          r &&
+          (r.style.display = `none`);
+      }),
+        (window.initMap = l));
     </script>
     <style>
       #map {
@@ -210,9 +214,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -220,92 +226,94 @@
           Noto Color Emoji;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        padding: 0 12px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        border-radius: 12px;
-        padding: 0 12px;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        padding: 0;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0 8px;
+        padding: 0;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0 8px;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .clear-searchButton {
-        display: none;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: none;
       }
       #suggestions-list {
-        border-radius: 12px;
-        box-shadow:
-          0 2px 4px #0003,
-          0 -1px #00000005;
         box-sizing: border-box;
-        position: absolute;
-        max-width: 320px;
-        width: 100%;
-        top: 100%;
-        left: 0;
         z-index: 1;
-        list-style: none;
+        background-color: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 320px;
         max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
+        list-style: none;
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
         overflow-y: auto;
-        background-color: #fff;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
       }
       #suggestions-list.visible {
         display: block;
       }
       #suggestions-list li {
-        padding: 12px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        padding: 12px;
+        transition: background-color 0.3s;
       }
       #suggestions-list li:hover {
         background-color: #f2f2f2;
@@ -314,14 +322,14 @@
         height: 100%;
       }
       #suggestions-list li {
-        display: flex;
         align-items: center;
+        display: flex;
       }
       #suggestions-list li .api-icon {
-        height: 20px;
-        width: 20px;
         background-repeat: no-repeat;
         background-size: contain;
+        width: 20px;
+        height: 20px;
         padding-right: 7px;
       }
       #suggestions-list li.store-api .api-icon {
@@ -338,22 +346,22 @@
         content: "";
         box-sizing: border-box;
         text-align: right;
-        display: block;
-        background-position: right;
+        background-position: 100%;
         background-repeat: no-repeat;
         background-size: contain;
+        display: block;
       }
       #suggestions-list.places:after {
-        padding: 1px 1px 1px 0;
-        height: 18px;
         background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
         background-size: 120px 14px;
+        height: 18px;
+        padding: 1px 1px 1px 0;
       }
       #suggestions-list.localities:after,
       #suggestions-list.store:after {
-        margin: 0 6px 3px;
-        height: 16px;
         background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+        height: 16px;
+        margin: 0 6px 3px;
       }
       .info-content {
         max-width: 300px;

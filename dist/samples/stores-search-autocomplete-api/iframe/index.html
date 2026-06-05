@@ -7,150 +7,155 @@
 
     <script type="module" crossorigin>
       (function () {
-        const e = document.createElement("link").relList;
-        if (e && e.supports && e.supports("modulepreload")) return;
-        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
-          l(n);
-        new MutationObserver((n) => {
-          for (const s of n)
-            if (s.type === "childList")
-              for (const c of s.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && l(c);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function o(n) {
-          const s = {};
+        function t(e) {
+          let t = {};
           return (
-            n.integrity && (s.integrity = n.integrity),
-            n.referrerPolicy && (s.referrerPolicy = n.referrerPolicy),
-            n.crossOrigin === "use-credentials"
-              ? (s.credentials = "include")
-              : n.crossOrigin === "anonymous"
-                ? (s.credentials = "omit")
-                : (s.credentials = "same-origin"),
-            s
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function l(n) {
-          if (n.ep) return;
-          n.ep = !0;
-          const s = o(n);
-          fetch(n.href, s);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const p = "woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae";
-      let y, r, i, a, u;
-      function m() {
-        (r &&
-          i &&
-          (r.addEventListener("input", h),
-          r.addEventListener("keydown", (t) => {
-            if (t.key === "Enter") {
-              const e = i.querySelector("li");
+      var e = `woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae`,
+        t,
+        n,
+        r,
+        i,
+        a;
+      function o() {
+        (n &&
+          r &&
+          (n.addEventListener(`input`, s),
+          n.addEventListener(`keydown`, (e) => {
+            if (e.key === `Enter`) {
+              let e = r.querySelector(`li`);
               e && e.click();
             }
           })),
-          a.addEventListener("click", () => {
-            ((r.value = ""),
-              (i.style.display = "none"),
-              (a.style.display = "none"),
-              (u.style.display = "none"),
-              r.focus());
+          i.addEventListener(`click`, () => {
+            ((n.value = ``),
+              (r.style.display = `none`),
+              (i.style.display = `none`),
+              (a.style.display = `none`),
+              n.focus());
           }),
-          (y = $(v, 0)));
+          (t = m(f, 0)));
       }
-      function h() {
-        if (r && i) {
-          const t = r.value;
-          (t.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
-            t !== ""
-              ? y(t)
-                  .then((e) => g(e))
-                  .catch((e) => console.error("Error autocomplete stores:", e))
-              : ((i.style.display = "none"), (a.style.display = "none")));
+      function s() {
+        if (n && r) {
+          let e = n.value;
+          (e.replace(`"`, `\\"`).replace(/^\s+|\s+$/g, ``),
+            e === ``
+              ? ((r.style.display = `none`), (i.style.display = `none`))
+              : t(e)
+                  .then((e) => c(e))
+                  .catch((e) =>
+                    console.error(`Error autocomplete stores:`, e),
+                  ));
         }
       }
-      function g({ predictions: t }) {
-        r &&
-          i &&
-          ((i.innerHTML = ""),
-          t.length > 0
-            ? (t.forEach((e) => {
-                var l;
-                const o = document.createElement("li");
-                ((o.innerHTML = (l = E(e)) != null ? l : ""),
-                  o.addEventListener("click", () => {
-                    var n;
-                    ((r.value = (n = e.name) != null ? n : ""),
-                      b(e.store_id),
-                      (i.style.display = "none"));
+      function c({ predictions: e }) {
+        n &&
+          r &&
+          ((r.innerHTML = ``),
+          e.length > 0
+            ? (e.forEach((e) => {
+                var t;
+                let i = document.createElement(`li`);
+                ((i.innerHTML = (t = l(e)) == null ? `` : t),
+                  i.addEventListener(`click`, () => {
+                    var t;
+                    ((n.value = (t = e.name) == null ? `` : t),
+                      d(e.store_id),
+                      (r.style.display = `none`));
                   }),
-                  i.appendChild(o));
+                  r.appendChild(i));
               }),
-              (i.style.display = "block"),
-              (a.style.display = "block"))
-            : (i.style.display = "none"));
+              (r.style.display = `block`),
+              (i.style.display = `block`))
+            : (r.style.display = `none`));
       }
-      function E(t) {
-        const e = "no-viewpoint";
-        let o = "";
+      function l(e) {
+        let t = ``;
         return (
-          (o += `<div class="prediction ${e}">${t.highlighted}</div>`),
-          o
+          (t += `<div class="prediction no-viewpoint">${e.highlighted}</div>`),
+          t
         );
       }
-      function L(t) {
-        u &&
-          ((u.innerHTML = `<code>${JSON.stringify(t, null, 2)}</code>`),
-          (u.style.display = "block"));
+      function u(e) {
+        a &&
+          ((a.innerHTML = `<code>${JSON.stringify(e, null, 2)}</code>`),
+          (a.style.display = `block`));
       }
-      function b(t) {
-        fetch(`https://api.woosmap.com/stores/${t}?key=${p}`)
+      function d(t) {
+        fetch(`https://api.woosmap.com/stores/${t}?key=${e}`)
           .then((e) => e.json())
-          .then((e) => L(e))
-          .catch((e) => console.error("Error request details store:", e));
+          .then((e) => u(e))
+          .catch((e) => console.error(`Error request details store:`, e));
       }
-      function v(t) {
-        const e = { key: p, query: `localized:${t}` };
+      function f(t) {
+        let n = { key: e, query: `localized:${t}` };
         return fetch(
-          `https://api.woosmap.com/stores/autocomplete/?${S(e)}`,
-        ).then((o) => o.json());
+          `https://api.woosmap.com/stores/autocomplete/?${p(n)}`,
+        ).then((e) => e.json());
       }
-      function S(t) {
-        const e = [];
-        for (const o in t)
-          if (t[o]) {
-            const l = t[o];
-            e.push(`${encodeURIComponent(o)}=${encodeURIComponent(l)}`);
+      function p(e) {
+        let t = [];
+        for (let n in e)
+          if (e[n]) {
+            let r = e[n];
+            t.push(`${encodeURIComponent(n)}=${encodeURIComponent(r)}`);
           }
-        return e.join("&");
+        return t.join(`&`);
       }
-      function $(t, e) {
-        let o = null,
-          l = null,
-          n = null;
-        return function (...s) {
-          return new Promise((c, d) => {
-            (o !== null && clearTimeout(o),
-              (l = c),
-              (n = d),
-              (o = setTimeout(() => {
-                t(...s)
-                  .then((f) => {
-                    l === c && n === d && c(f);
+      function m(e, t) {
+        let n = null,
+          r = null,
+          i = null;
+        return function (...a) {
+          return new Promise((o, s) => {
+            (n !== null && clearTimeout(n),
+              (r = o),
+              (i = s),
+              (n = setTimeout(() => {
+                e(...a)
+                  .then((e) => {
+                    r === o && i === s && o(e);
                   })
-                  .catch((f) => {
-                    l === c && n === d && d(f);
+                  .catch((e) => {
+                    r === o && i === s && s(e);
                   });
-              }, e)));
+              }, t)));
           });
         };
       }
-      document.addEventListener("DOMContentLoaded", () => {
-        ((r = document.getElementById("autocomplete-input")),
-          (i = document.getElementById("suggestions-list")),
-          (a = document.getElementsByClassName("clear-searchButton")[0]),
-          (u = document.getElementById("response-container")),
-          m());
+      document.addEventListener(`DOMContentLoaded`, () => {
+        ((n = document.getElementById(`autocomplete-input`)),
+          (r = document.getElementById(`suggestions-list`)),
+          (i = document.getElementsByClassName(`clear-searchButton`)[0]),
+          (a = document.getElementById(`response-container`)),
+          o());
       });
     </script>
     <style>
@@ -169,9 +174,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -179,92 +186,94 @@
           Noto Color Emoji;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        padding: 0 12px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        border-radius: 12px;
-        padding: 0 12px;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        padding: 0;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0 8px;
+        padding: 0;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0 8px;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .clear-searchButton {
-        display: none;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: none;
       }
       #suggestions-list {
-        border-radius: 12px;
-        box-shadow:
-          0 2px 4px #0003,
-          0 -1px #00000005;
         box-sizing: border-box;
-        position: absolute;
-        max-width: 320px;
-        width: 100%;
-        top: 100%;
-        left: 0;
         z-index: 1;
-        list-style: none;
+        background-color: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 320px;
         max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
+        list-style: none;
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
         overflow-y: auto;
-        background-color: #fff;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
       }
       #suggestions-list.visible {
         display: block;
       }
       #suggestions-list li {
-        padding: 12px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        padding: 12px;
+        transition: background-color 0.3s;
       }
       #suggestions-list li:hover {
         background-color: #f2f2f2;
@@ -274,30 +283,27 @@
         overflow: hidden;
       }
       #app {
-        display: flex;
         flex-direction: column;
-        overflow: hidden;
         height: 100vh;
         padding: 10px;
+        display: flex;
+        overflow: hidden;
       }
       .search-container {
-        position: relative;
         min-height: 45px;
+        position: relative;
       }
       .search-container #autocomplete-container {
         top: 0;
         left: 0;
       }
       pre {
-        display: none;
+        background-color: #fff;
+        border: 3px solid #c8c8c8;
+        border-radius: 8px;
         margin-top: 10px;
         margin-bottom: 20px;
         padding: 10px;
-        border: 3px solid #c8c8c8;
-        background-color: #fff;
-        border-radius: 8px;
-        overflow-y: auto;
-        overflow-x: auto;
         font-family:
           Consolas,
           Andale Mono WT,
@@ -312,16 +318,18 @@
           Courier New,
           Courier,
           monospace;
+        display: none;
+        overflow: auto;
       }
       .bold {
         font-weight: 700;
       }
       .title {
-        margin-block-end: 0;
+        margin-bottom: 0;
         font-weight: 500;
       }
       .note {
-        margin-block-start: 4px;
+        margin-top: 4px;
         font-size: 13px;
       }
     </style>

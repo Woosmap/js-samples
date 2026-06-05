@@ -7,80 +7,80 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          c(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const o of e)
-            if (o.type === "childList")
-              for (const i of o.addedNodes)
-                i.tagName === "LINK" && i.rel === "modulepreload" && c(i);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function r(e) {
-          const o = {};
+        function t(e) {
+          let t = {};
           return (
-            e.integrity && (o.integrity = e.integrity),
-            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function c(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const o = r(e);
-          fetch(e.href, o);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const s = [
-        "bounds_changed",
-        "center_changed",
-        "click",
-        "dblclick",
-        "drag",
-        "dragend",
-        "dragstart",
-        "idle",
-        "mousemove",
-        "mouseout",
-        "mouseover",
-        "rightclick",
-        "zoom_changed",
+      var e = [
+        `bounds_changed`,
+        `center_changed`,
+        `click`,
+        `dblclick`,
+        `drag`,
+        `dragend`,
+        `dragstart`,
+        `idle`,
+        `mousemove`,
+        `mouseout`,
+        `mouseover`,
+        `rightclick`,
+        `zoom_changed`,
       ];
-      function a() {
-        const n = new woosmap.map.Map(document.getElementById("map"), {
+      function t() {
+        let t = new woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 51.52, lng: -0.13 },
           zoom: 10,
         });
-        (d(),
-          s.forEach((t) => {
-            n.addListener(t, () => {
-              l(t);
+        (n(),
+          e.forEach((e) => {
+            t.addListener(e, () => {
+              r(e);
             });
           }));
       }
-      function d() {
-        const n = document.getElementById("sidebar"),
-          t = [];
-        (s.forEach((r) => {
-          t.push(`<div class="event" id="${r}">${r}</div>`);
+      function n() {
+        let t = document.getElementById(`sidebar`),
+          n = [];
+        (e.forEach((e) => {
+          n.push(`<div class="event" id="${e}">${e}</div>`);
         }),
-          (n.innerHTML = t.join("")));
+          (t.innerHTML = n.join(``)));
       }
-      function l(n) {
-        const t = document.getElementById(n);
+      function r(e) {
+        let t = document.getElementById(e);
         t &&
-          ((t.className = "event active"),
+          ((t.className = `event active`),
           setTimeout(() => {
-            t.className = "event inactive";
+            t.className = `event inactive`;
           }, 1e3));
       }
-      window.initMap = a;
+      window.initMap = t;
     </script>
     <style>
       html,
@@ -95,9 +95,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -109,16 +111,16 @@
         display: flex;
       }
       #sidebar {
-        flex-basis: 12rem;
+        box-sizing: border-box;
         flex-grow: 1;
+        flex-basis: 12rem;
         max-width: 30rem;
         height: 100%;
-        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-basis: 70vw;
         flex-grow: 5;
+        flex-basis: 70vw;
         height: 100%;
       }
       .events {
@@ -127,14 +129,14 @@
           monospace;
       }
       .event {
-        transition: background-color 0.5s ease-out;
         padding: 0.5em;
-        overflow: hidden;
         font-size: 14px;
+        transition: background-color 0.5s ease-out;
+        overflow: hidden;
       }
       .active {
-        background-color: #fd0;
         color: #000;
+        background-color: #fd0;
       }
       .inactive {
         background-color: #fff;

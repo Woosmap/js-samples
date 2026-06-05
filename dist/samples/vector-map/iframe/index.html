@@ -7,49 +7,48 @@
 
     <script type="module" crossorigin>
       (function () {
-        const o = document.createElement("link").relList;
-        if (o && o.supports && o.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const r of t.addedNodes)
-                r.tagName === "LINK" && r.rel === "modulepreload" && s(r);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function c(e) {
-          const t = {};
+        function t(e) {
+          let t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
             t
           );
         }
-        function s(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = c(e);
-          fetch(e.href, t);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let n;
-      function l() {
-        const i = { lat: 51.507, lng: -0.1 };
-        n = new woosmap.map.Map(document.getElementById("map"), {
+      var e;
+      function t() {
+        e = new woosmap.map.Map(document.getElementById(`map`), {
           zoom: 17,
-          center: i,
+          center: { lat: 51.507, lng: -0.1 },
         });
-        const o = document.getElementById("toggleBuildings");
-        o.onchange = function () {
-          o.checked ? n.setTilt(60) : n.setTilt(0);
+        let t = document.getElementById(`toggleBuildings`);
+        t.onchange = function () {
+          t.checked ? e.setTilt(60) : e.setTilt(0);
         };
       }
-      window.initMap = l;
+      window.initMap = t;
     </script>
     <style>
       #map {
@@ -67,9 +66,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -81,31 +82,31 @@
         display: inline-block;
       }
       .toggle:hover .toggle-switch:before {
-        background: linear-gradient(to bottom, #fff 0% 100%);
+        background: linear-gradient(#fff 0%, #fff 100%);
         box-shadow: 0 0 0 1px #00000080;
       }
       .toggle-switch {
-        display: inline-block;
+        vertical-align: middle;
         background: #ccc;
         border-radius: 16px;
         width: 58px;
         height: 32px;
-        position: relative;
-        vertical-align: middle;
         transition: background 0.25s;
+        display: inline-block;
+        position: relative;
       }
       .toggle-switch:before {
         content: "";
-        display: block;
-        background: linear-gradient(to bottom, #fff, #eee);
+        background: linear-gradient(#fff 0%, #eee 100%);
         border-radius: 50%;
-        box-shadow: 0 0 0 1px #00000040;
         width: 24px;
         height: 24px;
+        transition: left 0.25s;
+        display: block;
         position: absolute;
         top: 4px;
         left: 4px;
-        transition: left 0.25s;
+        box-shadow: 0 0 0 1px #00000040;
       }
       .toggle-switch:after {
         content: "";
@@ -117,8 +118,8 @@
         left: 30px;
       }
       .toggle-checkbox {
-        position: absolute;
         visibility: hidden;
+        position: absolute;
       }
       .toggle-label {
         margin-left: 5px;
@@ -126,16 +127,16 @@
         top: 2px;
       }
       #map-panel {
+        z-index: 1;
+        background-color: #fff;
+        border-radius: 3px;
+        margin: 10px;
+        padding: 5px;
         position: absolute;
         top: 0;
         left: 0;
-        background-color: #fff;
-        border-radius: 3px;
-        box-shadow: 0 0 0 2px #0000001a;
-        margin: 10px;
-        padding: 5px;
         overflow: hidden;
-        z-index: 1;
+        box-shadow: 0 0 0 2px #0000001a;
       }
     </style>
   </head>

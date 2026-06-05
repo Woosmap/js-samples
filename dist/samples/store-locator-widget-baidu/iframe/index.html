@@ -9,70 +9,70 @@
 
     <script type="module" crossorigin>
       (function () {
-        const r = document.createElement("link").relList;
-        if (r && r.supports && r.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const i of t.addedNodes)
-                i.tagName === "LINK" && i.rel === "modulepreload" && s(i);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function n(e) {
-          const t = {};
+        function t(e) {
+          let t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
             t
           );
         }
-        function s(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = n(e);
-          fetch(e.href, t);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const c = {
-        theme: { primary_color: "#00754a" },
-        maps: { provider: "baidu", apiKey: "oUQDfIp2b7qNxIuSaghaeip7" },
+      var e = {
+        theme: { primary_color: `#00754a` },
+        maps: { provider: `baidu`, apiKey: `oUQDfIp2b7qNxIuSaghaeip7` },
         woosmapView: {
-          baiduMapStyle: { style: "light" },
+          baiduMapStyle: { style: `light` },
           initialCenter: { lat: 31.230780461545375, lng: 121.36283503342771 },
           initialZoom: 13,
           breakPoint: 14,
-          tileStyle: { color: "#00754a", size: 13, minSize: 6 },
+          tileStyle: { color: `#00754a`, size: 13, minSize: 6 },
           style: {
             default: {
               icon: {
-                url: "https://images.woosmap.com/starbucks-marker.svg",
+                url: `https://images.woosmap.com/starbucks-marker.svg`,
                 scaledSize: { height: 40, width: 34 },
               },
               selectedIcon: {
-                url: "https://images.woosmap.com/starbucks-marker-selected.svg",
+                url: `https://images.woosmap.com/starbucks-marker-selected.svg`,
                 scaledSize: { height: 50, width: 43 },
               },
             },
           },
         },
       };
-      function a() {
+      function t() {
         return window.innerWidth < 500;
       }
-      function l() {
-        const o = new window.WebApp(
-          "map",
-          "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
+      function n() {
+        let n = new window.WebApp(
+          `map`,
+          `woos-48c80350-88aa-333e-835a-07f4b658a9a4`,
         );
-        (o.setConf(c), o.render(a()));
+        (n.setConf(e), n.render(t()));
       }
-      l();
+      n();
     </script>
     <style>
       #map {
@@ -90,9 +90,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,

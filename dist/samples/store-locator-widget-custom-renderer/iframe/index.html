@@ -9,185 +9,187 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(n);
-        new MutationObserver((n) => {
-          for (const s of n)
-            if (s.type === "childList")
-              for (const a of s.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && o(a);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function r(n) {
-          const s = {};
+        function t(e) {
+          let t = {};
           return (
-            n.integrity && (s.integrity = n.integrity),
-            n.referrerPolicy && (s.referrerPolicy = n.referrerPolicy),
-            n.crossOrigin === "use-credentials"
-              ? (s.credentials = "include")
-              : n.crossOrigin === "anonymous"
-                ? (s.credentials = "omit")
-                : (s.credentials = "same-origin"),
-            s
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function o(n) {
-          if (n.ep) return;
-          n.ep = !0;
-          const s = r(n);
-          fetch(n.href, s);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const u = {
-        maps: { provider: "woosmap", localities: { types: [] } },
+      var e = {
+        maps: { provider: `woosmap`, localities: { types: [] } },
         datasource: { max_responses: 5, max_distance: 0 },
-        theme: { primary_color: "#00754a" },
+        theme: { primary_color: `#00754a` },
         woosmapview: {
           initialZoom: 15,
           breakPoint: 16,
-          tileStyle: { color: "#00754a", size: 13, minSize: 5 },
+          tileStyle: { color: `#00754a`, size: 13, minSize: 5 },
           style: {
             default: {
               icon: {
-                url: "https://images.woosmap.com/starbucks-marker.svg",
+                url: `https://images.woosmap.com/starbucks-marker.svg`,
                 scaledSize: { height: 40, width: 34 },
               },
               selectedIcon: {
-                url: "https://images.woosmap.com/starbucks-marker-selected.svg",
+                url: `https://images.woosmap.com/starbucks-marker-selected.svg`,
                 scaledSize: { height: 50, width: 43 },
               },
             },
           },
         },
       };
-      function m({ properties: e }) {
-        var r;
-        const t = (r = e.contact) == null ? void 0 : r.phone;
-        return t
-          ? `<li id='store-phone'><span class='marker-image'></span><p><a class='text-black' href='tel:${t}'>${t}</a></p></li>`
-          : "";
+      function t({ properties: e }) {
+        var t;
+        let n = (t = e.contact) == null ? void 0 : t.phone;
+        return n
+          ? `<li id='store-phone'><span class='marker-image'></span><p><a class='text-black' href='tel:${n}'>${n}</a></p></li>`
+          : ``;
       }
-      function p({ properties: e }) {
-        var r;
-        const t = (r = e.contact) == null ? void 0 : r.website;
-        return t
-          ? `<li id='store-website'><span class='marker-image'></span><a class='text-black' href='${t}' target='_blank'>More Details</a></li>`
-          : "";
+      function n({ properties: e }) {
+        var t;
+        let n = (t = e.contact) == null ? void 0 : t.website;
+        return n
+          ? `<li id='store-website'><span class='marker-image'></span><a class='text-black' href='${n}' target='_blank'>More Details</a></li>`
+          : ``;
       }
-      function d({ properties: e }) {
-        return `<p class='summary-distance'>${(e.distance_text || "") + (e.duration_text ? ` (${e.duration_text})` : "")}</p>`;
+      function r({ properties: e }) {
+        return `<p class='summary-distance'>${(e.distance_text || ``) + (e.duration_text ? ` (${e.duration_text})` : ``)}</p>`;
       }
-      function l(e) {
+      function i(e) {
         return e && e.address
-          ? `${e.address.lines || ""}, ${e.address.zipcode || ""} ${e.address.city || ""}`
-          : "";
+          ? `${e.address.lines || ``}, ${e.address.zipcode || ``} ${e.address.city || ``}`
+          : ``;
       }
-      function f({ properties: e }) {
+      function a({ properties: e }) {
         return `
     <li id='store-address'>
       <span class='marker-image'></span>
       <div>
-        <p>${l(e)}</p>
-        <p>${d({ properties: e })}</p>
+        <p>${i(e)}</p>
+        <p>${r({ properties: e })}</p>
       </div>
     </li>`;
       }
-      function y({ properties: e }) {
-        return `<p class='summary-address'>${l(e)}</p>`;
+      function o({ properties: e }) {
+        return `<p class='summary-address'>${i(e)}</p>`;
       }
-      function g({ properties: e }) {
-        return `<p class='summary-address'>${(e && e.contact && e.contact.phone) || ""}</p>`;
+      function s({ properties: e }) {
+        return `<p class='summary-address'>${(e && e.contact && e.contact.phone) || ``}</p>`;
       }
-      function h({ properties: e }) {
-        const t = e.weekly_opening,
-          r = {
-            1: "Monday",
-            2: "Tuesday",
-            3: "Wednesday",
-            4: "Thursday",
-            5: "Friday",
-            6: "Saturday",
-            7: "Sunday",
+      function c({ properties: e }) {
+        let t = e.weekly_opening,
+          n = {
+            1: `Monday`,
+            2: `Tuesday`,
+            3: `Wednesday`,
+            4: `Thursday`,
+            5: `Friday`,
+            6: `Saturday`,
+            7: `Sunday`,
           };
         return t
-          ? `<ul class='store-opening-hours-list'>${Object.keys(r)
-              .map((n) => {
-                var c;
-                const s = ((c = t[n]) == null ? void 0 : c.hours) || [];
-                let a = "";
+          ? `<ul class='store-opening-hours-list'>${Object.keys(n)
+              .map((e) => {
+                var r;
+                let i = ((r = t[e]) == null ? void 0 : r.hours) || [],
+                  a = ``;
                 return (
-                  s.length === 0
-                    ? (a = "Closed")
-                    : (a = s
-                        .map((i) =>
-                          i["all-day"] ? "24h/24" : `${i.start}-${i.end}`,
-                        )
-                        .join(", ")),
-                  `<li><span class='day'>${r[n]}</span><span class="hours">${a}</span></li>`
+                  (a =
+                    i.length === 0
+                      ? `Closed`
+                      : i
+                          .map((e) =>
+                            e[`all-day`] ? `24h/24` : `${e.start}-${e.end}`,
+                          )
+                          .join(`, `)),
+                  `<li><span class='day'>${n[e]}</span><span class="hours">${a}</span></li>`
                 );
               })
-              .join("")}</ul>`
-          : "";
+              .join(``)}</ul>`
+          : ``;
       }
-      function S(e) {
-        return `<li id='store-hours'><span class='marker-image'></span>${h(e)}</li>`;
+      function l(e) {
+        return `<li id='store-hours'><span class='marker-image'></span>${c(e)}</li>`;
       }
-      function b({ properties: e }) {
-        var r, o, n;
-        if (!e.open) return "";
+      function u({ properties: e }) {
+        if (!e.open) return ``;
         let t;
-        return (
-          e.open.open_now
-            ? (t = `Open now until ${(r = e.open.current_slice) == null ? void 0 : r.end}`)
-            : (t = `Closed until ${w(Date.parse(((o = e.open.next_opening) == null ? void 0 : o.day) || "") / 1e3)} at ${(n = e.open.next_opening) == null ? void 0 : n.start}`),
-          `<p class='summary-hours'>${t}</p>`
-        );
+        if (e.open.open_now) {
+          var n;
+          t = `Open now until ${(n = e.open.current_slice) == null ? void 0 : n.end}`;
+        } else {
+          var r, i;
+          t = `Closed until ${d(Date.parse(((r = e.open.next_opening) == null ? void 0 : r.day) || ``) / 1e3)} at ${(i = e.open.next_opening) == null ? void 0 : i.start}`;
+        }
+        return `<p class='summary-hours'>${t}</p>`;
       }
-      function w(e) {
-        return new Date(e * 1e3).toLocaleString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
+      function d(e) {
+        return new Date(e * 1e3).toLocaleString(`en-US`, {
+          month: `short`,
+          day: `numeric`,
+          year: `numeric`,
         });
       }
-      function $(e) {
-        const t = document.createElement("ul");
+      function f(e) {
+        let r = document.createElement(`ul`);
         return (
-          (t.id = "myCustomContentID"),
-          (t.innerHTML = [p(e), f(e), S(e), m(e)].join("")),
-          t
+          (r.id = `myCustomContentID`),
+          (r.innerHTML = [n(e), a(e), l(e), t(e)].join(``)),
+          r
         );
       }
-      function L(e) {
-        const t = document.createElement("div");
+      function p(e) {
+        let t = document.createElement(`div`);
         return (
-          (t.className = "store-summary"),
+          (t.className = `store-summary`),
           (t.innerHTML = [
             `<p class='store-name'>${e.properties.name}</p>`,
-            y(e),
-            g(e),
-            b(e),
-            d(e),
-          ].join("")),
+            o(e),
+            s(e),
+            u(e),
+            r(e),
+          ].join(``)),
           t
         );
       }
-      function _() {
+      function m() {
         return window.innerWidth < 500;
       }
-      function v() {
-        const e = new window.WebApp(
-          "map",
-          "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
+      function h() {
+        let t = new window.WebApp(
+          `map`,
+          `woos-48c80350-88aa-333e-835a-07f4b658a9a4`,
         );
-        (e.setFullStoreRenderer($),
-          e.setSummaryStoreRenderer(L),
-          e.setConf(u),
-          e.setInitialStateToSelectedStore("12003"),
-          e.render(_()));
+        (t.setFullStoreRenderer(f),
+          t.setSummaryStoreRenderer(p),
+          t.setConf(e),
+          t.setInitialStateToSelectedStore(`12003`),
+          t.render(m()));
       }
-      v();
+      h();
     </script>
     <style>
       #map {
@@ -205,9 +207,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -215,29 +219,32 @@
           Noto Color Emoji;
       }
       #myCustomContentID {
-        inset: 0;
-        position: absolute;
         padding: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
       #myCustomContentID > li {
-        display: flex;
         align-items: flex-start;
-        list-style: none;
         min-height: 32px;
-        line-height: 24px;
         padding-bottom: 10px;
         padding-left: 5px;
+        line-height: 24px;
+        list-style: none;
+        display: flex;
       }
       #myCustomContentID p {
         margin: 0;
       }
       .marker-image {
-        height: 24px;
-        width: 24px;
-        background-size: contain;
-        background-position: center;
+        background-position: 50%;
         background-repeat: no-repeat;
+        background-size: contain;
         flex: 0 0 20px;
+        width: 24px;
+        height: 24px;
         margin-right: 10px;
       }
       #store-hours .marker-image {
@@ -259,8 +266,8 @@
         margin: 0;
       }
       .store-name {
-        font-size: 1rem !important;
         margin-right: 20px;
+        font-size: 1rem !important;
       }
       .text-black {
         color: #000;
@@ -268,23 +275,23 @@
       }
       .text-black:hover {
         color: #000;
-        text-decoration: none;
         cursor: pointer;
+        text-decoration: none;
       }
       .store-opening-hours-list {
-        display: flex;
         flex-direction: column;
+        width: 100%;
         padding: 0;
         list-style: none;
-        width: 100%;
+        display: flex;
       }
       .store-opening-hours-list > li {
         flex: 1;
-        line-height: 24px;
-        display: flex;
-        padding-bottom: 5px;
         justify-content: space-between;
         max-width: 245px;
+        padding-bottom: 5px;
+        line-height: 24px;
+        display: flex;
       }
       .padding-right {
         padding-right: 15px !important;

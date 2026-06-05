@@ -9,189 +9,189 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          l(e);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
         new MutationObserver((e) => {
-          for (const i of e)
-            if (i.type === "childList")
-              for (const d of i.addedNodes)
-                d.tagName === "LINK" && d.rel === "modulepreload" && l(d);
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(e) {
-          const i = {};
+        function t(e) {
+          let t = {};
           return (
-            e.integrity && (i.integrity = e.integrity),
-            e.referrerPolicy && (i.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
-              : e.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function l(e) {
+        function n(e) {
           if (e.ep) return;
           e.ep = !0;
-          const i = s(e);
-          fetch(e.href, i);
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const g = {
-        apiOrder: ["localities", "places"],
-        debounceTime: 0,
-        localities: {
-          key: "woos-48c80350-88aa-333e-835a-07f4b658a9a4",
-          fallbackBreakpoint: 0.4,
-          params: {
-            components: { country: ["gb"] },
-            language: "en",
-            types: ["address"],
+      var e = {
+          apiOrder: [`localities`, `places`],
+          debounceTime: 0,
+          localities: {
+            key: `woos-48c80350-88aa-333e-835a-07f4b658a9a4`,
+            fallbackBreakpoint: 0.4,
+            params: {
+              components: { country: [`gb`] },
+              language: `en`,
+              types: [`address`],
+            },
+          },
+          places: {
+            key: `AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA`,
+            params: {
+              types: [`address`],
+              components: { country: [`gb`] },
+              language: `en`,
+            },
           },
         },
-        places: {
-          key: "AIzaSyAAFBEYl6VnHSyllckphcRWzJlomsoXosA",
-          params: {
-            types: ["address"],
-            components: { country: ["gb"] },
-            language: "en",
-          },
-        },
-      };
-      let u, a, o, c, p, m, y, r, f;
-      function h() {
-        (a &&
-          o &&
-          (a.addEventListener("input", v),
-          a.addEventListener("keydown", (n) => {
-            if (n.key === "Enter") {
-              const t = o.querySelector("li");
-              t && t.click();
+        t,
+        n,
+        r,
+        i,
+        a,
+        o,
+        s,
+        c,
+        l;
+      function u() {
+        (n &&
+          r &&
+          (n.addEventListener(`input`, d),
+          n.addEventListener(`keydown`, (e) => {
+            if (e.key === `Enter`) {
+              let e = r.querySelector(`li`);
+              e && e.click();
             }
           })),
-          c.addEventListener("click", () => {
-            ((a.value = ""),
-              (o.style.display = "none"),
-              (c.style.display = "none"),
-              (p.value = ""),
-              (m.value = ""),
-              (y.value = ""),
-              (r.value = ""),
-              (f.value = ""),
-              a.focus());
+          i.addEventListener(`click`, () => {
+            ((n.value = ``),
+              (r.style.display = `none`),
+              (i.style.display = `none`),
+              (a.value = ``),
+              (o.value = ``),
+              (s.value = ``),
+              (c.value = ``),
+              (l.value = ``),
+              n.focus());
           }),
-          (u = window.woosmap.multisearch(g)));
+          (t = window.woosmap.multisearch(e)));
       }
-      function v() {
-        if (a && o) {
-          const n = a.value;
-          (n.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
-            n !== ""
-              ? u.autocompleteMulti(n).then(
-                  (t) => k(t),
-                  (t) => console.error(`Error autocomplete localities: ${t}`),
-                )
-              : ((o.style.display = "none"), (c.style.display = "none")));
+      function d() {
+        if (n && r) {
+          let e = n.value;
+          (e.replace(`"`, `\\"`).replace(/^\s+|\s+$/g, ``),
+            e === ``
+              ? ((r.style.display = `none`), (i.style.display = `none`))
+              : t.autocompleteMulti(e).then(
+                  (e) => p(e),
+                  (e) => console.error(`Error autocomplete localities: ${e}`),
+                ));
         }
       }
-      function b() {
-        const n = document.createElement("li");
-        ((n.innerHTML =
-          "<div class='prediction no-result'>No results found...</div>"),
-          o.appendChild(n),
-          (o.className = ""),
-          (o.style.display = "block"));
+      function f() {
+        let e = document.createElement(`li`);
+        ((e.innerHTML = `<div class='prediction no-result'>No results found...</div>`),
+          r.appendChild(e),
+          (r.className = ``),
+          (r.style.display = `block`));
       }
-      function k(n) {
-        a &&
-          o &&
-          ((o.innerHTML = ""),
-          n.length > 0
-            ? (n.forEach((t) => {
-                var l;
-                const s = document.createElement("li");
-                ((s.innerHTML = (l = E(t)) != null ? l : ""),
-                  s.addEventListener("click", () => {
-                    ((o.style.display = "none"),
-                      u.detailsMulti({ id: t.id, api: t.api }).then((e) => {
-                        L(e);
+      function p(e) {
+        n &&
+          r &&
+          ((r.innerHTML = ``),
+          e.length > 0
+            ? (e.forEach((e) => {
+                var n;
+                let i = document.createElement(`li`);
+                ((i.innerHTML = (n = m(e)) == null ? `` : n),
+                  i.addEventListener(`click`, () => {
+                    ((r.style.display = `none`),
+                      t.detailsMulti({ id: e.id, api: e.api }).then((e) => {
+                        h(e);
                       }));
                   }),
-                  o.appendChild(s));
+                  r.appendChild(i));
               }),
-              (o.className = n[0].api),
-              (o.style.display = "block"),
-              (c.style.display = "block"))
-            : b());
+              (r.className = e[0].api),
+              (r.style.display = `block`),
+              (i.style.display = `block`))
+            : f());
       }
-      function E(n) {
-        const t = "no-viewpoint",
-          s = n.highlight;
-        let l = "";
-        return ((l += `<div class="prediction ${t}">${s}</div>`), l);
+      function m(e) {
+        let t = e.highlight,
+          n = ``;
+        return ((n += `<div class="prediction no-viewpoint">${t}</div>`), n);
       }
-      function L(n) {
-        let t = "",
-          s = "",
-          l = "";
-        for (const e of n.item.address_components)
-          switch (e.types[0]) {
-            case "street_number": {
-              t = `${e.long_name} ${t}`;
+      function h(e) {
+        let t = ``,
+          r = ``,
+          i = ``;
+        for (let n of e.item.address_components)
+          switch (n.types[0]) {
+            case `street_number`:
+              t = `${n.long_name} ${t}`;
               break;
-            }
-            case "route": {
-              t += e.short_name;
+            case `route`:
+              t += n.short_name;
               break;
-            }
-            case "postal_code": {
-              l = `${e.long_name}${l}`;
+            case `postal_code`:
+              i = `${n.long_name}${i}`;
               break;
-            }
-            case "postal_code_suffix": {
-              l = `${l}-${e.long_name}`;
+            case `postal_code_suffix`:
+              i = `${i}-${n.long_name}`;
               break;
-            }
-            case "locality":
-              y.value = e.long_name;
+            case `locality`:
+              s.value = n.long_name;
               break;
-            case "state": {
-              r.value = e.long_name;
+            case `state`:
+              c.value = n.long_name;
               break;
-            }
-            case "administrative_area_level_1": {
-              r.value = e.long_name;
+            case `administrative_area_level_1`:
+              c.value = n.long_name;
               break;
-            }
-            case "country": {
-              f.value = e.long_name;
+            case `country`:
+              l.value = n.long_name;
               break;
-            }
-            case "premise": {
-              s = e.long_name;
+            case `premise`:
+              r = n.long_name;
               break;
-            }
+            default:
+              break;
           }
-        (l && (m.value = l), t && (a.value = t), s && (p.value = s));
+        (i && (o.value = i), t && (n.value = t), r && (a.value = r));
       }
-      document.addEventListener("click", (n) => {
-        !n.target.closest("#autocomplete-container") &&
-          o &&
-          (o.style.display = "none");
-      });
-      document.addEventListener("DOMContentLoaded", () => {
-        ((a = document.getElementById("autocomplete-input")),
-          (o = document.getElementById("suggestions-list")),
-          (c = document.getElementsByClassName("clear-searchButton")[0]),
-          (p = document.querySelector("#address2")),
-          (m = document.querySelector("#postcode")),
-          (y = document.querySelector("#locality")),
-          (r = document.querySelector("#state")),
-          (f = document.querySelector("#country")),
-          h());
-      });
+      (document.addEventListener(`click`, (e) => {
+        !e.target.closest(`#autocomplete-container`) &&
+          r &&
+          (r.style.display = `none`);
+      }),
+        document.addEventListener(`DOMContentLoaded`, () => {
+          ((n = document.getElementById(`autocomplete-input`)),
+            (r = document.getElementById(`suggestions-list`)),
+            (i = document.getElementsByClassName(`clear-searchButton`)[0]),
+            (a = document.querySelector(`#address2`)),
+            (o = document.querySelector(`#postcode`)),
+            (s = document.querySelector(`#locality`)),
+            (c = document.querySelector(`#state`)),
+            (l = document.querySelector(`#country`)),
+            u());
+        }));
     </script>
     <style>
       #map {
@@ -209,9 +209,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -219,92 +221,94 @@
           Noto Color Emoji;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        padding: 0 12px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        border-radius: 12px;
-        padding: 0 12px;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        padding: 0;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0 8px;
+        padding: 0;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0 8px;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .clear-searchButton {
-        display: none;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: none;
       }
       #suggestions-list {
-        border-radius: 12px;
-        box-shadow:
-          0 2px 4px #0003,
-          0 -1px #00000005;
         box-sizing: border-box;
-        position: absolute;
-        max-width: 320px;
-        width: 100%;
-        top: 100%;
-        left: 0;
         z-index: 1;
-        list-style: none;
+        background-color: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 320px;
         max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
+        list-style: none;
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
         overflow-y: auto;
-        background-color: #fff;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
       }
       #suggestions-list.visible {
         display: block;
       }
       #suggestions-list li {
-        padding: 12px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        padding: 12px;
+        transition: background-color 0.3s;
       }
       #suggestions-list li:hover {
         background-color: #f2f2f2;
@@ -313,50 +317,50 @@
         background-color: #eee;
       }
       .title {
-        margin-block-end: 0;
+        margin-bottom: 0;
         font-weight: 500;
       }
       .note {
-        margin-block-start: 4px;
+        margin-top: 4px;
         font-size: 13px;
       }
       #form-wrapper {
         padding: 15px;
       }
       #autocomplete-container {
-        position: relative;
-        left: 0;
-        top: 0;
         max-width: 100%;
-        border: 1px solid #686868;
-        background: #fff;
         box-shadow: none;
+        background: #fff;
+        border: 1px solid #686868;
         border-radius: 3px;
+        position: relative;
+        top: 0;
+        left: 0;
       }
       form {
-        display: flex;
+        box-sizing: border-box;
         flex-wrap: wrap;
         align-items: center;
         max-width: 400px;
-        box-sizing: border-box;
+        display: flex;
       }
       .input-wrapper {
-        margin-top: 5px;
-        border: 1px solid #686868;
         background: #fff;
+        border: 1px solid #686868;
         border-radius: 3px;
         height: 40px;
+        margin-top: 5px;
       }
       .input-wrapper input {
-        display: flex;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 3px;
+        outline: 0;
         width: 100%;
         height: 100%;
-        outline: 0;
         padding: 12px;
-        box-sizing: border-box;
-        border-radius: 3px;
-        border: none;
         font-size: 15px;
+        display: flex;
       }
       .form-label {
         width: 100%;
@@ -368,11 +372,11 @@
         position: relative;
       }
       .field-left {
-        flex: 1 150px;
+        flex: 150px;
         margin: 15px 15px 15px 0;
       }
       .field-right {
-        flex: 1 150px;
+        flex: 150px;
         margin: 15px 0 15px 15px;
       }
       #suggestions-list {
@@ -382,21 +386,21 @@
         content: "";
         box-sizing: border-box;
         text-align: right;
-        display: block;
-        background-position: right;
+        background-position: 100%;
         background-repeat: no-repeat;
         background-size: contain;
+        display: block;
       }
       #suggestions-list.places:after {
-        padding: 1px 1px 1px 0;
-        height: 18px;
         background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png);
         background-size: 120px 14px;
+        height: 18px;
+        padding: 1px 1px 1px 0;
       }
       #suggestions-list.localities:after {
-        margin: 0 6px 3px;
-        height: 16px;
         background-image: url(https://developers.woosmap.com/assets/images/woosmap-logo.svg);
+        height: 16px;
+        margin: 0 6px 3px;
       }
       #suggestions-list .no-result {
         opacity: 0.6;

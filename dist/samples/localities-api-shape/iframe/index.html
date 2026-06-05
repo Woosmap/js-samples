@@ -7,342 +7,342 @@
 
     <script type="module" crossorigin>
       (function () {
-        const e = document.createElement("link").relList;
-        if (e && e.supports && e.supports("modulepreload")) return;
-        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(n);
-        new MutationObserver((n) => {
-          for (const i of n)
-            if (i.type === "childList")
-              for (const a of i.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && s(a);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function o(n) {
-          const i = {};
+        function t(e) {
+          let t = {};
           return (
-            n.integrity && (i.integrity = n.integrity),
-            n.referrerPolicy && (i.referrerPolicy = n.referrerPolicy),
-            n.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
-              : n.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function s(n) {
-          if (n.ep) return;
-          n.ep = !0;
-          const i = o(n);
-          fetch(n.href, i);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const r = { country: [] },
-        h = "woos-48c80350-88aa-333e-835a-07f4b658a9a4";
-      let v,
-        l,
+      var e = { country: [] },
+        t = `woos-48c80350-88aa-333e-835a-07f4b658a9a4`,
+        n,
+        r,
+        i,
+        a,
+        o,
+        s,
         c,
-        u,
-        p,
-        d,
-        f,
-        b,
-        g = !1;
-      function _() {
-        ((p = new woosmap.map.Map(document.getElementById("map"), {
+        l,
+        u = !1;
+      function d() {
+        ((o = new woosmap.map.Map(document.getElementById(`map`), {
           center: { lat: 48.8534, lng: 2.3488 },
           disableDefaultUI: !0,
-          gestureHandling: "greedy",
+          gestureHandling: `greedy`,
           zoom: 5,
-          styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
+          styles: [{ featureType: `poi`, stylers: [{ visibility: `off` }] }],
         })),
-          A(),
-          I());
+          g(),
+          w());
       }
-      function $(t) {
-        var e;
+      function f(e) {
+        var t;
         if (
-          (e = t == null ? void 0 : t.geometry) != null &&
-          e.shape &&
-          ((g = !0),
-          p.data.addGeoJson({ type: "Feature", geometry: t.geometry.shape }),
-          t.geometry.viewport)
+          !(e == null || (t = e.geometry) == null) &&
+          t.shape &&
+          ((u = !0),
+          o.data.addGeoJson({ type: `Feature`, geometry: e.geometry.shape }),
+          e.geometry.viewport)
         ) {
-          const o = {
-            east: t.geometry.viewport.northeast.lng,
-            south: t.geometry.viewport.southwest.lat,
-            north: t.geometry.viewport.northeast.lat,
-            west: t.geometry.viewport.southwest.lng,
+          let t = {
+            east: e.geometry.viewport.northeast.lng,
+            south: e.geometry.viewport.southwest.lat,
+            north: e.geometry.viewport.northeast.lat,
+            west: e.geometry.viewport.southwest.lng,
           };
-          p.fitBounds(o, { top: 60, left: 60, bottom: 60, right: 60 });
+          o.fitBounds(t, { top: 60, left: 60, bottom: 60, right: 60 });
         }
       }
-      function E(t) {
-        if ((d && d.setMap(null), t != null && t.geometry)) {
-          const e = t.geometry.location;
-          ((d = new woosmap.map.Marker({
-            position: e,
+      function p(e) {
+        if ((s && s.setMap(null), e != null && e.geometry)) {
+          let t = e.geometry.location;
+          ((s = new woosmap.map.Marker({
+            position: t,
             icon: {
-              url: "https://images.woosmap.com/marker.png",
+              url: `https://images.woosmap.com/marker.png`,
               scaledSize: { height: 59, width: 37 },
             },
           })),
-            d.setMap(p),
-            g ? (g = !1) : x(t));
+            s.setMap(o),
+            u ? (u = !1) : j(e));
         }
       }
-      function M(t, e = "block") {
-        t.style.display = e;
+      function m(e, t = `block`) {
+        e.style.display = t;
       }
-      function k(t) {
-        const e = [];
+      function h(e) {
+        let t = [];
         if (
-          ((f.innerHTML = ""),
-          (f.style.display = "block"),
-          t.formatted_address &&
-            e.push(
-              `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${t.formatted_address}</span></p>`,
+          ((c.innerHTML = ``),
+          (c.style.display = `block`),
+          e.formatted_address &&
+            t.push(
+              `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${e.formatted_address}</span></p>`,
             ),
-          t.types &&
-            t.types[0] &&
-            e.push(
-              `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${t.types[0].replace("_", " ")}</span></p>`,
+          e.types &&
+            e.types[0] &&
+            t.push(
+              `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${e.types[0].replace(`_`, ` `)}</span></p>`,
             ),
-          t.geometry)
+          e.geometry)
         ) {
-          const o = t.geometry.accuracy;
+          let n = e.geometry.accuracy;
           if (
-            (o &&
-              e.push(
-                `<div class='option-detail'><div><span class='option-detail-label'>Location type :</span><span class='bold'>${o.replace("_", " ").toLowerCase()}</span></div></div>`,
+            (n &&
+              t.push(
+                `<div class='option-detail'><div><span class='option-detail-label'>Location type :</span><span class='bold'>${n.replace(`_`, ` `).toLowerCase()}</span></div></div>`,
               ),
-            e.push(
-              `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${t.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${t.geometry.location.lng.toString()}</span></div></div>`,
+            t.push(
+              `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${e.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${e.geometry.location.lng.toString()}</span></div></div>`,
             ),
-            t.address_components)
+            e.address_components)
           ) {
-            const s = t.address_components
+            let n = e.address_components
               .map(
-                (n) =>
-                  `<p class='option-detail'><span class='option-detail-label'>${n.types[0]}:</span> <span class='bold'>${n.long_name}</span></p>`,
+                (e) =>
+                  `<p class='option-detail'><span class='option-detail-label'>${e.types[0]}:</span> <span class='bold'>${e.long_name}</span></p>`,
               )
-              .join("");
-            e.push(
-              `<div class='address-components'><div class='title'>Address components</div><div>${s}</div>`,
+              .join(``);
+            t.push(
+              `<div class='address-components'><div class='title'>Address components</div><div>${n}</div>`,
             );
           }
         }
-        f.innerHTML = e.join("");
+        c.innerHTML = t.join(``);
       }
-      function A() {
-        ((l = document.getElementById("autocomplete-input")),
-          (c = document.getElementById("suggestions-list")),
-          (u = document.getElementsByClassName("clear-searchButton")[0]),
-          (b = document.querySelector(".addressDetails")),
-          (f = document.querySelector(".addressDetails .addressOptions")),
-          l &&
-            c &&
-            (l.addEventListener("input", w),
-            l.addEventListener("keydown", (t) => {
-              if (t.key === "Enter") {
-                const e = c.querySelector("li");
+      function g() {
+        ((r = document.getElementById(`autocomplete-input`)),
+          (i = document.getElementById(`suggestions-list`)),
+          (a = document.getElementsByClassName(`clear-searchButton`)[0]),
+          (l = document.querySelector(`.addressDetails`)),
+          (c = document.querySelector(`.addressDetails .addressOptions`)),
+          r &&
+            i &&
+            (r.addEventListener(`input`, _),
+            r.addEventListener(`keydown`, (e) => {
+              if (e.key === `Enter`) {
+                let e = i.querySelector(`li`);
                 e && e.click();
               }
             })),
-          u.addEventListener("click", () => {
-            ((l.value = ""),
-              (c.style.display = "none"),
-              (u.style.display = "none"),
-              (f.style.display = "none"),
-              l.focus(),
-              d.setMap(null));
+          a.addEventListener(`click`, () => {
+            ((r.value = ``),
+              (i.style.display = `none`),
+              (a.style.display = `none`),
+              (c.style.display = `none`),
+              r.focus(),
+              s.setMap(null));
           }),
-          (v = H(B, 0)));
+          (n = C(x, 0)));
       }
-      function w() {
-        if (l && c) {
-          let t = l.value;
-          t = t.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
-          const e = r.country.map((o) => `country:${o}`).join("|");
-          t !== ""
-            ? v(t, e, h)
-                .then(({ localities: o }) => T(o))
-                .catch((o) =>
-                  console.error("Error autocomplete localities:", o),
-                )
-            : ((c.style.display = "none"), (u.style.display = "none"));
+      function _() {
+        if (r && i) {
+          let o = r.value;
+          o = o.replace(`"`, `\\"`).replace(/^\s+|\s+$/g, ``);
+          let s = e.country.map((e) => `country:${e}`).join(`|`);
+          o === ``
+            ? ((i.style.display = `none`), (a.style.display = `none`))
+            : n(o, s, t)
+                .then(({ localities: e }) => v(e))
+                .catch((e) =>
+                  console.error(`Error autocomplete localities:`, e),
+                );
         }
       }
-      function T(t) {
-        l &&
-          c &&
-          ((c.innerHTML = ""),
-          t.length > 0
-            ? (t.forEach((e) => {
-                var s;
-                const o = document.createElement("li");
-                ((o.innerHTML = (s = q(e)) != null ? s : ""),
-                  o.addEventListener("click", () => {
-                    var n;
-                    ((l.value = (n = e.description) != null ? n : ""),
-                      N(e.public_id),
-                      (c.style.display = "none"));
+      function v(e) {
+        r &&
+          i &&
+          ((i.innerHTML = ``),
+          e.length > 0
+            ? (e.forEach((e) => {
+                var t;
+                let n = document.createElement(`li`);
+                ((n.innerHTML = (t = y(e)) == null ? `` : t),
+                  n.addEventListener(`click`, () => {
+                    var t;
+                    ((r.value = (t = e.description) == null ? `` : t),
+                      A(e.public_id),
+                      (i.style.display = `none`));
                   }),
-                  c.appendChild(o));
+                  i.appendChild(n));
               }),
-              (c.style.display = "block"),
-              (u.style.display = "block"))
-            : (c.style.display = "none"));
+              (i.style.display = `block`),
+              (a.style.display = `block`))
+            : (i.style.display = `none`));
       }
-      function q(t) {
-        const e = t,
-          o = "no-viewpoint",
-          s = e.matched_substrings;
-        let n = "";
-        e.matched_substrings && e.matched_substrings.description
-          ? (n = C(e.description, s.description))
-          : (n = e.description);
-        let i = "";
-        return ((i += `<div class="prediction ${o}">${n}</div>`), i);
+      function y(e) {
+        let t = e,
+          n = t.matched_substrings,
+          r = ``;
+        r =
+          t.matched_substrings && t.matched_substrings.description
+            ? b(t.description, n.description)
+            : t.description;
+        let i = ``;
+        return ((i += `<div class="prediction no-viewpoint">${r}</div>`), i);
       }
-      function C(t, e) {
-        e = e.reverse();
-        for (const o of e) {
-          const s = t.substring(o.offset, o.offset + o.length);
-          t = `${t.substring(0, o.offset)}<span class='bold'>${s}</span>${t.substring(o.offset + o.length)}`;
+      function b(e, t) {
+        t = t.reverse();
+        for (let n of t) {
+          let t = e.substring(n.offset, n.offset + n.length);
+          e = `${e.substring(0, n.offset)}<span class='bold'>${t}</span>${e.substring(n.offset + n.length)}`;
         }
-        return t;
+        return e;
       }
-      function B(t, e) {
-        const o = {
-          key: h,
-          input: t,
-          no_deprecated_fields: "true",
-          types: "locality|admin_level|country|postal_code",
-          components: e,
+      function x(e, n) {
+        let r = {
+          key: t,
+          input: e,
+          no_deprecated_fields: `true`,
+          types: `locality|admin_level|country|postal_code`,
+          components: n,
         };
         return (
-          e !== "" && o.components && (o.components = e),
+          n !== `` && r.components && (r.components = n),
           fetch(
-            `https://api.woosmap.com/localities/autocomplete/?${L(o)}`,
-          ).then((s) => s.json())
+            `https://api.woosmap.com/localities/autocomplete/?${S(r)}`,
+          ).then((e) => e.json())
         );
       }
-      function L(t) {
-        const e = [];
-        for (const o in t)
-          if (t[o]) {
-            const s = t[o];
-            e.push(`${encodeURIComponent(o)}=${encodeURIComponent(s)}`);
+      function S(e) {
+        let t = [];
+        for (let n in e)
+          if (e[n]) {
+            let r = e[n];
+            t.push(`${encodeURIComponent(n)}=${encodeURIComponent(r)}`);
           }
-        return e.join("&");
+        return t.join(`&`);
       }
-      function H(t, e) {
-        let o = null,
-          s = null,
-          n = null;
-        return function (...i) {
-          return new Promise((a, y) => {
-            (o !== null && clearTimeout(o),
-              (s = a),
-              (n = y),
-              (o = setTimeout(() => {
-                t(...i)
-                  .then((m) => {
-                    s === a && n === y && a(m);
+      function C(e, t) {
+        let n = null,
+          r = null,
+          i = null;
+        return function (...a) {
+          return new Promise((o, s) => {
+            (n !== null && clearTimeout(n),
+              (r = o),
+              (i = s),
+              (n = setTimeout(() => {
+                e(...a)
+                  .then((e) => {
+                    r === o && i === s && o(e);
                   })
-                  .catch((m) => {
-                    s === a && n === y && y(m);
+                  .catch((e) => {
+                    r === o && i === s && s(e);
                   });
-              }, e)));
+              }, t)));
           });
         };
       }
-      function I() {
-        (document.querySelectorAll(".country").forEach((s) => {
+      function w() {
+        (document.querySelectorAll(`.country`).forEach((t) => {
           if (
-            (s.addEventListener("click", () => {
-              j(s);
+            (t.addEventListener(`click`, () => {
+              O(t);
             }),
-            s.classList.contains("active"))
+            t.classList.contains(`active`))
           ) {
-            const n = s.dataset.countrycode;
-            r.country = [...r.country, n];
+            let n = t.dataset.countrycode;
+            e.country = [...e.country, n];
           }
         }),
           document
-            .querySelectorAll(".dropdown .dropdown-button")
-            .forEach((s) => s.addEventListener("click", P)));
-        const o = document.querySelectorAll(".dropdown");
-        document.addEventListener("click", (s) => {
-          o.forEach((n) => {
-            n.contains(s.target) || S(n);
+            .querySelectorAll(`.dropdown .dropdown-button`)
+            .forEach((e) => e.addEventListener(`click`, T)));
+        let t = document.querySelectorAll(`.dropdown`);
+        document.addEventListener(`click`, (e) => {
+          t.forEach((t) => {
+            t.contains(e.target) || E(t);
           });
         });
       }
-      function P(t) {
-        t.stopPropagation();
-        const e = t.target.closest(".dropdown");
-        e && (e.classList.contains("active") ? S(e) : O(e));
+      function T(e) {
+        e.stopPropagation();
+        let t = e.target.closest(`.dropdown`);
+        t && (t.classList.contains(`active`) ? E(t) : D(t));
       }
-      function S(t) {
-        const e = t.querySelector(".dropdown-content");
-        (e == null || e.classList.remove("visible"),
-          t.classList.remove("active"));
+      function E(e) {
+        let t = e.querySelector(`.dropdown-content`);
+        (t == null || t.classList.remove(`visible`),
+          e.classList.remove(`active`));
+      }
+      function D(e) {
+        let t = e.querySelector(`.dropdown-content`);
+        (t == null || t.classList.add(`visible`), e.classList.add(`active`));
       }
       function O(t) {
-        const e = t.querySelector(".dropdown-content");
-        (e == null || e.classList.add("visible"), t.classList.add("active"));
+        let n = t.classList.toggle(`active`),
+          r = t.dataset.countrycode;
+        r &&
+          (n
+            ? (e.country = [...e.country, r])
+            : (e.country = e.country.filter((e) => e !== r)),
+          k(),
+          _());
       }
-      function j(t) {
-        const e = t.classList.toggle("active"),
-          o = t.dataset.countrycode;
-        o &&
-          (e
-            ? (r.country = [...r.country, o])
-            : (r.country = r.country.filter((s) => s !== o)),
-          R(),
-          w());
+      function k() {
+        let t = document.querySelector(`.dropdown-button span`);
+        e.country.length > 0
+          ? (t.innerHTML = `Selected countries: <strong>${e.country.join(`</strong>, <strong>`)}</strong>`)
+          : (t.textContent = `Select countries`);
       }
-      function R() {
-        const t = document.querySelector(".dropdown-button span");
-        r.country.length > 0
-          ? (t.innerHTML = `Selected countries: <strong>${r.country.join("</strong>, <strong>")}</strong>`)
-          : (t.textContent = "Select countries");
-      }
-      const N = (t) => {
-        z(t).then((e) => {
-          e && (k(e.result), M(b), $(e.result), E(e.result));
+      var A = (e) => {
+        M(e).then((e) => {
+          e && (h(e.result), m(l), f(e.result), p(e.result));
         });
       };
-      function x(t) {
-        let e;
+      function j(e) {
+        let t;
         if (
-          (t && t.geometry && (e = t.geometry),
-          t && t.geometry && t.geometry.viewport)
+          (e && e.geometry && (t = e.geometry),
+          e && e.geometry && e.geometry.viewport)
         ) {
-          const { viewport: o } = e,
-            s = {
-              east: o.northeast.lng,
-              south: o.southwest.lat,
-              north: o.northeast.lat,
-              west: o.southwest.lng,
+          let { viewport: n } = t,
+            r = {
+              east: n.northeast.lng,
+              south: n.southwest.lat,
+              north: n.northeast.lat,
+              west: n.southwest.lng,
             };
-          (p.fitBounds(s, { top: 100, left: 100, bottom: 100, right: 100 }),
-            p.panTo(t.geometry.location));
+          (o.fitBounds(r, { top: 100, left: 100, bottom: 100, right: 100 }),
+            o.panTo(e.geometry.location));
         } else {
-          let o = 17;
-          (t.types[0] === "address" && (o = 18),
-            p.setZoom(o),
-            p.panTo(e.location));
+          let n = 17;
+          (e.types[0] === `address` && (n = 18),
+            o.setZoom(n),
+            o.panTo(t.location));
         }
       }
-      function z(t) {
+      function M(e) {
         return fetch(
-          `https://api.woosmap.com/localities/details/?${L({ key: h, public_id: t, fields: "shape|geometry" })}`,
-        ).then((o) => o.json());
+          `https://api.woosmap.com/localities/details/?${S({ key: t, public_id: e, fields: `shape|geometry` })}`,
+        ).then((e) => e.json());
       }
-      window.initMap = _;
+      window.initMap = d;
     </script>
     <style>
       #map {
@@ -360,9 +360,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -370,103 +372,105 @@
           Noto Color Emoji;
       }
       #autocomplete-container {
+        z-index: 1;
+        box-sizing: border-box;
+        cursor: text;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        align-items: center;
+        width: 100%;
+        max-width: 320px;
+        height: 42px;
+        padding: 0 12px;
+        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        background: #fff;
-        border-radius: 12px;
-        padding: 0 12px;
-        max-width: 320px;
-        width: 100%;
-        height: 42px;
-        border: none;
-        box-sizing: border-box;
-        align-items: center;
-        cursor: text;
-        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        height: 16px;
         width: 16px;
+        height: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        padding: 0;
-        height: 40px;
-        line-height: 24px;
         vertical-align: top;
+        text-overflow: ellipsis;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        width: 100%;
+        height: 40px;
+        margin: 0 8px;
+        padding: 0;
+        font-size: 100%;
+        line-height: 24px;
         transition-property: color;
         transition-duration: 0.3s;
-        width: 100%;
-        text-overflow: ellipsis;
-        background: transparent;
-        border-radius: 0;
-        border: 0;
-        margin: 0 8px;
-        outline: 0;
         overflow: visible;
-        appearance: textfield;
-        font-size: 100%;
       }
       .clear-searchButton {
-        display: none;
-        height: 18px;
-        width: 22px;
-        background: none;
-        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
+        background: 0 0;
+        border: none;
+        width: 22px;
+        height: 18px;
+        display: none;
       }
       #suggestions-list {
-        border-radius: 12px;
-        box-shadow:
-          0 2px 4px #0003,
-          0 -1px #00000005;
         box-sizing: border-box;
-        position: absolute;
-        max-width: 320px;
-        width: 100%;
-        top: 100%;
-        left: 0;
         z-index: 1;
-        list-style: none;
+        background-color: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 320px;
         max-height: 80vh;
         margin: 5px 0 0;
         padding: 0;
+        list-style: none;
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
         overflow-y: auto;
-        background-color: #fff;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
       }
       #suggestions-list.visible {
         display: block;
       }
       #suggestions-list li {
-        padding: 12px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        padding: 12px;
+        transition: background-color 0.3s;
       }
       #suggestions-list li:hover {
         background-color: #f2f2f2;
       }
       .dropdown {
-        position: relative;
         display: inline-block;
+        position: relative;
       }
       .dropdown ul {
-        display: block;
         list-style: none;
+        display: block;
         margin: 0 !important;
         padding: 0 !important;
       }
@@ -475,52 +479,52 @@
         border: 1px solid #e8ebee;
       }
       .dropdown.active .dropdown-button svg {
-        transform: scale(-1);
+        transform: matrix(-1, 0, 0, -1, 0, 0);
       }
       .dropdown .dropdown-button {
         cursor: pointer;
-        border: 1px solid #f9fbfd;
         background-color: #f9fbfd;
-        box-shadow:
-          0 2px 4px #0003,
-          0 -1px #00000005;
-        font-weight: 400;
+        border: 1px solid #f9fbfd;
+        border-radius: 12px;
         height: 42px;
         padding: 0 9px;
         font-size: 14px;
-        border-radius: 12px;
+        font-weight: 400;
+        box-shadow:
+          0 2px 4px #0003,
+          0 -1px #00000005;
       }
       .dropdown .dropdown-button:hover {
         background-color: #e8ebee;
         border: 1px solid #e8ebee;
       }
       .dropdown .dropdown-button strong {
-        font-size: 0.9em;
         opacity: 0.9;
+        font-size: 0.9em;
       }
       .dropdown .dropdown-button svg {
-        height: 0.75rem;
-        width: 0.75rem;
-        margin-left: 0.5rem;
-        margin-top: -0.125rem;
-        transition-duration: 0.1s;
-        transition-property: transform;
         vertical-align: middle;
-        transition-timing-function: cubic-bezier(0.07, 0.49, 0, 1.05);
         fill: #1d1d1d;
-        display: inline;
+        width: 0.75rem;
+        height: 0.75rem;
+        margin-top: -0.125rem;
+        margin-left: 0.5rem;
         padding-top: 0;
+        transition-property: transform;
+        transition-duration: 0.1s;
+        transition-timing-function: cubic-bezier(0.07, 0.49, 0, 1.05);
+        display: inline;
       }
       .dropdown .dropdown-menuitem {
         color: #1d1d1d;
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        padding: 0.5rem 1rem;
-        position: relative;
         white-space: nowrap;
-        text-decoration: none;
         cursor: pointer;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        font-size: 14px;
+        text-decoration: none;
+        display: flex;
+        position: relative;
       }
       .dropdown .dropdown-menuitem:hover {
         background-color: #e8ebee;
@@ -529,36 +533,36 @@
         border-top: 1px solid #e8ebee;
       }
       .dropdown .dropdown-content {
-        display: none;
         opacity: 0;
         visibility: hidden;
-        position: absolute;
-        min-width: 160px;
-        overflow: hidden;
-        top: 100%;
         z-index: 999;
+        min-width: 160px;
+        display: none;
+        position: absolute;
+        top: 100%;
+        overflow: hidden;
       }
       .dropdown .dropdown-content.visible {
-        display: block;
         opacity: 1;
         visibility: visible;
+        display: block;
       }
       .dropdown .dropdown-menu {
-        background-clip: padding-box;
-        background-color: #fff;
         color: #1d1d1d;
-        border-radius: 12px;
-        box-shadow:
-          #0000 0 0,
-          #0000 0 0,
-          #060b1033 0 16px 24px,
-          #060b104d 0 6px 30px,
-          #060b1066 0 8px 10px;
-        left: 0;
-        margin-top: 1px;
-        min-width: 13rem;
         -webkit-font-smoothing: subpixel-antialiased;
         -moz-osx-font-smoothing: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border-radius: 12px;
+        min-width: 13rem;
+        margin-top: 1px;
+        left: 0;
+        box-shadow:
+          0 0 #0000,
+          0 0 #0000,
+          0 16px 24px #060b1033,
+          0 6px 30px #060b104d,
+          0 8px 10px #060b1066;
       }
       #app {
         height: 100%;
@@ -577,20 +581,20 @@
         left: 335px;
       }
       .country .country-name {
-        display: flex;
         flex-grow: 1;
+        display: flex;
       }
       .country .flag-icon {
-        height: 20px;
-        width: 20px;
+        background-position: 50%;
         background-repeat: no-repeat;
         background-size: contain;
-        background-position: 50%;
-        display: flex;
+        flex-shrink: 0;
         justify-content: center;
         align-items: center;
-        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
         margin-right: 8px;
+        display: flex;
       }
       .country .flag-icon-fr {
         background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/fr.svg);
@@ -605,61 +609,61 @@
         background-image: url(https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/es.svg);
       }
       .country .active-icon-wrapper {
-        display: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.054 8.958 3.65 6.555A2.112 2.112 0 1 0 .663 9.543l3.86 3.86a2.11 2.11 0 0 0 2.054.543c.38-.084.74-.274 1.033-.568l7.77-7.77a2.114 2.114 0 0 0-2.987-2.99l-6.34 6.34z'%3E%3C/path%3E%3C/svg%3E");
-        height: 10px;
-        width: 10px;
         background-position: 50%;
         background-size: contain;
+        width: 10px;
+        height: 10px;
+        display: none;
       }
       .country.active .active-icon-wrapper {
         display: flex;
       }
       .addressDetails {
-        display: none;
-        position: absolute;
-        right: 10px;
-        bottom: 25px;
+        z-index: 1;
         border-radius: 6px;
         max-width: 240px;
+        display: none;
+        position: absolute;
+        bottom: 25px;
+        right: 10px;
+        overflow: hidden;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
-        z-index: 1;
-        overflow: hidden;
       }
       .addressDetails .info {
-        padding: 12px 16px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         background-color: #fff;
+        border-bottom: 1px solid #0000000f;
+        padding: 12px 16px;
       }
       .addressDetails .addressOptions {
-        overflow-y: auto;
-        max-height: 240px;
-        font-size: 12px;
-        padding-top: 12px;
         background-color: #fff;
+        max-height: 240px;
+        padding-top: 12px;
+        font-size: 12px;
+        overflow-y: auto;
       }
       .addressDetails .addressOptions .option-detail {
-        display: flex;
         flex-wrap: wrap;
-        padding: 0 12px 8px;
         margin: 0;
+        padding: 0 12px 8px;
+        display: flex;
       }
       .addressDetails .addressOptions .option-detail-label {
         color: #00000080;
         margin-right: 4px;
       }
       .address-components {
-        padding: 0 0 18px;
         background-color: #00000008;
+        padding: 0 0 18px;
       }
       .address-components .title {
         color: #00000080;
-        font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 1px;
         padding: 16px 12px 10px;
+        font-size: 10px;
       }
     </style>
   </head>

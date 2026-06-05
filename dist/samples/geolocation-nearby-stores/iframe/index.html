@@ -7,70 +7,70 @@
 
     <script type="module" crossorigin>
       (function () {
-        const n = document.createElement("link").relList;
-        if (n && n.supports && n.supports("modulepreload")) return;
-        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          i(t);
-        new MutationObserver((t) => {
-          for (const r of t)
-            if (r.type === "childList")
-              for (const c of r.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && i(c);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(t) {
-          const r = {};
+        function t(e) {
+          let t = {};
           return (
-            t.integrity && (r.integrity = t.integrity),
-            t.referrerPolicy && (r.referrerPolicy = t.referrerPolicy),
-            t.crossOrigin === "use-credentials"
-              ? (r.credentials = "include")
-              : t.crossOrigin === "anonymous"
-                ? (r.credentials = "omit")
-                : (r.credentials = "same-origin"),
-            r
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function i(t) {
-          if (t.ep) return;
-          t.ep = !0;
-          const r = s(t);
-          fetch(t.href, r);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      const a = "woos-48c80350-88aa-333e-835a-07f4b658a9a4";
-      let o;
-      const u = 5e4;
-      function d(e) {
+      var e = `woos-48c80350-88aa-333e-835a-07f4b658a9a4`,
+        t,
+        n = 5e4;
+      function r(e) {
         return e > 1e3
           ? `${Math.round(e / 100) / 10} km`
           : `${Math.round(e)} m`;
       }
-      function f(e) {
-        let n = `<b>${e.name}</b><br/>`;
+      function i(e) {
+        let t = `<b>${e.name}</b><br/>`;
         return (
           e.address.lines.hasOwnProperty.call(0) &&
-            (n += `${e.address.lines[0]}<br/>`),
-          (n += `${e.address.city}<br>`),
-          (n += `at <b>${d(e.distance)}</b><br/>`),
-          n
+            (t += `${e.address.lines[0]}<br/>`),
+          (t += `${e.address.city}<br>`),
+          (t += `at <b>${r(e.distance)}</b><br/>`),
+          t
         );
       }
-      function l(e) {
+      function a(e) {
         if (e && e.features && e.features.length > 0) {
-          const s = e.features[0].properties;
-          o && (o.innerHTML = f(s));
-        } else o.innerHTML = "<p>No Stores returned... (insufficient accuracy)";
+          let n = e.features[0].properties;
+          t && (t.innerHTML = i(n));
+        } else t.innerHTML = `<p>No Stores returned... (insufficient accuracy)`;
       }
-      document.addEventListener("DOMContentLoaded", () => {
-        ((o = document.getElementById("recommendation-placeholder")), m());
+      document.addEventListener(`DOMContentLoaded`, () => {
+        ((t = document.getElementById(`recommendation-placeholder`)), o());
       });
-      function m() {
+      function o() {
         fetch(
-          `https://api.woosmap.com/geolocation/stores/?key=${a}&radius=${u}`,
+          `https://api.woosmap.com/geolocation/stores/?key=${e}&radius=${n}`,
         )
           .then((e) => e.json())
           .then(({ stores: e }) => {
-            l(e);
+            a(e);
           });
       }
     </script>
@@ -90,9 +90,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -100,8 +102,8 @@
           Noto Color Emoji;
       }
       .flex {
-        display: flex;
         flex-direction: column;
+        display: flex;
       }
       .space-between {
         justify-content: space-between;

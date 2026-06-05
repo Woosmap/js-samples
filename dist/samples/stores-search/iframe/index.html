@@ -7,192 +7,193 @@
 
     <script type="module" crossorigin>
       (function () {
-        const t = document.createElement("link").relList;
-        if (t && t.supports && t.supports("modulepreload")) return;
-        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
-          i(o);
-        new MutationObserver((o) => {
-          for (const n of o)
-            if (n.type === "childList")
-              for (const a of n.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && i(a);
+        let e = document.createElement(`link`).relList;
+        if (e && e.supports && e.supports(`modulepreload`)) return;
+        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
+          n(e);
+        new MutationObserver((e) => {
+          for (let t of e)
+            if (t.type === `childList`)
+              for (let e of t.addedNodes)
+                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(o) {
-          const n = {};
+        function t(e) {
+          let t = {};
           return (
-            o.integrity && (n.integrity = o.integrity),
-            o.referrerPolicy && (n.referrerPolicy = o.referrerPolicy),
-            o.crossOrigin === "use-credentials"
-              ? (n.credentials = "include")
-              : o.crossOrigin === "anonymous"
-                ? (n.credentials = "omit")
-                : (n.credentials = "same-origin"),
-            n
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === `use-credentials`
+              ? (t.credentials = `include`)
+              : e.crossOrigin === `anonymous`
+                ? (t.credentials = `omit`)
+                : (t.credentials = `same-origin`),
+            t
           );
         }
-        function i(o) {
-          if (o.ep) return;
-          o.ep = !0;
-          const n = s(o);
-          fetch(o.href, n);
+        function n(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          let n = t(e);
+          fetch(e.href, n);
         }
       })();
-      let r,
-        c = null,
-        u;
-      const v = "greedy";
-      let p, f;
-      const w = {
+      var e,
+        t = null,
+        n,
+        r = `greedy`,
+        i,
+        a,
+        o = {
           breakPoint: 21,
           rules: [],
           default: {
-            color: "#008a2f",
+            color: `#008a2f`,
             size: 8,
             minSize: 1,
             icon: {
-              url: "https://images.woosmap.com/starbucks-marker.svg",
+              url: `https://images.woosmap.com/starbucks-marker.svg`,
               scaledSize: { height: 40, width: 34 },
             },
             selectedIcon: {
-              url: "https://images.woosmap.com/starbucks-marker-selected.svg",
+              url: `https://images.woosmap.com/starbucks-marker-selected.svg`,
               scaledSize: { height: 50, width: 43 },
             },
           },
         },
-        L = {
+        s = {
           center: { lat: 51.50940214, lng: -0.133012 },
           zoom: 12,
           styles: [
             {
-              featureType: "poi.business",
-              elementType: "labels",
-              stylers: [{ visibility: "off" }],
+              featureType: `poi.business`,
+              elementType: `labels`,
+              stylers: [{ visibility: `off` }],
             },
           ],
-          gestureHandling: v,
+          gestureHandling: r,
         },
-        l = document.getElementById("autocomplete-input"),
-        m = document.getElementById("submit-button");
-      l &&
-        m &&
-        (l.addEventListener("keydown", b), m.addEventListener("click", S));
-      function b(e) {
-        e.key === "Enter" && d(null);
+        c = document.getElementById(`autocomplete-input`),
+        l = document.getElementById(`submit-button`);
+      c &&
+        l &&
+        (c.addEventListener(`keydown`, u), l.addEventListener(`click`, d));
+      function u(e) {
+        e.key === `Enter` && g(null);
       }
-      function S() {
-        d(null);
+      function d() {
+        g(null);
       }
-      function E(e) {
-        const t = e.map(k),
-          s = document.querySelector(".stores-list");
-        (s && (s.innerHTML = t.join("")), M(e));
+      function f(e) {
+        let t = e.map(p),
+          n = document.querySelector(`.stores-list`);
+        (n && (n.innerHTML = t.join(``)), m(e));
       }
-      function k(e, t) {
-        const { name: s, address: i, contact: o, distance: n } = e.properties,
-          a = o.phone
-            ? `<div class='store-contact'><a href='tel:${o.phone}'>${o.phone}</a></div>`
-            : "",
-          g = n ? `<div class='store-distance'>${n}</div>` : "",
-          y = o.website
-            ? `<div class='store-website'><a href='${o.website}' target="_blank">go to website</a></div>`
-            : "";
+      function p(e, t) {
+        let { name: n, address: r, contact: i, distance: a } = e.properties,
+          o = i.phone
+            ? `<div class='store-contact'><a href='tel:${i.phone}'>${i.phone}</a></div>`
+            : ``,
+          s = a ? `<div class='store-distance'>${a}</div>` : ``,
+          c = i.website
+            ? `<div class='store-website'><a href='${i.website}' target="_blank">go to website</a></div>`
+            : ``;
         return `
     <div class='controls summary-store-card' data-index=${t}>
       <div>
-        <div><strong>${s} - ${i.city}</strong></div>
+        <div><strong>${n} - ${r.city}</strong></div>
         <div>
-          <div class='store-address'>${(i && i.lines && i.lines.join(", ")) || "Address not available"}</div>
-          ${a}
-          ${y}
-          ${g}
+          <div class='store-address'>${(r && r.lines && r.lines.join(`, `)) || `Address not available`}</div>
+          ${o}
+          ${c}
+          ${s}
         </div>
       </div>
     </div>`;
       }
-      function M(e) {
-        document.querySelectorAll(".summary-store-card").forEach((t) => {
-          t.addEventListener("click", () => {
+      function m(e) {
+        document.querySelectorAll(`.summary-store-card`).forEach((t) => {
+          t.addEventListener(`click`, () => {
             console.log(e[t.dataset.index]);
           });
         });
       }
-      function $(e) {
-        return l ? (e ? { latLng: e } : { address: l.value }) : null;
+      function h(e) {
+        return c ? (e ? { latLng: e } : { address: c.value }) : null;
       }
-      function d(e) {
-        const t = $(e);
+      function g(e) {
+        let t = h(e);
         t &&
-          f
+          a
             .geocode(t)
-            .then((s) => P(s))
-            .catch(h);
+            .then((e) => _(e))
+            .catch(w);
       }
-      function P(e) {
-        var s, i;
-        const t =
-          (i = (s = e.results[0]) == null ? void 0 : s.geometry) == null
+      function _(e) {
+        var t;
+        let n =
+          (t = e.results[0]) == null || (t = t.geometry) == null
             ? void 0
-            : i.location;
-        t && O(t);
+            : t.location;
+        n && v(n);
       }
-      function O(e) {
-        const t = { storesByPage: 15, latLng: e };
-        p.search(t)
-          .then((s) => B(s, e))
-          .catch(h);
+      function v(e) {
+        let t = { storesByPage: 15, latLng: e };
+        i.search(t)
+          .then((t) => y(t, e))
+          .catch(w);
       }
-      function B(e, t) {
-        e.features.length > 0 && (E(e.features), z(e.features, t), T(e));
+      function y(e, t) {
+        e.features.length > 0 && (f(e.features), S(e.features, t), b(e));
       }
-      function T(e) {
-        (r.data.forEach((t) => r.data.remove(t)), r.data.addGeoJson(e));
+      function b(t) {
+        (e.data.forEach((t) => e.data.remove(t)), e.data.addGeoJson(t));
       }
-      function q(e) {
-        const t = new woosmap.map.LatLngBounds();
+      function x(e) {
+        let t = new woosmap.map.LatLngBounds();
         return (
-          e.forEach((s) => {
+          e.forEach((e) => {
             t.extend(
               new woosmap.map.LatLng(
-                s.geometry.coordinates[1],
-                s.geometry.coordinates[0],
+                e.geometry.coordinates[1],
+                e.geometry.coordinates[0],
               ),
             );
           }),
           t
         );
       }
-      function z(e, t) {
-        if ((c && c.setMap(null), e && t)) {
-          c = new woosmap.map.Marker({
-            position: t,
+      function S(n, r) {
+        if ((t && t.setMap(null), n && r)) {
+          t = new woosmap.map.Marker({
+            position: r,
             icon: {
-              url: "https://images.woosmap.com/marker.png",
+              url: `https://images.woosmap.com/marker.png`,
               scaledSize: { height: 50, width: 32 },
             },
           });
-          const s = q(e);
-          (s.extend(t), c.setMap(r), r.fitBounds(s, {}, !0));
+          let i = x(n);
+          (i.extend(r), t.setMap(e), e.fitBounds(i, {}, !0));
         }
       }
-      function A() {
-        ((r = new window.woosmap.map.Map(document.getElementById("map"), L)),
-          (u = new woosmap.map.StoresOverlay(w)),
-          u.setMap(r),
-          r.data.setStyle((e) => ({
-            icon: e.getProperty("highlighted")
-              ? "https://images.woosmap.com/starbucks-marker-selected.svg"
-              : "https://images.woosmap.com/starbucks-marker.svg",
+      function C() {
+        ((e = new window.woosmap.map.Map(document.getElementById(`map`), s)),
+          (n = new woosmap.map.StoresOverlay(o)),
+          n.setMap(e),
+          e.data.setStyle((e) => ({
+            icon: e.getProperty(`highlighted`)
+              ? `https://images.woosmap.com/starbucks-marker-selected.svg`
+              : `https://images.woosmap.com/starbucks-marker.svg`,
           })),
-          r.addListener("click", (e) => {
-            e.latlng && d(e.latlng);
+          e.addListener(`click`, (e) => {
+            e.latlng && g(e.latlng);
           }),
-          (p = new woosmap.map.StoresService()),
-          (f = new woosmap.map.LocalitiesService()));
+          (i = new woosmap.map.StoresService()),
+          (a = new woosmap.map.LocalitiesService()));
       }
-      function h(e) {
-        console.error("Error:", e);
+      function w(e) {
+        console.error(`Error:`, e);
       }
-      window.initMap = A;
+      window.initMap = C;
     </script>
     <style>
       html,
@@ -207,9 +208,11 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
+          Noto Sans,
+          Ubuntu,
+          Cantarell,
           Helvetica Neue,
           Arial,
-          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -221,42 +224,39 @@
         display: flex;
       }
       #sidebar {
-        flex-basis: 12rem;
+        box-sizing: border-box;
         flex-grow: 1;
+        flex-basis: 12rem;
         max-width: 30rem;
         height: 100%;
-        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-basis: 70vw;
         flex-grow: 5;
+        flex-basis: 70vw;
         height: 100%;
       }
       .btn {
+        box-sizing: border-box;
+        color: #202124;
+        cursor: pointer;
         background: #3d5afe;
         border: 0;
         border-radius: 4px;
+        align-items: center;
+        height: 40px;
+        padding: 0 15px;
+        font-size: 14px;
+        font-weight: 600;
+        transition:
+          background 0.3s,
+          color 0.3s;
+        display: inline;
+        position: relative;
         box-shadow:
           0 2px 2px #00000024,
           0 1px 5px #0000001f,
           0 3px 1px -2px #0003;
-        -webkit-transition:
-          background 0.3s,
-          color 0.3s;
-        transition:
-          background 0.3s,
-          color 0.3s;
-        box-sizing: border-box;
-        font-size: 14px;
-        color: #202124;
-        cursor: pointer;
-        display: inline;
-        font-weight: 600;
-        height: 40px;
-        padding: 0 15px;
-        position: relative;
-        align-items: center;
       }
       .btn:hover {
         background: #0a2ffe;
@@ -264,26 +264,24 @@
       .btnText {
         color: #fff;
         cursor: pointer;
+        letter-spacing: 0;
         font-size: 0.875rem;
         font-weight: 500;
-        letter-spacing: 0;
         line-height: 1.25rem;
       }
       .btnText:hover {
         text-decoration: none;
       }
       #sidebar {
-        flex-basis: 25rem;
-        box-shadow: 0 -2px 4px #0000001f;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
         z-index: 1;
+        flex-direction: column;
+        flex-basis: 25rem;
+        display: flex;
+        overflow: hidden;
+        box-shadow: 0 -2px 4px #0000001f;
       }
       #stores-panel {
-        overflow: hidden;
         background: #fff;
-        overflow-y: auto;
         font-family:
           -apple-system,
           BlinkMacSystemFont,
@@ -296,56 +294,58 @@
           Droid Sans,
           Helvetica Neue,
           sans-serif;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       #stores-panel h3 {
-        padding: 2rem 1.3rem 1.3rem;
-        margin-bottom: 0;
         outline: 0;
+        margin-bottom: 0;
+        padding: 2rem 1.3rem 1.3rem;
       }
       #stores-panel ul {
-        margin: 0 !important;
         padding: 0;
         list-style: none;
+        margin: 0 !important;
       }
       #stores-panel button {
         border: none;
       }
       #search-container {
-        padding: 1rem 0.5rem;
         background: #fafbfc;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid #0003;
+        padding: 1rem 0.5rem;
       }
       #search-container #search-input-container {
-        display: flex;
         justify-content: space-between;
+        display: flex;
       }
       #search-container h3 {
         margin-top: 0;
       }
       input {
-        padding: 0.6em;
-        border: 1px solid #ccc;
-        box-shadow: inset 0 1px 3px #ddd;
-        border-radius: 4px;
         vertical-align: middle;
-        font-weight: 400;
         letter-spacing: 0.01em;
-        font-size: 1em;
-        display: inline-block;
         box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
         width: 100%;
         margin-right: 5px;
+        padding: 0.6em;
+        font-size: 1em;
+        font-weight: 400;
+        display: inline-block;
+        box-shadow: inset 0 1px 3px #ddd;
       }
       input[type="text"]:focus {
-        outline: 0;
         border-color: #03a9f4;
+        outline: 0;
       }
       .summary-store-card {
-        display: flex;
-        padding: 0.8rem;
         vertical-align: middle;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        border-bottom: 1px solid #00000014;
         justify-content: space-between;
+        padding: 0.8rem;
+        display: flex;
       }
       .summary-store-card:hover {
         background-color: #0000000a;
@@ -355,18 +355,18 @@
       }
       .store-contact a,
       .store-website a {
-        padding: 0.2em 0;
-        margin-left: 20px;
         color: #1d1d1d;
+        margin-left: 20px;
+        padding: 0.2em 0;
       }
       .store-contact a:before,
       .store-website a:before {
         content: "";
-        background-size: 16px 16px;
-        background-repeat: no-repeat;
-        padding-right: 20px;
         vertical-align: middle;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
         margin-left: -20px;
+        padding-right: 20px;
       }
       .store-contact a:before {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z'/%3E%3C/svg%3E");

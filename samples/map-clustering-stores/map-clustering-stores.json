@@ -3,6 +3,7 @@
   "description": "This sample illustrates the usage of map clustering with Stores Search API",
   "category": "Markers",
   "callback": "initMap",
+  "WOOSMAP_PUBLIC_API_KEY": "woos-6a6b502e-5f28-3280-923f-b82ea0042a3a",
   "tag": "map_clustering_stores",
   "name": "map-clustering-stores",
   "pagination": {

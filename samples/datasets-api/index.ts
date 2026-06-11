@@ -15,7 +15,7 @@ let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
 let results: HTMLOListElement;
 let resetButton: HTMLButtonElement;
 
-const datasetId = "fd2732a6-714d-4894-98ef-c0c7744a399c"; //US - Seismic Hazard Map
+const datasetId = "a01df3d6-fe7d-42df-8fee-9f31726a2641"; //US - Seismic Hazard Map
 
 function initMap(): void {
   // [START woosmap_datasets_api_instantiate_map]

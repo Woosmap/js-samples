@@ -12,7 +12,7 @@ module.exports = {
   },
 
   render({ sample }) {
-    let output = `VITE_WOOSMAP_PUBLIC_API_KEY=${sample.data.WOOSMAP_PUBLIC_API_KEY ? sample.data.WOOSMAP_PUBLIC_API_KEY : "woos-48c80350-88aa-333e-835a-07f4b658a9a4"}`;
+    let output = `VITE_WOOSMAP_PUBLIC_API_KEY=${sample.data.WOOSMAP_PUBLIC_API_KEY ? sample.data.WOOSMAP_PUBLIC_API_KEY : "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f"}`;
     if (sample.data.GOOGLE_API_KEY) {
       output += `\nVITE_GOOGLE_API_KEY=${sample.data.GOOGLE_API_KEY}`;
     }

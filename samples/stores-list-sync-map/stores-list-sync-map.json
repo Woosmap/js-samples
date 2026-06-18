@@ -3,7 +3,7 @@
   "description": "Get all stores recursively. Synchronise the store list with the map display using map bounds and contains method",
   "category": "Services",
   "callback": "initMap",
-  "WOOSMAP_PUBLIC_API_KEY": "woos-5b16337d-8364-303a-854d-86f87b480aa5",
+  "WOOSMAP_PUBLIC_API_KEY": "woos-827f14de-6e1a-3149-bc9b-1709c39677b1",
   "tag": "stores_list_sync_map",
   "name": "stores-list-sync-map",
   "pagination": {

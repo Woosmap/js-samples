@@ -224,6 +224,7 @@ async function updateDataset(datasetId: string) {
   await intersectCb(collection);
 }
 async function intersectCb(ev) {
+  if (!ev?.features?.[0]?.geometry) return;
   async function applyOperator(geometry, operator) {
     let response;
 

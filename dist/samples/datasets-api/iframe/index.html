@@ -53,7 +53,7 @@
         d,
         f,
         p,
-        m = `fd2732a6-714d-4894-98ef-c0c7744a399c`;
+        m = `a01df3d6-fe7d-42df-8fee-9f31726a2641`;
       function h() {
         ((e = new woosmap.map.Map(document.getElementById(`map`), {
           gestureHandling: `auto`,
@@ -217,7 +217,15 @@
           await D(t.getAll()));
       }
       async function D(t) {
-        async function n(e, t) {
+        var n;
+        if (
+          !(
+            !(t == null || (n = t.features) == null || (n = n[0]) == null) &&
+            n.geometry
+          )
+        )
+          return;
+        async function i(e, t) {
           let n;
           switch (t) {
             case `intersects`:
@@ -232,7 +240,7 @@
           }
           return n;
         }
-        await n(t.features[0].geometry, u.value)
+        await i(t.features[0].geometry, u.value)
           .then((t) => {
             let n = [];
             (O(t.features),
@@ -561,13 +569,13 @@
               <div class="od-container">
                 <span>Dataset</span>
                 <select id="dataset">
-                  <option value="07908ffb-14e8-46a1-a35e-5d5a305ca140">
+                  <option value="c3262b13-4884-4761-bec4-dac28abf7137">
                     US National Risk Index
                   </option>
-                  <option value="bd95d206-4822-4b78-9e82-ab724a888aeb">
+                  <option value="223a1c86-39bc-4979-a53e-afef9b8d20fd">
                     Worldwide Solar Potential
                   </option>
-                  <option selected value="fd2732a6-714d-4894-98ef-c0c7744a399c">
+                  <option selected value="a01df3d6-fe7d-42df-8fee-9f31726a2641">
                     US - Seismic Hazard Map
                   </option>
                 </select>
@@ -622,7 +630,7 @@
     </div>
 
     <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-48c80350-88aa-333e-835a-07f4b658a9a4&callback=initMap&libraries=drawing"
+      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap&libraries=drawing"
       defer
     ></script>
   </body>

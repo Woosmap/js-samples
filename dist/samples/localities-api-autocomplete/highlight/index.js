@@ -124,7 +124,7 @@ function autocompleteAddress(input, components, woosmap_key) {
   const args = {
     key: woosmap_key,
     input,
-    types: "locality|postal_code",
+    types: "locality|postal_code|address",
   };
 
   if (components !== "") {

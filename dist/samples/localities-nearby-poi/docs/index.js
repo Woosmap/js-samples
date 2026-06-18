@@ -140,7 +140,7 @@ function initMap() {
   });
   autocompleteRequest = {
     input: "",
-    types: ["locality", "postal_code"],
+    types: ["locality", "postal_code", "address"],
   };
   nearbyRequest = {
     types: "point_of_interest",

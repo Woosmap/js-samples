@@ -265,7 +265,7 @@ const storeLocatorConfig = {
         {
           type: "bose_store",
           icon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default.svg",
             scaledSize: {
               width: 24,
               height: 24,
@@ -276,7 +276,7 @@ const storeLocatorConfig = {
             },
           },
           selectedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/selected.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/selected.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -287,7 +287,7 @@ const storeLocatorConfig = {
             },
           },
           numberedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -301,7 +301,7 @@ const storeLocatorConfig = {
         {
           type: "bose_reseller",
           icon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_reseller.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_reseller.svg",
             scaledSize: {
               width: 24,
               height: 24,
@@ -312,7 +312,7 @@ const storeLocatorConfig = {
             },
           },
           selectedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/selected.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/selected.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -323,7 +323,7 @@ const storeLocatorConfig = {
             },
           },
           numberedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_reseller.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_reseller.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -337,7 +337,7 @@ const storeLocatorConfig = {
         {
           type: "professional_systems",
           icon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_professional.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_professional.svg",
             scaledSize: {
               width: 24,
               height: 24,
@@ -348,7 +348,7 @@ const storeLocatorConfig = {
             },
           },
           selectedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/selected.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/selected.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -359,7 +359,7 @@ const storeLocatorConfig = {
             },
           },
           numberedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_professional.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_professional.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -373,7 +373,7 @@ const storeLocatorConfig = {
         {
           type: "bose_excellence_centre",
           icon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_excellence.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_excellence.svg",
             scaledSize: {
               width: 24,
               height: 24,
@@ -384,7 +384,7 @@ const storeLocatorConfig = {
             },
           },
           selectedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/selected.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/selected.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -395,7 +395,7 @@ const storeLocatorConfig = {
             },
           },
           numberedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_excellence.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_excellence.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -409,7 +409,7 @@ const storeLocatorConfig = {
         {
           type: "bose_factory_store",
           icon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_factory.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_factory.svg",
             scaledSize: {
               width: 24,
               height: 24,
@@ -420,7 +420,7 @@ const storeLocatorConfig = {
             },
           },
           selectedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/selected.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/selected.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -431,7 +431,7 @@ const storeLocatorConfig = {
             },
           },
           numberedIcon: {
-            url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default_factory.svg",
+            url: "https://images.woosmap.com/icons/bose_icons/default_factory.svg",
             scaledSize: {
               width: 32,
               height: 32,
@@ -445,7 +445,7 @@ const storeLocatorConfig = {
       ],
       default: {
         icon: {
-          url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default.svg",
+          url: "https://images.woosmap.com/icons/bose_icons/default.svg",
           scaledSize: {
             width: 24,
             height: 24,
@@ -456,7 +456,7 @@ const storeLocatorConfig = {
           },
         },
         selectedIcon: {
-          url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/selected.svg",
+          url: "https://images.woosmap.com/icons/bose_icons/selected.svg",
           scaledSize: {
             width: 32,
             height: 32,
@@ -467,7 +467,7 @@ const storeLocatorConfig = {
           },
         },
         numberedIcon: {
-          url: "https://webapp-conf.woosmap.com/woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae/default.svg",
+          url: "https://images.woosmap.com/icons/bose_icons/default.svg",
           scaledSize: {
             width: 32,
             height: 32,

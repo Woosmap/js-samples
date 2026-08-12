@@ -12,12 +12,12 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.4.0
         with:
           token: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
           persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.4.0
         with:
           node-version: '22'
           cache: 'npm'
@@ -42,7 +42,7 @@ jobs:
           GH_TOKEN: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
 
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v6
+        uses: cycjimmy/semantic-release-action@v6.0.0
         with:
           extra_plugins: |
             @semantic-release/commit-analyzer

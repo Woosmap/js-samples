@@ -4,7 +4,23 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    # Hold back brand-new releases: the hours after publication are the window
+    # in which a compromised package version is most likely to still be live.
+    cooldown:
+      default-days: 7
     groups:
       dependencies:
+        patterns:
+          - "*"
+
+  # Keeps the exact action versions pinned in .github/workflows from going stale.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
         patterns:
           - "*"

@@ -8,8 +8,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.4.0
-      - uses: actions/cache@v3.5.0
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/cache@v6.1.0
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -23,7 +23,7 @@ jobs:
           rm -rf dist/samples/**/package-lock.json
           rm -rf dist/samples/**/app/.gitignore
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4.3.1
+        uses: aws-actions/configure-aws-credentials@v6.2.3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

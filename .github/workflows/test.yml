@@ -18,8 +18,8 @@ jobs:
       github.event.review.state == 'approved')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.4.0
-      - uses: actions/cache@v3.5.0
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/cache@v6.1.0
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}

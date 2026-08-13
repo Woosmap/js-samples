@@ -12,12 +12,12 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4.4.0
+      - uses: actions/checkout@v7.0.1
         with:
           token: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
           persist-credentials: false
 
-      - uses: actions/setup-node@v4.4.0
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version: '22'
           cache: 'npm'

@@ -10,6 +10,7 @@ function initMap(): void {
 
   // The map, initialized with hybrid satellite view
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     zoom: 16,
     center: position,
     mapTypeId: woosmap.map.MapTypeId.HYBRID,

@@ -16,6 +16,7 @@ let hasShape = false;
 
 function initMap(): void {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     center: {
       lat: 48.8534,
       lng: 2.3488,

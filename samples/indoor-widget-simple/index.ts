@@ -5,7 +5,7 @@ function initMap(): void {
   console.log("init map");
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
-    {},
+    { visualRefresh: true },
   );
 
   const conf: woosmap.map.IndoorRendererOptions = {

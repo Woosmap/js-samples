@@ -336,6 +336,7 @@ function displayW3wSuggestion() {
 function initMap() {
   // [START woosmap_w3w_autocomplete_initMap]
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     center: {
       lat: 48.8534,
       lng: 2.3488,

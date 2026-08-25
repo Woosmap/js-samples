@@ -31,6 +31,7 @@ function initMap(): void {
   const map = new woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
+      visualRefresh: true,
       zoom: 4,
       center: center,
     },

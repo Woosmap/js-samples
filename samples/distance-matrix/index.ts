@@ -93,6 +93,7 @@ function calculateDistances(): void {
 
 function initMap(): void {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     center: { lat: 45.53, lng: 2.4 },
     zoom: 10,
   });

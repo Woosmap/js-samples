@@ -24,6 +24,7 @@ const storesStyle: woosmap.map.Style = {
 };
 
 const mapOptions: woosmap.map.MapOptions = {
+  visualRefresh: true,
   zoom: 5,
   center: {
     lat: 46.5,

@@ -7,6 +7,7 @@ function initMap(): void {
   const directionsService = new woosmap.map.DirectionsService();
   const directionsRenderer = new woosmap.map.DirectionsRenderer({});
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     zoom: 7,
     center: {
       lat: 43.5,

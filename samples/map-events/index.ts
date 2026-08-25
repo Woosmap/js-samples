@@ -19,6 +19,7 @@ function initMap(): void {
   const map = new woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
+      visualRefresh: true,
       center: {
         lat: 51.52,
         lng: -0.13,

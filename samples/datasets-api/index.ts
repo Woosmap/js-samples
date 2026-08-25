@@ -21,6 +21,7 @@ function initMap(): void {
   // [START woosmap_datasets_api_instantiate_map]
 
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     gestureHandling: "auto",
     defaultStyle: "streets",
   });

@@ -34,6 +34,7 @@ function initMap() {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
+      visualRefresh: true,
       zoom: 9,
       center: centerLatLng,
     },

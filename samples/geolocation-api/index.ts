@@ -52,6 +52,7 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
     zoom = 11;
   }
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     center: userPosition,
     zoom,
   });

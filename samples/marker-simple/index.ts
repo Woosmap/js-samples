@@ -5,6 +5,7 @@ function initMap(): void {
   const map = new woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
+      visualRefresh: true,
       zoom: 13,
       center: center,
     },

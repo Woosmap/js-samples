@@ -59,6 +59,7 @@ const WoosmapMap: React.FC<woosmap.map.MapOptions> = ({ center, zoom }) => {
   useEffect(() => {
     if (mapRef.current && !mapInstance) {
       const map = new woosmap.map.Map(mapRef.current, {
+        visualRefresh: true,
         zoom,
         center,
       });

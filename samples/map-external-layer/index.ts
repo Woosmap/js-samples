@@ -16,6 +16,7 @@ function initMap() {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
+      visualRefresh: true,
       zoom: 15.64,
       center: centerLatLng,
       mapTypeControl: true,
@@ -78,6 +79,7 @@ function applyStyle(name: string) {
   map = new window.woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
+      visualRefresh: true,
       zoom: map.getZoom(),
       center: map.getCenter(),
       mapTypeControl: true,

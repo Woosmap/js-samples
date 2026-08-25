@@ -137,6 +137,7 @@ const data = {
 
 function initMap() {
   map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+    visualRefresh: true,
     center: {
       lat: 40,
       lng: 0,

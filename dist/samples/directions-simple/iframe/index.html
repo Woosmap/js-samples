@@ -7,91 +7,91 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          i(e);
         new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+          for (const n of e)
+            if (n.type === "childList")
+              for (const a of n.addedNodes)
+                a.tagName === "LINK" && a.rel === "modulepreload" && i(a);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function r(e) {
+          const n = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
-            t
+            e.integrity && (n.integrity = e.integrity),
+            e.referrerPolicy && (n.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (n.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (n.credentials = "omit")
+                : (n.credentials = "same-origin"),
+            n
           );
         }
-        function n(e) {
+        function i(e) {
           if (e.ep) return;
           e.ep = !0;
-          let n = t(e);
+          const n = r(e);
           fetch(e.href, n);
         }
       })();
-      var e, t, n;
-      function r() {
-        let r = new woosmap.map.DirectionsService(),
-          a = new woosmap.map.DirectionsRenderer({});
-        ((e = new woosmap.map.Map(document.getElementById(`map`), {
+      let c, d, s;
+      function f() {
+        const o = new woosmap.map.DirectionsService(),
+          t = new woosmap.map.DirectionsRenderer({});
+        ((c = new woosmap.map.Map(document.getElementById("map"), {
           zoom: 7,
           center: { lat: 43.5, lng: 2.4 },
         })),
-          a.setMap(e));
-        let o = () => {
-          i(r, a);
+          t.setMap(c));
+        const r = () => {
+          l(o, t);
         };
-        ((t = document.getElementById(`from`)),
-          (n = document.getElementById(`to`)),
-          t.addEventListener(`change`, o),
-          n.addEventListener(`change`, o),
-          i(r, a));
+        ((d = document.getElementById("from")),
+          (s = document.getElementById("to")),
+          d.addEventListener("change", r),
+          s.addEventListener("change", r),
+          l(o, t));
       }
-      function i(e, r) {
-        let i = (e) => {
-          e &&
-            ((document.getElementById(`distance`).innerText =
-              e.legs[0].distance.text),
-            (document.getElementById(`duration`).innerText =
-              e.legs[0].duration.text));
+      function l(o, t) {
+        const r = (i) => {
+          i &&
+            ((document.getElementById("distance").innerText =
+              i.legs[0].distance.text),
+            (document.getElementById("duration").innerText =
+              i.legs[0].duration.text));
         };
-        e.route(
-          { origin: a(t), destination: a(n), provideRouteAlternatives: !0 },
-          (e, t) => {
-            t === `OK`
-              ? (r.setDirections(e),
-                i(e.routes[0]),
-                r.addListener(`routeIndex_changed`, () => {
-                  i(e.routes[r.get(`routeIndex`)]);
+        o.route(
+          { origin: u(d), destination: u(s), provideRouteAlternatives: !0 },
+          (i, e) => {
+            e === "OK"
+              ? (t.setDirections(i),
+                r(i.routes[0]),
+                t.addListener("routeIndex_changed", () => {
+                  r(i.routes[t.get("routeIndex")]);
                 }))
-              : window.alert(`Directions request failed due to ${t}`);
+              : window.alert(`Directions request failed due to ${e}`);
           },
         );
       }
-      function a(e) {
-        var t, n;
+      function u(o) {
+        var t, r;
         return {
           lat: parseFloat(
-            (t = e.options[e.selectedIndex]) == null
+            (t = o.options[o.selectedIndex]) == null
               ? void 0
-              : t.getAttribute(`data-lat`),
+              : t.getAttribute("data-lat"),
           ),
           lng: parseFloat(
-            (n = e.options[e.selectedIndex]) == null
+            (r = o.options[o.selectedIndex]) == null
               ? void 0
-              : n.getAttribute(`data-lng`),
+              : r.getAttribute("data-lng"),
           ),
         };
       }
-      window.initMap = r;
+      window.initMap = f;
     </script>
     <style>
       #map {
@@ -109,11 +109,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -121,23 +119,23 @@
           Noto Color Emoji;
       }
       #od-selector {
-        z-index: 1;
-        background-color: #fff;
-        border-radius: 3px;
         width: 200px;
-        margin: 10px;
-        padding: 5px;
         position: absolute;
         top: 0;
         left: 0;
-        overflow: hidden;
+        background-color: #fff;
+        border-radius: 3px;
         box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
       }
       .od-container {
-        justify-content: space-between;
-        width: 100%;
         padding: 2px 0;
+        width: 100%;
         display: flex;
+        justify-content: space-between;
       }
       #od-selector span {
         padding: 0 5px;

@@ -9,124 +9,124 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
-        new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+        const e = document.createElement("link").relList;
+        if (e && e.supports && e.supports("modulepreload")) return;
+        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
+          r(o);
+        new MutationObserver((o) => {
+          for (const s of o)
+            if (s.type === "childList")
+              for (const E of s.addedNodes)
+                E.tagName === "LINK" && E.rel === "modulepreload" && r(E);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function i(o) {
+          const s = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
-            t
+            o.integrity && (s.integrity = o.integrity),
+            o.referrerPolicy && (s.referrerPolicy = o.referrerPolicy),
+            o.crossOrigin === "use-credentials"
+              ? (s.credentials = "include")
+              : o.crossOrigin === "anonymous"
+                ? (s.credentials = "omit")
+                : (s.credentials = "same-origin"),
+            s
           );
         }
-        function n(e) {
-          if (e.ep) return;
-          e.ep = !0;
-          let n = t(e);
-          fetch(e.href, n);
+        function r(o) {
+          if (o.ep) return;
+          o.ep = !0;
+          const s = i(o);
+          fetch(o.href, s);
         }
       })();
-      var e = {
-          maps: { provider: `woosmap`, localities: { types: [] } },
+      const c = {
+          maps: { provider: "woosmap", localities: { types: [] } },
           datasource: { max_responses: 5, max_distance: 0 },
-          theme: { primary_color: `#00754a` },
+          theme: { primary_color: "#00754a" },
           woosmapview: {
             initialCenter: { lat: 51.50940214, lng: -0.133012 },
             initialZoom: 15,
             breakPoint: 16,
-            tileStyle: { color: `#00754a`, size: 13, minSize: 5 },
+            tileStyle: { color: "#00754a", size: 13, minSize: 5 },
             style: {
               default: {
                 icon: {
-                  url: `https://images.woosmap.com/starbucks-marker.svg`,
+                  url: "https://images.woosmap.com/starbucks-marker.svg",
                   scaledSize: { height: 40, width: 34 },
                 },
                 selectedIcon: {
-                  url: `https://images.woosmap.com/starbucks-marker-selected.svg`,
+                  url: "https://images.woosmap.com/starbucks-marker-selected.svg",
                   scaledSize: { height: 50, width: 43 },
                 },
               },
             },
           },
         },
-        t = [
-          `AUTOCOMPLETE`,
-          `EMAIL_CLICK`,
-          `FAVORITED`,
-          `GEOCODE`,
-          `GET_DIRECTIONS`,
-          `LOCATION_SELECTED`,
-          `PHONE_CLICK`,
-          `SELECT_DIRECTION`,
-          `SELECT_STORE`,
+        l = [
+          "AUTOCOMPLETE",
+          "EMAIL_CLICK",
+          "FAVORITED",
+          "GEOCODE",
+          "GET_DIRECTIONS",
+          "LOCATION_SELECTED",
+          "PHONE_CLICK",
+          "SELECT_DIRECTION",
+          "SELECT_STORE",
         ];
-      function n() {
-        let e = document.getElementById(`sidebar`);
-        e.innerHTML = t
+      function a() {
+        const t = document.getElementById("sidebar");
+        t.innerHTML = l
           .map((e) => `<div class="event" id="${e}">${e}</div>`)
-          .join(``);
+          .join("");
       }
-      function r(e) {
-        let t = document.getElementById(e);
-        (t.classList.remove(`inactive`),
-          t.classList.add(`event`, `active`),
+      function n(t) {
+        const e = document.getElementById(t);
+        (e.classList.remove("inactive"),
+          e.classList.add("event", "active"),
           window.setTimeout(() => {
-            (t.classList.remove(`active`), t.classList.add(`inactive`));
+            (e.classList.remove("active"), e.classList.add("inactive"));
           }, 1e3));
       }
-      function i() {
+      function d() {
         return window.innerWidth < 500;
       }
-      function a() {
-        let t = new window.WebApp(
-          `map`,
-          `woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f`,
+      function O() {
+        const t = new window.WebApp(
+          "map",
+          "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
         );
-        (n(),
+        (a(),
           t.listenOn(t.HANDLED_EVENT.SELECT_STORE, (e) => {
-            (console.log(e), r(`SELECT_STORE`));
+            (console.log(e), n("SELECT_STORE"));
           }),
-          t.listenOn(t.HANDLED_EVENT.PHONE_CLICK, (e, t) => {
-            (console.log(e, t), r(`PHONE_CLICK`));
+          t.listenOn(t.HANDLED_EVENT.PHONE_CLICK, (e, i) => {
+            (console.log(e, i), n("PHONE_CLICK"));
           }),
-          t.listenOn(t.HANDLED_EVENT.EMAIL_CLICK, (e, t) => {
-            (console.log(e, t), r(`EMAIL_CLICK`));
+          t.listenOn(t.HANDLED_EVENT.EMAIL_CLICK, (e, i) => {
+            (console.log(e, i), n("EMAIL_CLICK"));
           }),
           t.listenOn(t.HANDLED_EVENT.LOCATION_SELECTED, (e) => {
-            (console.log(e), r(`LOCATION_SELECTED`));
+            (console.log(e), n("LOCATION_SELECTED"));
           }),
           t.listenOn(t.HANDLED_EVENT.GEOCODE, (e) => {
-            (console.log(e), r(`GEOCODE`));
+            (console.log(e), n("GEOCODE"));
           }),
           t.listenOn(t.HANDLED_EVENT.AUTOCOMPLETE, (e) => {
-            (console.log(e), r(`AUTOCOMPLETE`));
+            (console.log(e), n("AUTOCOMPLETE"));
           }),
-          t.listenOn(t.HANDLED_EVENT.GET_DIRECTIONS, (e, t, n) => {
-            (console.log(e, t, n), r(`GET_DIRECTIONS`));
+          t.listenOn(t.HANDLED_EVENT.GET_DIRECTIONS, (e, i, r) => {
+            (console.log(e, i, r), n("GET_DIRECTIONS"));
           }),
           t.listenOn(t.HANDLED_EVENT.SELECT_DIRECTION, (e) => {
-            (console.log(e), r(`SELECT_DIRECTION`));
+            (console.log(e), n("SELECT_DIRECTION"));
           }),
           t.listenOn(t.HANDLED_EVENT.FAVORITED, (e) => {
-            (console.log(e), r(`FAVORITED`));
+            (console.log(e), n("FAVORITED"));
           }),
-          t.setConf(e),
-          t.render(i()));
+          t.setConf(c),
+          t.render(d()));
       }
-      a();
+      O();
     </script>
     <style>
       #container {
@@ -134,16 +134,19 @@
         display: flex;
       }
       #sidebar {
-        box-sizing: border-box;
-        flex-grow: 1;
         flex-basis: 12rem;
+        flex-grow: 1;
         max-width: 30rem;
         height: 100%;
+        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-grow: 5;
         flex-basis: 70vw;
+        flex-grow: 5;
+        height: 100%;
+      }
+      #map {
         height: 100%;
       }
       html,
@@ -158,11 +161,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -175,14 +176,14 @@
           monospace;
       }
       .event {
-        padding: 0.5em;
-        font-size: 14px;
         transition: background-color 0.5s ease-out;
+        padding: 0.5em;
         overflow: hidden;
+        font-size: 14px;
       }
       .active {
-        color: #000;
         background-color: #fd0;
+        color: #000;
       }
       .inactive {
         background-color: #fff;

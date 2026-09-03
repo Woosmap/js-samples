@@ -7,119 +7,121 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
-        new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+        const e = document.createElement("link").relList;
+        if (e && e.supports && e.supports("modulepreload")) return;
+        for (const s of document.querySelectorAll('link[rel="modulepreload"]'))
+          r(s);
+        new MutationObserver((s) => {
+          for (const t of s)
+            if (t.type === "childList")
+              for (const i of t.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && r(i);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function n(s) {
+          const t = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
+            s.integrity && (t.integrity = s.integrity),
+            s.referrerPolicy && (t.referrerPolicy = s.referrerPolicy),
+            s.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : s.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
             t
           );
         }
-        function n(e) {
-          if (e.ep) return;
-          e.ep = !0;
-          let n = t(e);
-          fetch(e.href, n);
+        function r(s) {
+          if (s.ep) return;
+          s.ep = !0;
+          const t = n(s);
+          fetch(s.href, t);
         }
       })();
-      var e,
-        t = `woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f`;
-      function n() {
-        fetch(`https://api.woosmap.com/geolocation/position/?key=${t}`)
-          .then((e) => e.json())
-          .then((e) => {
-            (r(e), i(e));
+      let l;
+      const f = "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f";
+      function c() {
+        fetch(`https://api.woosmap.com/geolocation/position/?key=${f}`)
+          .then((o) => o.json())
+          .then((o) => {
+            (p(o), u(o));
           });
       }
-      function r({ latitude: t, accuracy: n, longitude: r, viewport: i }) {
-        let a = { lat: t, lng: r },
-          s = 12;
+      function p({ latitude: o, accuracy: e, longitude: n, viewport: r }) {
+        const s = { lat: o, lng: n };
+        let t = 12;
         if (
-          (n > 200
-            ? (s = 4)
-            : n > 50
-              ? (s = 5)
-              : n > 25
-                ? (s = 8)
-                : n > 10
-                  ? (s = 9)
-                  : n > 5
-                    ? (s = 10)
-                    : n > 1 && (s = 11),
-          (e = new woosmap.map.Map(document.getElementById(`map`), {
-            center: a,
-            zoom: s,
+          (e > 200
+            ? (t = 4)
+            : e > 50
+              ? (t = 5)
+              : e > 25
+                ? (t = 8)
+                : e > 10
+                  ? (t = 9)
+                  : e > 5
+                    ? (t = 10)
+                    : e > 1 && (t = 11),
+          (l = new woosmap.map.Map(document.getElementById("map"), {
+            center: s,
+            zoom: t,
           })),
-          i)
+          r)
         ) {
-          let t = {
-            east: i.northeast.lng,
-            south: i.southwest.lat,
-            north: i.northeast.lat,
-            west: i.southwest.lng,
+          const a = {
+            east: r.northeast.lng,
+            south: r.southwest.lat,
+            north: r.northeast.lat,
+            west: r.southwest.lng,
           };
-          (e.fitBounds(t), o(t));
+          (l.fitBounds(a), m(a));
         }
         new woosmap.map.Marker({
-          position: a,
-          icon: { url: `https://images.woosmap.com/user-position-small.png` },
-        }).setMap(e);
+          position: s,
+          icon: { url: "https://images.woosmap.com/user-position-small.png" },
+        }).setMap(l);
       }
-      function i(e) {
-        let t = [];
-        t.push(a(e));
-        let n = document.getElementById(`response`);
-        n && ((n.innerHTML = t.join(``)), (n.style.display = `block`));
+      function u(o) {
+        const e = [];
+        e.push(d(o));
+        const n = document.getElementById("response");
+        n && ((n.innerHTML = e.join("")), (n.style.display = "block"));
       }
-      function a(e) {
+      function d(o) {
         return (
-          typeof e != `string` && (e = JSON.stringify(e, void 0, 2)),
-          (e = e
-            .replace(/&/g, `&amp;`)
-            .replace(/</g, `&lt;`)
-            .replace(/>/g, `&gt;`)),
-          e.replace(
+          typeof o != "string" && (o = JSON.stringify(o, void 0, 2)),
+          (o = o
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")),
+          o.replace(
             /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\\-]?\d+)?)/g,
             (e) => {
-              let t = `number`;
+              let n = "number";
               return (
                 /^"/.test(e)
-                  ? (t = /:$/.test(e) ? `key` : `string`)
+                  ? /:$/.test(e)
+                    ? (n = "key")
+                    : (n = "string")
                   : /true|false/.test(e)
-                    ? (t = `boolean`)
-                    : /null/.test(e) && (t = `null`),
-                `<span class="` + t + `">` + e + `</span>`
+                    ? (n = "boolean")
+                    : /null/.test(e) && (n = "null"),
+                '<span class="' + n + '">' + e + "</span>"
               );
             },
           )
         );
       }
-      function o(t) {
+      function m(o) {
         new woosmap.map.Rectangle({
-          bounds: t,
-          strokeColor: `#b71c1c`,
+          bounds: o,
+          strokeColor: "#b71c1c",
           strokeOpacity: 0.5,
           strokeWeight: 2,
-          fillColor: `#b71c1c`,
+          fillColor: "#b71c1c",
           fillOpacity: 0.2,
-        }).setMap(e);
+        }).setMap(l);
       }
-      window.initMap = n;
+      window.initMap = c;
     </script>
     <style>
       html,
@@ -134,11 +136,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -150,21 +150,21 @@
         display: flex;
       }
       #sidebar {
-        box-sizing: border-box;
-        flex-grow: 1;
         flex-basis: 12rem;
+        flex-grow: 1;
         max-width: 30rem;
         height: 100%;
+        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-grow: 5;
         flex-basis: 70vw;
+        flex-grow: 5;
         height: 100%;
       }
       #sidebar {
-        flex-basis: 25rem;
         padding: 5px;
+        flex-basis: 25rem;
       }
       pre .string {
         color: green;

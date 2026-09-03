@@ -7,80 +7,80 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          c(e);
         new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+          for (const o of e)
+            if (o.type === "childList")
+              for (const i of o.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && c(i);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function r(e) {
+          const o = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
-            t
+            e.integrity && (o.integrity = e.integrity),
+            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
           );
         }
-        function n(e) {
+        function c(e) {
           if (e.ep) return;
           e.ep = !0;
-          let n = t(e);
-          fetch(e.href, n);
+          const o = r(e);
+          fetch(e.href, o);
         }
       })();
-      var e = [
-        `bounds_changed`,
-        `center_changed`,
-        `click`,
-        `dblclick`,
-        `drag`,
-        `dragend`,
-        `dragstart`,
-        `idle`,
-        `mousemove`,
-        `mouseout`,
-        `mouseover`,
-        `rightclick`,
-        `zoom_changed`,
+      const s = [
+        "bounds_changed",
+        "center_changed",
+        "click",
+        "dblclick",
+        "drag",
+        "dragend",
+        "dragstart",
+        "idle",
+        "mousemove",
+        "mouseout",
+        "mouseover",
+        "rightclick",
+        "zoom_changed",
       ];
-      function t() {
-        let t = new woosmap.map.Map(document.getElementById(`map`), {
+      function a() {
+        const n = new woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 51.52, lng: -0.13 },
           zoom: 10,
         });
-        (n(),
-          e.forEach((e) => {
-            t.addListener(e, () => {
-              r(e);
+        (d(),
+          s.forEach((t) => {
+            n.addListener(t, () => {
+              l(t);
             });
           }));
       }
-      function n() {
-        let t = document.getElementById(`sidebar`),
-          n = [];
-        (e.forEach((e) => {
-          n.push(`<div class="event" id="${e}">${e}</div>`);
+      function d() {
+        const n = document.getElementById("sidebar"),
+          t = [];
+        (s.forEach((r) => {
+          t.push(`<div class="event" id="${r}">${r}</div>`);
         }),
-          (t.innerHTML = n.join(``)));
+          (n.innerHTML = t.join("")));
       }
-      function r(e) {
-        let t = document.getElementById(e);
+      function l(n) {
+        const t = document.getElementById(n);
         t &&
-          ((t.className = `event active`),
+          ((t.className = "event active"),
           setTimeout(() => {
-            t.className = `event inactive`;
+            t.className = "event inactive";
           }, 1e3));
       }
-      window.initMap = t;
+      window.initMap = a;
     </script>
     <style>
       html,
@@ -95,11 +95,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -111,16 +109,16 @@
         display: flex;
       }
       #sidebar {
-        box-sizing: border-box;
-        flex-grow: 1;
         flex-basis: 12rem;
+        flex-grow: 1;
         max-width: 30rem;
         height: 100%;
+        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-grow: 5;
         flex-basis: 70vw;
+        flex-grow: 5;
         height: 100%;
       }
       .events {
@@ -129,14 +127,14 @@
           monospace;
       }
       .event {
-        padding: 0.5em;
-        font-size: 14px;
         transition: background-color 0.5s ease-out;
+        padding: 0.5em;
         overflow: hidden;
+        font-size: 14px;
       }
       .active {
-        color: #000;
         background-color: #fd0;
+        color: #000;
       }
       .inactive {
         background-color: #fff;

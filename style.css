@@ -1,0 +1,237 @@
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+  height: 100%;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#autocomplete-container {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  background: #fff;
+  border-radius: 12px;
+  padding: 0 12px;
+  max-width: 320px;
+  width: 100%;
+  height: 42px;
+  border: none;
+  box-sizing: border-box;
+  align-items: center;
+  cursor: text;
+  font-size: 15px;
+}
+
+#autocomplete-container .search-icon, #autocomplete-container .clear-icon {
+  color: inherit;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+#autocomplete-container .clear-icon {
+  transform: scale(1.3);
+}
+
+#autocomplete-input {
+  box-sizing: border-box;
+  padding: 0;
+  height: 40px;
+  line-height: 24px;
+  vertical-align: top;
+  transition-property: color;
+  transition-duration: 0.3s;
+  width: 100%;
+  text-overflow: ellipsis;
+  background: transparent;
+  border-radius: 0;
+  border: 0;
+  margin: 0 8px;
+  outline: 0;
+  overflow: visible;
+  appearance: textfield;
+  font-size: 100%;
+}
+
+.clear-searchButton {
+  display: none;
+  height: 18px;
+  width: 22px;
+  background: none;
+  border: none;
+  vertical-align: middle;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+#app {
+  height: 100%;
+}
+
+.btn {
+  background: #3d5afe;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  -webkit-transition: background 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #202124;
+  cursor: pointer;
+  display: inline;
+  font-weight: 600;
+  height: 38px;
+  padding: 0 15px;
+  position: relative;
+  align-items: center;
+}
+.btn:hover {
+  background: rgb(10.2615384615, 46.8461538462, 253.7384615385);
+}
+
+.btnText {
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25rem;
+}
+.btnText:hover {
+  text-decoration: none;
+}
+
+#response-panel {
+  position: absolute;
+  right: 10px;
+  bottom: 25px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 5px;
+  overflow: hidden;
+  z-index: 1;
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(40vh - 25px);
+  overflow-y: auto;
+  padding: 0;
+  font-size: 13px;
+}
+#response-panel .panel-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+#response-panel .panel-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+#response-panel .panel-hint {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+}
+#response-panel .section-title {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 14px 12px 8px 12px;
+}
+#response-panel .summary,
+#response-panel .address-components {
+  background-color: #fff;
+}
+#response-panel .address-components {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+#response-panel .option-detail {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 12px 8px 12px;
+  margin: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+#response-panel .option-detail-label {
+  color: rgba(0, 0, 0, 0.5);
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+#response-panel .bold {
+  font-weight: 700;
+}
+#response-panel .raw-json-details {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+#response-panel .raw-json-details summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-weight: 600;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#response-panel .raw-json-details .copy-btn {
+  background: transparent;
+  border: 0;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5);
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease-in-out;
+}
+#response-panel .raw-json-details .copy-btn:hover, #response-panel .raw-json-details .copy-btn:focus {
+  color: #3d5afe;
+  outline: none;
+}
+#response-panel .raw-json-details .copy-btn .icon-check {
+  display: none;
+  color: #2e7d32;
+}
+#response-panel .raw-json-details .copy-btn.copied {
+  color: #2e7d32;
+}
+#response-panel .raw-json-details .copy-btn.copied .icon-copy {
+  display: none;
+}
+#response-panel .raw-json-details .copy-btn.copied .icon-check {
+  display: inline-block;
+}
+#response-panel .raw-json-details pre {
+  margin: 0 10px 10px 10px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  background-color: #fafafa;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  font-size: 12px;
+  font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+#response-panel[data-empty=true] .summary,
+#response-panel[data-empty=true] .address-components,
+#response-panel[data-empty=true] .raw-json-details {
+  display: none;
+}
+

@@ -7,67 +7,67 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
+        const r = document.createElement("link").relList;
+        if (r && r.supports && r.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          o(e);
         new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+          for (const t of e)
+            if (t.type === "childList")
+              for (const n of t.addedNodes)
+                n.tagName === "LINK" && n.rel === "modulepreload" && o(n);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function s(e) {
+          const t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
             e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
+            e.crossOrigin === "use-credentials"
+              ? (t.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
             t
           );
         }
-        function n(e) {
+        function o(e) {
           if (e.ep) return;
           e.ep = !0;
-          let n = t(e);
-          fetch(e.href, n);
+          const t = s(e);
+          fetch(e.href, t);
         }
       })();
-      function e() {
-        let e = { lat: 51.52, lng: -0.13 },
-          t = {
+      function c() {
+        const i = { lat: 51.52, lng: -0.13 },
+          r = {
             breakPoint: 14,
             rules: [],
             default: {
-              color: `#008a2f`,
+              color: "#008a2f",
               size: 8,
               minSize: 1,
               icon: {
-                url: `https://images.woosmap.com/starbucks-marker.svg`,
+                url: "https://images.woosmap.com/starbucks-marker.svg",
                 scaledSize: { height: 40, width: 34 },
               },
               selectedIcon: {
-                url: `https://images.woosmap.com/starbucks-marker-selected.svg`,
+                url: "https://images.woosmap.com/starbucks-marker-selected.svg",
                 scaledSize: { height: 50, width: 43 },
               },
             },
           },
-          n = new woosmap.map.Map(document.getElementById(`map`), {
+          s = new woosmap.map.Map(document.getElementById("map"), {
             zoom: 8,
-            center: e,
+            center: i,
           }),
-          r = new woosmap.map.StoresOverlay(t);
-        r.setMap(n);
-        let i = document.getElementById(`toggleQuery`);
-        i.onchange = function () {
-          i.checked ? r.setQuery(`tag:"DT"`) : r.setQuery(null);
+          o = new woosmap.map.StoresOverlay(r);
+        o.setMap(s);
+        const e = document.getElementById("toggleQuery");
+        e.onchange = function () {
+          e.checked ? o.setQuery('tag:"DT"') : o.setQuery(null);
         };
       }
-      window.initMap = e;
+      window.initMap = c;
     </script>
     <style>
       #map {
@@ -85,11 +85,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -101,31 +99,31 @@
         display: inline-block;
       }
       .toggle:hover .toggle-switch:before {
-        background: linear-gradient(#fff 0%, #fff 100%);
+        background: linear-gradient(to bottom, #fff 0% 100%);
         box-shadow: 0 0 0 1px #00000080;
       }
       .toggle-switch {
-        vertical-align: middle;
+        display: inline-block;
         background: #ccc;
         border-radius: 16px;
         width: 58px;
         height: 32px;
-        transition: background 0.25s;
-        display: inline-block;
         position: relative;
+        vertical-align: middle;
+        transition: background 0.25s;
       }
       .toggle-switch:before {
         content: "";
-        background: linear-gradient(#fff 0%, #eee 100%);
+        display: block;
+        background: linear-gradient(to bottom, #fff, #eee);
         border-radius: 50%;
+        box-shadow: 0 0 0 1px #00000040;
         width: 24px;
         height: 24px;
-        transition: left 0.25s;
-        display: block;
         position: absolute;
         top: 4px;
         left: 4px;
-        box-shadow: 0 0 0 1px #00000040;
+        transition: left 0.25s;
       }
       .toggle-switch:after {
         content: "";
@@ -137,8 +135,8 @@
         left: 30px;
       }
       .toggle-checkbox {
-        visibility: hidden;
         position: absolute;
+        visibility: hidden;
       }
       .toggle-label {
         margin-left: 5px;
@@ -146,16 +144,16 @@
         top: 2px;
       }
       #map-panel {
-        z-index: 1;
-        background-color: #fff;
-        border-radius: 3px;
-        margin: 10px;
-        padding: 5px;
         position: absolute;
         top: 0;
         left: 0;
-        overflow: hidden;
+        background-color: #fff;
+        border-radius: 3px;
         box-shadow: 0 0 0 2px #0000001a;
+        margin: 10px;
+        padding: 5px;
+        overflow: hidden;
+        z-index: 1;
       }
     </style>
   </head>

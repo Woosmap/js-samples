@@ -7,63 +7,62 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
+        const r = document.createElement("link").relList;
+        if (r && r.supports && r.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          t(e);
         new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+          for (const o of e)
+            if (o.type === "childList")
+              for (const i of o.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && t(i);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function n(e) {
+          const o = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
-            t
+            e.integrity && (o.integrity = e.integrity),
+            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (o.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
           );
         }
-        function n(e) {
+        function t(e) {
           if (e.ep) return;
           e.ep = !0;
-          let n = t(e);
-          fetch(e.href, n);
+          const o = n(e);
+          fetch(e.href, o);
         }
       })();
-      var e;
-      function t() {
-        (console.log(`init map`),
-          (e = new window.woosmap.map.Map(document.getElementById(`map`), {})));
-        let t = new woosmap.map.IndoorWidget(
-          { units: `metric` },
-          { defaultFloor: 0, venue: `gdn_doc`, responsive: `desktop` },
-        );
-        (t.setMap(e),
-          t.addListener(`indoor_feature_selected`, (e) => {
-            console.log(`Feature: `, e);
+      let s;
+      function c() {
+        (console.log("init map"),
+          (s = new window.woosmap.map.Map(document.getElementById("map"), {})));
+        const d = { defaultFloor: 0, venue: "gdn_doc", responsive: "desktop" },
+          r = { units: "metric" },
+          n = new woosmap.map.IndoorWidget(r, d);
+        (n.setMap(s),
+          n.addListener("indoor_feature_selected", (t) => {
+            console.log("Feature: ", t);
           }),
-          t.addListener(`indoor_venue_loaded`, (t) => {
-            (console.log(`Venue: `, t),
-              e.fitBounds(
+          n.addListener("indoor_venue_loaded", (t) => {
+            (console.log("Venue: ", t),
+              s.fitBounds(
                 new woosmap.map.LatLngBounds(
                   { lat: 48.88115758013444, lng: 2.3562935123187856 },
                   { lat: 48.87945292784522, lng: 2.3539262034398405 },
                 ),
               ),
-              n());
+              l());
           }));
       }
-      var n = () => {
-        document.querySelector(`.progress`).remove();
+      const l = () => {
+        document.querySelector(".progress").remove();
       };
-      window.initMap = t;
+      window.initMap = c;
     </script>
     <style>
       #map {
@@ -81,11 +80,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -96,24 +93,24 @@
         height: 100%;
       }
       .progress {
-        z-index: 9999;
-        background: #fff;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        display: flex;
         position: fixed;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
       }
       .progress .spinner {
         border: 10px solid #f3f3f3;
-        border-top-color: #444;
+        border-top: 10px solid #444444;
         border-radius: 50%;
         width: 70px;
         height: 70px;
-        animation: 1s linear infinite spin;
+        animation: spin 1s linear infinite;
       }
     </style>
   </head>

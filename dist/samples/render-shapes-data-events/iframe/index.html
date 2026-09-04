@@ -7,95 +7,91 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          l(e);
         new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+          for (const n of e)
+            if (n.type === "childList")
+              for (const s of n.addedNodes)
+                s.tagName === "LINK" && s.rel === "modulepreload" && l(s);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function o(e) {
+          const n = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
-            t
+            e.integrity && (n.integrity = e.integrity),
+            e.referrerPolicy && (n.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
+              ? (n.credentials = "include")
+              : e.crossOrigin === "anonymous"
+                ? (n.credentials = "omit")
+                : (n.credentials = "same-origin"),
+            n
           );
         }
-        function n(e) {
+        function l(e) {
           if (e.ep) return;
           e.ep = !0;
-          let n = t(e);
+          const n = o(e);
           fetch(e.href, n);
         }
       })();
-      var e,
-        t = [
-          `click`,
-          `mousedown`,
-          `dbclick`,
-          `mouseup`,
-          `mousemove`,
-          `mouseenter`,
-          `mouseout`,
-          `mouseover`,
-          `rightclick`,
-        ];
-      function n() {
-        let e = document.getElementById(`sidebar`),
-          n = ``;
-        for (let e = 0; e < t.length; e++)
-          n += `<div class="event" id="${t[e]}">${t[e]}</div>`;
-        e && (e.innerHTML = n);
+      let a;
+      const i = [
+        "click",
+        "mousedown",
+        "dbclick",
+        "mouseup",
+        "mousemove",
+        "mouseenter",
+        "mouseout",
+        "mouseover",
+        "rightclick",
+      ];
+      function c() {
+        const r = document.getElementById("sidebar");
+        let t = "";
+        for (let o = 0; o < i.length; o++)
+          t += `<div class="event" id="${i[o]}">${i[o]}</div>`;
+        r && (r.innerHTML = t);
       }
-      function r(e) {
-        let t = document.getElementById(e);
+      function u(r) {
+        const t = document.getElementById(r);
         t &&
-          ((t.className = `event active`),
+          ((t.className = "event active"),
           setTimeout(() => {
-            t.className = `event inactive`;
+            t.className = "event inactive";
           }, 1e3));
       }
-      function i() {
-        ((e = new window.woosmap.map.Map(document.getElementById(`map`), {
+      function d() {
+        a = new window.woosmap.map.Map(document.getElementById("map"), {
           center: { lat: 29.65, lng: -97.74 },
           zoom: 6,
-        })),
-          e.data.add({
-            geometry: new woosmap.map.Data.Polygon([
-              [
-                { lat: 28.59, lng: -100.65 },
-                { lat: 28.59, lng: -96.08 },
-                { lat: 31.33, lng: -96.08 },
-                { lat: 31.33, lng: -100.65 },
-                { lat: 28.59, lng: -100.65 },
-              ],
-              [
-                { lat: 29.07, lng: -98.81 },
-                { lat: 29.07, lng: -96.63 },
-                { lat: 30.16, lng: -96.63 },
-                { lat: 30.16, lng: -98.81 },
-                { lat: 29.07, lng: -98.81 },
-              ],
-            ]),
-          }),
-          n());
-        for (let n = 0; n < t.length; n++) {
-          let i = t[n];
-          e.data.addListener(i, (e) => {
-            (r(i), console.log(e.feature));
+        });
+        const r = [
+            { lat: 28.59, lng: -100.65 },
+            { lat: 28.59, lng: -96.08 },
+            { lat: 31.33, lng: -96.08 },
+            { lat: 31.33, lng: -100.65 },
+            { lat: 28.59, lng: -100.65 },
+          ],
+          t = [
+            { lat: 29.07, lng: -98.81 },
+            { lat: 29.07, lng: -96.63 },
+            { lat: 30.16, lng: -96.63 },
+            { lat: 30.16, lng: -98.81 },
+            { lat: 29.07, lng: -98.81 },
+          ];
+        (a.data.add({ geometry: new woosmap.map.Data.Polygon([r, t]) }), c());
+        for (let o = 0; o < i.length; o++) {
+          const l = i[o];
+          a.data.addListener(l, (e) => {
+            (u(l), console.log(e.feature));
           });
         }
       }
-      window.initMap = i;
+      window.initMap = d;
     </script>
     <style>
       html,
@@ -110,11 +106,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -126,16 +120,16 @@
         display: flex;
       }
       #sidebar {
-        box-sizing: border-box;
-        flex-grow: 1;
         flex-basis: 12rem;
+        flex-grow: 1;
         max-width: 30rem;
         height: 100%;
+        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-grow: 5;
         flex-basis: 70vw;
+        flex-grow: 5;
         height: 100%;
       }
       .events {
@@ -144,14 +138,14 @@
           monospace;
       }
       .event {
-        padding: 0.5em;
-        font-size: 14px;
         transition: background-color 0.5s ease-out;
+        padding: 0.5em;
         overflow: hidden;
+        font-size: 14px;
       }
       .active {
-        color: #000;
         background-color: #fd0;
+        color: #000;
       }
       .inactive {
         background-color: #fff;

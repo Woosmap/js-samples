@@ -9,290 +9,282 @@
 
     <script type="module" crossorigin>
       (function () {
-        let e = document.createElement(`link`).relList;
-        if (e && e.supports && e.supports(`modulepreload`)) return;
-        for (let e of document.querySelectorAll(`link[rel="modulepreload"]`))
-          n(e);
-        new MutationObserver((e) => {
-          for (let t of e)
-            if (t.type === `childList`)
-              for (let e of t.addedNodes)
-                e.tagName === `LINK` && e.rel === `modulepreload` && n(e);
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
+        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
+          o(t);
+        new MutationObserver((t) => {
+          for (const s of t)
+            if (s.type === "childList")
+              for (const i of s.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && o(i);
         }).observe(document, { childList: !0, subtree: !0 });
-        function t(e) {
-          let t = {};
+        function a(t) {
+          const s = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
-            e.crossOrigin === `use-credentials`
-              ? (t.credentials = `include`)
-              : e.crossOrigin === `anonymous`
-                ? (t.credentials = `omit`)
-                : (t.credentials = `same-origin`),
-            t
+            t.integrity && (s.integrity = t.integrity),
+            t.referrerPolicy && (s.referrerPolicy = t.referrerPolicy),
+            t.crossOrigin === "use-credentials"
+              ? (s.credentials = "include")
+              : t.crossOrigin === "anonymous"
+                ? (s.credentials = "omit")
+                : (s.credentials = "same-origin"),
+            s
           );
         }
-        function n(e) {
-          if (e.ep) return;
-          e.ep = !0;
-          let n = t(e);
-          fetch(e.href, n);
+        function o(t) {
+          if (t.ep) return;
+          t.ep = !0;
+          const s = a(t);
+          fetch(t.href, s);
         }
       })();
-      var e,
-        t,
-        n,
-        r,
-        i,
-        a,
-        o,
-        s,
-        c,
-        l,
-        u,
-        d,
-        f,
-        p,
-        m = `a01df3d6-fe7d-42df-8fee-9f31726a2641`;
-      function h() {
-        ((e = new woosmap.map.Map(document.getElementById(`map`), {
-          gestureHandling: `auto`,
-          defaultStyle: `streets`,
+      let r, c, f, p, v, y, d, l, m, b, h, S, u, M;
+      const L = "a01df3d6-fe7d-42df-8fee-9f31726a2641";
+      function T() {
+        ((r = new woosmap.map.Map(document.getElementById("map"), {
+          gestureHandling: "auto",
+          defaultStyle: "streets",
         })),
-          e.fitBounds({
+          r.fitBounds({
             east: -66.93457,
             north: 49.384358,
             south: 24.396308,
             west: -125.00165,
           }),
-          _(),
-          g(),
-          y(),
-          T());
+          O(),
+          I(),
+          D(),
+          F());
       }
-      function g() {
-        ((n = new woosmap.map.DatasetsOverlay(m)),
-          (r = new woosmap.map.DatasetsService(m)),
-          n.setMap(e),
-          (i = new window.woosmap.map.LocalitiesService()),
-          (a = { input: ``, types: [`locality`, `address`, `postal_code`] }),
-          (d = k(i.autocomplete, 0)),
-          v());
+      function I() {
+        ((f = new woosmap.map.DatasetsOverlay(L)),
+          (p = new woosmap.map.DatasetsService(L)),
+          f.setMap(r),
+          (v = new window.woosmap.map.LocalitiesService()),
+          (y = { input: "", types: ["locality", "address", "postal_code"] }),
+          (S = R(v.autocomplete, 0)),
+          B());
       }
-      function _() {
-        ((t = new woosmap.map.Drawing({
+      function O() {
+        ((c = new woosmap.map.Drawing({
           controls: { combine_features: !1, uncombine_features: !1 },
         })),
-          t.addControl(e),
-          t.addListener(`draw.create`, async (e) => {
-            let n = t.getAll();
+          c.addControl(r),
+          c.addListener("draw.create", async (e) => {
+            const n = c.getAll();
             if (n.features.length > 1)
-              for (let e of n.features.slice(0, -1))
-                e && e.id && t.delete(e.id.toString());
-            await D(t.getAll());
+              for (const a of n.features.slice(0, -1))
+                a && a.id && c.delete(a.id.toString());
+            await g(c.getAll());
           }),
-          t.addListener(`draw.delete`, () => {
-            (e.data.forEach((t) => {
-              e.data.remove(t);
+          c.addListener("draw.delete", () => {
+            (r.data.forEach((e) => {
+              r.data.remove(e);
             }),
-              (f.innerHTML = ``));
+              (u.innerHTML = ""));
           }),
-          t.addListener(`draw.update`, async (e) => {
-            await D(e);
+          c.addListener("draw.update", async (e) => {
+            await g(e);
           }));
       }
-      function v() {
-        ((o = document.getElementById(`autocomplete-input`)),
-          (s = document.getElementById(`suggestions-list`)),
-          (c = document.getElementsByClassName(`clear-searchButton`)[0]),
-          o &&
-            s &&
-            (o.addEventListener(`input`, x),
-            o.addEventListener(`keydown`, (e) => {
-              if (e.key === `Enter`) {
-                let e = s.querySelector(`li`);
-                e && e.click();
+      function B() {
+        ((d = document.getElementById("autocomplete-input")),
+          (l = document.getElementById("suggestions-list")),
+          (m = document.getElementsByClassName("clear-searchButton")[0]),
+          d &&
+            l &&
+            (d.addEventListener("input", A),
+            d.addEventListener("keydown", (e) => {
+              if (e.key === "Enter") {
+                const n = l.querySelector("li");
+                n && n.click();
               }
             })),
-          c.addEventListener(`click`, () => {
-            ((o.value = ``),
-              (s.style.display = `none`),
-              (c.style.display = `none`),
-              (f.innerHTML = ``),
-              o.focus());
+          m.addEventListener("click", () => {
+            ((d.value = ""),
+              (l.style.display = "none"),
+              (m.style.display = "none"),
+              (u.innerHTML = ""),
+              d.focus());
           }));
       }
-      function y() {
-        ((f = document.querySelector(`#results`)),
-          (p = document.getElementById(`btnReset`)),
-          (p.onclick = function () {
-            b();
+      function D() {
+        ((u = document.querySelector("#results")),
+          (M = document.getElementById("btnReset")),
+          (M.onclick = function () {
+            H();
           }));
       }
-      function b() {
-        (n.setMap(null),
-          (n = new woosmap.map.DatasetsOverlay(m)),
-          (r = new woosmap.map.DatasetsService(m)),
-          n.setMap(e),
-          e.flyTo({ center: { lat: 38, lng: -99 } }),
-          (l.selectedIndex = 2),
-          (u.selectedIndex = 0),
-          t.deleteAll(),
-          e.data.forEach((t) => {
-            e.data.remove(t);
+      function H() {
+        (f.setMap(null),
+          (f = new woosmap.map.DatasetsOverlay(L)),
+          (p = new woosmap.map.DatasetsService(L)),
+          f.setMap(r),
+          r.flyTo({ center: { lat: 38, lng: -99 } }),
+          (b.selectedIndex = 2),
+          (h.selectedIndex = 0),
+          c.deleteAll(),
+          r.data.forEach((e) => {
+            r.data.remove(e);
           }),
-          (o.value = ``),
-          (s.style.display = `none`),
-          (c.style.display = `none`),
-          (f.innerHTML = ``));
+          (d.value = ""),
+          (l.style.display = "none"),
+          (m.style.display = "none"),
+          (u.innerHTML = ""));
       }
-      function x() {
-        o &&
-          s &&
-          ((a.input = o.value),
-          a.input
-            ? d(a)
-                .then((e) => w(e))
+      function A() {
+        d &&
+          l &&
+          ((y.input = d.value),
+          y.input
+            ? S(y)
+                .then((e) => k(e))
                 .catch((e) =>
-                  console.error(`Error autocomplete localities:`, e),
+                  console.error("Error autocomplete localities:", e),
                 )
-            : ((s.style.display = `none`), (c.style.display = `none`)));
+            : ((l.style.display = "none"), (m.style.display = "none")));
       }
-      function S(e) {
-        i.getDetails({ publicId: e })
-          .then((e) => C(e.result))
-          .catch((e) => console.error(`Error getting locality details:`, e));
+      function C(e) {
+        v.getDetails({ publicId: e })
+          .then((n) => P(n.result))
+          .catch((n) => console.error("Error getting locality details:", n));
       }
-      function C(n) {
-        if (n != null && n.geometry) {
-          e.flyTo({ center: n.geometry.location });
-          let r = {
-            type: `Feature`,
+      function P(e) {
+        if (e != null && e.geometry) {
+          r.flyTo({ center: e.geometry.location });
+          const n = {
+            type: "Feature",
             geometry: {
-              type: `Point`,
-              coordinates: [n.geometry.location.lng, n.geometry.location.lat],
+              type: "Point",
+              coordinates: [e.geometry.location.lng, e.geometry.location.lat],
             },
             properties: {},
           };
-          (t.add(r), D({ features: [r] }));
+          (c.add(n), g({ features: [n] }));
         }
       }
-      function w(e) {
-        o &&
-          s &&
-          ((s.innerHTML = ``),
-          e.localities.length > 0 && a.input
-            ? (e.localities.forEach((e) => {
-                var t;
-                let n = document.createElement(`li`);
-                ((n.textContent = (t = e.description) == null ? `` : t),
-                  n.addEventListener(`click`, () => {
+      function k(e) {
+        d &&
+          l &&
+          ((l.innerHTML = ""),
+          e.localities.length > 0 && y.input
+            ? (e.localities.forEach((n) => {
+                var o;
+                const a = document.createElement("li");
+                ((a.textContent = (o = n.description) != null ? o : ""),
+                  a.addEventListener("click", () => {
                     var t;
-                    ((o.value = (t = e.description) == null ? `` : t),
-                      (s.style.display = `none`),
-                      S(e.public_id));
+                    ((d.value = (t = n.description) != null ? t : ""),
+                      (l.style.display = "none"),
+                      C(n.public_id));
                   }),
-                  s.appendChild(n));
+                  l.appendChild(a));
               }),
-              (s.style.display = `block`),
-              (c.style.display = `block`))
-            : (s.style.display = `none`));
+              (l.style.display = "block"),
+              (m.style.display = "block"))
+            : (l.style.display = "none"));
       }
-      function T() {
-        ((l = document.getElementById(`dataset`)),
-          (u = document.getElementById(`operator`)),
-          l.addEventListener(`change`, (e) => {
-            let t = e.target;
-            E(t.value);
+      function F() {
+        ((b = document.getElementById("dataset")),
+          (h = document.getElementById("operator")),
+          b.addEventListener("change", (e) => {
+            const n = e.target;
+            N(n.value);
           }),
-          u.addEventListener(`change`, async (e) => {
-            await D(t.getAll());
+          h.addEventListener("change", async (e) => {
+            const n = c.getAll();
+            await g(n);
           }));
       }
-      async function E(i) {
-        (n.setMap(null),
-          (n = new woosmap.map.DatasetsOverlay(i)),
-          (r = new woosmap.map.DatasetsService(i)),
-          n.setMap(e),
-          await D(t.getAll()));
+      async function N(e) {
+        (f.setMap(null),
+          (f = new woosmap.map.DatasetsOverlay(e)),
+          (p = new woosmap.map.DatasetsService(e)),
+          f.setMap(r));
+        const n = c.getAll();
+        await g(n);
       }
-      async function D(t) {
-        var n;
+      async function g(e) {
+        var a, o;
         if (
           !(
-            !(t == null || (n = t.features) == null || (n = n[0]) == null) &&
-            n.geometry
+            (o =
+              (a = e == null ? void 0 : e.features) == null ? void 0 : a[0]) !=
+              null && o.geometry
           )
         )
           return;
-        async function i(e, t) {
-          let n;
-          switch (t) {
-            case `intersects`:
-              n = await r.intersects({ geometry: e });
+        async function n(t, s) {
+          let i;
+          switch (s) {
+            case "intersects":
+              i = await p.intersects({ geometry: t });
               break;
-            case `within`:
-              n = await r.within({ geometry: e });
+            case "within":
+              i = await p.within({ geometry: t });
               break;
-            case `contains`:
-              n = await r.contains({ geometry: e });
+            case "contains":
+              i = await p.contains({ geometry: t });
               break;
           }
-          return n;
+          return i;
         }
-        await i(t.features[0].geometry, u.value)
+        await n(e.features[0].geometry, h.value)
           .then((t) => {
-            let n = [];
-            (O(t.features),
-              e.data.forEach((t) => {
-                e.data.remove(t);
+            const s = [];
+            (q(t.features),
+              r.data.forEach((i) => {
+                r.data.remove(i);
               }));
-            for (let e of t.features)
-              n.push({ type: `Feature`, geometry: e.geometry });
-            e.data.addGeoJson({ type: `FeatureCollection`, features: n });
+            for (const i of t.features)
+              s.push({ type: "Feature", geometry: i.geometry });
+            r.data.addGeoJson({ type: "FeatureCollection", features: s });
           })
-          .catch((e) => {
-            ((f.innerHTML = e), f.classList.add(`error`));
+          .catch((t) => {
+            ((u.innerHTML = t), u.classList.add("error"));
           });
       }
-      function O(e) {
-        ((f.innerHTML = ``),
+      function q(e) {
+        ((u.innerHTML = ""),
           e.length > 0
-            ? e.map((e) => {
-                let t = e.attributes,
-                  n = document.createElement(`table`);
-                (f.classList.remove(`error`),
-                  n.classList.add(`result`),
-                  Object.keys(t).map((e) => {
-                    t[e] &&
-                      (n.innerHTML += `<tr><td><b>${e} </b></td><td>${t[e]}</td></tr>`);
+            ? e.map((n) => {
+                const a = n.attributes,
+                  o = document.createElement("table");
+                (u.classList.remove("error"),
+                  o.classList.add("result"),
+                  Object.keys(a).map((t) => {
+                    a[t] &&
+                      (o.innerHTML =
+                        o.innerHTML +
+                        `<tr><td><b>${t} </b></td><td>${a[t]}</td></tr>`);
                   }),
-                  f.appendChild(n));
+                  u.appendChild(o));
               })
-            : ((f.innerHTML = `No results found`), f.classList.add(`error`)));
+            : ((u.innerHTML = "No results found"), u.classList.add("error")));
       }
-      function k(e, t) {
-        let n = null,
-          r = null,
-          i = null;
-        return function (...a) {
-          return new Promise((o, s) => {
-            (n !== null && clearTimeout(n),
-              (r = o),
-              (i = s),
-              (n = setTimeout(() => {
-                e(...a)
-                  .then((e) => {
-                    r === o && i === s && o(e);
+      function R(e, n) {
+        let a = null,
+          o = null,
+          t = null;
+        return function (...s) {
+          return new Promise((i, w) => {
+            (a !== null && clearTimeout(a),
+              (o = i),
+              (t = w),
+              (a = setTimeout(() => {
+                e(...s)
+                  .then((E) => {
+                    o === i && t === w && i(E);
                   })
-                  .catch((e) => {
-                    r === o && i === s && s(e);
+                  .catch((E) => {
+                    o === i && t === w && w(E);
                   });
-              }, t)));
+              }, n)));
           });
         };
       }
-      window.initMap = h;
+      window.initMap = T;
     </script>
     <style>
       html,
@@ -307,11 +299,9 @@
           BlinkMacSystemFont,
           Segoe UI,
           Roboto,
-          Noto Sans,
-          Ubuntu,
-          Cantarell,
           Helvetica Neue,
           Arial,
+          Noto Sans,
           sans-serif,
           Apple Color Emoji,
           Segoe UI Emoji,
@@ -323,143 +313,141 @@
         display: flex;
       }
       #sidebar {
-        box-sizing: border-box;
-        flex-grow: 1;
         flex-basis: 12rem;
+        flex-grow: 1;
         max-width: 30rem;
         height: 100%;
+        box-sizing: border-box;
         overflow: auto;
       }
       #map {
-        flex-grow: 5;
         flex-basis: 70vw;
+        flex-grow: 5;
         height: 100%;
       }
       #autocomplete-container {
-        z-index: 1;
-        box-sizing: border-box;
-        cursor: text;
-        background: #fff;
-        border: none;
-        border-radius: 12px;
-        align-items: center;
-        width: 100%;
-        max-width: 320px;
-        height: 42px;
-        padding: 0 12px;
-        font-size: 15px;
         display: flex;
         position: absolute;
         top: 10px;
         left: 10px;
+        z-index: 1;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0 12px;
+        max-width: 320px;
+        width: 100%;
+        height: 42px;
+        border: none;
+        box-sizing: border-box;
+        align-items: center;
+        cursor: text;
+        font-size: 15px;
       }
       #autocomplete-container .search-icon,
       #autocomplete-container .clear-icon {
         color: inherit;
         flex-shrink: 0;
-        width: 16px;
         height: 16px;
+        width: 16px;
       }
       #autocomplete-container .clear-icon {
         transform: scale(1.3);
       }
       #autocomplete-input {
         box-sizing: border-box;
-        vertical-align: top;
-        text-overflow: ellipsis;
-        -webkit-appearance: textfield;
-        -moz-appearance: textfield;
-        appearance: textfield;
-        background: 0 0;
-        border: 0;
-        border-radius: 0;
-        outline: 0;
-        width: 100%;
-        height: 40px;
-        margin: 0 8px;
         padding: 0;
-        font-size: 100%;
+        height: 40px;
         line-height: 24px;
+        vertical-align: top;
         transition-property: color;
         transition-duration: 0.3s;
+        width: 100%;
+        text-overflow: ellipsis;
+        background: transparent;
+        border-radius: 0;
+        border: 0;
+        margin: 0 8px;
+        outline: 0;
         overflow: visible;
+        appearance: textfield;
+        font-size: 100%;
       }
       .clear-searchButton {
+        display: none;
+        height: 18px;
+        width: 22px;
+        background: none;
+        border: none;
         vertical-align: middle;
         pointer-events: all;
         cursor: pointer;
-        background: 0 0;
-        border: none;
-        width: 22px;
-        height: 18px;
-        display: none;
       }
       #suggestions-list {
-        box-sizing: border-box;
-        z-index: 1;
-        background-color: #fff;
         border-radius: 12px;
-        width: 100%;
-        max-width: 320px;
-        max-height: 80vh;
-        margin: 5px 0 0;
-        padding: 0;
-        list-style: none;
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        overflow-y: auto;
         box-shadow:
           0 2px 4px #0003,
           0 -1px #00000005;
+        box-sizing: border-box;
+        position: absolute;
+        max-width: 320px;
+        width: 100%;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        list-style: none;
+        max-height: 80vh;
+        margin: 5px 0 0;
+        padding: 0;
+        display: none;
+        overflow-y: auto;
+        background-color: #fff;
       }
       #suggestions-list.visible {
         display: block;
       }
       #suggestions-list li {
-        cursor: pointer;
         padding: 12px;
-        transition: background-color 0.3s;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
       }
       #suggestions-list li:hover {
         background-color: #f2f2f2;
       }
       #sidebar {
-        z-index: 1;
         flex-basis: 18rem;
         box-shadow: 0 -2px 4px #0000001f;
+        z-index: 1;
       }
       #innerWrapper {
+        display: flex;
         flex-direction: column;
         flex-grow: 1;
-        padding: 0 10px 40px;
-        display: flex;
-        overflow-x: hidden;
+        overflow: hidden;
         overflow-y: auto;
+        padding: 0 10px 40px;
       }
       #mapContainer {
-        flex-direction: column;
-        flex-grow: 5;
-        flex-basis: 70vw;
         display: flex;
+        flex-direction: column;
+        flex-basis: 70vw;
+        flex-grow: 5;
         position: relative;
       }
       #od-selector {
         width: 100%;
       }
       .od-container {
-        justify-content: space-between;
-        width: 100%;
         padding: 5px 0;
+        width: 100%;
         display: flex;
+        justify-content: space-between;
       }
       #od-selector span {
-        width: 100px;
         padding: 0 5px;
+        width: 100px;
         font-size: 10pt;
         font-weight: 600;
       }
@@ -468,30 +456,30 @@
         font-weight: 600;
       }
       .sectionHeader {
-        color: #222;
         background: #f1f1f1;
-        border-bottom: 1px solid #eee;
-        justify-content: space-between;
+        display: flex;
         align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #eeeeee;
         margin: 20px -10px 5px;
         padding: 5px 10px;
-        display: flex;
+        color: #222;
       }
       .sectionHeader:first-child {
         margin-top: 0;
       }
       .dropdown__container {
+        display: flex;
         flex-direction: row;
         align-items: center;
-        display: flex;
       }
       .dropdown__container > label {
         padding-left: 10px;
       }
       ol#results {
+        list-style-type: none;
         margin: 0;
         padding-left: 0;
-        list-style-type: none;
       }
       ol#results.error {
         font-size: 10pt;
@@ -511,35 +499,38 @@
         border: none;
       }
       ol#results > table td {
+        font-size: 10pt;
+        max-width: 200px;
         text-align: left;
         color: #555;
         word-break: break-word;
         vertical-align: top;
-        max-width: 200px;
-        font-size: 10pt;
       }
       .btn {
-        box-sizing: border-box;
-        color: #202124;
-        cursor: pointer;
+        width: 80px;
         background: #3d5afe;
         border: 0;
         border-radius: 4px;
-        align-items: center;
-        width: 80px;
-        height: 32px;
-        padding: 0 15px;
-        font-size: 14px;
-        font-weight: 600;
-        transition:
-          background 0.3s,
-          color 0.3s;
-        display: flex;
-        position: relative;
         box-shadow:
           0 2px 2px #00000024,
           0 1px 5px #0000001f,
           0 3px 1px -2px #0003;
+        -webkit-transition:
+          background 0.3s,
+          color 0.3s;
+        transition:
+          background 0.3s,
+          color 0.3s;
+        box-sizing: border-box;
+        font-size: 14px;
+        color: #202124;
+        cursor: pointer;
+        display: flex;
+        font-weight: 600;
+        height: 32px;
+        padding: 0 15px;
+        position: relative;
+        align-items: center;
       }
       .btn:hover {
         background: #0a2ffe;
@@ -547,9 +538,9 @@
       .btnText {
         color: #fff;
         cursor: pointer;
-        letter-spacing: 0;
         font-size: 0.875rem;
         font-weight: 500;
+        letter-spacing: 0;
         line-height: 1.25rem;
       }
       .btnText:hover {

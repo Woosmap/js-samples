@@ -24,16 +24,16 @@ jobs:
         shard: [1, 2, 3, 4, 5, 6, 7, 8]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4.4.0
+      - uses: actions/checkout@v7.0.1
         with:
           lfs: true
-      - uses: actions/cache@v3.5.0
+      - uses: actions/cache@v6.1.0
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node
-      - uses: actions/cache@v3.5.0
+      - uses: actions/cache@v6.1.0
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-e2e
@@ -50,7 +50,7 @@ jobs:
         env:
           CI: true
       - name: Push test report to artifacts
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         if: failure()
         with:
           name: Test Results ${{ github.sha }}

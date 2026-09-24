@@ -66,7 +66,7 @@ const types: Set<string> = new Set();
 let map: woosmap.map.Map;
 let results: HTMLOListElement;
 let nearbyCircle: woosmap.map.Circle;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 let localitiesService: woosmap.map.LocalitiesService;
 let autocompleteRequest: woosmap.map.localities.LocalitiesAutocompleteRequest;
 let nearbyRequest: woosmap.map.localities.LocalitiesNearbyRequest;
@@ -113,10 +113,12 @@ const createList = (node: any, prefix = "") => {
   return ul.childElementCount ? ul : null;
 };
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       center: { lat: 40.71399, lng: -74.00499 },
       zoom: 14,
       styles: [
@@ -130,8 +132,7 @@ function initMap() {
           ],
         },
       ],
-    },
-  );
+    });
   localitiesService = new woosmap.map.LocalitiesService();
 
   map.addListener("click", (e) => {
@@ -149,15 +150,14 @@ function initMap() {
     page: 1,
     limit: 10,
   };
-  marker = new woosmap.map.Marker({
+  const markerContent = document.createElement("img");
+  markerContent.src = "https://images.woosmap.com/marker.png";
+  markerContent.style.width = "32px";
+  markerContent.style.height = "50px";
+
+  marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: { lat: 0, lng: 0 },
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: markerContent,
   });
 
   initUI();
@@ -521,12 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_localities_nearby_poi]
 
 export {};

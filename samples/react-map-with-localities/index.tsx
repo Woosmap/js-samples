@@ -12,17 +12,52 @@ import React, {
 // Define the types for the global Woosmap object
 declare const woosmap: any;
 
-// Custom hook to load the Woosmap JavaScript API
-// This hook creates a script tag with the Woosmap map.js URL and appends it to the body of the document.
-// It sets the state to true when the script loads.
+// Installs the documented Woosmap loader shim (see docs/docs/loader.md), which
+// defines a stub `woosmap.map.importLibrary` that fetches map.js on first call.
+// Safe to call more than once: the shim itself no-ops (and warns) past the first.
+function installLoaderShim(apiKey: string): void {
+  ((g) => {
+    let p;
+    const w = window as any,
+      d = document;
+    const L = "importLibrary",
+      CB = "__ib__";
+    const E = "The Woosmap Maps JavaScript API";
+    const woosmap = w.woosmap || (w.woosmap = {});
+    const maps = woosmap.map || (woosmap.map = {});
+    const libs = new Set(),
+      params = new URLSearchParams();
+    const load = () =>
+      p ||
+      (p = new Promise((res, rej) => {
+        const s = d.createElement("script");
+        params.set("libraries", [...libs].join(","));
+        for (const k in g) params.set(k, g[k]);
+        params.set("callback", "woosmap.map." + CB);
+        s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+        maps[CB] = res;
+        s.onerror = () => rej(Error(E + " could not load."));
+        d.head.append(s);
+      }));
+    if (maps[L]) {
+      console.warn(E + " only loads once. Ignoring:", g);
+    } else {
+      maps[L] = (name: string, ...args: unknown[]) =>
+        libs.add(name) && load().then(() => maps[L](name, ...args));
+    }
+  })({ key: apiKey });
+}
+
+// Custom hook to load the Woosmap JavaScript API via the loader shim.
 function useWoosmap(apiKey: string) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://sdk.woosmap.com/map/map.js?key=${apiKey}`;
-    script.onload = () => setIsLoaded(true);
-    document.body.appendChild(script);
+    installLoaderShim(apiKey);
+    Promise.all([
+      woosmap.map.importLibrary("maps"),
+      woosmap.map.importLibrary("marker"),
+    ]).then(() => setIsLoaded(true));
   }, [apiKey]);
 
   return isLoaded;
@@ -81,10 +116,13 @@ const WoosmapMap: React.FC<MapProps> = ({ center, zoom, children }) => {
 };
 
 // This component creates a Woosmap marker to display the selected locality and flyTo it
-const Marker: React.FC<woosmap.map.MarkerOptions> = ({ position }) => {
+const Marker: React.FC<woosmap.map.marker.AdvancedMarkerElementOptions> = ({
+  position,
+}) => {
   const woosmap = useContext(MapContext);
   const mapInstance = useContext(MapInstanceContext);
-  const [marker, setMarker] = useState<woosmap.map.Marker>(null);
+  const [marker, setMarker] =
+    useState<woosmap.map.marker.AdvancedMarkerElement>(null);
 
   useEffect(() => {
     if (marker) {
@@ -92,15 +130,14 @@ const Marker: React.FC<woosmap.map.MarkerOptions> = ({ position }) => {
       setMarker(null);
     }
     if (mapInstance && position) {
-      const localityMarker = new woosmap.map.Marker({
+      const markerContent = document.createElement("img");
+      markerContent.src = "https://images.woosmap.com/marker.png";
+      markerContent.style.width = "32px";
+      markerContent.style.height = "50px";
+
+      const localityMarker = new woosmap.map.marker.AdvancedMarkerElement({
         position,
-        icon: {
-          url: "https://images.woosmap.com/marker.png",
-          scaledSize: {
-            height: 50,
-            width: 32,
-          },
-        },
+        content: markerContent,
       });
       localityMarker.setMap(mapInstance);
       setMarker(localityMarker);

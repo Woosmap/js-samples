@@ -1,10 +1,11 @@
 // [START woosmap_map_style_lightgrey]
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const position: woosmap.map.LatLngLiteral = { lat: 41.347, lng: 2.14566 };
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       zoom: 12,
       center: position,
       styles: [
@@ -75,16 +76,10 @@ function initMap(): void {
           stylers: [{ color: "#9e9e9e" }],
         },
       ],
-    },
-  );
+    });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_map_style_lightgrey]
 
 export {};

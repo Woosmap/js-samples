@@ -13,7 +13,7 @@ let inputElement: HTMLInputElement;
 let detailsHTML: HTMLElement;
 let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 let debouncedAutosuggestW3W: (
   ...args: any[]
 ) => Promise<What3WordsSuggestionsResponse>;
@@ -115,8 +115,7 @@ function panMap(addressDetail) {
     if (addressDetail.types[0] === "address") {
       zoom = 18;
     }
-    map.setZoom(zoom);
-    map.panTo(addressDetail.geometry.location);
+    map.moveCamera({ zoom, center: addressDetail.geometry.location });
   }
 }
 
@@ -124,15 +123,14 @@ function createAddressMarker(addressDetail) {
   if (marker) {
     marker.setMap(null);
   }
-  marker = new woosmap.map.Marker({
+  const markerContent = document.createElement("img");
+  markerContent.src = "https://images.woosmap.com/marker-alt.png";
+  markerContent.style.width = "37px";
+  markerContent.style.height = "59px";
+
+  marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: addressDetail.geometry.location,
-    icon: {
-      url: "https://images.woosmap.com/marker-alt.png",
-      scaledSize: {
-        height: 59,
-        width: 37,
-      },
-    },
+    content: markerContent,
   });
   marker.setMap(map);
   panMap(addressDetail);
@@ -333,9 +331,13 @@ function displayW3wSuggestion() {
   // [END woosmap_w3w_autocomplete_displayW3wSuggestion]
 }
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   // [START woosmap_w3w_autocomplete_initMap]
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     center: {
       lat: 48.8534,
       lng: 2.3488,
@@ -447,12 +449,7 @@ function debouncePromise<T, Args extends any[]>(
   };
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_w3w_autocomplete]
 
 export {};

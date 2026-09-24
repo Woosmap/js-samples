@@ -1,19 +1,20 @@
 // [START woosmap_localities_geocode]
 // Initialize and add the map
 let map: woosmap.map.Map;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 const request: woosmap.map.localities.LocalitiesGeocodeRequest = {};
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       center: { lat: 51.50940214, lng: -0.133012 },
       zoom: 12,
-    },
-  );
+    });
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new woosmap.map.LocalitiesService();
   map.addListener("click", (e) => {
@@ -79,19 +80,18 @@ function displayLocality(
   }
 
   if (locality?.geometry) {
-    marker = new woosmap.map.Marker({
+    const markerContent = document.createElement("img");
+    markerContent.src = "https://images.woosmap.com/marker.png";
+    markerContent.style.width = "32px";
+    markerContent.style.height = "50px";
+
+    marker = new woosmap.map.marker.AdvancedMarkerElement({
       position: locality.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: markerContent,
     });
     marker.setMap(map);
     infoWindow.setContent(`<span>${locality.formatted_address}</span>`);
-    infoWindow.open(map, marker);
+    infoWindow.open({map, anchor: marker.position});
     map.setCenter(locality.geometry.location);
     renderResponse(locality);
   }
@@ -211,12 +211,7 @@ function clearResponse() {
   if (rawEl) rawEl.textContent = "";
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_localities_geocode]
 
 export {};

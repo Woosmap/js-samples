@@ -3,7 +3,7 @@
   "description": "Adding a simple marker on the center of the map",
   "category": "Markers",
   "callback": "initMap",
-  "libraries": [],
+  "libraries": "marker",
   "tag": "marker_simple",
   "name": "marker-simple",
   "pagination": {
@@ -11,5 +11,6 @@
     "size": 1,
     "alias": "mode"
   },
-  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}",
+  "loaderShim": true
 }

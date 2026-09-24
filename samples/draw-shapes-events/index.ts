@@ -77,19 +77,20 @@ function setupListener(name) {
   }
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("drawing");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       center: { lat: 31.54350013250679, lng: -97.13238669872247 },
       zoom: 6.5,
-    },
-  );
+    });
 
-  const draw = new window.woosmap.map.Drawing({});
+  const draw = new woosmap.map.Drawing({});
   draw.addControl(map);
 
-  window.woosmap.map.event.addListenerOnce(map, "idle", () => {
+  woosmap.map.event.addListenerOnce(map, "idle", () => {
     draw.add(data);
   });
 
@@ -103,12 +104,7 @@ function initMap() {
   }
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_draw_shapes_events]
 
 export {};

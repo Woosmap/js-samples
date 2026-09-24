@@ -1,25 +1,28 @@
 // [START woosmap_event_simple]
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   const position: woosmap.map.LatLngLiteral = {
     lat: 51.50940214,
     lng: -0.133012,
   };
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 13,
-      center: position,
-    },
-  );
-  const marker = new woosmap.map.Marker({
+  const map = (document.getElementById("map") as woosmap.map.MapElement)
+    .innerMap;
+  map.setOptions({
+    zoom: 13,
+    center: position,
+  });
+
+  const markerContent = document.createElement("img");
+  markerContent.src = "https://images.woosmap.com/marker.png";
+  markerContent.style.width = "32px";
+  markerContent.style.height = "50px";
+
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: map.getCenter(),
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: markerContent,
+    gmpClickable: true,
   });
   marker.setMap(map);
   map.addListener("click", ({ latlng }) => {
@@ -29,21 +32,12 @@ function initMap() {
     marker.setPosition(map.getCenter());
   });
   marker.addListener("click", () => {
-    marker.setIcon({
-      url: "https://images.woosmap.com/icons/pin-green.png",
-      scaledSize: {
-        height: 42,
-        width: 28,
-      },
-    });
+    markerContent.src = "https://images.woosmap.com/icons/pin-green.png";
+    markerContent.style.width = "28px";
+    markerContent.style.height = "42px";
   });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_event_simple]
 export {};

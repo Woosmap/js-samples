@@ -1,33 +1,29 @@
 // [START woosmap_marker_simple]
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 13,
-      center: center,
-    },
-  );
+  const map = (document.getElementById("map") as woosmap.map.MapElement)
+    .innerMap;
+  map.setOptions({
+    zoom: 13,
+    center: center,
+  });
 
-  const marker = new woosmap.map.Marker({
+  const markerContent = document.createElement("img");
+  markerContent.src = "https://images.woosmap.com/marker.png";
+  markerContent.style.width = "32px";
+  markerContent.style.height = "50px";
+
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: map.getCenter(),
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: markerContent,
   });
   marker.setMap(map);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_marker_simple]
 export {};

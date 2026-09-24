@@ -19,7 +19,7 @@ let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 
 function initSearch(): void {
   inputElement = document.getElementById(
@@ -53,17 +53,18 @@ function initSearch(): void {
   });
 
   // @ts-ignore
-  multiSearch = window.woosmap.multisearch(searchOptions);
+  multiSearch = woosmap.multisearch(searchOptions);
 }
 
-function initMap(): void {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       center: { lat: 51.50940214, lng: -0.133012 },
       zoom: 4,
-    },
-  );
+    });
   initSearch();
 }
 
@@ -131,15 +132,14 @@ function displayLocality(result) {
     marker.setMap(null);
   }
   if (result?.geometry) {
-    marker = new woosmap.map.Marker({
+    const markerContent = document.createElement("img");
+    markerContent.src = "https://images.woosmap.com/marker.png";
+    markerContent.style.width = "32px";
+    markerContent.style.height = "50px";
+
+    marker = new woosmap.map.marker.AdvancedMarkerElement({
       position: result.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: markerContent,
     });
     marker.setMap(map);
     map.flyTo({ center: result.geometry.location, zoom: 14 });
@@ -157,12 +157,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_multisearch_map_simple]
 
 export {};

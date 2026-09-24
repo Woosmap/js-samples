@@ -2,18 +2,19 @@
 // This example displays a marker at the center of London.
 // When the user clicks the marker, an info window opens.
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   // The map, centered at London
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       zoom: 10,
       center: {
         lat: 51.57,
         lng: -0.13,
       },
-    },
-  );
+    });
 
   const londonInfoWindowHTML =
     "<div class='info-content'>" +
@@ -22,35 +23,30 @@ function initMap(): void {
     "<p>London is the capital and largest city of England and the United Kingdom. <a href='https://en.wikipedia.org/wiki/London'>Wikipedia →</a></p>" +
     "</div>";
 
-  const marker = new window.woosmap.map.Marker({
+  const markerContent = document.createElement("img");
+  markerContent.src = "https://images.woosmap.com/marker.png";
+  markerContent.style.width = "32px";
+  markerContent.style.height = "50px";
+
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: {
       lat: 51.515,
       lng: -0.13,
     },
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: markerContent,
+    gmpClickable: true,
     map,
   });
   const infoWindow = new woosmap.map.InfoWindow({});
   infoWindow.setOffset(new woosmap.map.Point(0, -50));
   infoWindow.setContent(londonInfoWindowHTML);
-  infoWindow.open(map, marker.position);
+  infoWindow.open({map, anchor: marker.position});
   marker.addListener("click", () => {
-    infoWindow.open(map, marker.getPosition());
+    infoWindow.open({map, anchor: marker.position});
   });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_infowindow_simple]
 
 export {};

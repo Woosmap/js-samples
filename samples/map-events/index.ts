@@ -15,17 +15,17 @@ const events: string[] = [
   "zoom_changed",
 ];
 
-function initMap(): void {
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       center: {
         lat: 51.52,
         lng: -0.13,
       },
       zoom: 10,
-    },
-  );
+    });
 
   populateEventsTable();
   events.forEach((event: string) => {
@@ -54,11 +54,6 @@ function setupListener(name: string): void {
   }
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_map_events]
 export {};

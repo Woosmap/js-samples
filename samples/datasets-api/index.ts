@@ -17,10 +17,14 @@ let resetButton: HTMLButtonElement;
 
 const datasetId = "a01df3d6-fe7d-42df-8fee-9f31726a2641"; //US - Seismic Hazard Map
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("drawing");
+
   // [START woosmap_datasets_api_instantiate_map]
 
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     gestureHandling: "auto",
     defaultStyle: "streets",
   });
@@ -41,7 +45,7 @@ function initServices(): void {
   datasetsService = new woosmap.map.DatasetsService(datasetId);
   datasetsOverlay.setMap(map);
 
-  localitiesService = new window.woosmap.map.LocalitiesService();
+  localitiesService = new woosmap.map.LocalitiesService();
   request = {
     input: "",
     types: ["locality", "address", "postal_code"],
@@ -332,12 +336,7 @@ function debouncePromise<T, Args extends any[]>(
 // [END woosmap_localities_autocomplete_debounce_promise] */
 PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_datasets_api]
 
 export {};

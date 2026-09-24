@@ -21,7 +21,10 @@ interface Bounds {
   southwest: woosmap.map.LatLngLiteral;
 }
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   fetch(`https://api.woosmap.com/geolocation/position/?key=${woosmap_key}`)
     .then((result) => {
       return result.json();
@@ -51,7 +54,8 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
   } else if (accuracy > 1) {
     zoom = 11;
   }
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     center: userPosition,
     zoom,
   });
@@ -65,11 +69,12 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
     map.fitBounds(bounds);
     plotBoundary(bounds);
   }
-  const marker = new woosmap.map.Marker({
+  const markerContent = document.createElement("img");
+  markerContent.src = "https://images.woosmap.com/user-position-small.png";
+
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: userPosition,
-    icon: {
-      url: "https://images.woosmap.com/user-position-small.png",
-    },
+    content: markerContent,
   });
   marker.setMap(map);
 }
@@ -124,12 +129,7 @@ function plotBoundary(bounds: woosmap.map.LatLngBoundsLiteral): void {
   rectangle.setMap(map);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_geolocation_api]
 
 export {};

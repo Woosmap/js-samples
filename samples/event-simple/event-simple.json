@@ -3,7 +3,7 @@
   "description": "Sample combining map events with marker events",
   "category": "Events",
   "callback": "initMap",
-  "libraries": [],
+  "libraries": "marker",
   "tag": "event_simple",
   "name": "event-simple",
   "pagination": {
@@ -11,5 +11,6 @@
     "size": 1,
     "alias": "mode"
   },
-  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}",
+  "loaderShim": true
 }

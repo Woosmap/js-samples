@@ -9,12 +9,16 @@ let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
-let markerAddress: woosmap.map.Marker;
+let markerAddress: woosmap.map.marker.AdvancedMarkerElement;
 let detailsHTML: HTMLElement;
 let addressDetailsContainer: HTMLElement;
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     center: {
       lat: 48.8534,
       lng: 2.3488,
@@ -40,15 +44,14 @@ function createAddressMarker(
     markerAddress.setMap(null);
   }
   if (addressDetail && addressDetail.geometry) {
-    markerAddress = new woosmap.map.Marker({
+    const markerContent = document.createElement("img");
+    markerContent.src = "https://images.woosmap.com/marker.png";
+    markerContent.style.width = "37px";
+    markerContent.style.height = "59px";
+
+    markerAddress = new woosmap.map.marker.AdvancedMarkerElement({
       position: addressDetail.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 59,
-          width: 37,
-        },
-      },
+      content: markerContent,
     });
     markerAddress.setMap(map);
     panMap(addressDetail);
@@ -425,8 +428,7 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
     if (addressDetail.types[0] === "address") {
       zoom = 18;
     }
-    map.setZoom(zoom);
-    map.panTo(geometry.location);
+    map.moveCamera({ zoom, center: geometry.location });
   }
 }
 
@@ -442,12 +444,7 @@ function getLocalitiesDetails(
   ).then((response) => response.json());
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 // [END woosmap_localities_api_details]
 

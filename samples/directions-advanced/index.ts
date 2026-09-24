@@ -3,7 +3,7 @@ let map: woosmap.map.Map;
 let bounds: woosmap.map.LatLngBounds;
 let directionsService: woosmap.map.DirectionsService;
 let directionsRequest: woosmap.map.DirectionRequest;
-let markersArray: woosmap.map.Marker[] = [];
+let markersArray: woosmap.map.marker.AdvancedMarkerElement[] = [];
 let waypointsList: HTMLElement;
 let originContainer: HTMLElement;
 let destinationContainer: HTMLElement;
@@ -15,27 +15,42 @@ const travelModeIcons = {
   CYCLING: "https://images.woosmap.com/directions/bicycle_black.png",
 };
 
+function createMarkerContent(label: string, url: string): HTMLElement {
+  const container = document.createElement("div");
+  container.style.position = "relative";
+  container.style.width = "26px";
+  container.style.height = "38px";
+
+  const icon = document.createElement("img");
+  icon.src = url;
+  icon.style.width = "26px";
+  icon.style.height = "38px";
+  container.appendChild(icon);
+
+  const labelSpan = document.createElement("span");
+  labelSpan.textContent = label;
+  labelSpan.style.position = "absolute";
+  labelSpan.style.left = "13px";
+  labelSpan.style.top = "15px";
+  labelSpan.style.transform = "translate(-50%, -50%)";
+  labelSpan.style.color = "white";
+  labelSpan.style.fontSize = "12px";
+  labelSpan.style.fontWeight = "bold";
+  container.appendChild(labelSpan);
+
+  return container;
+}
+
 function createMarker(
   position: woosmap.map.LatLngLiteral | woosmap.map.LatLng,
   label: string,
   url: string,
-): woosmap.map.Marker {
-  return new woosmap.map.Marker({
+): woosmap.map.marker.AdvancedMarkerElement {
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    draggable: true,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(13, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    gmpDraggable: true,
+    content: createMarkerContent(label, url),
   });
 }
 
@@ -54,8 +69,8 @@ function displayDirectionsMarkers(): void {
     "https://images.woosmap.com/marker-blue.svg",
   );
   originMarker.addListener("dragend", () => {
-    directionsRequest.origin = originMarker.getPosition();
-    setLatLngToContainer(originContainer, originMarker.getPosition().toJSON());
+    directionsRequest.origin = originMarker.position!;
+    setLatLngToContainer(originContainer, originMarker.position!.toJSON());
     calculateDirections();
   });
   const destinationMarker = createMarker(
@@ -64,10 +79,10 @@ function displayDirectionsMarkers(): void {
     "https://images.woosmap.com/marker-red.svg",
   );
   destinationMarker.addListener("dragend", () => {
-    directionsRequest.destination = destinationMarker.getPosition();
+    directionsRequest.destination = destinationMarker.position!;
     setLatLngToContainer(
       destinationContainer,
-      destinationMarker.getPosition().toJSON(),
+      destinationMarker.position!.toJSON(),
     );
     calculateDirections();
   });
@@ -83,9 +98,9 @@ function displayDirectionsMarkers(): void {
       "https://images.woosmap.com/marker-green.svg",
     );
     waypointMarker.addListener("dragend", () => {
-      waypoints[index].location = waypointMarker.getPosition().toJSON();
+      waypoints[index].location = waypointMarker.position!.toJSON();
       waypointsList.querySelectorAll("li")[index].innerHTML =
-        `<span>lat: ${waypointMarker.getPosition().lat().toFixed(4)}, lng: ${waypointMarker.getPosition().lng().toFixed(4)}<span>`;
+        `<span>lat: ${waypointMarker.position!.lat().toFixed(4)}, lng: ${waypointMarker.position!.lng().toFixed(4)}<span>`;
       calculateDirections();
     });
     markersArray.push(waypointMarker);
@@ -522,8 +537,12 @@ function initUI(): void {
   );
 }
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     center: { lat: 51.5074, lng: -0.1478 },
     zoom: 10,
   });
@@ -539,12 +558,7 @@ function initMap(): void {
   calculateDirections();
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_directions_advanced]
 
 export {};

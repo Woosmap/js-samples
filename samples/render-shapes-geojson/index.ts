@@ -2,14 +2,14 @@
 // Initialize and add the map
 let map: woosmap.map.Map;
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       center: { lat: 53.51, lng: 8.15 },
       zoom: 4,
-    },
-  );
+    });
 
   map.data.loadGeoJson(
     "https://demo.woosmap.com/misc/data/europe.geojson.json",
@@ -48,12 +48,7 @@ function initMap() {
   }
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_render_shapes_geojson]
 
 export {};

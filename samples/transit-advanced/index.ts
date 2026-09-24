@@ -2,32 +2,47 @@
 let map: woosmap.map.Map;
 let transitService: woosmap.map.TransitService;
 let transitRequest: woosmap.map.transit.TransitRouteRequest;
-let markersArray: woosmap.map.Marker[] = [];
+let markersArray: woosmap.map.marker.AdvancedMarkerElement[] = [];
 let originContainer: HTMLElement;
 let destinationContainer: HTMLElement;
 let transitRenderer: woosmap.map.TransitRenderer;
+
+function createMarkerContent(label: string, url: string): HTMLElement {
+  const container = document.createElement("div");
+  container.style.position = "relative";
+  container.style.width = "26px";
+  container.style.height = "38px";
+
+  const icon = document.createElement("img");
+  icon.src = url;
+  icon.style.width = "26px";
+  icon.style.height = "38px";
+  container.appendChild(icon);
+
+  const labelSpan = document.createElement("span");
+  labelSpan.textContent = label;
+  labelSpan.style.position = "absolute";
+  labelSpan.style.left = "13px";
+  labelSpan.style.top = "15px";
+  labelSpan.style.transform = "translate(-50%, -50%)";
+  labelSpan.style.color = "white";
+  labelSpan.style.fontSize = "12px";
+  labelSpan.style.fontWeight = "bold";
+  container.appendChild(labelSpan);
+
+  return container;
+}
 
 function createMarker(
   position: woosmap.map.LatLngLiteral | woosmap.map.LatLng,
   label: string,
   url: string,
-): woosmap.map.Marker {
-  return new woosmap.map.Marker({
+): woosmap.map.marker.AdvancedMarkerElement {
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    draggable: true,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(13, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    gmpDraggable: true,
+    content: createMarkerContent(label, url),
   });
 }
 
@@ -46,8 +61,8 @@ function displayTransitMarkers(): void {
     "https://images.woosmap.com/marker-blue.svg",
   );
   originMarker.addListener("dragend", () => {
-    transitRequest.origin = originMarker.getPosition();
-    setLatLngToContainer(originContainer, originMarker.getPosition().toJSON());
+    transitRequest.origin = originMarker.position!;
+    setLatLngToContainer(originContainer, originMarker.position!.toJSON());
     calculateTransit();
   });
   const destinationMarker = createMarker(
@@ -56,10 +71,10 @@ function displayTransitMarkers(): void {
     "https://images.woosmap.com/marker-red.svg",
   );
   destinationMarker.addListener("dragend", () => {
-    transitRequest.destination = destinationMarker.getPosition();
+    transitRequest.destination = destinationMarker.position!;
     setLatLngToContainer(
       destinationContainer,
-      destinationMarker.getPosition().toJSON(),
+      destinationMarker.position!.toJSON(),
     );
     calculateTransit();
   });
@@ -395,8 +410,12 @@ function initUI(): void {
   );
 }
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     center: { lat: 45.482604, lng: 9.16924 },
     zoom: 11,
   });
@@ -410,12 +429,7 @@ function initMap(): void {
   calculateTransit();
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_transit_advanced]
 
 export {};

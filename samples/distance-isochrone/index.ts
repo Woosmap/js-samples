@@ -2,51 +2,51 @@
 let map: woosmap.map.Map;
 let methodSelect, modeSelect: HTMLSelectElement;
 let distanceInput: HTMLInputElement;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 let polyline: woosmap.map.Polyline;
 let distanceService: woosmap.map.DistanceService;
 
-const markerIcon: woosmap.map.Icon = {
-  url: "https://images.woosmap.com/icons/pin-red.png",
-  scaledSize: {
-    height: 38,
-    width: 26,
-  },
-};
 const centerLatLng: woosmap.map.LatLngLiteral = {
   lat: 51.5,
   lng: -0.234,
 };
+function createMarkerContent(): HTMLImageElement {
+  const img = document.createElement("img");
+  img.src = "https://images.woosmap.com/icons/pin-red.png";
+  img.style.width = "26px";
+  img.style.height = "38px";
+  return img;
+}
 function createMarker(
   position: woosmap.map.LatLngLiteral,
-  icon: woosmap.map.Icon,
   map: woosmap.map.Map,
 ) {
-  const marker = new window.woosmap.map.Marker({
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position,
-    icon,
+    content: createMarkerContent(),
   });
   marker.setMap(map);
   return marker;
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 9,
-      center: centerLatLng,
-    },
-  );
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
+    zoom: 9,
+    center: centerLatLng,
+  });
   distanceService = new woosmap.map.DistanceService();
-  marker = createMarker(centerLatLng, markerIcon, map);
+  marker = createMarker(centerLatLng, map);
   map.addListener("click", (e) => {
     marker.setMap(null);
-    marker = createMarker(e.latlng, markerIcon, map);
+    marker = createMarker(e.latlng, map);
     computeIsochrone(e.latlng);
   });
   const onChangeHandler = () => {
-    computeIsochrone(marker.getPosition().toJSON());
+    computeIsochrone(marker.position!.toJSON());
   };
   methodSelect = document.getElementById(
     "isochrone-method-select",
@@ -116,12 +116,7 @@ function fitToCoordinates(
   }
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_distance_isochrone]
 
 export {};

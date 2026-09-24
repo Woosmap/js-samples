@@ -3,33 +3,48 @@ let map: woosmap.map.Map;
 let bounds: woosmap.map.LatLngBounds;
 let distanceService: woosmap.map.DistanceService;
 let distanceRequest: woosmap.map.distance.DistanceMatrixRequest;
-let markersArray: woosmap.map.Marker[] = [];
+let markersArray: woosmap.map.marker.AdvancedMarkerElement[] = [];
 let originsList: HTMLElement;
 let destinationsList: HTMLElement;
 const origins: woosmap.map.LatLngLiteral[] = [];
 const destinations: woosmap.map.LatLngLiteral[] = [];
 let line: woosmap.map.Polyline | null = null;
 
+function createMarkerContent(label: string, url: string): HTMLElement {
+  const container = document.createElement("div");
+  container.style.position = "relative";
+  container.style.width = "26px";
+  container.style.height = "38px";
+
+  const icon = document.createElement("img");
+  icon.src = url;
+  icon.style.width = "26px";
+  icon.style.height = "38px";
+  container.appendChild(icon);
+
+  const labelSpan = document.createElement("span");
+  labelSpan.textContent = label;
+  labelSpan.style.position = "absolute";
+  labelSpan.style.left = "13px";
+  labelSpan.style.top = "15px";
+  labelSpan.style.transform = "translate(-50%, -50%)";
+  labelSpan.style.color = "white";
+  labelSpan.style.fontSize = "12px";
+  labelSpan.style.fontWeight = "bold";
+  container.appendChild(labelSpan);
+
+  return container;
+}
+
 function createMarker(
   position: woosmap.map.LatLngLiteral,
   label: string,
   url: string,
-): woosmap.map.Marker {
-  return new woosmap.map.Marker({
+): woosmap.map.marker.AdvancedMarkerElement {
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(13, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    content: createMarkerContent(label, url),
   });
 }
 
@@ -407,8 +422,12 @@ function initUI(): void {
   registerAddButton(".addLocation__origins", originsList, origins);
 }
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     center: { lat: 51.4855, lng: -0.3179 },
     zoom: 6,
   });
@@ -419,12 +438,7 @@ function initMap(): void {
   calculateDistances();
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_distance_matrix_advanced]
 
 export {};

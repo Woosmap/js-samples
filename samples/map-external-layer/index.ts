@@ -12,16 +12,16 @@ const centerLatLng: woosmap.map.LatLngLiteral = {
   lng: 6.073999,
 };
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       zoom: 15.64,
       center: centerLatLng,
       mapTypeControl: true,
       styles: STYLE_PRESETS.lightgrey,
-    },
-  );
+    });
 
   styleSelect = document.getElementById(
     "woosmap-style-select",
@@ -75,9 +75,10 @@ function onOpacityChange() {
 
 function applyStyle(name: string) {
   const styles = STYLE_PRESETS[name] ?? [];
-  map = new window.woosmap.map.Map(
+  map = new woosmap.map.Map(
     document.getElementById("map") as HTMLElement,
     {
+      visualRefresh: true,
       zoom: map.getZoom(),
       center: map.getCenter(),
       mapTypeControl: true,
@@ -421,12 +422,7 @@ const LAYER_VIEWS: Record<string, { center: { lat: number; lng: number }; zoom: 
   precipitation: US_VIEW,
 };
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_map_external_layer]
 
 export {};

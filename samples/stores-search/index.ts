@@ -1,6 +1,6 @@
 // [START woosmap_stores_search]
 let map: woosmap.map.Map;
-let activeLocation: woosmap.map.Marker | null = null;
+let activeLocation: woosmap.map.marker.AdvancedMarkerElement | null = null;
 let storesOverlay: woosmap.map.StoresOverlay;
 const gestureMode: woosmap.map.GestureHandlingMode = "greedy";
 let storesService: woosmap.map.StoresService;
@@ -202,15 +202,14 @@ function displayStoresAndLocation(
   }
 
   if (stores && latlng) {
-    activeLocation = new woosmap.map.Marker({
+    const markerContent = document.createElement("img");
+    markerContent.src = "https://images.woosmap.com/marker.png";
+    markerContent.style.width = "32px";
+    markerContent.style.height = "50px";
+
+    activeLocation = new woosmap.map.marker.AdvancedMarkerElement({
       position: latlng,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: markerContent,
     });
 
     const bounds = calculateLatLngBounds(stores);
@@ -220,11 +219,12 @@ function displayStoresAndLocation(
   }
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    mapOptions,
-  );
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions(mapOptions);
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
 
@@ -247,12 +247,7 @@ function handleError(error: woosmap.map.errors.APIError) {
   console.error("Error:", error);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_stores_search]
 
 export {};

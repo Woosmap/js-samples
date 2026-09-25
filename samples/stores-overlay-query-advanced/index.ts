@@ -86,7 +86,7 @@ async function initMap(): Promise<void> {
     },
   };
   const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
       zoom: 8,
       center: center,
     });

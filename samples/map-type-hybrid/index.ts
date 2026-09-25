@@ -13,10 +13,12 @@ async function initMap(): Promise<void> {
   // The map, initialized with hybrid satellite view
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-    zoom: 16,
-    center: position,
     mapTypeId: woosmap.map.MapTypeId.HYBRID,
     mapTypeControl: true,
+  });
+  map.moveCamera({
+    zoom: 16,
+    center: position,
   });
 
   // Listen for map type changes via the built-in control

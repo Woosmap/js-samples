@@ -12,6 +12,8 @@ async function initMap() {
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
       gestureHandling: "greedy",
+    });
+    map.moveCamera({
       center: { lng: 3.878, lat: 43.611 },
       zoom: 15,
     });

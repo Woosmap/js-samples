@@ -10,7 +10,9 @@ async function initMap(): Promise<void> {
 
   venue = "gdn_doc";
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({ visualRefresh: true, center: { lat: 43.6066, lng: 3.9218 } });
+  map.moveCamera({
+    center: { lat: 43.6066, lng: 3.9218 },
+  });
 
   const conf: woosmap.map.IndoorRendererOptions = {
     venue: venue,

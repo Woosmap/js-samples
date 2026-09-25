@@ -6,8 +6,6 @@ async function initMap(): Promise<void> {
 
   const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-      zoom: 14,
-      center: position,
       styles: [
         {
           elementType: "geometry",
@@ -132,6 +130,10 @@ async function initMap(): Promise<void> {
           stylers: [{ color: "#92998d" }],
         },
       ],
+    });
+    map.moveCamera({
+      zoom: 14,
+      center: position,
     });
 }
 

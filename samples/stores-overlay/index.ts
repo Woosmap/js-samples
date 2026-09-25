@@ -31,7 +31,7 @@ async function initMap(): Promise<void> {
 
   // [START woosmap_stores_overlay_add_map]
   const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
       zoom: 4,
       center: center,
     });

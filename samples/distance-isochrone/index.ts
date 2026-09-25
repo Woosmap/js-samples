@@ -34,7 +34,7 @@ async function initMap() {
   await woosmap.map.importLibrary("marker");
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
     zoom: 9,
     center: centerLatLng,
   });

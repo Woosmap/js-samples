@@ -155,7 +155,7 @@ async function initMap(): Promise<void> {
 
   const map = (document.getElementById("map") as woosmap.map.MapElement)
     .innerMap;
-  map.setOptions({
+  map.moveCamera({
     zoom: 0,
     center: center,
   });

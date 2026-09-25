@@ -6,7 +6,6 @@ async function initMap(): Promise<void> {
 
   console.log("init map");
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({ visualRefresh: true });
 
   const conf: woosmap.map.IndoorRendererOptions = {
     defaultFloor: 0, //Render map with default floor

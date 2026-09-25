@@ -6,7 +6,7 @@ async function initMap() {
   await woosmap.map.importLibrary("maps");
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
       center: { lat: 53.51, lng: 8.15 },
       zoom: 4,
     });

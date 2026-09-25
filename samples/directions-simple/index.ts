@@ -9,7 +9,7 @@ async function initMap(): Promise<void> {
   const directionsService = new woosmap.map.DirectionsService();
   const directionsRenderer = new woosmap.map.DirectionsRenderer({});
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
     zoom: 7,
     center: {
       lat: 43.5,

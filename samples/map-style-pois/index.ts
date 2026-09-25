@@ -9,8 +9,6 @@ async function initMap(): Promise<void> {
 
   const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-      zoom: 16,
-      center: position,
       styles: [
         {
         "featureType": "point_of_interest",
@@ -22,6 +20,10 @@ async function initMap(): Promise<void> {
         ]
     }
     ],
+    });
+    map.moveCamera({
+      zoom: 16,
+      center: position,
     });
 }
 

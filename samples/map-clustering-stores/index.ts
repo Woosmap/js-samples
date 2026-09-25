@@ -21,8 +21,6 @@ async function initMap(): Promise<void> {
   infoWindow = new woosmap.map.InfoWindow({});
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-      center: { lat: 53.3485, lng: -6.257 },
-      zoom: 12,
       styles: [
         {
           elementType: "geometry",
@@ -91,6 +89,10 @@ async function initMap(): Promise<void> {
           stylers: [{ color: "#9e9e9e" }],
         },
       ],
+    });
+    map.moveCamera({
+      center: { lat: 53.3485, lng: -6.257 },
+      zoom: 12,
     });
 
   getAllStores().then((stores) => {

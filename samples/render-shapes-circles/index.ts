@@ -139,7 +139,7 @@ async function initMap() {
   await woosmap.map.importLibrary("maps");
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
     center: {
       lat: 40,
       lng: 0,

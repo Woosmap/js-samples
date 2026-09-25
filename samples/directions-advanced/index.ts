@@ -542,7 +542,7 @@ async function initMap(): Promise<void> {
   await woosmap.map.importLibrary("marker");
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
     center: { lat: 51.5074, lng: -0.1478 },
     zoom: 10,
   });

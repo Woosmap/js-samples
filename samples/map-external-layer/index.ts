@@ -17,10 +17,12 @@ async function initMap() {
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-      zoom: 15.64,
-      center: centerLatLng,
       mapTypeControl: true,
       styles: STYLE_PRESETS.lightgrey,
+    });
+    map.moveCamera({
+      zoom: 15.64,
+      center: centerLatLng,
     });
 
   styleSelect = document.getElementById(

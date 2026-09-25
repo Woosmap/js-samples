@@ -22,7 +22,7 @@ async function initMap(): Promise<void> {
   const center: woosmap.map.LatLngLiteral = { lat: 51.5074, lng: -0.1278 };
 
   const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
       zoom: 13,
       center: center,
     });

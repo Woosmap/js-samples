@@ -22,11 +22,6 @@ async function initMap(): Promise<void> {
   infoWindow = new woosmap.map.InfoWindow({});
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-      center: {
-        lat: 55.5,
-        lng: -4,
-      },
-      zoom: 5.7,
       styles: [
         {
           elementType: "geometry",
@@ -95,6 +90,13 @@ async function initMap(): Promise<void> {
           stylers: [{ color: "#9e9e9e" }],
         },
       ],
+    });
+    map.moveCamera({
+      center: {
+        lat: 55.5,
+        lng: -4,
+      },
+      zoom: 5.7,
     });
 
   fetchGeoJsonData(GEOJSON_URL).then((data) => {

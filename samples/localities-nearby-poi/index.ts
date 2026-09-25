@@ -119,8 +119,6 @@ async function initMap() {
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-      center: { lat: 40.71399, lng: -74.00499 },
-      zoom: 14,
       styles: [
         {
           featureType: "point_of_interest",
@@ -132,6 +130,10 @@ async function initMap() {
           ],
         },
       ],
+    });
+    map.moveCamera({
+      center: { lat: 40.71399, lng: -74.00499 },
+      zoom: 14,
     });
   localitiesService = new woosmap.map.LocalitiesService();
 

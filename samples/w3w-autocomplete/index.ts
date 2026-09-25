@@ -338,19 +338,21 @@ async function initMap() {
   // [START woosmap_w3w_autocomplete_initMap]
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions({
-    center: {
-      lat: 48.8534,
-      lng: 2.3488,
-    },
     disableDefaultUI: true,
     gestureHandling: "greedy",
-    zoom: 5,
     styles: [
       {
         featureType: "poi",
         stylers: [{ visibility: "off" }],
       },
     ],
+  });
+  map.moveCamera({
+    center: {
+      lat: 48.8534,
+      lng: 2.3488,
+    },
+    zoom: 5,
   });
   // [END woosmap_w3w_autocomplete_initMap]
   debouncedAutosuggestW3W = debouncePromise(autosuggestW3W, 0);

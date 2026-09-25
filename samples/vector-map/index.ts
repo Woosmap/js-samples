@@ -14,7 +14,7 @@ async function initMap(): Promise<void> {
 
   // The map, centered at London
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
+  map.moveCamera({
     zoom: 17,
     center: position,
   });

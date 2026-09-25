@@ -10,41 +10,17 @@ const origins: woosmap.map.LatLngLiteral[] = [];
 const destinations: woosmap.map.LatLngLiteral[] = [];
 let line: woosmap.map.Polyline | null = null;
 
-function createMarkerContent(label: string, url: string): HTMLElement {
-  const container = document.createElement("div");
-  container.style.position = "relative";
-  container.style.width = "26px";
-  container.style.height = "38px";
-
-  const icon = document.createElement("img");
-  icon.src = url;
-  icon.style.width = "26px";
-  icon.style.height = "38px";
-  container.appendChild(icon);
-
-  const labelSpan = document.createElement("span");
-  labelSpan.textContent = label;
-  labelSpan.style.position = "absolute";
-  labelSpan.style.left = "13px";
-  labelSpan.style.top = "15px";
-  labelSpan.style.transform = "translate(-50%, -50%)";
-  labelSpan.style.color = "white";
-  labelSpan.style.fontSize = "12px";
-  labelSpan.style.fontWeight = "bold";
-  container.appendChild(labelSpan);
-
-  return container;
-}
-
 function createMarker(
   position: woosmap.map.LatLngLiteral,
   label: string,
-  url: string,
+  background: string,
 ): woosmap.map.marker.AdvancedMarkerElement {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({ background, glyphText: label, glyphColor: "#FFFFFF" });
   return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    content: createMarkerContent(label, url),
+    content: pin.element,
   });
 }
 
@@ -63,22 +39,14 @@ function displayMatrixMarkers(
   origins.forEach((origin, index) => {
     bounds.extend(origin);
     markersArray.push(
-      createMarker(
-        origin,
-        (index + 1).toString(),
-        "https://images.woosmap.com/marker-blue.svg",
-      ),
+      createMarker(origin, (index + 1).toString(), "#3d5afe"),
     );
   });
 
   destinations.forEach((destination, index) => {
     bounds.extend(destination);
     markersArray.push(
-      createMarker(
-        destination,
-        (index + 1).toString(),
-        "https://images.woosmap.com/marker-red.svg",
-      ),
+      createMarker(destination, (index + 1).toString(), "#f50057"),
     );
   });
 

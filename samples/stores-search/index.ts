@@ -202,14 +202,16 @@ function displayStoresAndLocation(
   }
 
   if (stores && latlng) {
-    const markerContent = document.createElement("img");
-    markerContent.src = "https://images.woosmap.com/marker.png";
-    markerContent.style.width = "32px";
-    markerContent.style.height = "50px";
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
 
     activeLocation = new woosmap.map.marker.AdvancedMarkerElement({
       position: latlng,
-      content: markerContent,
+      content: pin.element,
     });
 
     const bounds = calculateLatLngBounds(stores);

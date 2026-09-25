@@ -80,14 +80,16 @@ function displayLocality(
   }
 
   if (locality?.geometry) {
-    const markerContent = document.createElement("img");
-    markerContent.src = "https://images.woosmap.com/marker.png";
-    markerContent.style.width = "32px";
-    markerContent.style.height = "50px";
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
 
     marker = new woosmap.map.marker.AdvancedMarkerElement({
       position: locality.geometry.location,
-      content: markerContent,
+      content: pin.element,
     });
     marker.setMap(map);
     infoWindow.setContent(`<span>${locality.formatted_address}</span>`);

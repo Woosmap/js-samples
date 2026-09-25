@@ -123,14 +123,16 @@ function createAddressMarker(addressDetail) {
   if (marker) {
     marker.setMap(null);
   }
-  const markerContent = document.createElement("img");
-  markerContent.src = "https://images.woosmap.com/marker-alt.png";
-  markerContent.style.width = "37px";
-  markerContent.style.height = "59px";
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#E00084",
+    borderColor: "#B3006A",
+    glyphColor: "#FFFFFF",
+  });
 
   marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: addressDetail.geometry.location,
-    content: markerContent,
+    content: pin.element,
   });
   marker.setMap(map);
   panMap(addressDetail);

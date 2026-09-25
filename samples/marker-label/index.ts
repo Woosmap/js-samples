@@ -6,29 +6,12 @@ async function initMap(): Promise<void> {
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
 
   function createMarkerContent(label: string): HTMLElement {
-    const container = document.createElement("div");
-    container.style.position = "relative";
-    container.style.width = "26px";
-    container.style.height = "38px";
-
-    const icon = document.createElement("img");
-    icon.src = "https://images.woosmap.com/marker-red.svg";
-    icon.style.width = "26px";
-    icon.style.height = "38px";
-    container.appendChild(icon);
-
-    const labelSpan = document.createElement("span");
-    labelSpan.textContent = label;
-    labelSpan.style.position = "absolute";
-    labelSpan.style.left = "14px";
-    labelSpan.style.top = "15px";
-    labelSpan.style.transform = "translate(-50%, -50%)";
-    labelSpan.style.color = "white";
-    labelSpan.style.fontSize = "12px";
-    labelSpan.style.fontWeight = "bold";
-    container.appendChild(labelSpan);
-
-    return container;
+    const { PinElement } = woosmap.map.marker;
+    return new PinElement({
+      background: "#f50057",
+      glyphText: label,
+      glyphColor: "#FFFFFF",
+    }).element;
   }
 
   const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;

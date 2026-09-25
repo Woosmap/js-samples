@@ -23,17 +23,19 @@ async function initMap(): Promise<void> {
     "<p>London is the capital and largest city of England and the United Kingdom. <a href='https://en.wikipedia.org/wiki/London'>Wikipedia →</a></p>" +
     "</div>";
 
-  const markerContent = document.createElement("img");
-  markerContent.src = "https://images.woosmap.com/marker.png";
-  markerContent.style.width = "32px";
-  markerContent.style.height = "50px";
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#5588FF",
+    borderColor: "#3D6FE0",
+    glyphColor: "#FFFFFF",
+  });
 
   const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: {
       lat: 51.515,
       lng: -0.13,
     },
-    content: markerContent,
+    content: pin.element,
     gmpClickable: true,
     map,
   });

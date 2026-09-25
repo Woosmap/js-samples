@@ -14,14 +14,16 @@ async function initMap() {
     center: position,
   });
 
-  const markerContent = document.createElement("img");
-  markerContent.src = "https://images.woosmap.com/marker.png";
-  markerContent.style.width = "32px";
-  markerContent.style.height = "50px";
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#5588FF",
+    borderColor: "#3D6FE0",
+    glyphColor: "#FFFFFF",
+  });
 
   const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: map.getCenter(),
-    content: markerContent,
+    content: pin.element,
     gmpClickable: true,
   });
   marker.setMap(map);
@@ -32,9 +34,8 @@ async function initMap() {
     marker.setPosition(map.getCenter());
   });
   marker.addListener("click", () => {
-    markerContent.src = "https://images.woosmap.com/icons/pin-green.png";
-    markerContent.style.width = "28px";
-    markerContent.style.height = "42px";
+    pin.background = "#00BDA5";
+    pin.borderColor = "#004941";
   });
 }
 

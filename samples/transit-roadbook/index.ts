@@ -7,42 +7,18 @@ let originContainer: HTMLElement;
 let destinationContainer: HTMLElement;
 let transitRenderer: woosmap.map.TransitRenderer;
 
-function createMarkerContent(label: string, url: string): HTMLElement {
-  const container = document.createElement("div");
-  container.style.position = "relative";
-  container.style.width = "26px";
-  container.style.height = "38px";
-
-  const icon = document.createElement("img");
-  icon.src = url;
-  icon.style.width = "26px";
-  icon.style.height = "38px";
-  container.appendChild(icon);
-
-  const labelSpan = document.createElement("span");
-  labelSpan.textContent = label;
-  labelSpan.style.position = "absolute";
-  labelSpan.style.left = "13px";
-  labelSpan.style.top = "15px";
-  labelSpan.style.transform = "translate(-50%, -50%)";
-  labelSpan.style.color = "white";
-  labelSpan.style.fontSize = "12px";
-  labelSpan.style.fontWeight = "bold";
-  container.appendChild(labelSpan);
-
-  return container;
-}
-
 function createMarker(
   position: woosmap.map.LatLngLiteral | woosmap.map.LatLng,
   label: string,
-  url: string,
+  background: string,
 ): woosmap.map.marker.AdvancedMarkerElement {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({ background, glyphText: label, glyphColor: "#FFFFFF" });
   return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
     gmpDraggable: true,
-    content: createMarkerContent(label, url),
+    content: pin.element,
   });
 }
 
@@ -55,21 +31,13 @@ function clearMarkers(): void {
 
 function displayTransitMarkers(): void {
   clearMarkers();
-  const originMarker = createMarker(
-    transitRequest.origin,
-    "O",
-    "https://images.woosmap.com/marker-blue.svg",
-  );
+  const originMarker = createMarker(transitRequest.origin, "O", "#3d5afe");
   originMarker.addListener("dragend", () => {
     transitRequest.origin = originMarker.position!;
     setLatLngToContainer(originContainer, originMarker.position!.toJSON());
     calculateTransit();
   });
-  const destinationMarker = createMarker(
-    transitRequest.destination,
-    "D",
-    "https://images.woosmap.com/marker-red.svg",
-  );
+  const destinationMarker = createMarker(transitRequest.destination, "D", "#f50057");
   destinationMarker.addListener("dragend", () => {
     transitRequest.destination = destinationMarker.position!;
     setLatLngToContainer(

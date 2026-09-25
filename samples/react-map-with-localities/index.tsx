@@ -130,14 +130,16 @@ const Marker: React.FC<woosmap.map.marker.AdvancedMarkerElementOptions> = ({
       setMarker(null);
     }
     if (mapInstance && position) {
-      const markerContent = document.createElement("img");
-      markerContent.src = "https://images.woosmap.com/marker.png";
-      markerContent.style.width = "32px";
-      markerContent.style.height = "50px";
+      const { PinElement } = woosmap.map.marker;
+      const pin = new PinElement({
+        background: "#5588FF",
+        borderColor: "#3D6FE0",
+        glyphColor: "#FFFFFF",
+      });
 
       const localityMarker = new woosmap.map.marker.AdvancedMarkerElement({
         position,
-        content: markerContent,
+        content: pin.element,
       });
       localityMarker.setMap(mapInstance);
       setMarker(localityMarker);

@@ -178,14 +178,16 @@ function createAddressMarker(
     markerAddress.setMap(null);
   }
   if (addressDetail && addressDetail.geometry) {
-    const markerContent = document.createElement("img");
-    markerContent.src = "https://images.woosmap.com/marker.png";
-    markerContent.style.width = "37px";
-    markerContent.style.height = "59px";
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
 
     markerAddress = new woosmap.map.marker.AdvancedMarkerElement({
       position: addressDetail.geometry.location,
-      content: markerContent,
+      content: pin.element,
     });
     markerAddress.setMap(map);
     panMap(addressDetail);

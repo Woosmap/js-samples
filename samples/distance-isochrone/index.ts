@@ -10,12 +10,8 @@ const centerLatLng: woosmap.map.LatLngLiteral = {
   lat: 51.5,
   lng: -0.234,
 };
-function createMarkerContent(): HTMLImageElement {
-  const img = document.createElement("img");
-  img.src = "https://images.woosmap.com/icons/pin-red.png";
-  img.style.width = "26px";
-  img.style.height = "38px";
-  return img;
+function createMarkerContent(): HTMLElement {
+  return new woosmap.map.marker.PinElement().element;
 }
 function createMarker(
   position: woosmap.map.LatLngLiteral,

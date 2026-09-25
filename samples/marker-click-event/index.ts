@@ -142,15 +142,12 @@ async function initMap(): Promise<void> {
 
   const center: woosmap.map.LatLngLiteral = { lat: 40.0, lng: 0.0 };
 
-  const CITY_PIN_URL = "https://images.woosmap.com/icons/pin-red.png";
-  const SELECTED_CITY_PIN_URL = "https://images.woosmap.com/icons/pin-green.png";
+  const { PinElement } = woosmap.map.marker;
+  const CITY_PIN_COLORS = { background: "#EA4335", borderColor: "#B31412" };
+  const SELECTED_CITY_PIN_COLORS = { background: "#00BDA5", borderColor: "#004941" };
 
-  function createCityMarkerContent(): HTMLImageElement {
-    const img = document.createElement("img");
-    img.src = CITY_PIN_URL;
-    img.style.width = "26px";
-    img.style.height = "38px";
-    return img;
+  function createCityMarkerContent(): woosmap.map.marker.PinElement {
+    return new PinElement(CITY_PIN_COLORS);
   }
 
   const map = (document.getElementById("map") as woosmap.map.MapElement)
@@ -185,11 +182,17 @@ async function initMap(): Promise<void> {
     cityData: Record<string, string>,
   ) => {
     if (markerSelected) {
-      (markerSelected.content as HTMLImageElement).src = CITY_PIN_URL;
+      Object.assign(
+        markerSelected.content as woosmap.map.marker.PinElement,
+        CITY_PIN_COLORS,
+      );
     }
 
     markerSelected = marker;
-    (marker.content as HTMLImageElement).src = SELECTED_CITY_PIN_URL;
+    Object.assign(
+      marker.content as woosmap.map.marker.PinElement,
+      SELECTED_CITY_PIN_COLORS,
+    );
 
     const infoElement = document.getElementById("info") as HTMLElement;
     infoElement.innerHTML = `<strong>${cityData.cityName}</strong><span>: ${cityData.citizens}</span>`;

@@ -244,7 +244,7 @@ function createMarker(
   });
   marker.addListener("click", () => {
     infoWindow.setContent(`<h3>${feature.properties.name}</h3>`);
-    infoWindow.open({map, anchor: marker.position});
+    infoWindow.open({map, anchor: marker});
   });
   return marker;
 }

@@ -102,7 +102,7 @@ function displayLocality(
     });
     marker.setMap(map);
     infoWindow.setContent(`<span>${locality.formatted_address}</span>`);
-    infoWindow.open({map, anchor: marker.position});
+    infoWindow.open({map, anchor: marker});
     map.flyTo({ center: locality.geometry.location, zoom: 14 });
   }
 }

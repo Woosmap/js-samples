@@ -40,9 +40,9 @@ async function initMap(): Promise<void> {
   const infoWindow = new woosmap.map.InfoWindow({});
   infoWindow.setOffset(new woosmap.map.Point(0, -50));
   infoWindow.setContent(londonInfoWindowHTML);
-  infoWindow.open({map, anchor: marker.position});
+  infoWindow.open({map, anchor: marker});
   marker.addListener("click", () => {
-    infoWindow.open({map, anchor: marker.position});
+    infoWindow.open({map, anchor: marker});
   });
 }
 

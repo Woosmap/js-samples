@@ -190,12 +190,12 @@ function displayLocality(result, apiName: string) {
     infoWindow.setOffset(new woosmap.map.Point(0, -50));
     infoWindow.setContent(infoWindowHTML);
     marker.addListener("click", () => {
-      infoWindow.open({map, anchor: marker.position});
+      infoWindow.open({map, anchor: marker});
     });
     map.setCenter(result.geometry.location, { top: 150 });
     map.setZoom(14);
     woosmap.map.event.addListenerOnce(map, "idle", () => {
-      infoWindow.open({map, anchor: marker.position});
+      infoWindow.open({map, anchor: marker});
     });
   }
 }

@@ -33,9 +33,13 @@ export default [
       node: true,
     },
     rules: {
-      "no-unused-vars": [1, { varsIgnorePattern: "init*" }],
+      // The TS rule replaces the base one under @typescript-eslint/recommended,
+      // so the initMap-style callback exemption has to live on it.
+      "no-unused-vars": 0,
+      "@typescript-eslint/no-unused-vars": [2, { varsIgnorePattern: "^init" }],
       "no-var": 2,
-      "@typescript-eslint/no-var-requires": 0,
+      // The build scripts are CommonJS (typescript-eslint v8 renamed no-var-requires).
+      "@typescript-eslint/no-require-imports": 0,
       "prefer-arrow-callback": 2,
     },
   }),

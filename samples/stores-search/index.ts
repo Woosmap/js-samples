@@ -31,8 +31,6 @@ const storesStyle: woosmap.map.Style = {
 };
 
 const mapOptions: woosmap.map.MapOptions = {
-  center: { lat: 51.50940214, lng: -0.133012 },
-  zoom: 12,
   styles: [
     {
       featureType: "poi.business",
@@ -229,6 +227,7 @@ async function initMap() {
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions(mapOptions);
+  map.moveCamera({ center: { lat: 51.50940214, lng: -0.133012 }, zoom: 12 });
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
 

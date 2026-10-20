@@ -24,11 +24,6 @@ const storesStyle: woosmap.map.Style = {
 };
 
 const mapOptions: woosmap.map.MapOptions = {
-  zoom: 5,
-  center: {
-    lat: 46.5,
-    lng: 1.4,
-  },
   styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }],
 };
 
@@ -245,6 +240,7 @@ async function initMap() {
 
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
   map.setOptions(mapOptions);
+  map.moveCamera({ center: { lat: 46.5, lng: 1.4 }, zoom: 5 });
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
   map.addListener(

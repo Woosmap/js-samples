@@ -2,9 +2,7 @@
 const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
   { country: [] };
 const woosmap_key = "YOUR_API_KEY";
-let debouncedAutocomplete: (
-  ...args: any[]
-) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
+let debouncedAutocomplete: typeof autocompleteAddress;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
@@ -41,10 +39,9 @@ async function initMap(): Promise<void> {
 }
 
 function createShape(result: woosmap.map.localities.LocalitiesDetailsResult) {
-  // @ts-ignore TypeDef to be updated
   if (result?.geometry?.shape) {
     hasShape = true;
-    // @ts-ignore TypeDef to be updated
+    // @ts-expect-error shape is typed as a Feature, but the API returns a bare geometry
     map.data.addGeoJson({ type: "Feature", geometry: result.geometry.shape });
     if (result.geometry.viewport) {
       const bounds = {
@@ -180,7 +177,7 @@ function handleAutocomplete(): void {
       .map((country) => `country:${country}`)
       .join("|");
     if (input !== "") {
-      debouncedAutocomplete(input, componentsArgs, woosmap_key)
+      debouncedAutocomplete(input, componentsArgs)
         .then(({ localities }) => displaySuggestions(localities))
         .catch((error) =>
           console.error("Error autocomplete localities:", error),
@@ -220,7 +217,7 @@ function formatPredictionList(locality): string {
   const prediction = locality;
   const predictionClass = "no-viewpoint";
   const matched_substrings = prediction.matched_substrings;
-  let formatted_name = "";
+  let formatted_name: string;
   if (
     prediction.matched_substrings &&
     prediction.matched_substrings.description
@@ -291,17 +288,17 @@ function buildQueryString(params: object) {
   return queryStringParts.join("&");
 }
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {

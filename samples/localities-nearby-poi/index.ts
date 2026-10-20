@@ -71,8 +71,12 @@ let localitiesService: woosmap.map.LocalitiesService;
 let autocompleteRequest: woosmap.map.localities.LocalitiesAutocompleteRequest;
 let nearbyRequest: woosmap.map.localities.LocalitiesNearbyRequest;
 
+interface TypeTree {
+  [type: string]: TypeTree;
+}
+
 const buildTree = (availableTypes: string[]) => {
-  const tree = {};
+  const tree: TypeTree = {};
   availableTypes.forEach((type) => {
     const parts = type.split(".");
     let node = tree;
@@ -84,7 +88,7 @@ const buildTree = (availableTypes: string[]) => {
   return tree;
 };
 
-const createList = (node: any, prefix = "") => {
+const createList = (node: TypeTree, prefix = "") => {
   const ul = document.createElement("ul");
   for (const key in node) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
@@ -283,7 +287,6 @@ function performNearbyRequest(
     return;
   }
 
-  //@ts-ignore
   localitiesService.nearby(nearbyRequest).then((responseJson) => {
     drawNearbyZone(requestCenter, nearbyRequest.radius);
     updateResults(responseJson, requestCenter);
@@ -465,9 +468,12 @@ document.addEventListener("click", (event) => {
   }
 });
 
-function debounce(func: (...args: any[]) => void, wait: number) {
+function debounce<Args extends unknown[]>(
+  func: (...args: Args) => void,
+  wait: number,
+) {
   let timeout: ReturnType<typeof setTimeout>;
-  return function executedFunction(...args: any[]) {
+  return function executedFunction(...args: Args) {
     const later = () => {
       clearTimeout(timeout);
       func(...args);

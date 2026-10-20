@@ -14,9 +14,7 @@ let detailsHTML: HTMLElement;
 let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
 let marker: woosmap.map.marker.AdvancedMarkerElement;
-let debouncedAutosuggestW3W: (
-  ...args: any[]
-) => Promise<What3WordsSuggestionsResponse>;
+let debouncedAutosuggestW3W: typeof autosuggestW3W;
 
 const API_KEY = "YOUR_API_KEY"; // Replace YOUR_API_KEY with your actual API key
 
@@ -200,10 +198,10 @@ function displaySubBuildings(target: HTMLElement, subBuildings) {
   displaySection(autoSuggestResultsTitle);
   const addressList = document.createElement("ul");
 
-  subBuildings.forEach((address, index) => {
+  subBuildings.forEach((address) => {
     const line = document.createElement("li");
     line.className = "address";
-    line.addEventListener("click", (event) => {
+    line.addEventListener("click", () => {
       getAddressDetails(line, address.public_id);
     });
     line.innerHTML = `<span class='pin'></span><span>${address.description}</span>`;
@@ -234,10 +232,10 @@ function displayAddressList(addressDetails) {
       "what3words address invalid or no street address found within 200m of its location.";
     newAddressList.appendChild(line);
   } else {
-    addressDetails.forEach((address, index) => {
+    addressDetails.forEach((address) => {
       const line = document.createElement("li");
       line.className = "address";
-      line.addEventListener("click", (event) => {
+      line.addEventListener("click", () => {
         if (address.public_id) {
           getAddressDetails(line, address.public_id);
         } else {
@@ -417,17 +415,17 @@ function initUI() {
   clearSearchBtn.addEventListener("click", resetUI);
 }
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {

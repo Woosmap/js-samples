@@ -4,7 +4,7 @@ let marker: woosmap.map.marker.AdvancedMarkerElement;
 let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 let request: woosmap.map.localities.LocalitiesAutocompleteRequest;
-let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
+let debouncedLocalitiesAutocomplete: woosmap.map.LocalitiesService["autocomplete"];
 
 async function initMap(): Promise<void> {
   await woosmap.map.importLibrary("maps");
@@ -145,19 +145,19 @@ document.addEventListener("click", (event) => {
 });
 
 // [START woosmap_localities_autocomplete_debounce_promise]
-let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
+let PRESERVE_COMMENT_ABOVE; // eslint-disable-line no-unassigned-vars -- force tsc to maintain the comment above
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {
@@ -184,7 +184,7 @@ function debouncePromise<T, Args extends any[]>(
 }
 
 // [END woosmap_localities_autocomplete_debounce_promise] */
-PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
+PRESERVE_COMMENT_ABOVE; // eslint-disable-line @typescript-eslint/no-unused-expressions -- force tsc to maintain the comment above
 
 initMap();
 // [END woosmap_localities_autocomplete]

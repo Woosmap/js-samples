@@ -8,7 +8,12 @@ let index: Supercluster;
 let markers: woosmap.map.marker.AdvancedMarkerElement[] = [];
 const GEOJSON_URL = "https://demo.woosmap.com/misc/data/uk-all-pubs.geojson";
 const ICON_URL = "https://images.woosmap.com/dot-green.svg"; //
-const SUPERCLUSTER_OPTIONS: Supercluster.Options<any, any> = {
+type ClusterOrPoint = ReturnType<Supercluster["getClusters"]>[number];
+
+const SUPERCLUSTER_OPTIONS: Supercluster.Options<
+  Supercluster.AnyProps,
+  Supercluster.AnyProps
+> = {
   radius: 40,
   extent: 256,
   maxZoom: 14,
@@ -145,7 +150,7 @@ function clearMarkers(): void {
 }
 
 function createClusterIcon(
-  feature: any,
+  feature: ClusterOrPoint,
   latlng: woosmap.map.LatLngLiteral,
 ): woosmap.map.marker.AdvancedMarkerElement {
   if (!feature.properties.cluster) {
@@ -155,7 +160,7 @@ function createClusterIcon(
 }
 
 function createCluster(
-  feature: any,
+  feature: ClusterOrPoint,
   latlng: woosmap.map.LatLngLiteral,
 ): woosmap.map.marker.AdvancedMarkerElement {
   const count = feature.properties.point_count;
@@ -198,7 +203,7 @@ function createCluster(
     gmpClickable: true,
     map: map,
   });
-  marker.addListener("click", (e) => {
+  marker.addListener("click", () => {
     infoWindow.close();
     const expansionZoom = index.getClusterExpansionZoom(
       feature.properties["cluster_id"],
@@ -209,7 +214,7 @@ function createCluster(
 }
 
 function createMarker(
-  feature: any,
+  feature: ClusterOrPoint,
   latlng: woosmap.map.LatLngLiteral,
 ): woosmap.map.marker.AdvancedMarkerElement {
   const markerContent = document.createElement("img");
@@ -230,13 +235,13 @@ function createMarker(
   return marker;
 }
 
-function debounce<T extends (...args: any[]) => ReturnType<T>>(
-  callback: T,
+function debounce<Args extends unknown[]>(
+  callback: (...args: Args) => void,
   timeout: number,
-): (...args: Parameters<T>) => void {
+): (...args: Args) => void {
   let timer: ReturnType<typeof setTimeout>;
 
-  return (...args: Parameters<T>) => {
+  return (...args: Args) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       callback(...args);

@@ -11,7 +11,9 @@ let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
 let datasetSelect: HTMLSelectElement;
 let operatorSelect: HTMLSelectElement;
-let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
+let debouncedLocalitiesAutocomplete: (
+  request: woosmap.map.localities.LocalitiesAutocompleteRequest,
+) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
 let results: HTMLOListElement;
 let resetButton: HTMLButtonElement;
 
@@ -64,7 +66,7 @@ function initDrawing(): void {
     },
   });
   drawTools.addControl(map);
-  drawTools.addListener("draw.create", async (ev) => {
+  drawTools.addListener("draw.create", async () => {
     const collection = drawTools.getAll();
     if (collection.features.length > 1) {
       for (const feature of collection.features.slice(0, -1)) {
@@ -214,7 +216,7 @@ function manageFiltersElements() {
     const selectElement = event.target as HTMLSelectElement;
     updateDataset(selectElement.value);
   });
-  operatorSelect.addEventListener("change", async (ev) => {
+  operatorSelect.addEventListener("change", async () => {
     const collection = drawTools.getAll();
     await intersectCb(collection);
   });
@@ -249,16 +251,16 @@ async function intersectCb(ev) {
 
   await applyOperator(ev.features[0].geometry, operatorSelect.value)
     .then((response) => {
-      const features = [];
+      const features: woosmap.map.GeoJSONFeature[] = [];
       bindResultsToPanel(response.features);
       map.data.forEach((feature) => {
         map.data.remove(feature);
       });
       for (const feature of response.features) {
-        // @ts-ignore TypeDef to be updated
         features.push({
           type: "Feature",
           geometry: feature.geometry,
+          properties: {},
         });
       }
 
@@ -286,8 +288,8 @@ function bindResultsToPanel(features: woosmap.map.GeoJSONFeature[]) {
             resultListItem.innerHTML +
             `<tr><td><b>${key} </b></td><td>${attributes[key]}</td></tr>`;
         }
-      }),
-        results.appendChild(resultListItem);
+      });
+      results.appendChild(resultListItem);
     });
   } else {
     results.innerHTML = "No results found";
@@ -295,19 +297,19 @@ function bindResultsToPanel(features: woosmap.map.GeoJSONFeature[]) {
   }
 }
 // [START woosmap_localities_autocomplete_debounce_promise]
-let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
+let PRESERVE_COMMENT_ABOVE; // eslint-disable-line no-unassigned-vars -- force tsc to maintain the comment above
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {
@@ -334,7 +336,7 @@ function debouncePromise<T, Args extends any[]>(
 }
 
 // [END woosmap_localities_autocomplete_debounce_promise] */
-PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
+PRESERVE_COMMENT_ABOVE; // eslint-disable-line @typescript-eslint/no-unused-expressions -- force tsc to maintain the comment above
 
 initMap();
 // [END woosmap_datasets_api]

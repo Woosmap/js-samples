@@ -31,7 +31,24 @@ const searchOptions = {
     },
   },
 };
-let multiSearch;
+// The MultiSearch JS API ships no typings: describe the parts this sample uses.
+interface MultiSearchPrediction {
+  id: string;
+  api: string;
+  description?: string;
+  highlight: string;
+}
+
+interface MultiSearch {
+  autocompleteMulti(input: string): Promise<MultiSearchPrediction[]>;
+  detailsMulti(request: { id: string; api: string }): Promise<unknown>;
+}
+
+interface MultiSearchGlobal {
+  multisearch(options: object): MultiSearch;
+}
+
+let multiSearch: MultiSearch;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
@@ -73,8 +90,7 @@ function initSearch(): void {
     inputElement.focus();
   });
 
-  // @ts-ignore
-  multiSearch = woosmap.multisearch(searchOptions);
+  multiSearch = (woosmap as unknown as MultiSearchGlobal).multisearch(searchOptions);
 }
 
 async function initMap(): Promise<void> {

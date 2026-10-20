@@ -178,7 +178,9 @@ function handleGeocodeResults(
   localities: woosmap.map.localities.LocalitiesGeocodeResponse,
 ) {
   const location = localities.results[0]?.geometry?.location;
-  location && handleSearchResults(location);
+  if (location) {
+    handleSearchResults(location);
+  }
 }
 
 function handleSearchResults(originalLatLng: woosmap.map.LatLngLiteral) {
@@ -226,9 +228,12 @@ function selectStoreOnList(storeId?: string) {
 }
 
 // Debounce function
-function debounce(func: (...args: any[]) => void, wait: number) {
+function debounce<Args extends unknown[]>(
+  func: (...args: Args) => void,
+  wait: number,
+) {
   let timeout: ReturnType<typeof setTimeout>;
-  return (...args: any[]) => {
+  return (...args: Args) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };

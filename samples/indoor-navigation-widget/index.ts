@@ -24,7 +24,7 @@ async function initMap(): Promise<void> {
   indoorRenderer.setMap(map);
 
   // Indoor event that is triggered when the indoor venue is loaded.
-  indoorRenderer.addListener("indoor_venue_loaded", (venue) => {
+  indoorRenderer.addListener("indoor_venue_loaded", () => {
     indoorService = new woosmap.map.IndoorService();
 
     const request: woosmap.map.IndoorDirectionRequest = {

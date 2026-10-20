@@ -3,9 +3,7 @@ const woosmap_key = "YOUR_API_KEY";
 const countryRestrictions = ["GB", "JE", "IM", "GG"];
 const types = ["postal_code"];
 let map: woosmap.map.Map;
-let debouncedAutocomplete: (
-  ...args: any[]
-) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
+let debouncedAutocomplete: typeof autocompleteAddress;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
@@ -266,17 +264,17 @@ function getLocalitiesDetails(
   ).then((response) => response.json());
 }
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {

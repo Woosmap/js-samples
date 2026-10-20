@@ -8,8 +8,12 @@ import React, {
   useState,
 } from "react";
 
-// Define the types for the global Woosmap object
-declare const woosmap: any;
+// The shim reads and writes `window.woosmap` before the API is loaded.
+type LoaderWindow = {
+  woosmap?: {
+    map?: Record<string, (name: string, ...args: unknown[]) => unknown>;
+  };
+};
 
 // Installs the documented Woosmap loader shim (see docs/docs/loader.md), which
 // defines a stub `woosmap.map.importLibrary` that fetches map.js on first call.
@@ -17,7 +21,7 @@ declare const woosmap: any;
 function installLoaderShim(apiKey: string): void {
   ((g) => {
     let p;
-    const w = window as any,
+    const w = window as unknown as LoaderWindow,
       d = document;
     const L = "importLibrary",
       CB = "__ib__";
@@ -60,7 +64,7 @@ function useWoosmap(apiKey: string) {
 }
 
 // Contexts for Woosmap and the map instance
-const MapContext = createContext<any>(null);
+const MapContext = createContext<typeof woosmap | null>(null);
 const MapInstanceContext = createContext<woosmap.map.Map | null>(null);
 
 interface WoosmapAPIProviderProps {
@@ -160,12 +164,15 @@ const Marker: React.FC<{
 }> = ({ position, icon }) => {
   const woosmap = useContext(MapContext);
   const mapInstance = useContext(MapInstanceContext);
-  const [overlay, setOverlay] = useState<any>(null);
+  const [overlay, setOverlay] = useState<woosmap.map.OverlayView | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!woosmap || !mapInstance || !position) return;
 
-    class CustomOverlay extends (woosmap.map.OverlayView as new () => any) {
+    class CustomOverlay extends (woosmap.map
+      .OverlayView as new () => woosmap.map.OverlayView) {
       private position: woosmap.map.LatLngLiteral;
       private containerDiv: HTMLDivElement;
       private icon: React.ReactNode;
@@ -181,16 +188,17 @@ const Marker: React.FC<{
       onAdd() {
         const root = createRoot(this.containerDiv);
         root.render(this.icon);
-        const panes = this.getPanes();
-        panes.floatPane.appendChild(this.containerDiv);
+        this.getPanes()?.floatPane.appendChild(this.containerDiv);
         this.addEventListener("click", () => {
           alert("Marker clicked!");
         });
       }
 
       draw() {
-        const projection = this.getProjection();
-        const point = projection.fromLatLngToDivPixel(this.position);
+        // @types/woosmap.map does not declare Point's x/y yet.
+        const point = this.getProjection()?.fromLatLngToDivPixel(
+          this.position,
+        ) as { x: number; y: number } | null | undefined;
         if (point) {
           // Offset should depend on the style of your icon  - here it is positioned at the middle
           const offsetWidth = this.containerDiv.offsetWidth / 2; // 50% of div width
@@ -260,6 +268,6 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // [END woosmap_react_map_with_custom_overlay]
-let PRESERVE_COMMENT_ABOVE; // force tsc to maintain the comment above eslint-disable-line
+let PRESERVE_COMMENT_ABOVE; // eslint-disable-line @typescript-eslint/no-unused-vars -- force tsc to maintain the comment above
 
 export {};

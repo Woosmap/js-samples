@@ -149,12 +149,12 @@ function createRoutesTable(response: woosmap.map.transit.TransitRouteResponse) {
             } 
             `;
           $stepContainer.appendChild($step);
-          leg.travel_mode === `transit`
-            ? $step.insertAdjacentHTML(
-                "afterend",
-                '<span style="font-weight: bold"> > </span>',
-              )
-            : "";
+          if (leg.travel_mode === `transit`) {
+            $step.insertAdjacentHTML(
+              "afterend",
+              '<span style="font-weight: bold"> > </span>',
+            );
+          }
           return $stepContainer;
         },
       );
@@ -394,11 +394,7 @@ function updateTime(timeType: "departureTime" | "arrivalTime"): void {
   });
 }
 
-function registerAddButton(
-  selector: string,
-  element: HTMLElement,
-  loc: woosmap.map.LatLngLiteral[] | woosmap.map.LatLngLiteral,
-): void {
+function registerAddButton(selector: string, element: HTMLElement): void {
   const button = document.querySelector(selector) as HTMLElement;
   button.addEventListener("click", () => {
     if (button.classList.contains("addLocation__selected")) {
@@ -494,16 +490,8 @@ function initUI(): void {
   updateTime("departureTime");
   updateTime("arrivalTime");
   updateTransitOptions();
-  registerAddButton(
-    ".addLocation__destinations",
-    destinationContainer,
-    transitRequest.destination as woosmap.map.LatLngLiteral,
-  );
-  registerAddButton(
-    ".addLocation__origins",
-    originContainer,
-    transitRequest.origin as woosmap.map.LatLngLiteral,
-  );
+  registerAddButton(".addLocation__destinations", destinationContainer);
+  registerAddButton(".addLocation__origins", originContainer);
 }
 
 async function initMap(): Promise<void> {

@@ -145,7 +145,9 @@ function handleGeocodeResults(
   localities: woosmap.map.localities.LocalitiesGeocodeResponse,
 ) {
   const location = localities.results[0]?.geometry?.location;
-  location && handleStoresSearch(location);
+  if (location) {
+    handleStoresSearch(location);
+  }
 }
 
 function handleStoresSearch(latlng: woosmap.map.LatLngLiteral) {
@@ -238,7 +240,9 @@ async function initMap() {
   });
 
   map.addListener("click", (e) => {
-    e.latlng && handleGeocode(e.latlng);
+    if (e.latlng) {
+      handleGeocode(e.latlng);
+    }
   });
 
   storesService = new woosmap.map.StoresService();

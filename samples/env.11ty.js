@@ -13,6 +13,7 @@ module.exports = {
 
   render({ sample }) {
     let output = `VITE_WOOSMAP_PUBLIC_API_KEY=${sample.data.WOOSMAP_PUBLIC_API_KEY ? sample.data.WOOSMAP_PUBLIC_API_KEY : "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f"}`;
+    output += `\nVITE_WOOSMAP_SDK_HOST=${sample.data.WOOSMAP_SDK_HOST}`;
     if (sample.data.GOOGLE_API_KEY) {
       output += `\nVITE_GOOGLE_API_KEY=${sample.data.GOOGLE_API_KEY}`;
     }

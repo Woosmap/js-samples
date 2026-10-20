@@ -18,7 +18,8 @@ module.exports = {
  *  @external https://vitejs.dev/guide/env-and-mode.html
  */
 interface ImportMetaEnv {
-    readonly VITE_WOOSMAP_PUBLIC_API_KEY: string`;
+    readonly VITE_WOOSMAP_PUBLIC_API_KEY: string
+    readonly VITE_WOOSMAP_SDK_HOST: string`;
 
     if (sample.data.GOOGLE_API_KEY) {
       output += `

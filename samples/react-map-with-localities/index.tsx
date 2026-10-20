@@ -19,6 +19,8 @@ type LoaderWindow = {
 // Installs the documented Woosmap loader shim (see docs/docs/loader.md), which
 // defines a stub `woosmap.map.importLibrary` that fetches map.js on first call.
 // Safe to call more than once: the shim itself no-ops (and warns) past the first.
+const WOOSMAP_SDK_HOST = "https://sdk.woosmap.com";
+
 function installLoaderShim(apiKey: string): void {
   ((g) => {
     let p;
@@ -38,7 +40,7 @@ function installLoaderShim(apiKey: string): void {
         params.set("libraries", [...libs].join(","));
         for (const k in g) params.set(k, g[k]);
         params.set("callback", "woosmap.map." + CB);
-        s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+        s.src = `${WOOSMAP_SDK_HOST}/map/map.js?` + params;
         maps[CB] = res;
         s.onerror = () => rej(Error(E + " could not load."));
         d.head.append(s);

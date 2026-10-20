@@ -59,7 +59,7 @@ function readOpacity(): number {
 
 function onStyleChange() {
   applyStyle(styleSelect.value);
-  // Recreating the map wipes overlays — reapply the current layer.
+  // Restyling reloads the base style, which drops overlays: reapply the current layer.
   applyLayer(layerSelect.value, readOpacity());
 }
 
@@ -76,17 +76,7 @@ function onOpacityChange() {
 }
 
 function applyStyle(name: string) {
-  const styles = STYLE_PRESETS[name] ?? [];
-  map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      visualRefresh: true,
-      zoom: map.getZoom(),
-      center: map.getCenter(),
-      mapTypeControl: true,
-      styles,
-    },
-  );
+  map.setOptions({ styles: STYLE_PRESETS[name] ?? [] });
 }
 
 function applyLayer(provider: string, opacity: number) {

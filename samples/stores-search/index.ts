@@ -230,7 +230,7 @@ async function initMap() {
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
 
-  map.data.setStyle((feature: woosmap.map.data.Feature) => {
+  map.data.setStyle((feature: woosmap.map.Data.Feature) => {
     const iconPint = feature.getProperty("highlighted")
       ? "https://images.woosmap.com/starbucks-marker-selected.svg"
       : "https://images.woosmap.com/starbucks-marker.svg";

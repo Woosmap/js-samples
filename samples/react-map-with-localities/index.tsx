@@ -16,11 +16,11 @@ type LoaderWindow = {
   };
 };
 
+const WOOSMAP_SDK_HOST = "https://sdk.woosmap.com";
+
 // Installs the documented Woosmap loader shim (see docs/docs/loader.md), which
 // defines a stub `woosmap.map.importLibrary` that fetches map.js on first call.
 // Safe to call more than once: the shim itself no-ops (and warns) past the first.
-const WOOSMAP_SDK_HOST = "https://sdk.woosmap.com";
-
 function installLoaderShim(apiKey: string): void {
   ((g) => {
     let p;

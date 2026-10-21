@@ -4,9 +4,10 @@ const data = {
   ..._.pick(
     {
       WOOSMAP_PUBLIC_API_KEY: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+      WOOSMAP_SDK_HOST: "https://sdk.woosmap.com",
       ...process.env,
     },
-    ["WOOSMAP_PUBLIC_API_KEY"],
+    ["WOOSMAP_PUBLIC_API_KEY", "WOOSMAP_SDK_HOST"],
   ),
   libraries: [],
   mode: ["jsfiddle", "docs", "app", "highlight"],

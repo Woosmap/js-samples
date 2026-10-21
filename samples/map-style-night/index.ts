@@ -1,15 +1,14 @@
 // [START woosmap_map_style_night]
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const position: woosmap.map.LatLngLiteral = {
     lat: 48.85467879441348,
     lng: 2.3482787190654792,
   };
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 15,
-      center: position,
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       styles: [
         {
           elementType: "geometry",
@@ -99,16 +98,14 @@ function initMap(): void {
           stylers: [{ color: "#17263c" }],
         },
       ],
-    },
-  );
+    });
+    map.moveCamera({
+      zoom: 15,
+      center: position,
+    });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_map_style_night]
 
 export {};

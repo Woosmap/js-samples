@@ -15,5 +15,7 @@
     "supercluster",
     "@types/supercluster",
     "@types/geojson"
-  ]
+  ],
+  "libraries": "marker",
+  "loaderShim": true
 }

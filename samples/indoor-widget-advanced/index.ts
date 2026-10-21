@@ -1,14 +1,14 @@
 // [START woosmap_indoor_widget_advanced]
 let map: woosmap.map.Map;
 
-function initMap(): void {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       center: { lat: 43.6066, lng: 3.9218 },
       zoom: 5,
-    },
-  );
+    });
 
   const conf: woosmap.map.IndoorRendererOptions = {
     centerMap: false,
@@ -48,12 +48,7 @@ const hideLoader = () => {
   (document.querySelector(".progress") as HTMLElement).remove();
 };
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_indoor_widget_advanced]
 
 export {};

@@ -1,6 +1,6 @@
 // [START woosmap_stores_search]
 let map: woosmap.map.Map;
-let activeLocation: woosmap.map.Marker | null = null;
+let activeLocation: woosmap.map.marker.AdvancedMarkerElement | null = null;
 let storesOverlay: woosmap.map.StoresOverlay;
 const gestureMode: woosmap.map.GestureHandlingMode = "greedy";
 let storesService: woosmap.map.StoresService;
@@ -31,8 +31,6 @@ const storesStyle: woosmap.map.Style = {
 };
 
 const mapOptions: woosmap.map.MapOptions = {
-  center: { lat: 51.50940214, lng: -0.133012 },
-  zoom: 12,
   styles: [
     {
       featureType: "poi.business",
@@ -145,7 +143,9 @@ function handleGeocodeResults(
   localities: woosmap.map.localities.LocalitiesGeocodeResponse,
 ) {
   const location = localities.results[0]?.geometry?.location;
-  location && handleStoresSearch(location);
+  if (location) {
+    handleStoresSearch(location);
+  }
 }
 
 function handleStoresSearch(latlng: woosmap.map.LatLngLiteral) {
@@ -202,15 +202,16 @@ function displayStoresAndLocation(
   }
 
   if (stores && latlng) {
-    activeLocation = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    activeLocation = new woosmap.map.marker.AdvancedMarkerElement({
       position: latlng,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
 
     const bounds = calculateLatLngBounds(stores);
@@ -220,15 +221,17 @@ function displayStoresAndLocation(
   }
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    mapOptions,
-  );
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions(mapOptions);
+  map.moveCamera({ center: { lat: 51.50940214, lng: -0.133012 }, zoom: 12 });
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
 
-  map.data.setStyle((feature: woosmap.map.data.Feature) => {
+  map.data.setStyle((feature: woosmap.map.Data.Feature) => {
     const iconPint = feature.getProperty("highlighted")
       ? "https://images.woosmap.com/starbucks-marker-selected.svg"
       : "https://images.woosmap.com/starbucks-marker.svg";
@@ -236,7 +239,9 @@ function initMap() {
   });
 
   map.addListener("click", (e) => {
-    e.latlng && handleGeocode(e.latlng);
+    if (e.latlng) {
+      handleGeocode(e.latlng);
+    }
   });
 
   storesService = new woosmap.map.StoresService();
@@ -247,12 +252,7 @@ function handleError(error: woosmap.map.errors.APIError) {
   console.error("Error:", error);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_stores_search]
 
 export {};

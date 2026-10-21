@@ -117,7 +117,7 @@ function getFullSchedule({
   const daysHoursHTMLTable = Object.keys(dayLabels)
     .map((day) => {
       const hours = weeklyOpening[day]?.hours || [];
-      let daysHours = "";
+      let daysHours: string;
 
       if (hours.length === 0) {
         daysHours = "Closed";
@@ -155,7 +155,6 @@ function getOpeningLabel({
   if (properties.open.open_now) {
     openLabel = `Open now until ${properties.open.current_slice?.end}`;
   } else {
-    // @ts-ignore - TODO next_opening is wrongly spelled `nextOpening` in @types/woosmap.map
     openLabel = `Closed until ${convertTime(Date.parse(properties.open.next_opening?.day || "") / 1000)} at ${properties.open.next_opening?.start}`;
   }
 
@@ -218,9 +217,20 @@ function initStoreLocator(): void {
 initStoreLocator();
 
 declare global {
-  // currently, the WebApp typings are not exported, so we use `any` here
+  // The store locator widget ships no typings: declare the parts this sample uses.
+  interface StoreLocatorWebApp {
+    setConf(conf: object): void;
+    render(isMobile: boolean): void;
+    setFullStoreRenderer(
+      renderer: (store: woosmap.map.stores.StoreResponse) => HTMLElement,
+    ): void;
+    setSummaryStoreRenderer(
+      renderer: (store: woosmap.map.stores.StoreResponse) => HTMLElement,
+    ): void;
+    setInitialStateToSelectedStore(storeId: string): void;
+  }
   interface Window {
-    WebApp: new (elementId: string, projectKey: string) => any;
+    WebApp: new (elementId: string, projectKey: string) => StoreLocatorWebApp;
   }
 }
 // [END woosmap_store_locator_widget_custom_renderer]

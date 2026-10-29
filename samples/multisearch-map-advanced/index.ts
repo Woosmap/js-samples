@@ -205,7 +205,6 @@ function displayLocality(result, apiName: string) {
     marker = createMarker(result);
     marker.setMap(map);
     const infoWindowHTML = createInfoWindowHTML(result, apiName);
-    infoWindow.setOffset(new woosmap.map.Point(0, -50));
     infoWindow.setContent(infoWindowHTML);
     marker.addListener("click", () => {
       infoWindow.open({map, anchor: marker});

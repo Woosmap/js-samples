@@ -55,12 +55,7 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
     zoom = 11;
   }
   map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
-  map.setOptions({
-    zoom,
-  });
-  map.moveCamera({
-    center: userPosition,
-  });
+  map.moveCamera({ center: userPosition, zoom });
   if (viewport) {
     const bounds = {
       east: viewport.northeast.lng,

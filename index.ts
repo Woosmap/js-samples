@@ -1,0 +1,40 @@
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
+
+  function createMarkerContent(label: string): HTMLElement {
+    const { PinElement } = woosmap.map.marker;
+    return new PinElement({
+      background: "#f50057",
+      glyphText: label,
+      glyphColor: "#FFFFFF",
+    }).element;
+  }
+
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
+      zoom: 10,
+      center: center,
+    });
+
+  let labelNumber = 1;
+  new woosmap.map.marker.AdvancedMarkerElement({
+    position: map.getCenter(),
+    content: createMarkerContent(String(labelNumber)),
+    map,
+  });
+
+  map.addListener("click", (e) => {
+    labelNumber += 1;
+    new woosmap.map.marker.AdvancedMarkerElement({
+      position: e.latlng,
+      content: createMarkerContent(String(labelNumber)),
+      map,
+    });
+  });
+}
+
+initMap();
+export {};

@@ -12,31 +12,31 @@
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
         for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
-          a(o);
+          s(o);
         new MutationObserver((o) => {
-          for (const s of o)
-            if (s.type === "childList")
-              for (const m of s.addedNodes)
-                m.tagName === "LINK" && m.rel === "modulepreload" && a(m);
+          for (const a of o)
+            if (a.type === "childList")
+              for (const m of a.addedNodes)
+                m.tagName === "LINK" && m.rel === "modulepreload" && s(m);
         }).observe(document, { childList: !0, subtree: !0 });
         function i(o) {
-          const s = {};
+          const a = {};
           return (
-            o.integrity && (s.integrity = o.integrity),
-            o.referrerPolicy && (s.referrerPolicy = o.referrerPolicy),
+            o.integrity && (a.integrity = o.integrity),
+            o.referrerPolicy && (a.referrerPolicy = o.referrerPolicy),
             o.crossOrigin === "use-credentials"
-              ? (s.credentials = "include")
+              ? (a.credentials = "include")
               : o.crossOrigin === "anonymous"
-                ? (s.credentials = "omit")
-                : (s.credentials = "same-origin"),
-            s
+                ? (a.credentials = "omit")
+                : (a.credentials = "same-origin"),
+            a
           );
         }
-        function a(o) {
+        function s(o) {
           if (o.ep) return;
           o.ep = !0;
-          const s = i(o);
-          fetch(o.href, s);
+          const a = i(o);
+          fetch(o.href, a);
         }
       })();
       const u = {
@@ -63,7 +63,7 @@
           params: { components: { country: ["gb", "fr", "de"] } },
         },
       };
-      let f, c, n, p, d, l, r;
+      let f, c, n, p, l, r, d;
       function y() {
         ((c = document.getElementById("autocomplete-input")),
           (n = document.getElementById("suggestions-list")),
@@ -81,18 +81,21 @@
             ((c.value = ""),
               (n.style.display = "none"),
               (p.style.display = "none"),
-              l && l.setMap(null),
-              r && r.close(),
+              r && r.setMap(null),
+              d && d.close(),
               c.focus());
           }),
-          (f = window.woosmap.multisearch(u)));
+          (f = woosmap.multisearch(u)));
       }
-      function g() {
-        ((d = new window.woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 51.50940214, lng: -0.133012 },
-          zoom: 4,
-        })),
-          (r = new woosmap.map.InfoWindow({})),
+      async function g() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (l = document.getElementById("map").innerMap),
+          l.moveCamera({
+            center: { lat: 51.50940214, lng: -0.133012 },
+            zoom: 4,
+          }),
+          (d = new woosmap.map.InfoWindow({})),
           y());
       }
       function h() {
@@ -107,7 +110,7 @@
               : ((n.style.display = "none"), (p.style.display = "none")));
         }
       }
-      function w() {
+      function k() {
         const e = document.createElement("li");
         ((e.innerHTML =
           "<div class='prediction no-result'>No results found...</div>"),
@@ -121,16 +124,16 @@
           ((n.innerHTML = ""),
           e.length > 0
             ? (e.forEach((t) => {
-                var a;
+                var s;
                 const i = document.createElement("li");
                 ((i.className = `${t.api}-api`),
-                  (i.innerHTML = (a = v(t)) != null ? a : ""),
+                  (i.innerHTML = (s = v(t)) != null ? s : ""),
                   i.addEventListener("click", () => {
                     var o;
                     ((c.value = (o = t.description) != null ? o : ""),
                       (n.style.display = "none"),
-                      f.detailsMulti({ id: t.id, api: t.api }).then((s) => {
-                        M(s, t.api);
+                      f.detailsMulti({ id: t.id, api: t.api }).then((a) => {
+                        b(a, t.api);
                       }));
                   }),
                   n.appendChild(i));
@@ -138,32 +141,36 @@
               (n.className = e[0].api),
               (n.style.display = "block"),
               (p.style.display = "block"))
-            : w());
+            : k());
       }
       function v(e) {
         const t = "no-viewpoint",
           i = e.highlight;
-        let a = "";
+        let s = "";
         return (
-          (a += `<div class="api-icon"></div><div class="prediction ${t}">${i}</div>`),
-          a
+          (s += `<div class="api-icon"></div><div class="prediction ${t}">${i}</div>`),
+          s
         );
       }
-      function k(e) {
-        return new woosmap.map.Marker({
+      function E(e) {
+        const { PinElement: t } = woosmap.map.marker,
+          i = new t({
+            background: "#5588FF",
+            borderColor: "#3D6FE0",
+            glyphColor: "#FFFFFF",
+          });
+        return new woosmap.map.marker.AdvancedMarkerElement({
           position: e.geometry.location,
-          icon: {
-            url: "https://images.woosmap.com/marker.png",
-            scaledSize: { height: 50, width: 32 },
-          },
+          content: i.element,
+          gmpClickable: !0,
         });
       }
-      function E(e, t) {
+      function w(e, t) {
         let i = "";
         return (
           e.address_components &&
-            e.address_components.forEach((a) => {
-              i += `<p>${a.long_name} (${a.short_name})</p>`;
+            e.address_components.forEach((s) => {
+              i += `<p>${s.long_name} (${s.short_name})</p>`;
             }),
           `<div class="info-content">${t ? `<div>api: <strong>${t}</strong></div>` : ""}
       ${e.name ? `<p>${e.name}</p>` : ""}
@@ -171,19 +178,18 @@
       ${i}</div>`
         );
       }
-      function M(e, t) {
-        if ((l && l.setMap(null), r && r.close(), e != null && e.geometry)) {
-          ((l = k(e)), l.setMap(d));
-          const i = E(e, t);
-          (r.setOffset(new woosmap.map.Point(0, -50)),
-            r.setContent(i),
-            l.addListener("click", () => {
-              r.open(d, l.getPosition());
+      function b(e, t) {
+        if ((r && r.setMap(null), d && d.close(), e != null && e.geometry)) {
+          ((r = E(e)), r.setMap(l));
+          const i = w(e, t);
+          (d.setContent(i),
+            r.addListener("click", () => {
+              d.open({ map: l, anchor: r });
             }),
-            d.setCenter(e.geometry.location, { top: 150 }),
-            d.setZoom(14),
-            woosmap.map.event.addListenerOnce(d, "idle", () => {
-              r.open(d, l.position);
+            l.setCenter(e.geometry.location, { top: 150 }),
+            l.setZoom(14),
+            woosmap.map.event.addListenerOnce(l, "idle", () => {
+              d.open({ map: l, anchor: r });
             }));
         }
       }
@@ -192,10 +198,12 @@
           n &&
           (n.style.display = "none");
       });
-      window.initMap = g;
+      g();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -394,12 +402,52 @@
         </button>
         <ul id="suggestions-list"></ul>
       </div>
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

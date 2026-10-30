@@ -7,54 +7,59 @@
 
     <script type="module" crossorigin>
       (function () {
-        const r = document.createElement("link").relList;
-        if (r && r.supports && r.supports("modulepreload")) return;
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(e);
+          o(e);
         new MutationObserver((e) => {
-          for (const t of e)
-            if (t.type === "childList")
-              for (const o of t.addedNodes)
-                o.tagName === "LINK" && o.rel === "modulepreload" && s(o);
+          for (const r of e)
+            if (r.type === "childList")
+              for (const i of r.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && o(i);
         }).observe(document, { childList: !0, subtree: !0 });
-        function i(e) {
-          const t = {};
+        function n(e) {
+          const r = {};
           return (
-            e.integrity && (t.integrity = e.integrity),
-            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
+            e.integrity && (r.integrity = e.integrity),
+            e.referrerPolicy && (r.referrerPolicy = e.referrerPolicy),
             e.crossOrigin === "use-credentials"
-              ? (t.credentials = "include")
+              ? (r.credentials = "include")
               : e.crossOrigin === "anonymous"
-                ? (t.credentials = "omit")
-                : (t.credentials = "same-origin"),
-            t
+                ? (r.credentials = "omit")
+                : (r.credentials = "same-origin"),
+            r
           );
         }
-        function s(e) {
+        function o(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = i(e);
-          fetch(e.href, t);
+          const r = n(e);
+          fetch(e.href, r);
         }
       })();
-      function c() {
-        const n = { lat: 51.52, lng: -0.13 },
-          r = new woosmap.map.Map(document.getElementById("map"), {
-            zoom: 13,
-            center: n,
+      async function a() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"));
+        const s = { lat: 51.52, lng: -0.13 },
+          t = document.getElementById("map").innerMap;
+        t.moveCamera({ zoom: 13, center: s });
+        const { PinElement: n } = woosmap.map.marker,
+          o = new n({
+            background: "#5588FF",
+            borderColor: "#3D6FE0",
+            glyphColor: "#FFFFFF",
           });
-        new woosmap.map.Marker({
-          position: r.getCenter(),
-          icon: {
-            url: "https://images.woosmap.com/marker.png",
-            scaledSize: { height: 50, width: 32 },
-          },
-        }).setMap(r);
+        new woosmap.map.marker.AdvancedMarkerElement({
+          position: t.getCenter(),
+          content: o.element,
+        }).setMap(t);
       }
-      window.initMap = c;
+      a();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -81,11 +86,51 @@
     </style>
   </head>
   <body>
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

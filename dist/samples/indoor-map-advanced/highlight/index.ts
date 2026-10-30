@@ -1,13 +1,13 @@
 let map: woosmap.map.Map;
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       center: { lat: 43.6066, lng: 3.9218 },
       zoom: 19.5,
-    },
-  );
+    });
 
   const indoorRenderer = new woosmap.map.IndoorRenderer({
     venue: "wgs_doc",
@@ -31,11 +31,6 @@ const hideLoader = () => {
   (document.querySelector(".progress") as HTMLElement).remove();
 };
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

@@ -1,7 +1,7 @@
 function init() {
   const responseElement = document.getElementById("response-container");
-  //@ts-ignore
-  const localitiesWidget = new window.woosmap.localities.Autocomplete(
+  const { localities } = woosmap;
+  const localitiesWidget = new localities.Autocomplete(
     "autocomplete-input",
     {},
   );

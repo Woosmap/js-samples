@@ -1,21 +1,22 @@
 // [START woosmap_localities_autocomplete]
 let map: woosmap.map.Map;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 let request: woosmap.map.localities.LocalitiesAutocompleteRequest;
-let debouncedLocalitiesAutocomplete: (...args: any[]) => Promise<any>;
+let debouncedLocalitiesAutocomplete: woosmap.map.LocalitiesService["autocomplete"];
 
-function initMap(): void {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       center: { lat: 51.50940214, lng: -0.133012 },
       zoom: 4,
-    },
-  );
+    });
   infoWindow = new woosmap.map.InfoWindow({});
-  localitiesService = new window.woosmap.map.LocalitiesService();
+  localitiesService = new woosmap.map.LocalitiesService();
 
   request = {
     input: "",
@@ -90,19 +91,20 @@ function displayLocality(
     infoWindow.close();
   }
   if (locality?.geometry) {
-    marker = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    marker = new woosmap.map.marker.AdvancedMarkerElement({
       position: locality.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
     marker.setMap(map);
     infoWindow.setContent(`<span>${locality.formatted_address}</span>`);
-    infoWindow.open(map, marker);
+    infoWindow.open({map, anchor: marker});
     map.flyTo({ center: locality.geometry.location, zoom: 14 });
   }
 }
@@ -144,17 +146,17 @@ document.addEventListener("click", (event) => {
 
 // [START woosmap_localities_autocomplete_debounce_promise]
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {
@@ -182,12 +184,7 @@ function debouncePromise<T, Args extends any[]>(
 
 // [END woosmap_localities_autocomplete_debounce_promise] */
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_localities_autocomplete]
 
 export {};

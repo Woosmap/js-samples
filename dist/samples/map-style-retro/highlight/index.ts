@@ -1,11 +1,10 @@
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const position: woosmap.map.LatLngLiteral = { lat: 51.499, lng: -0.015 };
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 14,
-      center: position,
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       styles: [
         {
           elementType: "geometry",
@@ -130,15 +129,13 @@ function initMap(): void {
           stylers: [{ color: "#92998d" }],
         },
       ],
-    },
-  );
+    });
+    map.moveCamera({
+      zoom: 14,
+      center: position,
+    });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

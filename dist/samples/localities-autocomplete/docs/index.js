@@ -6,13 +6,16 @@ let localitiesService;
 let request;
 let debouncedLocalitiesAutocomplete;
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 51.50940214, lng: -0.133012 },
     zoom: 4,
   });
   infoWindow = new woosmap.map.InfoWindow({});
-  localitiesService = new window.woosmap.map.LocalitiesService();
+  localitiesService = new woosmap.map.LocalitiesService();
   request = {
     input: "",
     types: ["locality", "address", "postal_code"],
@@ -82,19 +85,20 @@ function displayLocality(locality) {
   }
 
   if (locality?.geometry) {
-    marker = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    marker = new woosmap.map.marker.AdvancedMarkerElement({
       position: locality.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
     marker.setMap(map);
     infoWindow.setContent(`<span>${locality.formatted_address}</span>`);
-    infoWindow.open(map, marker);
+    infoWindow.open({ map, anchor: marker });
     map.flyTo({ center: locality.geometry.location, zoom: 14 });
   }
 }
@@ -165,5 +169,5 @@ function debouncePromise(fn, delay) {
 }
 
 // [END woosmap_localities_autocomplete_debounce_promise] */
-window.initMap = initMap;
+initMap();
 // [END woosmap_localities_autocomplete]

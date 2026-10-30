@@ -118,10 +118,11 @@ const createList = (node, prefix = "") => {
   return ul.childElementCount ? ul : null;
 };
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
-    center: { lat: 40.71399, lng: -74.00499 },
-    zoom: 14,
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.setOptions({
     styles: [
       {
         featureType: "point_of_interest",
@@ -133,6 +134,10 @@ function initMap() {
         ],
       },
     ],
+  });
+  map.moveCamera({
+    center: { lat: 40.71399, lng: -74.00499 },
+    zoom: 14,
   });
   localitiesService = new woosmap.map.LocalitiesService();
   map.addListener("click", (e) => {
@@ -149,15 +154,17 @@ function initMap() {
     page: 1,
     limit: 10,
   };
-  marker = new woosmap.map.Marker({
+
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#5588FF",
+    borderColor: "#3D6FE0",
+    glyphColor: "#FFFFFF",
+  });
+
+  marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: { lat: 0, lng: 0 },
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: pin.element,
   });
   initUI();
   performNearbyRequest();
@@ -287,7 +294,6 @@ function performNearbyRequest(overrideCenter = null, newQuery = true) {
     return;
   }
 
-  //@ts-ignore
   localitiesService.nearby(nearbyRequest).then((responseJson) => {
     drawNearbyZone(requestCenter, nearbyRequest.radius);
     updateResults(responseJson, requestCenter);
@@ -529,5 +535,5 @@ document.addEventListener("DOMContentLoaded", () => {
     return null; // Invalid input
   };
 });
-window.initMap = initMap;
+initMap();
 // [END woosmap_localities_nearby_poi]

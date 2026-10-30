@@ -65,13 +65,17 @@ const types: Set<string> = new Set();
 let map: woosmap.map.Map;
 let results: HTMLOListElement;
 let nearbyCircle: woosmap.map.Circle;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 let localitiesService: woosmap.map.LocalitiesService;
 let autocompleteRequest: woosmap.map.localities.LocalitiesAutocompleteRequest;
 let nearbyRequest: woosmap.map.localities.LocalitiesNearbyRequest;
 
+interface TypeTree {
+  [type: string]: TypeTree;
+}
+
 const buildTree = (availableTypes: string[]) => {
-  const tree = {};
+  const tree: TypeTree = {};
   availableTypes.forEach((type) => {
     const parts = type.split(".");
     let node = tree;
@@ -83,7 +87,7 @@ const buildTree = (availableTypes: string[]) => {
   return tree;
 };
 
-const createList = (node: any, prefix = "") => {
+const createList = (node: TypeTree, prefix = "") => {
   const ul = document.createElement("ul");
   for (const key in node) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
@@ -112,12 +116,12 @@ const createList = (node: any, prefix = "") => {
   return ul.childElementCount ? ul : null;
 };
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      center: { lat: 40.71399, lng: -74.00499 },
-      zoom: 14,
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       styles: [
         {
           featureType: "point_of_interest",
@@ -129,8 +133,11 @@ function initMap() {
           ],
         },
       ],
-    },
-  );
+    });
+    map.moveCamera({
+      center: { lat: 40.71399, lng: -74.00499 },
+      zoom: 14,
+    });
   localitiesService = new woosmap.map.LocalitiesService();
 
   map.addListener("click", (e) => {
@@ -148,15 +155,16 @@ function initMap() {
     page: 1,
     limit: 10,
   };
-  marker = new woosmap.map.Marker({
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#5588FF",
+    borderColor: "#3D6FE0",
+    glyphColor: "#FFFFFF",
+  });
+
+  marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: { lat: 0, lng: 0 },
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: pin.element,
   });
 
   initUI();
@@ -278,7 +286,6 @@ function performNearbyRequest(
     return;
   }
 
-  //@ts-ignore
   localitiesService.nearby(nearbyRequest).then((responseJson) => {
     drawNearbyZone(requestCenter, nearbyRequest.radius);
     updateResults(responseJson, requestCenter);
@@ -460,9 +467,12 @@ document.addEventListener("click", (event) => {
   }
 });
 
-function debounce(func: (...args: any[]) => void, wait: number) {
+function debounce<Args extends unknown[]>(
+  func: (...args: Args) => void,
+  wait: number,
+) {
   let timeout: ReturnType<typeof setTimeout>;
-  return function executedFunction(...args: any[]) {
+  return function executedFunction(...args: Args) {
     const later = () => {
       clearTimeout(timeout);
       func(...args);
@@ -520,11 +530,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

@@ -12,10 +12,8 @@ let inputElement: HTMLInputElement;
 let detailsHTML: HTMLElement;
 let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
-let marker: woosmap.map.Marker;
-let debouncedAutosuggestW3W: (
-  ...args: any[]
-) => Promise<What3WordsSuggestionsResponse>;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
+let debouncedAutosuggestW3W: typeof autosuggestW3W;
 
 const API_KEY = "YOUR_API_KEY"; // Replace YOUR_API_KEY with your actual API key
 
@@ -108,8 +106,7 @@ function panMap(addressDetail) {
     if (addressDetail.types[0] === "address") {
       zoom = 18;
     }
-    map.setZoom(zoom);
-    map.panTo(addressDetail.geometry.location);
+    map.moveCamera({ zoom, center: addressDetail.geometry.location });
   }
 }
 
@@ -117,15 +114,16 @@ function createAddressMarker(addressDetail) {
   if (marker) {
     marker.setMap(null);
   }
-  marker = new woosmap.map.Marker({
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#E00084",
+    borderColor: "#B3006A",
+    glyphColor: "#FFFFFF",
+  });
+
+  marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: addressDetail.geometry.location,
-    icon: {
-      url: "https://images.woosmap.com/marker-alt.png",
-      scaledSize: {
-        height: 59,
-        width: 37,
-      },
-    },
+    content: pin.element,
   });
   marker.setMap(map);
   panMap(addressDetail);
@@ -189,10 +187,10 @@ function displaySubBuildings(target: HTMLElement, subBuildings) {
   displaySection(autoSuggestResultsTitle);
   const addressList = document.createElement("ul");
 
-  subBuildings.forEach((address, index) => {
+  subBuildings.forEach((address) => {
     const line = document.createElement("li");
     line.className = "address";
-    line.addEventListener("click", (event) => {
+    line.addEventListener("click", () => {
       getAddressDetails(line, address.public_id);
     });
     line.innerHTML = `<span class='pin'></span><span>${address.description}</span>`;
@@ -222,10 +220,10 @@ function displayAddressList(addressDetails) {
       "what3words address invalid or no street address found within 200m of its location.";
     newAddressList.appendChild(line);
   } else {
-    addressDetails.forEach((address, index) => {
+    addressDetails.forEach((address) => {
       const line = document.createElement("li");
       line.className = "address";
-      line.addEventListener("click", (event) => {
+      line.addEventListener("click", () => {
         if (address.public_id) {
           getAddressDetails(line, address.public_id);
         } else {
@@ -316,21 +314,27 @@ function displayW3wSuggestion() {
     });
 }
 
-function initMap() {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
-    center: {
-      lat: 48.8534,
-      lng: 2.3488,
-    },
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     disableDefaultUI: true,
     gestureHandling: "greedy",
-    zoom: 5,
     styles: [
       {
         featureType: "poi",
         stylers: [{ visibility: "off" }],
       },
     ],
+  });
+  map.moveCamera({
+    center: {
+      lat: 48.8534,
+      lng: 2.3488,
+    },
+    zoom: 5,
   });
   debouncedAutosuggestW3W = debouncePromise(autosuggestW3W, 0);
   initUI();
@@ -392,17 +396,17 @@ function initUI() {
   clearSearchBtn.addEventListener("click", resetUI);
 }
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {
@@ -428,11 +432,6 @@ function debouncePromise<T, Args extends any[]>(
   };
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

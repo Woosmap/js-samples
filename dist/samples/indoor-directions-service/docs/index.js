@@ -4,9 +4,11 @@ let indoorDirectionsRequest;
 let indoorRenderer;
 let venue;
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
   venue = "gdn_doc";
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 43.6066, lng: 3.9218 },
     zoom: 19.5,
   });
@@ -14,7 +16,7 @@ function initMap() {
     venue: venue,
   });
 
-  const indoorService = new window.woosmap.map.IndoorService();
+  const indoorService = new woosmap.map.IndoorService();
 
   // Indoor event that is triggered when the indoor venue is loaded.
   indoorRenderer.addListener("indoor_venue_loaded", (venue) => {
@@ -44,5 +46,5 @@ const hideLoader = () => {
   document.querySelector(".progress").remove();
 };
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_indoor_directions_service]

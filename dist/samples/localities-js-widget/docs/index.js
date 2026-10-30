@@ -1,13 +1,13 @@
-// [START woosmap_localities_js_widget]
 function init() {
   const responseElement = document.getElementById("response-container");
-  //@ts-ignore
-  const localitiesWidget = new window.woosmap.localities.Autocomplete(
+  const { localities } = woosmap;
+  const localitiesWidget = new localities.Autocomplete(
     "autocomplete-input",
     {},
   );
 
   localitiesWidget.addListener("selected_suggestion", () => {
+    // [START woosmap_localities_js_widget]
     const selectedLocality = localitiesWidget.getSelectedSuggestionDetails();
 
     if (responseElement) {

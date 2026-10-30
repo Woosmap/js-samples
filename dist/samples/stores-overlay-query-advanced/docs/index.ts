@@ -31,7 +31,9 @@ function setQuery() {
   storesOverlay.setQuery(query.toString());
 }
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
   const icon: woosmap.map.Icon = {
     url: "https://images.woosmap.com/marker-blue.svg",
@@ -83,13 +85,11 @@ function initMap(): void {
       },
     },
   };
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       zoom: 8,
       center: center,
-    },
-  );
+    });
 
   storesOverlay = new woosmap.map.StoresOverlay(style);
   storesOverlay.setMap(map);
@@ -109,11 +109,6 @@ function initUI() {
   clauseOr.addEventListener("change", setQuery);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_stores_overlay_query_advanced]
 export {};

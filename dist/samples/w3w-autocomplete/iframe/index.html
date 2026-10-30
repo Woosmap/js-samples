@@ -37,21 +37,21 @@
           fetch(n.href, i);
         }
       })();
-      let b, g, r, S, m, L, M, y, w, v, f, C, E, d, u, A;
-      const T = "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f";
+      let w, g, d, C, m, L, $, y, h, v, f, A, E, c, u, T;
+      const M = "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f";
       function I(e) {
         return fetch(
-          `https://api.woosmap.com/what3words/convert-to-address?key=${T}&words=${e}`,
+          `https://api.woosmap.com/what3words/convert-to-address?key=${M}&words=${e}`,
         ).then((t) => t.json());
       }
       function H(e) {
         return fetch(
-          `https://api.woosmap.com/localities/details/?key=${T}&public_id=${e}`,
+          `https://api.woosmap.com/localities/details/?key=${M}&public_id=${e}`,
         ).then((t) => t.json());
       }
-      function q(e) {
+      function P(e) {
         return fetch(
-          `https://api.woosmap.com/what3words/autosuggest?key=${T}&input=${e}`,
+          `https://api.woosmap.com/what3words/autosuggest?key=${M}&input=${e}`,
         ).then((t) => t.json());
       }
       function p(e) {
@@ -60,15 +60,15 @@
       function l(e) {
         e.style.display = "none";
       }
-      function c(e, t = "block") {
+      function r(e, t = "block") {
         e.style.display = t;
       }
-      function _(e) {
-        (b && b.classList.remove("selected"),
-          (b = e),
-          b.classList.add("selected"));
+      function k(e) {
+        (w && w.classList.remove("selected"),
+          (w = e),
+          w.classList.add("selected"));
       }
-      function P(e) {
+      function q(e) {
         if (e.geometry.viewport) {
           const { viewport: t } = e.geometry,
             o = {
@@ -77,27 +77,29 @@
               north: t.northeast.lat,
               west: t.southwest.lng,
             };
-          (d.fitBounds(o), d.panTo(e.geometry.location));
+          (c.fitBounds(o), c.panTo(e.geometry.location));
         } else {
           let t = 17;
           (e.types[0] === "address" && (t = 18),
-            d.setZoom(t),
-            d.panTo(e.geometry.location));
+            c.moveCamera({ zoom: t, center: e.geometry.location }));
         }
       }
-      function N(e) {
-        (u && u.setMap(null),
-          (u = new woosmap.map.Marker({
-            position: e.geometry.location,
-            icon: {
-              url: "https://images.woosmap.com/marker-alt.png",
-              scaledSize: { height: 59, width: 37 },
-            },
-          })),
-          u.setMap(d),
-          P(e));
+      function F(e) {
+        u && u.setMap(null);
+        const { PinElement: t } = woosmap.map.marker,
+          o = new t({
+            background: "#E00084",
+            borderColor: "#B3006A",
+            glyphColor: "#FFFFFF",
+          });
+        ((u = new woosmap.map.marker.AdvancedMarkerElement({
+          position: e.geometry.location,
+          content: o.element,
+        })),
+          u.setMap(c),
+          q(e));
       }
-      function O(e) {
+      function N(e) {
         const t = [];
         if (
           (e.formatted_address &&
@@ -125,39 +127,39 @@
             `<div class='address-components'><div class='title'>Address components</div><div>${o}</div>`,
           );
         }
-        C.innerHTML = t.join("");
+        A.innerHTML = t.join("");
       }
-      function k(e, t) {
-        (_(e),
+      function _(e, t) {
+        (k(e),
           H(t)
             .then((o) => {
               const s = o.result;
-              s && (N(s), O(s), c(g));
+              s && (F(s), N(s), r(g));
             })
             .catch((o) => {
               console.error(o);
             }));
       }
-      function W(e, t) {
-        (_(e), l(r), p(L), c(m), c(w));
+      function O(e, t) {
+        (k(e), l(d), p(L), r(m), r(h));
         const o = document.createElement("ul");
-        (t.forEach((s, n) => {
-          const i = document.createElement("li");
-          ((i.className = "address"),
-            i.addEventListener("click", (a) => {
-              k(i, s.public_id);
+        (t.forEach((s) => {
+          const n = document.createElement("li");
+          ((n.className = "address"),
+            n.addEventListener("click", () => {
+              _(n, s.public_id);
             }),
-            (i.innerHTML = `<span class='pin'></span><span>${s.description}</span>`),
-            o.appendChild(i));
+            (n.innerHTML = `<span class='pin'></span><span>${s.description}</span>`),
+            o.appendChild(n));
         }),
           L.appendChild(o));
       }
       function B() {
-        (l(w), l(m), l(g), c(r));
+        (l(h), l(m), l(g), r(d));
       }
-      function x(e) {
+      function W(e) {
         B();
-        const t = S,
+        const t = C,
           o = document.createElement("ul"),
           s = document.createDocumentFragment();
         if (!Array.isArray(e) || e.length === 0) {
@@ -167,53 +169,53 @@
               "what3words address invalid or no street address found within 200m of its location."),
             o.appendChild(n));
         } else
-          e.forEach((n, i) => {
-            const a = document.createElement("li");
-            ((a.className = "address"),
-              a.addEventListener("click", (h) => {
-                n.public_id ? k(a, n.public_id) : W(a, n.sub_buildings);
+          e.forEach((n) => {
+            const i = document.createElement("li");
+            ((i.className = "address"),
+              i.addEventListener("click", () => {
+                n.public_id ? _(i, n.public_id) : O(i, n.sub_buildings);
               }),
-              (a.innerHTML = `<span class='${n.public_id ? "pin" : "arrow"}'></span><span>${n.description}</span>`),
-              s.appendChild(a));
+              (i.innerHTML = `<span class='${n.public_id ? "pin" : "arrow"}'></span><span>${n.description}</span>`),
+              s.appendChild(i));
           });
         (o.appendChild(s), t.appendChild(o));
       }
-      function F(e) {
+      function R(e) {
         (l(y),
-          c(r),
+          r(d),
           l(g),
-          p(S),
+          p(C),
           I(e)
             .then(({ results: t }) => {
-              t && x(t);
+              t && W(t);
             })
             .catch((t) => {
               console.error(t);
             }));
       }
-      function R(e) {
+      function j(e) {
         ((document.querySelector(".words").innerHTML = e.words),
           (document.querySelector(".nearest").innerHTML =
             `Nearest place : ${e.nearestPlace}`),
           (f.value = `///${e.words}`),
-          F(e.words));
+          R(e.words));
       }
-      function j() {
+      function U() {
         const e = f.value;
         if (
-          (e && c(E),
+          (e && r(E),
           e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
-          l(w),
+          l(h),
           (e.match(/[.]/g) || []).length !== 2)
         ) {
-          (l(y), l(r), l(m));
+          (l(y), l(d), l(m));
           return;
         }
-        (c(M),
-          l(r),
+        (r($),
+          l(d),
           l(m),
           l(g),
-          A(e)
+          T(e)
             .then(({ suggestions: t }) => {
               p(v);
               const o = document.createElement("ul");
@@ -225,7 +227,7 @@
                     (n.innerHTML = `<div class="words">${s.words}</div><div class="nearest">Nearest place : ${s.nearestPlace}</div>`),
                     (n.dataset.word = s.words),
                     (n.onclick = () => {
-                      R(s);
+                      j(s);
                     }),
                     o.appendChild(n));
                 }),
@@ -235,33 +237,35 @@
                 ((s.innerHTML = "Failed to load suggestions"),
                   v.appendChild(s));
               }
-              c(y, "flex");
+              r(y, "flex");
             })
             .catch((t) => {
               console.error(t);
             }));
       }
-      function z() {
-        ((d = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 48.8534, lng: 2.3488 },
-          disableDefaultUI: !0,
-          gestureHandling: "greedy",
-          zoom: 5,
-          styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
-        })),
-          (A = Y(q, 0)),
+      async function x() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (c = document.getElementById("map").innerMap),
+          c.setOptions({
+            disableDefaultUI: !0,
+            gestureHandling: "greedy",
+            styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
+          }),
+          c.moveCamera({ center: { lat: 48.8534, lng: 2.3488 }, zoom: 5 }),
+          (T = Y(P, 0)),
           K());
       }
-      function U() {
+      function z() {
         (l(y),
-          l(r),
+          l(d),
           l(m),
           l(g),
           l(E),
-          l(M),
-          p(S),
-          p(L),
+          l($),
           p(C),
+          p(L),
+          p(A),
           (f.value = ""),
           u && u.setMap(null),
           f.focus());
@@ -269,47 +273,49 @@
       function K() {
         ((f = document.getElementById("autocomplete-input")),
           (g = document.querySelector(".addressDetails")),
-          (r = document.querySelector(".address-list-container")),
-          (S = document.getElementById("address-suggestions")),
+          (d = document.querySelector(".address-list-container")),
+          (C = document.getElementById("address-suggestions")),
           (m = document.getElementById("sub-building-suggestions")),
           (L = document.getElementById("sub-building-suggestions")),
-          (M = document.getElementById("all-results-container")),
+          ($ = document.getElementById("all-results-container")),
           (y = document.querySelector(".autosuggest-results-container")),
-          (w = document.querySelector(
+          (h = document.querySelector(
             ".sub-building-list-container .autosuggest-results-title",
           )),
-          (C = document.querySelector(".addressDetails .options")),
+          (A = document.querySelector(".addressDetails .options")),
           (v = document.querySelector(".autosuggest-results")),
           (E = document.querySelector(".clear-searchButton")),
-          w.addEventListener("click", B),
-          f.addEventListener("input", j),
-          E.addEventListener("click", U));
+          h.addEventListener("click", B),
+          f.addEventListener("input", U),
+          E.addEventListener("click", z));
       }
       function Y(e, t) {
         let o = null,
           s = null,
           n = null;
         return function (...i) {
-          return new Promise((a, h) => {
+          return new Promise((a, b) => {
             (o !== null && clearTimeout(o),
               (s = a),
-              (n = h),
+              (n = b),
               (o = setTimeout(() => {
                 e(...i)
-                  .then(($) => {
-                    s === a && n === h && a($);
+                  .then((S) => {
+                    s === a && n === b && a(S);
                   })
-                  .catch(($) => {
-                    s === a && n === h && h($);
+                  .catch((S) => {
+                    s === a && n === b && b(S);
                   });
               }, t)));
           });
         };
       }
-      window.initMap = z;
+      x();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -723,12 +729,52 @@
         </div>
         <ul id="suggestions-list"></ul>
       </div>
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

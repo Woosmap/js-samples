@@ -7,8 +7,8 @@
 
     <script type="module" crossorigin>
       (function () {
-        const e = document.createElement("link").relList;
-        if (e && e.supports && e.supports("modulepreload")) return;
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
         for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
           s(n);
         new MutationObserver((n) => {
@@ -37,129 +37,133 @@
           fetch(n.href, i);
         }
       })();
-      const r = { country: [] },
+      const l = { country: [] },
         g = "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f";
-      let h, l, c, u, d, p, f, v;
-      function S() {
-        ((d = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 48.8534, lng: 2.3488 },
-          disableDefaultUI: !0,
-          gestureHandling: "greedy",
-          zoom: 5,
-          styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
-        })),
-          M(),
-          B());
+      let h, r, c, u, p, d, f, b;
+      async function E() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (p = document.getElementById("map").innerMap),
+          p.setOptions({
+            disableDefaultUI: !0,
+            gestureHandling: "greedy",
+            styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
+          }),
+          p.moveCamera({ center: { lat: 48.8534, lng: 2.3488 }, zoom: 5 }),
+          k(),
+          F());
       }
-      function _(t) {
-        (p && p.setMap(null),
-          t &&
-            t.geometry &&
-            ((p = new woosmap.map.Marker({
-              position: t.geometry.location,
-              icon: {
-                url: "https://images.woosmap.com/marker.png",
-                scaledSize: { height: 59, width: 37 },
-              },
-            })),
-            p.setMap(d),
-            R(t)));
+      function S(e) {
+        if ((d && d.setMap(null), e && e.geometry)) {
+          const { PinElement: t } = woosmap.map.marker,
+            o = new t({
+              background: "#5588FF",
+              borderColor: "#3D6FE0",
+              glyphColor: "#FFFFFF",
+            });
+          ((d = new woosmap.map.marker.AdvancedMarkerElement({
+            position: e.geometry.location,
+            content: o.element,
+          })),
+            d.setMap(p),
+            j(e));
+        }
       }
-      function $(t, e = "block") {
-        t.style.display = e;
+      function _(e, t = "block") {
+        e.style.display = t;
       }
-      function E(t) {
-        const e = [];
+      function $(e) {
+        const t = [];
         if (
           ((f.innerHTML = ""),
           (f.style.display = "block"),
-          t.formatted_address &&
-            e.push(
-              `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${t.formatted_address}</span></p>`,
+          e.formatted_address &&
+            t.push(
+              `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${e.formatted_address}</span></p>`,
             ),
-          t.types &&
-            t.types[0] &&
-            e.push(
-              `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${t.types[0].replace("_", " ")}</span></p>`,
+          e.types &&
+            e.types[0] &&
+            t.push(
+              `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${e.types[0].replace("_", " ")}</span></p>`,
             ),
-          t.geometry)
+          e.geometry)
         ) {
-          const o = t.geometry.accuracy;
+          const o = e.geometry.accuracy;
           if (
             (o &&
-              e.push(
+              t.push(
                 `<div class='option-detail'><div><span class='option-detail-label'>Location type :</span><span class='bold'>${o.replace("_", " ").toLowerCase()}</span></div></div>`,
               ),
-            e.push(
-              `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${t.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${t.geometry.location.lng.toString()}</span></div></div>`,
+            t.push(
+              `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${e.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${e.geometry.location.lng.toString()}</span></div></div>`,
             ),
-            t.address_components)
+            e.address_components)
           ) {
-            const s = t.address_components
+            const s = e.address_components
               .map(
                 (n) =>
                   `<p class='option-detail'><span class='option-detail-label'>${n.types[0]}:</span> <span class='bold'>${n.long_name}</span></p>`,
               )
               .join("");
-            e.push(
+            t.push(
               `<div class='address-components'><div class='title'>Address components</div><div>${s}</div>`,
             );
           }
         }
-        f.innerHTML = e.join("");
+        f.innerHTML = t.join("");
       }
-      function M() {
-        ((l = document.getElementById("autocomplete-input")),
+      function k() {
+        ((r = document.getElementById("autocomplete-input")),
           (c = document.getElementById("suggestions-list")),
           (u = document.getElementsByClassName("clear-searchButton")[0]),
-          (v = document.querySelector(".addressDetails")),
+          (b = document.querySelector(".addressDetails")),
           (f = document.querySelector(".addressDetails .addressOptions")),
-          l &&
+          r &&
             c &&
-            (l.addEventListener("input", b),
-            l.addEventListener("keydown", (t) => {
-              if (t.key === "Enter") {
-                const e = c.querySelector("li");
-                e && e.click();
+            (r.addEventListener("input", v),
+            r.addEventListener("keydown", (e) => {
+              if (e.key === "Enter") {
+                const t = c.querySelector("li");
+                t && t.click();
               }
             })),
           u.addEventListener("click", () => {
-            ((l.value = ""),
+            ((r.value = ""),
               (c.style.display = "none"),
               (u.style.display = "none"),
               (f.style.display = "none"),
-              l.focus(),
-              p.setMap(null));
+              r.focus(),
+              d.setMap(null));
           }),
-          (h = C(q, 0)));
+          (h = q(T, 0)));
       }
-      function b() {
-        if (l && c) {
-          let t = l.value;
-          t = t.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
-          const e = r.country.map((o) => `country:${o}`).join("|");
-          t !== ""
-            ? h(t, e, g)
-                .then(({ localities: o }) => k(o))
+      function v() {
+        if (r && c) {
+          let e = r.value;
+          e = e.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
+          const t = l.country.map((o) => `country:${o}`).join("|");
+          e !== ""
+            ? h(e, t)
+                .then(({ localities: o }) => A(o))
                 .catch((o) =>
                   console.error("Error autocomplete localities:", o),
                 )
             : ((c.style.display = "none"), (u.style.display = "none"));
         }
       }
-      function k(t) {
-        l &&
+      function A(e) {
+        r &&
           c &&
           ((c.innerHTML = ""),
-          t.length > 0
-            ? (t.forEach((e) => {
+          e.length > 0
+            ? (e.forEach((t) => {
                 var s;
                 const o = document.createElement("li");
-                ((o.innerHTML = (s = A(e)) != null ? s : ""),
+                ((o.innerHTML = (s = C(t)) != null ? s : ""),
                   o.addEventListener("click", () => {
                     var n;
-                    ((l.value = (n = e.description) != null ? n : ""),
-                      j(e.public_id),
+                    ((r.value = (n = t.description) != null ? n : ""),
+                      O(t.public_id),
                       (c.style.display = "none"));
                   }),
                   c.appendChild(o));
@@ -168,157 +172,158 @@
               (u.style.display = "block"))
             : (c.style.display = "none"));
       }
-      function A(t) {
-        const e = t,
+      function C(e) {
+        const t = e,
           o = "no-viewpoint",
-          s = e.matched_substrings;
-        let n = "";
-        e.matched_substrings && e.matched_substrings.description
-          ? (n = T(e.description, s.description))
-          : (n = e.description);
+          s = t.matched_substrings;
+        let n;
+        t.matched_substrings && t.matched_substrings.description
+          ? (n = M(t.description, s.description))
+          : (n = t.description);
         let i = "";
         return ((i += `<div class="prediction ${o}">${n}</div>`), i);
       }
-      function T(t, e) {
-        e = e.reverse();
-        for (const o of e) {
-          const s = t.substring(o.offset, o.offset + o.length);
-          t = `${t.substring(0, o.offset)}<span class='bold'>${s}</span>${t.substring(o.offset + o.length)}`;
+      function M(e, t) {
+        t = t.reverse();
+        for (const o of t) {
+          const s = e.substring(o.offset, o.offset + o.length);
+          e = `${e.substring(0, o.offset)}<span class='bold'>${s}</span>${e.substring(o.offset + o.length)}`;
         }
-        return t;
+        return e;
       }
-      function q(t, e) {
+      function T(e, t) {
         const o = {
           key: g,
-          input: t,
+          input: e,
           no_deprecated_fields: "true",
           types: "locality|address",
-          components: e,
+          components: t,
         };
         return (
-          e !== "" && o.components && (o.components = e),
+          t !== "" && o.components && (o.components = t),
           fetch(
-            `https://api.woosmap.com/localities/autocomplete/?${w(o)}`,
+            `https://api.woosmap.com/localities/autocomplete/?${L(o)}`,
           ).then((s) => s.json())
         );
       }
-      function w(t) {
-        const e = [];
-        for (const o in t)
-          if (t[o]) {
-            const s = t[o];
-            e.push(`${encodeURIComponent(o)}=${encodeURIComponent(s)}`);
+      function L(e) {
+        const t = [];
+        for (const o in e)
+          if (e[o]) {
+            const s = e[o];
+            t.push(`${encodeURIComponent(o)}=${encodeURIComponent(s)}`);
           }
-        return e.join("&");
+        return t.join("&");
       }
-      function C(t, e) {
+      function q(e, t) {
         let o = null,
           s = null,
           n = null;
         return function (...i) {
-          return new Promise((a, y) => {
+          return new Promise((a, m) => {
             (o !== null && clearTimeout(o),
               (s = a),
-              (n = y),
+              (n = m),
               (o = setTimeout(() => {
-                t(...i)
-                  .then((m) => {
-                    s === a && n === y && a(m);
+                e(...i)
+                  .then((y) => {
+                    s === a && n === m && a(y);
                   })
-                  .catch((m) => {
-                    s === a && n === y && y(m);
+                  .catch((y) => {
+                    s === a && n === m && m(y);
                   });
-              }, e)));
+              }, t)));
           });
         };
       }
-      function B() {
+      function F() {
         (document.querySelectorAll(".country").forEach((s) => {
           if (
             (s.addEventListener("click", () => {
-              P(s);
+              H(s);
             }),
             s.classList.contains("active"))
           ) {
             const n = s.dataset.countrycode;
-            r.country = [...r.country, n];
+            l.country = [...l.country, n];
           }
         }),
           document
             .querySelectorAll(".dropdown .dropdown-button")
-            .forEach((s) => s.addEventListener("click", H)));
+            .forEach((s) => s.addEventListener("click", B)));
         const o = document.querySelectorAll(".dropdown");
         document.addEventListener("click", (s) => {
           o.forEach((n) => {
-            n.contains(s.target) || L(n);
+            n.contains(s.target) || w(n);
           });
         });
       }
-      function H(t) {
-        t.stopPropagation();
-        const e = t.target.closest(".dropdown");
-        e && (e.classList.contains("active") ? L(e) : I(e));
+      function B(e) {
+        e.stopPropagation();
+        const t = e.target.closest(".dropdown");
+        t && (t.classList.contains("active") ? w(t) : P(t));
       }
-      function L(t) {
-        const e = t.querySelector(".dropdown-content");
-        (e == null || e.classList.remove("visible"),
-          t.classList.remove("active"));
+      function w(e) {
+        const t = e.querySelector(".dropdown-content");
+        (t == null || t.classList.remove("visible"),
+          e.classList.remove("active"));
       }
-      function I(t) {
-        const e = t.querySelector(".dropdown-content");
-        (e == null || e.classList.add("visible"), t.classList.add("active"));
+      function P(e) {
+        const t = e.querySelector(".dropdown-content");
+        (t == null || t.classList.add("visible"), e.classList.add("active"));
       }
-      function P(t) {
-        const e = t.classList.toggle("active"),
-          o = t.dataset.countrycode;
+      function H(e) {
+        const t = e.classList.toggle("active"),
+          o = e.dataset.countrycode;
         o &&
-          (e
-            ? (r.country = [...r.country, o])
-            : (r.country = r.country.filter((s) => s !== o)),
-          O(),
-          b());
+          (t
+            ? (l.country = [...l.country, o])
+            : (l.country = l.country.filter((s) => s !== o)),
+          I(),
+          v());
       }
-      function O() {
-        const t = document.querySelector(".dropdown-button span");
-        r.country.length > 0
-          ? (t.innerHTML = `Selected countries: <strong>${r.country.join("</strong>, <strong>")}</strong>`)
-          : (t.textContent = "Select countries");
+      function I() {
+        const e = document.querySelector(".dropdown-button span");
+        l.country.length > 0
+          ? (e.innerHTML = `Selected countries: <strong>${l.country.join("</strong>, <strong>")}</strong>`)
+          : (e.textContent = "Select countries");
       }
-      function j(t) {
-        N(t).then((e) => {
-          (E(e.result), $(v), e && _(e.result));
+      function O(e) {
+        R(e).then((t) => {
+          ($(t.result), _(b), t && S(t.result));
         });
       }
-      function R(t) {
-        let e;
+      function j(e) {
+        let t;
         if (
-          (t && t.geometry && (e = t.geometry),
-          t && t.geometry && t.geometry.viewport)
+          (e && e.geometry && (t = e.geometry),
+          e && e.geometry && e.geometry.viewport)
         ) {
-          const { viewport: o } = e,
+          const { viewport: o } = t,
             s = {
               east: o.northeast.lng,
               south: o.southwest.lat,
               north: o.northeast.lat,
               west: o.southwest.lng,
             };
-          (d.fitBounds(s), d.panTo(t.geometry.location));
+          (p.fitBounds(s), p.panTo(e.geometry.location));
         } else {
           let o = 17;
-          (t.types[0] === "address" && (o = 18),
-            d.setZoom(o),
-            d.panTo(e.location));
+          (e.types[0] === "address" && (o = 18),
+            p.moveCamera({ zoom: o, center: t.location }));
         }
       }
-      function N(t) {
+      function R(e) {
         return fetch(
-          `https://api.woosmap.com/localities/details/?${w({ key: g, public_id: t })}`,
+          `https://api.woosmap.com/localities/details/?${L({ key: g, public_id: e })}`,
         ).then((o) => o.json());
       }
-      window.initMap = S;
+      E();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -632,7 +637,7 @@
   </head>
   <body>
     <div id="app">
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
       <div class="addressDetails">
         <div class="addressOptions"></div>
       </div>
@@ -709,9 +714,49 @@
       </div>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

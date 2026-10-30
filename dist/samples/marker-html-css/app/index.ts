@@ -2,94 +2,29 @@ interface MarkerData {
   price: string;
 }
 
-function initMap(): void {
-  class HTMLMapMarker extends woosmap.map.OverlayView {
-    private readonly latlng: woosmap.map.LatLng;
-    private readonly html: string;
-    public div: HTMLDivElement | null = null;
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
 
-    constructor({ latlng, map, data }) {
-      super();
-      this.latlng = latlng;
-      this.html = `<div class="popover-content">
+  function createMarkerContent(data: MarkerData): HTMLDivElement {
+    const div = document.createElement("div");
+    div.className = "popover";
+    div.innerHTML = `<div class="popover-content">
                       <span class="icon">️</span>
                       <span class="price">${data.price}</span>
                     </div>
                      <div class="popover-arrow-shadow"></div>
                      <div class="popover-arrow"></div>`;
-      this.setMap(map);
-    }
-
-    private createDiv(): void {
-      this.div = document.createElement("div");
-      this.div.style.position = "absolute";
-      this.div.className = "popover";
-      if (this.html) {
-        this.div.innerHTML = this.html;
-      }
-      woosmap.map.event.addDomListener(this.div, "click", () => {
-        woosmap.map.event.trigger(this, "click");
-      });
-    }
-
-    private appendDivToOverlay(): void {
-      const panes = this.getPanes();
-      if (panes && this.div) {
-        panes.floatPane.appendChild(this.div);
-      }
-    }
-
-    private positionDiv(): void {
-      const point = this.getProjection()?.fromLatLngToDivPixel(this.latlng);
-      if (point && this.div) {
-        // Offset should depend on the style of your popover
-        const offsetWidth = this.div.offsetWidth / 2; // 50% of div width
-        const offsetHeight = this.div.offsetHeight + 6; // Full height of div plus the arrow height
-        // @ts-ignore
-        this.div.style.left = `${point.x - offsetWidth}px`;
-        // @ts-ignore
-        this.div.style.top = `${point.y - offsetHeight}px`;
-      }
-    }
-
-    draw(): void {
-      this.positionDiv();
-    }
-
-    onAdd(): void {
-      if (!this.div) {
-        this.createDiv();
-        this.appendDivToOverlay();
-      }
-    }
-
-    onRemove(): void {
-      if (this.div && this.div.parentNode) {
-        this.div.parentNode.removeChild(this.div);
-        this.div = null;
-      }
-    }
-
-    getPosition(): woosmap.map.LatLng {
-      return this.latlng;
-    }
-
-    addEventListener(eventName: string, callback: () => void): void {
-      if (this.div) {
-        this.div.addEventListener(eventName, callback);
-      }
-    }
+    return div;
   }
 
   const center: woosmap.map.LatLngLiteral = { lat: 51.5074, lng: -0.1278 };
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       zoom: 13,
       center: center,
-    },
-  );
+    });
 
   const markersData: MarkerData[] = [
     { price: "100 €" },
@@ -107,37 +42,27 @@ function initMap(): void {
     { lat: 51.5074, lng: -0.1078 },
   ];
 
-  const markers: HTMLMapMarker[] = [];
+  const markers: woosmap.map.marker.AdvancedMarkerElement[] = [];
 
   markersData.forEach((data, index) => {
-    const marker = new HTMLMapMarker({
-      latlng: new woosmap.map.LatLng(
-        positions[index].lat,
-        positions[index].lng,
-      ),
+    const content = createMarkerContent(data);
+    const marker = new woosmap.map.marker.AdvancedMarkerElement({
+      position: positions[index],
       map: map,
-      data: data,
+      content,
+      gmpClickable: true,
     });
 
-    marker.addEventListener("click", () => {
+    marker.addListener("click", () => {
       markers.forEach((m) => {
-        if (m.div) {
-          m.div.classList.remove("active");
-        }
+        (m.content as HTMLDivElement).classList.remove("active");
       });
-      if (marker.div) {
-        marker.div.classList.add("active");
-      }
+      content.classList.add("active");
     });
 
     markers.push(marker);
   });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 export {};

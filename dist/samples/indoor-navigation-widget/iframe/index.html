@@ -7,76 +7,78 @@
 
     <script type="module" crossorigin>
       (function () {
-        const i = document.createElement("link").relList;
-        if (i && i.supports && i.supports("modulepreload")) return;
+        const n = document.createElement("link").relList;
+        if (n && n.supports && n.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          n(e);
+          c(e);
         new MutationObserver((e) => {
-          for (const o of e)
-            if (o.type === "childList")
-              for (const s of o.addedNodes)
-                s.tagName === "LINK" && s.rel === "modulepreload" && n(s);
+          for (const t of e)
+            if (t.type === "childList")
+              for (const s of t.addedNodes)
+                s.tagName === "LINK" && s.rel === "modulepreload" && c(s);
         }).observe(document, { childList: !0, subtree: !0 });
         function r(e) {
-          const o = {};
+          const t = {};
           return (
-            e.integrity && (o.integrity = e.integrity),
-            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
+            e.integrity && (t.integrity = e.integrity),
+            e.referrerPolicy && (t.referrerPolicy = e.referrerPolicy),
             e.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
+              ? (t.credentials = "include")
               : e.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+                ? (t.credentials = "omit")
+                : (t.credentials = "same-origin"),
+            t
           );
         }
-        function n(e) {
+        function c(e) {
           if (e.ep) return;
           e.ep = !0;
-          const o = r(e);
-          fetch(e.href, o);
+          const t = r(e);
+          fetch(e.href, t);
         }
       })();
-      let d, t, a, l, u;
-      function p() {
-        ((u = "gdn_doc"),
-          (d = new window.woosmap.map.Map(document.getElementById("map"), {
-            center: { lat: 43.6066, lng: 3.9218 },
-          })));
-        const c = { venue: u, responsive: "desktop" };
-        ((t = new woosmap.map.IndoorRenderer(c)),
-          t.setMap(d),
-          t.addListener("indoor_venue_loaded", (i) => {
-            l = new window.woosmap.map.IndoorService();
-            const r = {
+      let i, o, a, l, u;
+      async function p() {
+        (await woosmap.map.importLibrary("maps"),
+          (u = "gdn_doc"),
+          (i = document.getElementById("map").innerMap),
+          i.moveCamera({ center: { lat: 43.6066, lng: 3.9218 } }));
+        const d = { venue: u, responsive: "desktop" };
+        ((o = new woosmap.map.IndoorRenderer(d)),
+          o.setMap(i),
+          o.addListener("indoor_venue_loaded", () => {
+            l = new woosmap.map.IndoorService();
+            const n = {
               venueId: "gdn_doc",
-              origin: new window.woosmap.map.LatLng(48.8801287, 2.3548678),
+              origin: new woosmap.map.LatLng(48.8801287, 2.3548678),
               originLevel: 0,
-              destination: new window.woosmap.map.LatLng(48.8799341, 2.3563779),
+              destination: new woosmap.map.LatLng(48.8799341, 2.3563779),
               destinationLevel: 0,
               units: "metric",
               originId: null,
               destinationId: null,
             };
-            l.directions(r, (n) => {
-              n &&
-                (t.setDirections(n),
-                (a = new window.woosmap.map.NavigationWidget(t, m)),
-                a.setMap(d),
+            l.directions(n, (r) => {
+              r &&
+                (o.setDirections(r),
+                (a = new woosmap.map.NavigationWidget(o, m)),
+                a.setMap(i),
                 f());
             });
           }));
       }
       const m = () => {
-          (a.setMap(null), t.setDirections(null));
+          (a.setMap(null), o.setDirections(null));
         },
         f = () => {
           document.querySelector(".progress").remove();
         };
-      window.initMap = p;
+      p();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -131,12 +133,52 @@
         <div class="spinner"></div>
       </div>
       <!--The div element for the map -->
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap&libraries=widgets"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "widgets",
+        language: "",
+      });
+    </script>
   </body>
 </html>

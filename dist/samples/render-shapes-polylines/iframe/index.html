@@ -10,14 +10,14 @@
         const l = document.createElement("link").relList;
         if (l && l.supports && l.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          r(e);
+          a(e);
         new MutationObserver((e) => {
           for (const t of e)
             if (t.type === "childList")
               for (const n of t.addedNodes)
-                n.tagName === "LINK" && n.rel === "modulepreload" && r(n);
+                n.tagName === "LINK" && n.rel === "modulepreload" && a(n);
         }).observe(document, { childList: !0, subtree: !0 });
-        function a(e) {
+        function i(e) {
           const t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
@@ -30,20 +30,19 @@
             t
           );
         }
-        function r(e) {
+        function a(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = a(e);
+          const t = i(e);
           fetch(e.href, t);
         }
       })();
-      let i;
-      function s() {
-        i = new window.woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 51.505, lng: -0.118 },
-          zoom: 15,
-        });
-        const o = [
+      let o;
+      async function s() {
+        (await woosmap.map.importLibrary("maps"),
+          (o = document.getElementById("map").innerMap),
+          o.moveCamera({ center: { lat: 51.505, lng: -0.118 }, zoom: 15 }));
+        const r = [
           { lng: -0.12638568878173828, lat: 51.50099581189912 },
           { lng: -0.12201905250549315, lat: 51.500832183172456 },
           { lng: -0.11891841888427736, lat: 51.50078877137083 },
@@ -63,16 +62,18 @@
           { lng: -0.11816740036010741, lat: 51.50991769706187 },
         ];
         new woosmap.map.Polyline({
-          path: o,
+          path: r,
           strokeColor: "#b71c1c",
           strokeOpacity: 0.8,
           strokeWeight: 4,
-        }).setMap(i);
+        }).setMap(o);
       }
-      window.initMap = s;
+      s();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -100,11 +101,51 @@
   </head>
   <body>
     <!--The div element for the map -->
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "",
+        language: "",
+      });
+    </script>
   </body>
 </html>

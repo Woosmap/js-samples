@@ -1,9 +1,13 @@
 /* [START woosmap_store_locator_widget_enforce_accessibility] */
 /*
- * Always set the map height explicitly to define the size of the div element
- * that contains the map.
+ * Always set the map height explicitly to define the size of the element
+ * that contains the map. `display: block` is required for <wmp-map>/<gmp-map>,
+ * which default to inline like any other custom element outside a flex/grid
+ * container (no-op for a plain <div>).
  */
 #map {
+  display: block;
+  width: 100%;
   height: 100%;
 }
 

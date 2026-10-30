@@ -1,8 +1,10 @@
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
   const position = { lat: 51.499, lng: -0.015 };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
-    zoom: 14,
-    center: position,
+  const map = document.getElementById("map").innerMap;
+
+  map.setOptions({
     styles: [
       {
         elementType: "geometry",
@@ -128,6 +130,10 @@ function initMap() {
       },
     ],
   });
+  map.moveCamera({
+    zoom: 14,
+    center: position,
+  });
 }
 
-window.initMap = initMap;
+initMap();

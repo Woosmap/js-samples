@@ -37,37 +37,41 @@
           fetch(e.href, t);
         }
       })();
-      function c() {
-        const s = { lat: 51.52, lng: -0.13 },
-          o = {
-            labelOrigin: new window.woosmap.map.Point(14, 15),
-            url: "https://images.woosmap.com/marker-red.svg",
-          },
-          r = new woosmap.map.Map(document.getElementById("map"), {
-            zoom: 10,
-            center: s,
-          });
+      async function s() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"));
+        const a = { lat: 51.52, lng: -0.13 };
+        function o(e) {
+          const { PinElement: t } = woosmap.map.marker;
+          return new t({
+            background: "#f50057",
+            glyphText: e,
+            glyphColor: "#FFFFFF",
+          }).element;
+        }
+        const r = document.getElementById("map").innerMap;
+        r.moveCamera({ zoom: 10, center: a });
         let n = 1;
-        (new window.woosmap.map.Marker({
+        (new woosmap.map.marker.AdvancedMarkerElement({
           position: r.getCenter(),
-          icon: o,
-          label: { text: String(n), color: "white" },
+          content: o(String(n)),
           map: r,
         }),
           r.addListener("click", (e) => {
             ((n += 1),
-              new window.woosmap.map.Marker({
+              new woosmap.map.marker.AdvancedMarkerElement({
                 position: e.latlng,
-                icon: o,
-                label: { text: String(n), color: "white" },
+                content: o(String(n)),
                 map: r,
               }));
           }));
       }
-      window.initMap = c;
+      s();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -108,11 +112,51 @@
   </head>
   <body>
     <div id="info">Click on the map to add new MarkerLabel</div>
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

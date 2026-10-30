@@ -7,15 +7,15 @@
 
     <script type="module" crossorigin>
       (function () {
-        const r = document.createElement("link").relList;
-        if (r && r.supports && r.supports("modulepreload")) return;
+        const o = document.createElement("link").relList;
+        if (o && o.supports && o.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(e);
+          r(e);
         new MutationObserver((e) => {
           for (const t of e)
             if (t.type === "childList")
               for (const n of t.addedNodes)
-                n.tagName === "LINK" && n.rel === "modulepreload" && o(n);
+                n.tagName === "LINK" && n.rel === "modulepreload" && r(n);
         }).observe(document, { childList: !0, subtree: !0 });
         function s(e) {
           const t = {};
@@ -30,16 +30,17 @@
             t
           );
         }
-        function o(e) {
+        function r(e) {
           if (e.ep) return;
           e.ep = !0;
           const t = s(e);
           fetch(e.href, t);
         }
       })();
-      function c() {
+      async function c() {
+        await woosmap.map.importLibrary("maps");
         const i = { lat: 51.52, lng: -0.13 },
-          r = {
+          o = {
             breakPoint: 14,
             rules: [],
             default: {
@@ -56,21 +57,21 @@
               },
             },
           },
-          s = new woosmap.map.Map(document.getElementById("map"), {
-            zoom: 8,
-            center: i,
-          }),
-          o = new woosmap.map.StoresOverlay(r);
-        o.setMap(s);
+          s = document.getElementById("map").innerMap;
+        s.moveCamera({ zoom: 8, center: i });
+        const r = new woosmap.map.StoresOverlay(o);
+        r.setMap(s);
         const e = document.getElementById("toggleQuery");
         e.onchange = function () {
-          e.checked ? o.setQuery('tag:"DT"') : o.setQuery(null);
+          e.checked ? r.setQuery('tag:"DT"') : r.setQuery(null);
         };
       }
-      window.initMap = c;
+      c();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -165,11 +166,51 @@
         <div class="toggle-switch"></div>
       </label>
     </div>
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "",
+        language: "",
+      });
+    </script>
   </body>
 </html>

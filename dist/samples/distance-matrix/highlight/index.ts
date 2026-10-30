@@ -2,28 +2,19 @@ let map: woosmap.map.Map;
 let bounds: woosmap.map.LatLngBounds;
 let distanceService: woosmap.map.DistanceService;
 let distanceRequest: woosmap.map.distance.DistanceMatrixRequest;
-const markersArray: woosmap.map.Marker[] = [];
+const markersArray: woosmap.map.marker.AdvancedMarkerElement[] = [];
 
 function createMarker(
   position: woosmap.map.LatLng,
   label: string,
-  url: string,
-): woosmap.map.Marker {
-  return new woosmap.map.Marker({
+  background: string,
+): woosmap.map.marker.AdvancedMarkerElement {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({ background, glyphText: label, glyphColor: "#FFFFFF" });
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(14, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    content: pin.element,
   });
 }
 
@@ -34,18 +25,14 @@ function fitBoundsToMatrix(
   origins.forEach((origin) => {
     bounds.extend(origin);
     markersArray.push(
-      createMarker(origin, "O", "https://images.woosmap.com/marker-blue.svg"),
+      createMarker(origin, "O", "#3d5afe"),
     );
   });
 
   destinations.forEach((destination) => {
     bounds.extend(destination);
     markersArray.push(
-      createMarker(
-        destination,
-        "D",
-        "https://images.woosmap.com/marker-red.svg",
-      ),
+      createMarker(destination, "D", "#f50057"),
     );
   });
 
@@ -90,8 +77,12 @@ function calculateDistances(): void {
   }
 }
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
     center: { lat: 45.53, lng: 2.4 },
     zoom: 10,
   });
@@ -100,11 +91,6 @@ function initMap(): void {
   calculateDistances();
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

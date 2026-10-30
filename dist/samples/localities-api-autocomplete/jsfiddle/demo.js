@@ -79,7 +79,7 @@ function formatPredictionList(locality) {
   const prediction = locality;
   const predictionClass = "no-viewpoint";
   const matched_substrings = prediction.matched_substrings;
-  let formatted_name = "";
+  let formatted_name;
 
   if (
     prediction.matched_substrings &&

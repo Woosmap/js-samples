@@ -2,7 +2,7 @@
 let map: woosmap.map.Map;
 let transitService: woosmap.map.TransitService;
 let transitRequest: woosmap.map.transit.TransitRouteRequest;
-let markersArray: woosmap.map.Marker[] = [];
+let markersArray: woosmap.map.marker.AdvancedMarkerElement[] = [];
 let originContainer: HTMLElement;
 let destinationContainer: HTMLElement;
 let transitRenderer: woosmap.map.TransitRenderer;
@@ -10,24 +10,15 @@ let transitRenderer: woosmap.map.TransitRenderer;
 function createMarker(
   position: woosmap.map.LatLngLiteral | woosmap.map.LatLng,
   label: string,
-  url: string,
-): woosmap.map.Marker {
-  return new woosmap.map.Marker({
+  background: string,
+): woosmap.map.marker.AdvancedMarkerElement {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({ background, glyphText: label, glyphColor: "#FFFFFF" });
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    draggable: true,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(13, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    gmpDraggable: true,
+    content: pin.element,
   });
 }
 
@@ -40,26 +31,18 @@ function clearMarkers(): void {
 
 function displayTransitMarkers(): void {
   clearMarkers();
-  const originMarker = createMarker(
-    transitRequest.origin,
-    "O",
-    "https://images.woosmap.com/marker-blue.svg",
-  );
+  const originMarker = createMarker(transitRequest.origin, "O", "#3d5afe");
   originMarker.addListener("dragend", () => {
-    transitRequest.origin = originMarker.getPosition();
-    setLatLngToContainer(originContainer, originMarker.getPosition().toJSON());
+    transitRequest.origin = originMarker.position!;
+    setLatLngToContainer(originContainer, originMarker.position!.toJSON());
     calculateTransit();
   });
-  const destinationMarker = createMarker(
-    transitRequest.destination,
-    "D",
-    "https://images.woosmap.com/marker-red.svg",
-  );
+  const destinationMarker = createMarker(transitRequest.destination, "D", "#f50057");
   destinationMarker.addListener("dragend", () => {
-    transitRequest.destination = destinationMarker.getPosition();
+    transitRequest.destination = destinationMarker.position!;
     setLatLngToContainer(
       destinationContainer,
-      destinationMarker.getPosition().toJSON(),
+      destinationMarker.position!.toJSON(),
     );
     calculateTransit();
   });
@@ -283,11 +266,7 @@ function updateTime(timeType: "departureTime" | "arrivalTime"): void {
   });
 }
 
-function registerAddButton(
-  selector: string,
-  element: HTMLElement,
-  loc: woosmap.map.LatLngLiteral[] | woosmap.map.LatLngLiteral,
-): void {
+function registerAddButton(selector: string, element: HTMLElement): void {
   const button = document.querySelector(selector) as HTMLElement;
   button.addEventListener("click", () => {
     if (button.classList.contains("addLocation__selected")) {
@@ -383,20 +362,16 @@ function initUI(): void {
   updateTime("departureTime");
   updateTime("arrivalTime");
   updateTransitOptions();
-  registerAddButton(
-    ".addLocation__destinations",
-    destinationContainer,
-    transitRequest.destination as woosmap.map.LatLngLiteral,
-  );
-  registerAddButton(
-    ".addLocation__origins",
-    originContainer,
-    transitRequest.origin as woosmap.map.LatLngLiteral,
-  );
+  registerAddButton(".addLocation__destinations", destinationContainer);
+  registerAddButton(".addLocation__origins", originContainer);
 }
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
     center: { lat: 45.482604, lng: 9.16924 },
     zoom: 11,
   });
@@ -410,12 +385,7 @@ function initMap(): void {
   calculateTransit();
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_transit_advanced]
 
 export {};

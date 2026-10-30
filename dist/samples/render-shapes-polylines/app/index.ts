@@ -1,14 +1,14 @@
 // Initialize and add the map
 let map: woosmap.map.Map;
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       center: { lat: 51.505, lng: -0.118 },
       zoom: 15,
-    },
-  );
+    });
   //Polyline Shape
   const polylinePath = [
     { lng: -0.12638568878173828, lat: 51.50099581189912 },
@@ -38,6 +38,6 @@ function initMap() {
   });
   polyline.setMap(map);
 }
-window.initMap = initMap;
+initMap();
 
 export {};

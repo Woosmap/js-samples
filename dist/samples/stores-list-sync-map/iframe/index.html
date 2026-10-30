@@ -40,8 +40,8 @@
       let i,
         c = null,
         d,
-        h,
-        v,
+        y,
+        g,
         u = [],
         m = [];
       const w = {
@@ -55,21 +55,19 @@
             selectedIcon: { url: "https://images.woosmap.com/marker-red.svg" },
           },
         },
-        S = {
-          zoom: 5,
-          center: { lat: 46.5, lng: 1.4 },
+        b = {
           styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }],
         },
         l = document.getElementById("autocomplete-input"),
         p = document.getElementById("submit-button");
       l &&
         p &&
-        (l.addEventListener("keydown", L), p.addEventListener("click", b));
-      function L(e) {
-        e.key === "Enter" && y();
+        (l.addEventListener("keydown", S), p.addEventListener("click", L));
+      function S(e) {
+        e.key === "Enter" && h();
       }
-      function b() {
-        y();
+      function L() {
+        h();
       }
       function E(e, t) {
         return e.filter((o) =>
@@ -81,13 +79,13 @@
             : !1,
         );
       }
-      function M() {
+      function F() {
         const e = [],
           t = { storesByPage: 300 };
         function o(s) {
           return (
             s && (t.page = s),
-            h
+            y
               .search(t)
               .then(
                 (r) => (
@@ -110,7 +108,7 @@
         (o &&
           ((o.innerHTML = `<p style="padding: 0 0.8rem; font-size: 17px">Results: <strong>${e.length}</strong> stores in bounds</p>`),
           (o.innerHTML += t.join(""))),
-          $(e));
+          k(e));
       }
       function O(e, t) {
         const { name: o, address: s, contact: r } = e.properties,
@@ -132,7 +130,7 @@
       </div>
     </div>`;
       }
-      function $(e) {
+      function k(e) {
         document.querySelectorAll(".summary-store-card").forEach((t) => {
           t.addEventListener("click", () => {
             d.setSelection(e[t.dataset.index]);
@@ -148,37 +146,39 @@
       function A(e) {
         return l ? { address: l.value } : null;
       }
-      function y(e) {
+      function h(e) {
         const t = A();
         t &&
-          v
+          g
             .geocode(t)
-            .then((o) => q(o))
-            .catch(P);
+            .then((o) => $(o))
+            .catch(T);
       }
-      function q(e) {
+      function $(e) {
         var o, s;
         const t =
           (s = (o = e.results[0]) == null ? void 0 : o.geometry) == null
             ? void 0
             : s.location;
-        t && B(t);
+        t && M(t);
       }
-      function B(e) {
-        (c && c.setMap(null),
-          e &&
-            ((c = new woosmap.map.Marker({
-              position: e,
-              icon: {
-                url: "https://images.woosmap.com/marker.png",
-                scaledSize: { height: 50, width: 32 },
-              },
-            })),
+      function M(e) {
+        if ((c && c.setMap(null), e)) {
+          const { PinElement: t } = woosmap.map.marker,
+            o = new t({
+              background: "#5588FF",
+              borderColor: "#3D6FE0",
+              glyphColor: "#FFFFFF",
+            });
+          ((c = new woosmap.map.marker.AdvancedMarkerElement({
+            position: e,
+            content: o.element,
+          })),
             c.setMap(i),
-            i.setCenter(e),
-            i.setZoom(8)));
+            i.moveCamera({ center: e, zoom: 8 }));
+        }
       }
-      function g(e) {
+      function v(e) {
         const t = document.querySelector(".stores-list");
         if (t)
           if (e) {
@@ -194,39 +194,43 @@
           } else
             Array.from(t.children).forEach((o) => o.classList.remove("active"));
       }
-      function T(e, t) {
+      function q(e, t) {
         let o;
         return (...s) => {
           (clearTimeout(o), (o = setTimeout(() => e(...s), t)));
         };
       }
-      function k() {
-        ((i = new window.woosmap.map.Map(document.getElementById("map"), S)),
+      async function B() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (i = document.getElementById("map").innerMap),
+          i.setOptions(b),
+          i.moveCamera({ center: { lat: 46.5, lng: 1.4 }, zoom: 5 }),
           (d = new woosmap.map.StoresOverlay(w)),
           d.setMap(i),
           i.addListener(
             "bounds_changed",
-            T(() => {
+            q(() => {
               const e = i.getBounds();
               ((u = E(m, e)), f(u));
             }, 50),
           ),
-          window.woosmap.map.event.addListener(i, "store_selected", (e) => {
-            g(e.properties.store_id);
+          woosmap.map.event.addListener(i, "store_selected", (e) => {
+            v(e.properties.store_id);
           }),
-          window.woosmap.map.event.addListener(i, "store_unselected", () => {
-            g();
+          woosmap.map.event.addListener(i, "store_unselected", () => {
+            v();
           }),
-          (h = new woosmap.map.StoresService()),
-          (v = new woosmap.map.LocalitiesService()),
-          M().then((e) => {
+          (y = new woosmap.map.StoresService()),
+          (g = new woosmap.map.LocalitiesService()),
+          F().then((e) => {
             ((m = e), f(e));
           }));
       }
-      function P(e) {
+      function T(e) {
         console.error("Error:", e);
       }
-      window.initMap = k;
+      B();
     </script>
     <style>
       html,
@@ -437,12 +441,52 @@
           <div class="stores-list"></div>
         </div>
       </div>
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-827f14de-6e1a-3149-bc9b-1709c39677b1&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-827f14de-6e1a-3149-bc9b-1709c39677b1",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

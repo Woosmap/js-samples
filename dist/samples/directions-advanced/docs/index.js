@@ -15,23 +15,18 @@ const travelModeIcons = {
   CYCLING: "https://images.woosmap.com/directions/bicycle_black.png",
 };
 
-function createMarker(position, label, url) {
-  return new woosmap.map.Marker({
+function createMarker(position, label, background) {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background,
+    glyphText: label,
+    glyphColor: "#FFFFFF",
+  });
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    draggable: true,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(13, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    gmpDraggable: true,
+    content: pin.element,
   });
 }
 
@@ -46,29 +41,25 @@ function clearMarkers() {
 function displayDirectionsMarkers() {
   clearMarkers();
 
-  const originMarker = createMarker(
-    directionsRequest.origin,
-    "O",
-    "https://images.woosmap.com/marker-blue.svg",
-  );
+  const originMarker = createMarker(directionsRequest.origin, "O", "#3d5afe");
 
   originMarker.addListener("dragend", () => {
-    directionsRequest.origin = originMarker.getPosition();
-    setLatLngToContainer(originContainer, originMarker.getPosition().toJSON());
+    directionsRequest.origin = originMarker.position;
+    setLatLngToContainer(originContainer, originMarker.position.toJSON());
     calculateDirections();
   });
 
   const destinationMarker = createMarker(
     directionsRequest.destination,
     "D",
-    "https://images.woosmap.com/marker-red.svg",
+    "#f50057",
   );
 
   destinationMarker.addListener("dragend", () => {
-    directionsRequest.destination = destinationMarker.getPosition();
+    directionsRequest.destination = destinationMarker.position;
     setLatLngToContainer(
       destinationContainer,
-      destinationMarker.getPosition().toJSON(),
+      destinationMarker.position.toJSON(),
     );
     calculateDirections();
   });
@@ -82,13 +73,13 @@ function displayDirectionsMarkers() {
     const waypointMarker = createMarker(
       waypoint.location,
       (index + 1).toString(),
-      "https://images.woosmap.com/marker-green.svg",
+      "#03BDA5",
     );
 
     waypointMarker.addListener("dragend", () => {
-      waypoints[index].location = waypointMarker.getPosition().toJSON();
+      waypoints[index].location = waypointMarker.position.toJSON();
       waypointsList.querySelectorAll("li")[index].innerHTML =
-        `<span>lat: ${waypointMarker.getPosition().lat().toFixed(4)}, lng: ${waypointMarker.getPosition().lng().toFixed(4)}<span>`;
+        `<span>lat: ${waypointMarker.position.lat().toFixed(4)}, lng: ${waypointMarker.position.lng().toFixed(4)}<span>`;
       calculateDirections();
     });
     markersArray.push(waypointMarker);
@@ -503,8 +494,11 @@ function initUI() {
   );
 }
 
-function initMap() {
-  map = new woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 51.5074, lng: -0.1478 },
     zoom: 10,
   });
@@ -520,5 +514,5 @@ function initMap() {
   calculateDirections();
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_directions_advanced]

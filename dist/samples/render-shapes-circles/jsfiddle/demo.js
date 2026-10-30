@@ -134,8 +134,10 @@ const data = {
   ],
 };
 
-function initMap() {
-  map = new woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: {
       lat: 40,
       lng: 0,
@@ -162,4 +164,4 @@ function initMap() {
   }
 }
 
-window.initMap = initMap;
+initMap();

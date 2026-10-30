@@ -4,43 +4,43 @@ let distanceInput;
 let marker;
 let polyline;
 let distanceService;
-const markerIcon = {
-  url: "https://images.woosmap.com/icons/pin-red.png",
-  scaledSize: {
-    height: 38,
-    width: 26,
-  },
-};
 const centerLatLng = {
   lat: 51.5,
   lng: -0.234,
 };
 
-function createMarker(position, icon, map) {
-  const marker = new window.woosmap.map.Marker({
+function createMarkerContent() {
+  return new woosmap.map.marker.PinElement().element;
+}
+
+function createMarker(position, map) {
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position,
-    icon,
+    content: createMarkerContent(),
   });
 
   marker.setMap(map);
   return marker;
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     zoom: 9,
     center: centerLatLng,
   });
   distanceService = new woosmap.map.DistanceService();
-  marker = createMarker(centerLatLng, markerIcon, map);
+  marker = createMarker(centerLatLng, map);
   map.addListener("click", (e) => {
     marker.setMap(null);
-    marker = createMarker(e.latlng, markerIcon, map);
+    marker = createMarker(e.latlng, map);
     computeIsochrone(e.latlng);
   });
 
   const onChangeHandler = () => {
-    computeIsochrone(marker.getPosition().toJSON());
+    computeIsochrone(marker.position.toJSON());
   };
 
   methodSelect = document.getElementById("isochrone-method-select");
@@ -103,4 +103,4 @@ function fitToCoordinates(coordinates) {
   }
 }
 
-window.initMap = initMap;
+initMap();

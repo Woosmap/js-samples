@@ -3,11 +3,14 @@ let map;
 let fromSelect;
 let toSelect;
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
   const directionsService = new woosmap.map.DirectionsService();
   const directionsRenderer = new woosmap.map.DirectionsRenderer({});
 
-  map = new woosmap.map.Map(document.getElementById("map"), {
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     zoom: 7,
     center: {
       lat: 43.5,
@@ -74,5 +77,5 @@ function getSelectedLatLng(selectElement) {
   };
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_directions_simple]

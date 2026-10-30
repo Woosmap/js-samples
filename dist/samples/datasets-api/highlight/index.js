@@ -15,8 +15,11 @@ let results;
 let resetButton;
 const datasetId = "a01df3d6-fe7d-42df-8fee-9f31726a2641"; //US - Seismic Hazard Map
 
-function initMap() {
-  map = new woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("drawing");
+  map = document.getElementById("map").innerMap;
+  map.setOptions({
     gestureHandling: "auto",
     defaultStyle: "streets",
   });
@@ -36,7 +39,7 @@ function initServices() {
   datasetsOverlay = new woosmap.map.DatasetsOverlay(datasetId);
   datasetsService = new woosmap.map.DatasetsService(datasetId);
   datasetsOverlay.setMap(map);
-  localitiesService = new window.woosmap.map.LocalitiesService();
+  localitiesService = new woosmap.map.LocalitiesService();
   request = {
     input: "",
     types: ["locality", "address", "postal_code"],
@@ -56,7 +59,7 @@ function initDrawing() {
     },
   });
   drawTools.addControl(map);
-  drawTools.addListener("draw.create", async (ev) => {
+  drawTools.addListener("draw.create", async () => {
     const collection = drawTools.getAll();
 
     if (collection.features.length > 1) {
@@ -209,7 +212,7 @@ function manageFiltersElements() {
 
     updateDataset(selectElement.value);
   });
-  operatorSelect.addEventListener("change", async (ev) => {
+  operatorSelect.addEventListener("change", async () => {
     const collection = drawTools.getAll();
 
     await intersectCb(collection);
@@ -257,10 +260,10 @@ async function intersectCb(ev) {
       });
 
       for (const feature of response.features) {
-        // @ts-ignore TypeDef to be updated
         features.push({
           type: "Feature",
           geometry: feature.geometry,
+          properties: {},
         });
       }
 
@@ -284,14 +287,14 @@ function bindResultsToPanel(features) {
 
       results.classList.remove("error");
       resultListItem.classList.add("result");
-      (Object.keys(attributes).map((key) => {
+      Object.keys(attributes).map((key) => {
         if (attributes[key]) {
           resultListItem.innerHTML =
             resultListItem.innerHTML +
             `<tr><td><b>${key} </b></td><td>${attributes[key]}</td></tr>`;
         }
-      }),
-        results.appendChild(resultListItem));
+      });
+      results.appendChild(resultListItem);
     });
   } else {
     results.innerHTML = "No results found";
@@ -329,4 +332,4 @@ function debouncePromise(fn, delay) {
   };
 }
 
-window.initMap = initMap;
+initMap();

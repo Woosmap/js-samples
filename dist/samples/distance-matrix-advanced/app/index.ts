@@ -2,7 +2,7 @@ let map: woosmap.map.Map;
 let bounds: woosmap.map.LatLngBounds;
 let distanceService: woosmap.map.DistanceService;
 let distanceRequest: woosmap.map.distance.DistanceMatrixRequest;
-let markersArray: woosmap.map.Marker[] = [];
+let markersArray: woosmap.map.marker.AdvancedMarkerElement[] = [];
 let originsList: HTMLElement;
 let destinationsList: HTMLElement;
 const origins: woosmap.map.LatLngLiteral[] = [];
@@ -12,23 +12,14 @@ let line: woosmap.map.Polyline | null = null;
 function createMarker(
   position: woosmap.map.LatLngLiteral,
   label: string,
-  url: string,
-): woosmap.map.Marker {
-  return new woosmap.map.Marker({
+  background: string,
+): woosmap.map.marker.AdvancedMarkerElement {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({ background, glyphText: label, glyphColor: "#FFFFFF" });
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(13, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    content: pin.element,
   });
 }
 
@@ -47,22 +38,14 @@ function displayMatrixMarkers(
   origins.forEach((origin, index) => {
     bounds.extend(origin);
     markersArray.push(
-      createMarker(
-        origin,
-        (index + 1).toString(),
-        "https://images.woosmap.com/marker-blue.svg",
-      ),
+      createMarker(origin, (index + 1).toString(), "#3d5afe"),
     );
   });
 
   destinations.forEach((destination, index) => {
     bounds.extend(destination);
     markersArray.push(
-      createMarker(
-        destination,
-        (index + 1).toString(),
-        "https://images.woosmap.com/marker-red.svg",
-      ),
+      createMarker(destination, (index + 1).toString(), "#f50057"),
     );
   });
 
@@ -406,8 +389,12 @@ function initUI(): void {
   registerAddButton(".addLocation__origins", originsList, origins);
 }
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
     center: { lat: 51.4855, lng: -0.3179 },
     zoom: 6,
   });
@@ -418,11 +405,6 @@ function initMap(): void {
   calculateDistances();
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

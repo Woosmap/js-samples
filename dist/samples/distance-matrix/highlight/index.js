@@ -4,41 +4,28 @@ let distanceService;
 let distanceRequest;
 const markersArray = [];
 
-function createMarker(position, label, url) {
-  return new woosmap.map.Marker({
+function createMarker(position, label, background) {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background,
+    glyphText: label,
+    glyphColor: "#FFFFFF",
+  });
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(14, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    content: pin.element,
   });
 }
 
 function fitBoundsToMatrix(origins, destinations) {
   origins.forEach((origin) => {
     bounds.extend(origin);
-    markersArray.push(
-      createMarker(origin, "O", "https://images.woosmap.com/marker-blue.svg"),
-    );
+    markersArray.push(createMarker(origin, "O", "#3d5afe"));
   });
   destinations.forEach((destination) => {
     bounds.extend(destination);
-    markersArray.push(
-      createMarker(
-        destination,
-        "D",
-        "https://images.woosmap.com/marker-red.svg",
-      ),
-    );
+    markersArray.push(createMarker(destination, "D", "#f50057"));
   });
   map.fitBounds(bounds, { top: 70, bottom: 40, left: 50, right: 50 }, true);
 }
@@ -81,8 +68,11 @@ function calculateDistances() {
   }
 }
 
-function initMap() {
-  map = new woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 45.53, lng: 2.4 },
     zoom: 10,
   });
@@ -91,4 +81,4 @@ function initMap() {
   calculateDistances();
 }
 
-window.initMap = initMap;
+initMap();

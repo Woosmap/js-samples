@@ -1,48 +1,40 @@
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
 
-  const iconMarker: woosmap.map.Icon = {
-    labelOrigin: new window.woosmap.map.Point(14, 15),
-    url: "https://images.woosmap.com/marker-red.svg",
-  };
+  function createMarkerContent(label: string): HTMLElement {
+    const { PinElement } = woosmap.map.marker;
+    return new PinElement({
+      background: "#f50057",
+      glyphText: label,
+      glyphColor: "#FFFFFF",
+    }).element;
+  }
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       zoom: 10,
       center: center,
-    },
-  );
+    });
 
   let labelNumber = 1;
-  new window.woosmap.map.Marker({
+  new woosmap.map.marker.AdvancedMarkerElement({
     position: map.getCenter(),
-    icon: iconMarker,
-    label: {
-      text: String(labelNumber),
-      color: "white",
-    },
+    content: createMarkerContent(String(labelNumber)),
     map,
   });
 
   map.addListener("click", (e) => {
     labelNumber += 1;
-    new window.woosmap.map.Marker({
+    new woosmap.map.marker.AdvancedMarkerElement({
       position: e.latlng,
-      icon: iconMarker,
-      label: {
-        text: String(labelNumber),
-        color: "white",
-      },
+      content: createMarkerContent(String(labelNumber)),
       map,
     });
   });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 export {};

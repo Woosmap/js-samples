@@ -10,14 +10,14 @@
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
         for (const s of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(s);
+          a(s);
         new MutationObserver((s) => {
           for (const n of s)
             if (n.type === "childList")
-              for (const a of n.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && o(a);
+              for (const r of n.addedNodes)
+                r.tagName === "LINK" && r.rel === "modulepreload" && a(r);
         }).observe(document, { childList: !0, subtree: !0 });
-        function i(s) {
+        function o(s) {
           const n = {};
           return (
             s.integrity && (n.integrity = s.integrity),
@@ -30,31 +30,34 @@
             n
           );
         }
-        function o(s) {
+        function a(s) {
           if (s.ep) return;
           s.ep = !0;
-          const n = i(s);
+          const n = o(s);
           fetch(s.href, n);
         }
       })();
-      let u, c, m, w;
-      const l = {};
-      function E() {
-        ((u = new window.woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 51.50940214, lng: -0.133012 },
-          zoom: 12,
-        })),
-          (m = new woosmap.map.InfoWindow({})),
-          (w = new woosmap.map.LocalitiesService()),
-          u.addListener("click", (e) => {
-            h(e.latlng);
+      let m, c, u, b;
+      const i = {};
+      async function E() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (m = document.getElementById("map").innerMap),
+          m.moveCamera({
+            center: { lat: 51.50940214, lng: -0.133012 },
+            zoom: 12,
+          }),
+          (u = new woosmap.map.InfoWindow({})),
+          (b = new woosmap.map.LocalitiesService()),
+          m.addListener("click", (e) => {
+            w(e.latlng);
           }));
       }
       const p = document.getElementById("autocomplete-input"),
         g = document.getElementsByClassName("clear-searchButton")[0];
       p &&
         (p.addEventListener("keydown", (e) => {
-          e.key === "Enter" && h(null);
+          e.key === "Enter" && w(null);
         }),
         p.addEventListener("input", () => {
           p.value !== ""
@@ -64,37 +67,39 @@
       g.addEventListener("click", () => {
         ((p.value = ""),
           (g.style.display = "none"),
-          c && (c.setMap(null), m.close()),
-          S(),
+          c && (c.setMap(null), u.close()),
+          F(),
           p.focus());
       });
-      function h(e) {
+      function w(e) {
         (e
-          ? ((l.latLng = e), delete l.address)
+          ? ((i.latLng = e), delete i.address)
           : (p == null ? void 0 : p.value) !== "" &&
-            ((l.address = p.value), delete l.latLng),
-          (l.latLng || l.address) &&
-            w
-              .geocode(l)
+            ((i.address = p.value), delete i.latLng),
+          (i.latLng || i.address) &&
+            b
+              .geocode(i)
               .then((t) => v(t.results[0]))
               .catch((t) => console.error("Error geocoding localities:", t)));
       }
       function v(e) {
-        (c && (c.setMap(null), m.close()),
-          e != null &&
-            e.geometry &&
-            ((c = new woosmap.map.Marker({
-              position: e.geometry.location,
-              icon: {
-                url: "https://images.woosmap.com/marker.png",
-                scaledSize: { height: 50, width: 32 },
-              },
-            })),
-            c.setMap(u),
-            m.setContent(`<span>${e.formatted_address}</span>`),
-            m.open(u, c),
-            u.setCenter(e.geometry.location),
-            M(e)));
+        if ((c && (c.setMap(null), u.close()), e != null && e.geometry)) {
+          const { PinElement: t } = woosmap.map.marker,
+            o = new t({
+              background: "#5588FF",
+              borderColor: "#3D6FE0",
+              glyphColor: "#FFFFFF",
+            });
+          ((c = new woosmap.map.marker.AdvancedMarkerElement({
+            position: e.geometry.location,
+            content: o.element,
+          })),
+            c.setMap(m),
+            u.setContent(`<span>${e.formatted_address}</span>`),
+            u.open({ map: m, anchor: c }),
+            m.setCenter(e.geometry.location),
+            B(e));
+        }
       }
       function d(e) {
         return e
@@ -107,12 +112,12 @@
       function $(e) {
         return Array.isArray(e) ? e.join(", ") : e;
       }
-      function M(e) {
+      function B(e) {
         const t = document.getElementById("response-panel"),
-          i = t == null ? void 0 : t.querySelector(".summary"),
-          o = t == null ? void 0 : t.querySelector(".address-components"),
+          o = t == null ? void 0 : t.querySelector(".summary"),
+          a = t == null ? void 0 : t.querySelector(".address-components"),
           s = document.getElementById("raw-json");
-        if (!t || !i || !o || !s) return;
+        if (!t || !o || !a || !s) return;
         t.dataset.empty = "false";
         const n = [];
         if (
@@ -134,74 +139,76 @@
             ),
           e.geometry)
         ) {
-          const { geometry: a } = e;
+          const { geometry: r } = e;
           if (
-            (a.location_type &&
+            (r.location_type &&
               n.push(
-                `<p class='option-detail'><span class='option-detail-label'>Location type:</span><span class='bold'>${d(a.location_type)}</span></p>`,
+                `<p class='option-detail'><span class='option-detail-label'>Location type:</span><span class='bold'>${d(r.location_type)}</span></p>`,
               ),
             n.push(
-              `<p class='option-detail'><span class='option-detail-label'>Latitude:</span><span class='bold'>${a.location.lat}</span></p>`,
-              `<p class='option-detail'><span class='option-detail-label'>Longitude:</span><span class='bold'>${a.location.lng}</span></p>`,
+              `<p class='option-detail'><span class='option-detail-label'>Latitude:</span><span class='bold'>${r.location.lat}</span></p>`,
+              `<p class='option-detail'><span class='option-detail-label'>Longitude:</span><span class='bold'>${r.location.lng}</span></p>`,
             ),
-            a.viewport)
+            r.viewport)
           ) {
-            const { viewport: r } = a;
+            const { viewport: l } = r;
             n.push(
-              `<p class='option-detail'><span class='option-detail-label'>Viewport NE:</span><span class='bold'>${r.northeast.lat}, ${r.northeast.lng}</span></p>`,
-              `<p class='option-detail'><span class='option-detail-label'>Viewport SW:</span><span class='bold'>${r.southwest.lat}, ${r.southwest.lng}</span></p>`,
+              `<p class='option-detail'><span class='option-detail-label'>Viewport NE:</span><span class='bold'>${l.northeast.lat}, ${l.northeast.lng}</span></p>`,
+              `<p class='option-detail'><span class='option-detail-label'>Viewport SW:</span><span class='bold'>${l.southwest.lat}, ${l.southwest.lng}</span></p>`,
             );
           }
         }
         if (
-          ((i.innerHTML = `<div class='section-title'>Summary</div>${n.join("")}`),
+          ((o.innerHTML = `<div class='section-title'>Summary</div>${n.join("")}`),
           e.address_components && e.address_components.length)
         ) {
-          const a = e.address_components
-            .map((r) => {
+          const r = e.address_components
+            .map((l) => {
               var y;
-              const b = d(
-                  ((y = r.types[0]) != null ? y : "").replace(/_/g, " "),
+              const h = d(
+                  ((y = l.types[0]) != null ? y : "").replace(/_/g, " "),
                 ),
-                L = d($(r.long_name));
-              return `<p class='option-detail'><span class='option-detail-label'>${b}:</span><span class='bold'>${L}</span></p>`;
+                L = d($(l.long_name));
+              return `<p class='option-detail'><span class='option-detail-label'>${h}:</span><span class='bold'>${L}</span></p>`;
             })
             .join("");
-          o.innerHTML = `<div class='section-title'>Address components</div>${a}`;
-        } else o.innerHTML = "";
+          a.innerHTML = `<div class='section-title'>Address components</div>${r}`;
+        } else a.innerHTML = "";
         s.textContent = JSON.stringify(e, null, 2);
       }
       const f = document.getElementById("copy-raw-json");
       f &&
         f.addEventListener("click", (e) => {
-          var o;
+          var a;
           (e.preventDefault(), e.stopPropagation());
           const t = document.getElementById("raw-json"),
-            i = (o = t == null ? void 0 : t.textContent) != null ? o : "";
-          i &&
+            o = (a = t == null ? void 0 : t.textContent) != null ? a : "";
+          o &&
             navigator.clipboard
-              .writeText(i)
+              .writeText(o)
               .then(() => {
                 (f.classList.add("copied"),
                   window.setTimeout(() => f.classList.remove("copied"), 1500));
               })
               .catch((s) => console.error("Failed to copy raw JSON:", s));
         });
-      function S() {
+      function F() {
         const e = document.getElementById("response-panel");
         if (!e) return;
         e.dataset.empty = "true";
         const t = e.querySelector(".summary"),
-          i = e.querySelector(".address-components"),
-          o = document.getElementById("raw-json");
+          o = e.querySelector(".address-components"),
+          a = document.getElementById("raw-json");
         (t && (t.innerHTML = ""),
-          i && (i.innerHTML = ""),
-          o && (o.textContent = ""));
+          o && (o.innerHTML = ""),
+          a && (a.textContent = ""));
       }
-      window.initMap = E;
+      E();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -536,12 +543,52 @@
         </details>
       </aside>
 
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

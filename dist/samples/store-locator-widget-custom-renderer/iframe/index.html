@@ -115,7 +115,7 @@
               .map((n) => {
                 var c;
                 const s = ((c = t[n]) == null ? void 0 : c.hours) || [];
-                let a = "";
+                let a;
                 return (
                   s.length === 0
                     ? (a = "Closed")
@@ -191,6 +191,8 @@
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,

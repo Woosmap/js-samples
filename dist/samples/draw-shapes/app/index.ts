@@ -4,17 +4,20 @@ const modal = document.getElementById("modal") as HTMLElement;
 const modalOverlay = document.getElementById("modal-overlay") as HTMLElement;
 const modalContent = document.getElementById("modal-content") as HTMLElement;
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("drawing");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       gestureHandling: "greedy",
+    });
+    map.moveCamera({
       center: { lng: 3.878, lat: 43.611 },
       zoom: 15,
-    },
-  );
+    });
 
-  const draw = new window.woosmap.map.Drawing({});
+  const draw = new woosmap.map.Drawing({});
 
   draw.addControl(map);
 
@@ -34,7 +37,7 @@ function initMap() {
   };
 
   // Once map is loaded, load features and update them
-  window.woosmap.map.event.addListenerOnce(map, "idle", () => {
+  woosmap.map.event.addListenerOnce(map, "idle", () => {
     const data: woosmap.map.GeoJSONFeatureCollection = {
       type: "FeatureCollection",
       features: [
@@ -503,11 +506,6 @@ function initMap() {
   };
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

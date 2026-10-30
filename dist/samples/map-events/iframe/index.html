@@ -10,12 +10,12 @@
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          c(e);
+          s(e);
         new MutationObserver((e) => {
           for (const o of e)
             if (o.type === "childList")
               for (const i of o.addedNodes)
-                i.tagName === "LINK" && i.rel === "modulepreload" && c(i);
+                i.tagName === "LINK" && i.rel === "modulepreload" && s(i);
         }).observe(document, { childList: !0, subtree: !0 });
         function r(e) {
           const o = {};
@@ -30,14 +30,14 @@
             o
           );
         }
-        function c(e) {
+        function s(e) {
           if (e.ep) return;
           e.ep = !0;
           const o = r(e);
           fetch(e.href, o);
         }
       })();
-      const s = [
+      const c = [
         "bounds_changed",
         "center_changed",
         "click",
@@ -52,13 +52,12 @@
         "rightclick",
         "zoom_changed",
       ];
-      function a() {
-        const n = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 51.52, lng: -0.13 },
-          zoom: 10,
-        });
-        (d(),
-          s.forEach((t) => {
+      async function a() {
+        await woosmap.map.importLibrary("maps");
+        const n = document.getElementById("map").innerMap;
+        (n.moveCamera({ center: { lat: 51.52, lng: -0.13 }, zoom: 10 }),
+          d(),
+          c.forEach((t) => {
             n.addListener(t, () => {
               l(t);
             });
@@ -67,7 +66,7 @@
       function d() {
         const n = document.getElementById("sidebar"),
           t = [];
-        (s.forEach((r) => {
+        (c.forEach((r) => {
           t.push(`<div class="event" id="${r}">${r}</div>`);
         }),
           (n.innerHTML = t.join("")));
@@ -80,7 +79,7 @@
             t.className = "event inactive";
           }, 1e3));
       }
-      window.initMap = a;
+      a();
     </script>
     <style>
       html,
@@ -143,13 +142,53 @@
   </head>
   <body>
     <div id="container">
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
       <div class="events" id="sidebar"></div>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "",
+        language: "",
+      });
+    </script>
   </body>
 </html>

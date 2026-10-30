@@ -12,70 +12,70 @@
         const n = document.createElement("link").relList;
         if (n && n.supports && n.supports("modulepreload")) return;
         for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          o(t);
+          s(t);
         new MutationObserver((t) => {
-          for (const s of t)
-            if (s.type === "childList")
-              for (const i of s.addedNodes)
-                i.tagName === "LINK" && i.rel === "modulepreload" && o(i);
+          for (const a of t)
+            if (a.type === "childList")
+              for (const o of a.addedNodes)
+                o.tagName === "LINK" && o.rel === "modulepreload" && s(o);
         }).observe(document, { childList: !0, subtree: !0 });
-        function a(t) {
-          const s = {};
+        function i(t) {
+          const a = {};
           return (
-            t.integrity && (s.integrity = t.integrity),
-            t.referrerPolicy && (s.referrerPolicy = t.referrerPolicy),
+            t.integrity && (a.integrity = t.integrity),
+            t.referrerPolicy && (a.referrerPolicy = t.referrerPolicy),
             t.crossOrigin === "use-credentials"
-              ? (s.credentials = "include")
+              ? (a.credentials = "include")
               : t.crossOrigin === "anonymous"
-                ? (s.credentials = "omit")
-                : (s.credentials = "same-origin"),
-            s
+                ? (a.credentials = "omit")
+                : (a.credentials = "same-origin"),
+            a
           );
         }
-        function o(t) {
+        function s(t) {
           if (t.ep) return;
           t.ep = !0;
-          const s = a(t);
-          fetch(t.href, s);
+          const a = i(t);
+          fetch(t.href, a);
         }
       })();
-      let r, c, f, p, v, y, d, l, m, b, h, S, u, M;
+      let r, c, p, f, b, y, d, l, m, v, h, S, u, M;
       const L = "a01df3d6-fe7d-42df-8fee-9f31726a2641";
-      function T() {
-        ((r = new woosmap.map.Map(document.getElementById("map"), {
-          gestureHandling: "auto",
-          defaultStyle: "streets",
-        })),
+      async function T() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("drawing"),
+          (r = document.getElementById("map").innerMap),
+          r.setOptions({ gestureHandling: "auto", defaultStyle: "streets" }),
           r.fitBounds({
             east: -66.93457,
             north: 49.384358,
             south: 24.396308,
             west: -125.00165,
           }),
-          O(),
           I(),
+          O(),
           D(),
           F());
       }
-      function I() {
-        ((f = new woosmap.map.DatasetsOverlay(L)),
-          (p = new woosmap.map.DatasetsService(L)),
-          f.setMap(r),
-          (v = new window.woosmap.map.LocalitiesService()),
+      function O() {
+        ((p = new woosmap.map.DatasetsOverlay(L)),
+          (f = new woosmap.map.DatasetsService(L)),
+          p.setMap(r),
+          (b = new woosmap.map.LocalitiesService()),
           (y = { input: "", types: ["locality", "address", "postal_code"] }),
-          (S = R(v.autocomplete, 0)),
+          (S = R(b.autocomplete, 0)),
           B());
       }
-      function O() {
+      function I() {
         ((c = new woosmap.map.Drawing({
           controls: { combine_features: !1, uncombine_features: !1 },
         })),
           c.addControl(r),
-          c.addListener("draw.create", async (e) => {
-            const n = c.getAll();
-            if (n.features.length > 1)
-              for (const a of n.features.slice(0, -1))
-                a && a.id && c.delete(a.id.toString());
+          c.addListener("draw.create", async () => {
+            const e = c.getAll();
+            if (e.features.length > 1)
+              for (const n of e.features.slice(0, -1))
+                n && n.id && c.delete(n.id.toString());
             await g(c.getAll());
           }),
           c.addListener("draw.delete", () => {
@@ -117,12 +117,12 @@
           }));
       }
       function H() {
-        (f.setMap(null),
-          (f = new woosmap.map.DatasetsOverlay(L)),
-          (p = new woosmap.map.DatasetsService(L)),
-          f.setMap(r),
+        (p.setMap(null),
+          (p = new woosmap.map.DatasetsOverlay(L)),
+          (f = new woosmap.map.DatasetsService(L)),
+          p.setMap(r),
           r.flyTo({ center: { lat: 38, lng: -99 } }),
-          (b.selectedIndex = 2),
+          (v.selectedIndex = 2),
           (h.selectedIndex = 0),
           c.deleteAll(),
           r.data.forEach((e) => {
@@ -146,7 +146,7 @@
             : ((l.style.display = "none"), (m.style.display = "none")));
       }
       function C(e) {
-        v.getDetails({ publicId: e })
+        b.getDetails({ publicId: e })
           .then((n) => P(n.result))
           .catch((n) => console.error("Error getting locality details:", n));
       }
@@ -170,76 +170,76 @@
           ((l.innerHTML = ""),
           e.localities.length > 0 && y.input
             ? (e.localities.forEach((n) => {
-                var o;
-                const a = document.createElement("li");
-                ((a.textContent = (o = n.description) != null ? o : ""),
-                  a.addEventListener("click", () => {
+                var s;
+                const i = document.createElement("li");
+                ((i.textContent = (s = n.description) != null ? s : ""),
+                  i.addEventListener("click", () => {
                     var t;
                     ((d.value = (t = n.description) != null ? t : ""),
                       (l.style.display = "none"),
                       C(n.public_id));
                   }),
-                  l.appendChild(a));
+                  l.appendChild(i));
               }),
               (l.style.display = "block"),
               (m.style.display = "block"))
             : (l.style.display = "none"));
       }
       function F() {
-        ((b = document.getElementById("dataset")),
+        ((v = document.getElementById("dataset")),
           (h = document.getElementById("operator")),
-          b.addEventListener("change", (e) => {
+          v.addEventListener("change", (e) => {
             const n = e.target;
             N(n.value);
           }),
-          h.addEventListener("change", async (e) => {
-            const n = c.getAll();
-            await g(n);
+          h.addEventListener("change", async () => {
+            const e = c.getAll();
+            await g(e);
           }));
       }
       async function N(e) {
-        (f.setMap(null),
-          (f = new woosmap.map.DatasetsOverlay(e)),
-          (p = new woosmap.map.DatasetsService(e)),
-          f.setMap(r));
+        (p.setMap(null),
+          (p = new woosmap.map.DatasetsOverlay(e)),
+          (f = new woosmap.map.DatasetsService(e)),
+          p.setMap(r));
         const n = c.getAll();
         await g(n);
       }
       async function g(e) {
-        var a, o;
+        var i, s;
         if (
           !(
-            (o =
-              (a = e == null ? void 0 : e.features) == null ? void 0 : a[0]) !=
-              null && o.geometry
+            (s =
+              (i = e == null ? void 0 : e.features) == null ? void 0 : i[0]) !=
+              null && s.geometry
           )
         )
           return;
-        async function n(t, s) {
-          let i;
-          switch (s) {
+        async function n(t, a) {
+          let o;
+          switch (a) {
             case "intersects":
-              i = await p.intersects({ geometry: t });
+              o = await f.intersects({ geometry: t });
               break;
             case "within":
-              i = await p.within({ geometry: t });
+              o = await f.within({ geometry: t });
               break;
             case "contains":
-              i = await p.contains({ geometry: t });
+              o = await f.contains({ geometry: t });
               break;
           }
-          return i;
+          return o;
         }
         await n(e.features[0].geometry, h.value)
           .then((t) => {
-            const s = [];
+            const a = [];
             (q(t.features),
-              r.data.forEach((i) => {
-                r.data.remove(i);
+              r.data.forEach((o) => {
+                r.data.remove(o);
               }));
-            for (const i of t.features)
-              s.push({ type: "Feature", geometry: i.geometry });
-            r.data.addGeoJson({ type: "FeatureCollection", features: s });
+            for (const o of t.features)
+              a.push({ type: "Feature", geometry: o.geometry, properties: {} });
+            r.data.addGeoJson({ type: "FeatureCollection", features: a });
           })
           .catch((t) => {
             ((u.innerHTML = t), u.classList.add("error"));
@@ -249,42 +249,42 @@
         ((u.innerHTML = ""),
           e.length > 0
             ? e.map((n) => {
-                const a = n.attributes,
-                  o = document.createElement("table");
+                const i = n.attributes,
+                  s = document.createElement("table");
                 (u.classList.remove("error"),
-                  o.classList.add("result"),
-                  Object.keys(a).map((t) => {
-                    a[t] &&
-                      (o.innerHTML =
-                        o.innerHTML +
-                        `<tr><td><b>${t} </b></td><td>${a[t]}</td></tr>`);
+                  s.classList.add("result"),
+                  Object.keys(i).map((t) => {
+                    i[t] &&
+                      (s.innerHTML =
+                        s.innerHTML +
+                        `<tr><td><b>${t} </b></td><td>${i[t]}</td></tr>`);
                   }),
-                  u.appendChild(o));
+                  u.appendChild(s));
               })
             : ((u.innerHTML = "No results found"), u.classList.add("error")));
       }
       function R(e, n) {
-        let a = null,
-          o = null,
+        let i = null,
+          s = null,
           t = null;
-        return function (...s) {
-          return new Promise((i, w) => {
-            (a !== null && clearTimeout(a),
-              (o = i),
+        return function (...a) {
+          return new Promise((o, w) => {
+            (i !== null && clearTimeout(i),
+              (s = o),
               (t = w),
-              (a = setTimeout(() => {
-                e(...s)
+              (i = setTimeout(() => {
+                e(...a)
                   .then((E) => {
-                    o === i && t === w && i(E);
+                    s === o && t === w && o(E);
                   })
                   .catch((E) => {
-                    o === i && t === w && w(E);
+                    s === o && t === w && w(E);
                   });
               }, n)));
           });
         };
       }
-      window.initMap = T;
+      T();
     </script>
     <style>
       html,
@@ -592,7 +592,7 @@
         </div>
       </div>
       <div id="mapContainer">
-        <div id="map"></div>
+        <wmp-map id="map"></wmp-map>
         <div id="autocomplete-container">
           <svg class="search-icon" viewBox="0 0 16 16">
             <path
@@ -620,9 +620,49 @@
       </div>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap&libraries=drawing"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "drawing",
+        language: "",
+      });
+    </script>
   </body>
 </html>

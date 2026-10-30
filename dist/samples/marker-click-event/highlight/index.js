@@ -135,29 +135,37 @@ const data = {
   ],
 };
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   const center = { lat: 40.0, lng: 0.0 };
-  const iconCity = {
-    url: "https://images.woosmap.com/icons/pin-red.png",
-    scaledSize: { height: 38, width: 26 },
+  const { PinElement } = woosmap.map.marker;
+  const CITY_PIN_COLORS = { background: "#EA4335", borderColor: "#B31412" };
+  const SELECTED_CITY_PIN_COLORS = {
+    background: "#00BDA5",
+    borderColor: "#004941",
   };
-  const iconSelectedCity = {
-    url: "https://images.woosmap.com/icons/pin-green.png",
-    scaledSize: { height: 38, width: 26 },
-  };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
+
+  function createCityMarkerContent() {
+    return new PinElement(CITY_PIN_COLORS);
+  }
+
+  const map = document.getElementById("map").innerMap;
+
+  map.moveCamera({
     zoom: 0,
     center: center,
   });
-
   data.megaCities.forEach((cityData) => {
     const latlng = {
       lat: parseFloat(cityData.latlng.split(",")[0]),
       lng: parseFloat(cityData.latlng.split(",")[1]),
     };
-    const markerCity = new woosmap.map.Marker({
+    const markerCity = new woosmap.map.marker.AdvancedMarkerElement({
       position: latlng,
-      icon: iconCity,
+      content: createCityMarkerContent(),
+      gmpClickable: true,
     });
 
     markerCity.setMap(map);
@@ -169,11 +177,11 @@ function initMap() {
 
   const handleMarkerClick = (marker, cityData) => {
     if (markerSelected) {
-      markerSelected.setIcon(iconCity);
+      Object.assign(markerSelected.content, CITY_PIN_COLORS);
     }
 
     markerSelected = marker;
-    marker.setIcon(iconSelectedCity);
+    Object.assign(marker.content, SELECTED_CITY_PIN_COLORS);
 
     const infoElement = document.getElementById("info");
 
@@ -181,4 +189,4 @@ function initMap() {
   };
 }
 
-window.initMap = initMap;
+initMap();

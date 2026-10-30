@@ -1,8 +1,9 @@
 let map;
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
   console.log("init map");
-  map = new window.woosmap.map.Map(document.getElementById("map"), {});
+  map = document.getElementById("map").innerMap;
 
   const conf = {
     defaultFloor: 0, //Render map with default floor
@@ -36,4 +37,4 @@ const hideLoader = () => {
   document.querySelector(".progress").remove();
 };
 
-window.initMap = initMap;
+initMap();

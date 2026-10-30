@@ -1,15 +1,14 @@
 // [START woosmap_map_style_pois]
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const position: woosmap.map.LatLngLiteral = {
     lat: 51.50393576678564,
     lng: -0.12263034354122525,
   };
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 16,
-      center: position,
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       styles: [
         {
         "featureType": "point_of_interest",
@@ -21,16 +20,14 @@ function initMap(): void {
         ]
     }
     ],
-    },
-  );
+    });
+    map.moveCamera({
+      zoom: 16,
+      center: position,
+    });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_map_style_pois]
 
 export {};

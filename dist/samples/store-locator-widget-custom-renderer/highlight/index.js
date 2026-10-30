@@ -110,7 +110,7 @@ function getFullSchedule({ properties }) {
   const daysHoursHTMLTable = Object.keys(dayLabels)
     .map((day) => {
       const hours = weeklyOpening[day]?.hours || [];
-      let daysHours = "";
+      let daysHours;
 
       if (hours.length === 0) {
         daysHours = "Closed";
@@ -144,7 +144,6 @@ function getOpeningLabel({ properties }) {
   if (properties.open.open_now) {
     openLabel = `Open now until ${properties.open.current_slice?.end}`;
   } else {
-    // @ts-ignore - TODO next_opening is wrongly spelled `nextOpening` in @types/woosmap.map
     openLabel = `Closed until ${convertTime(Date.parse(properties.open.next_opening?.day || "") / 1000)} at ${properties.open.next_opening?.start}`;
   }
   return `<p class='summary-hours'>${openLabel}</p>`;

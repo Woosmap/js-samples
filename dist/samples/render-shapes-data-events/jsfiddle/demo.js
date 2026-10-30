@@ -36,8 +36,10 @@ function setupListener(name) {
   }
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 29.65, lng: -97.74 },
     zoom: 6,
   });
@@ -74,4 +76,4 @@ function initMap() {
   }
 }
 
-window.initMap = initMap;
+initMap();

@@ -1,11 +1,10 @@
 let map: woosmap.map.Map;
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   console.log("init map");
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {},
-  );
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
 
   const conf: woosmap.map.IndoorRendererOptions = {
     defaultFloor: 0, //Render map with default floor
@@ -50,11 +49,6 @@ const hideLoader = () => {
   (document.querySelector(".progress") as HTMLElement).remove();
 };
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

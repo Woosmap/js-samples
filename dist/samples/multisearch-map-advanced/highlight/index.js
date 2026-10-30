@@ -69,12 +69,14 @@ function initSearch() {
 
     inputElement.focus();
   });
-  // @ts-ignore
-  multiSearch = window.woosmap.multisearch(searchOptions);
+  multiSearch = woosmap.multisearch(searchOptions);
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 51.50940214, lng: -0.133012 },
     zoom: 4,
   });
@@ -147,15 +149,16 @@ function formatPredictionList(result) {
 }
 
 function createMarker(result) {
-  return new woosmap.map.Marker({
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#5588FF",
+    borderColor: "#3D6FE0",
+    glyphColor: "#FFFFFF",
+  });
+  return new woosmap.map.marker.AdvancedMarkerElement({
     position: result.geometry.location,
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: pin.element,
+    gmpClickable: true,
   });
 }
 
@@ -188,15 +191,14 @@ function displayLocality(result, apiName) {
 
     const infoWindowHTML = createInfoWindowHTML(result, apiName);
 
-    infoWindow.setOffset(new woosmap.map.Point(0, -50));
     infoWindow.setContent(infoWindowHTML);
     marker.addListener("click", () => {
-      infoWindow.open(map, marker.getPosition());
+      infoWindow.open({ map, anchor: marker });
     });
     map.setCenter(result.geometry.location, { top: 150 });
     map.setZoom(14);
     woosmap.map.event.addListenerOnce(map, "idle", () => {
-      infoWindow.open(map, marker.position);
+      infoWindow.open({ map, anchor: marker });
     });
   }
 }
@@ -211,4 +213,4 @@ document.addEventListener("click", (event) => {
     suggestionsList.style.display = "none";
   }
 });
-window.initMap = initMap;
+initMap();

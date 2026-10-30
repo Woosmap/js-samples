@@ -9,59 +9,60 @@
 
     <script type="module" crossorigin>
       (function () {
-        const e = document.createElement("link").relList;
-        if (e && e.supports && e.supports("modulepreload")) return;
-        for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          l(t);
-        new MutationObserver((t) => {
-          for (const o of t)
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
+          c(e);
+        new MutationObserver((e) => {
+          for (const o of e)
             if (o.type === "childList")
               for (const a of o.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && l(a);
+                a.tagName === "LINK" && a.rel === "modulepreload" && c(a);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(t) {
+        function s(e) {
           const o = {};
           return (
-            t.integrity && (o.integrity = t.integrity),
-            t.referrerPolicy && (o.referrerPolicy = t.referrerPolicy),
-            t.crossOrigin === "use-credentials"
+            e.integrity && (o.integrity = e.integrity),
+            e.referrerPolicy && (o.referrerPolicy = e.referrerPolicy),
+            e.crossOrigin === "use-credentials"
               ? (o.credentials = "include")
-              : t.crossOrigin === "anonymous"
+              : e.crossOrigin === "anonymous"
                 ? (o.credentials = "omit")
                 : (o.credentials = "same-origin"),
             o
           );
         }
-        function l(t) {
-          if (t.ep) return;
-          t.ep = !0;
-          const o = s(t);
-          fetch(t.href, o);
+        function c(e) {
+          if (e.ep) return;
+          e.ep = !0;
+          const o = s(e);
+          fetch(e.href, o);
         }
       })();
       const p =
         'postal_code:"{name} ({postal_town}) - {administrative_area_level_0}"';
-      let u, r, i, d, c;
+      let u, r, i, d, l;
       function f() {
         (r &&
           i &&
           (r.addEventListener("input", m),
-          r.addEventListener("keydown", (n) => {
-            if (n.key === "Enter") {
-              const e = i.querySelector("li");
-              e && e.click();
+          r.addEventListener("keydown", (t) => {
+            if (t.key === "Enter") {
+              const s = i.querySelector("li");
+              s && s.click();
             }
           })),
           d.addEventListener("click", () => {
             ((r.value = ""),
               (i.style.display = "none"),
               (d.style.display = "none"),
-              (c.style.display = "none"),
+              (l.style.display = "none"),
               r.focus());
-          }),
-          (u = new window.woosmap.localities.AutocompleteService(
-            "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
-          )));
+          }));
+        const { localities: n } = woosmap;
+        u = new n.AutocompleteService(
+          "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        );
       }
       function m() {
         if (r && i) {
@@ -71,8 +72,8 @@
               ? u.autocomplete(
                   { input: n, custom_description: p },
                   y,
-                  (e, s) => {
-                    console.error(`Error autocomplete localities: ${e}:${s}`);
+                  (t, s) => {
+                    console.error(`Error autocomplete localities: ${t}:${s}`);
                   },
                   0,
                 )
@@ -84,15 +85,15 @@
           i &&
           ((i.innerHTML = ""),
           n.length > 0
-            ? (n.forEach((e) => {
-                var l;
+            ? (n.forEach((t) => {
+                var c;
                 const s = document.createElement("li");
-                ((s.innerHTML = (l = g(e)) != null ? l : ""),
+                ((s.innerHTML = (c = g(t)) != null ? c : ""),
                   s.addEventListener("click", () => {
-                    var t;
-                    ((r.value = (t = e.description) != null ? t : ""),
+                    var e;
+                    ((r.value = (e = t.description) != null ? e : ""),
                       (i.style.display = "none"),
-                      u.getDetails(e.public_id, h));
+                      u.getDetails(t.public_id, h));
                   }),
                   i.appendChild(s));
               }),
@@ -101,26 +102,26 @@
             : (i.style.display = "none"));
       }
       function g(n) {
-        const e = n,
+        const t = n,
           s = "no-viewpoint",
-          l = e.matched_substrings;
-        let t = "";
-        e.matched_substrings && e.matched_substrings.description
-          ? (t = v(e.description, l.description))
-          : (t = e.description);
+          c = t.matched_substrings;
+        let e;
+        t.matched_substrings && t.matched_substrings.description
+          ? (e = v(t.description, c.description))
+          : (e = t.description);
         let o = "";
-        return ((o += `<div class="prediction ${s}">${t}</div>`), o);
+        return ((o += `<div class="prediction ${s}">${e}</div>`), o);
       }
       function h(n) {
-        c &&
-          ((c.innerHTML = `<code>${JSON.stringify(n, null, 2)}</code>`),
-          (c.style.display = "block"));
+        l &&
+          ((l.innerHTML = `<code>${JSON.stringify(n, null, 2)}</code>`),
+          (l.style.display = "block"));
       }
-      function v(n, e) {
-        e = e.reverse();
-        for (const s of e) {
-          const l = n.substring(s.offset, s.offset + s.length);
-          n = `${n.substring(0, s.offset)}<span class='bold'>${l}</span>${n.substring(s.offset + s.length)}`;
+      function v(n, t) {
+        t = t.reverse();
+        for (const s of t) {
+          const c = n.substring(s.offset, s.offset + s.length);
+          n = `${n.substring(0, s.offset)}<span class='bold'>${c}</span>${n.substring(s.offset + s.length)}`;
         }
         return n;
       }
@@ -128,12 +129,14 @@
         ((r = document.getElementById("autocomplete-input")),
           (i = document.getElementById("suggestions-list")),
           (d = document.getElementsByClassName("clear-searchButton")[0]),
-          (c = document.getElementById("response-container")),
+          (l = document.getElementById("response-container")),
           f());
       });
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,

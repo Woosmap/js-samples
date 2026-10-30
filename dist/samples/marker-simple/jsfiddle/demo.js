@@ -1,21 +1,27 @@
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   const center = { lat: 51.52, lng: -0.13 };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
+  const map = document.getElementById("map").innerMap;
+
+  map.moveCamera({
     zoom: 13,
     center: center,
   });
-  const marker = new woosmap.map.Marker({
+
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background: "#5588FF",
+    borderColor: "#3D6FE0",
+    glyphColor: "#FFFFFF",
+  });
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: map.getCenter(),
-    icon: {
-      url: "https://images.woosmap.com/marker.png",
-      scaledSize: {
-        height: 50,
-        width: 32,
-      },
-    },
+    content: pin.element,
   });
 
   marker.setMap(map);
 }
 
-window.initMap = initMap;
+initMap();

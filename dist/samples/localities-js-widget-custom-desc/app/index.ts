@@ -1,10 +1,22 @@
+// The Localities JS Widget ships no typings: describe the parts this sample uses.
+interface LocalitiesWidget {
+  addListener(eventName: string, handler: () => void): void;
+  getSelectedSuggestionDetails(): unknown;
+}
+
+interface LocalitiesWidgetGlobal {
+  localities: {
+    Autocomplete: new (inputId: string, options: object) => LocalitiesWidget;
+  };
+}
+
 function init(): void {
   const responseElement = document.getElementById(
     "response-container",
   ) as HTMLElement;
 
-  // @ts-ignore
-  const localitiesWidget = new window.woosmap.localities.Autocomplete(
+  const { localities } = woosmap as unknown as LocalitiesWidgetGlobal;
+  const localitiesWidget = new localities.Autocomplete(
     "autocomplete-input",
     {
       minLength: 3,
@@ -28,16 +40,5 @@ document.addEventListener("DOMContentLoaded", () => {
   init();
 });
 
-declare global {
-  interface Window {
-    // currently, the localities JS Widget typings are not exported, so we use `any` here
-    //@ts-ignore
-    woosmap: {
-      localities: {
-        Autocomplete: new (inputId: string, customConfig: any) => any;
-      };
-    };
-  }
-}
 
 export {};

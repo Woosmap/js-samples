@@ -22,11 +22,6 @@ const storesStyle = {
   },
 };
 const mapOptions = {
-  zoom: 5,
-  center: {
-    lat: 46.5,
-    lng: 1.4,
-  },
   styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }],
 };
 const inputElement = document.getElementById("autocomplete-input");
@@ -163,7 +158,9 @@ function handleGeocode(latlng) {
 function handleGeocodeResults(localities) {
   const location = localities.results[0]?.geometry?.location;
 
-  location && handleSearchResults(location);
+  if (location) {
+    handleSearchResults(location);
+  }
 }
 
 function handleSearchResults(originalLatLng) {
@@ -172,19 +169,19 @@ function handleSearchResults(originalLatLng) {
   }
 
   if (originalLatLng) {
-    activeLocation = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    activeLocation = new woosmap.map.marker.AdvancedMarkerElement({
       position: originalLatLng,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
     activeLocation.setMap(map);
-    map.setCenter(originalLatLng);
-    map.setZoom(8);
+    map.moveCamera({ center: originalLatLng, zoom: 8 });
   }
 }
 
@@ -222,8 +219,12 @@ function debounce(func, wait) {
   };
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), mapOptions);
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.setOptions(mapOptions);
+  map.moveCamera({ center: { lat: 46.5, lng: 1.4 }, zoom: 5 });
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
   map.addListener(
@@ -235,10 +236,10 @@ function initMap() {
       displayListStores(visibleStores);
     }, 50),
   );
-  window.woosmap.map.event.addListener(map, "store_selected", (store) => {
+  woosmap.map.event.addListener(map, "store_selected", (store) => {
     selectStoreOnList(store.properties.store_id);
   });
-  window.woosmap.map.event.addListener(map, "store_unselected", () => {
+  woosmap.map.event.addListener(map, "store_unselected", () => {
     selectStoreOnList();
   });
   storesService = new woosmap.map.StoresService();
@@ -253,5 +254,5 @@ function handleError(error) {
   console.error("Error:", error);
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_stores_list_sync_map]

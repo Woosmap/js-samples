@@ -1,14 +1,14 @@
 // Initialize and add the map
 let map: woosmap.map.Map;
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       center: { lat: 29.65, lng: -97.74 },
       zoom: 6,
-    },
-  );
+    });
   //Outter Shape of Polygon
   const outerShape = [
     { lat: 28.59, lng: -100.65 },
@@ -37,11 +37,6 @@ function initMap() {
   polygon.setMap(map);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

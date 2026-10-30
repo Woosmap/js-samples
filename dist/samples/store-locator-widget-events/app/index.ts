@@ -128,9 +128,15 @@ function initStoreLocator(): void {
 initStoreLocator();
 
 declare global {
-  // currently, the WebApp typings are not exported, so we use `any` here
+  // The store locator widget ships no typings: declare the parts this sample uses.
+  interface StoreLocatorWebApp {
+    setConf(conf: object): void;
+    render(isMobile: boolean): void;
+    HANDLED_EVENT: Record<string, string>;
+    listenOn(event: string, callback: (...args: unknown[]) => void): void;
+  }
   interface Window {
-    WebApp: new (elementId: string, projectKey: string) => any;
+    WebApp: new (elementId: string, projectKey: string) => StoreLocatorWebApp;
   }
 }
 

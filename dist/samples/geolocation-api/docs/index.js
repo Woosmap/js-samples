@@ -2,7 +2,9 @@
 let map;
 const woosmap_key = "YOUR_API_KEY";
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
   fetch(`https://api.woosmap.com/geolocation/position/?key=${woosmap_key}`)
     .then((result) => {
       return result.json();
@@ -34,10 +36,8 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
     zoom = 11;
   }
 
-  map = new woosmap.map.Map(document.getElementById("map"), {
-    center: userPosition,
-    zoom,
-  });
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({ center: userPosition, zoom });
   if (viewport) {
     const bounds = {
       east: viewport.northeast.lng,
@@ -50,11 +50,13 @@ function renderUserLocationOnMap({ latitude, accuracy, longitude, viewport }) {
     plotBoundary(bounds);
   }
 
-  const marker = new woosmap.map.Marker({
+  const markerContent = document.createElement("img");
+
+  markerContent.src = "https://images.woosmap.com/user-position-small.png";
+
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: userPosition,
-    icon: {
-      url: "https://images.woosmap.com/user-position-small.png",
-    },
+    content: markerContent,
   });
 
   marker.setMap(map);
@@ -116,5 +118,5 @@ function plotBoundary(bounds) {
   rectangle.setMap(map);
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_geolocation_api]

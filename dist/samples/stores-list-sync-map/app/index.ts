@@ -1,5 +1,5 @@
 let map: woosmap.map.Map;
-let activeLocation: woosmap.map.Marker | null = null;
+let activeLocation: woosmap.map.marker.AdvancedMarkerElement | null = null;
 let storesOverlay: woosmap.map.StoresOverlay;
 let storesService: woosmap.map.StoresService;
 let localitiesService: woosmap.map.LocalitiesService;
@@ -23,11 +23,6 @@ const storesStyle: woosmap.map.Style = {
 };
 
 const mapOptions: woosmap.map.MapOptions = {
-  zoom: 5,
-  center: {
-    lat: 46.5,
-    lng: 1.4,
-  },
   styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }],
 };
 
@@ -177,7 +172,9 @@ function handleGeocodeResults(
   localities: woosmap.map.localities.LocalitiesGeocodeResponse,
 ) {
   const location = localities.results[0]?.geometry?.location;
-  location && handleSearchResults(location);
+  if (location) {
+    handleSearchResults(location);
+  }
 }
 
 function handleSearchResults(originalLatLng: woosmap.map.LatLngLiteral) {
@@ -186,19 +183,19 @@ function handleSearchResults(originalLatLng: woosmap.map.LatLngLiteral) {
   }
 
   if (originalLatLng) {
-    activeLocation = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    activeLocation = new woosmap.map.marker.AdvancedMarkerElement({
       position: originalLatLng,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
     activeLocation.setMap(map);
-    map.setCenter(originalLatLng);
-    map.setZoom(8);
+    map.moveCamera({ center: originalLatLng, zoom: 8 });
   }
 }
 
@@ -225,19 +222,24 @@ function selectStoreOnList(storeId?: string) {
 }
 
 // Debounce function
-function debounce(func: (...args: any[]) => void, wait: number) {
+function debounce<Args extends unknown[]>(
+  func: (...args: Args) => void,
+  wait: number,
+) {
   let timeout: ReturnType<typeof setTimeout>;
-  return (...args: any[]) => {
+  return (...args: Args) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    mapOptions,
-  );
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions(mapOptions);
+  map.moveCamera({ center: { lat: 46.5, lng: 1.4 }, zoom: 5 });
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
   map.addListener(
@@ -248,14 +250,14 @@ function initMap() {
       displayListStores(visibleStores);
     }, 50),
   );
-  window.woosmap.map.event.addListener(
+  woosmap.map.event.addListener(
     map,
     "store_selected",
     (store: woosmap.map.stores.StoreResponse) => {
       selectStoreOnList(store.properties.store_id);
     },
   );
-  window.woosmap.map.event.addListener(map, "store_unselected", () => {
+  woosmap.map.event.addListener(map, "store_unselected", () => {
     selectStoreOnList();
   });
 
@@ -272,11 +274,6 @@ function handleError(error: woosmap.map.errors.APIError) {
   console.error("Error:", error);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

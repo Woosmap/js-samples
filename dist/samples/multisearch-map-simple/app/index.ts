@@ -13,12 +13,29 @@ const searchOptions = {
     minInputLength: 5,
   },
 };
-let multiSearch;
+// The MultiSearch JS API ships no typings: describe the parts this sample uses.
+interface MultiSearchPrediction {
+  id: string;
+  api: string;
+  description?: string;
+  highlight: string;
+}
+
+interface MultiSearch {
+  autocompleteMulti(input: string): Promise<MultiSearchPrediction[]>;
+  detailsMulti(request: { id: string; api: string }): Promise<unknown>;
+}
+
+interface MultiSearchGlobal {
+  multisearch(options: object): MultiSearch;
+}
+
+let multiSearch: MultiSearch;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 
 function initSearch(): void {
   inputElement = document.getElementById(
@@ -51,18 +68,18 @@ function initSearch(): void {
     inputElement.focus();
   });
 
-  // @ts-ignore
-  multiSearch = window.woosmap.multisearch(searchOptions);
+  multiSearch = (woosmap as unknown as MultiSearchGlobal).multisearch(searchOptions);
 }
 
-function initMap(): void {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       center: { lat: 51.50940214, lng: -0.133012 },
       zoom: 4,
-    },
-  );
+    });
   initSearch();
 }
 
@@ -130,15 +147,16 @@ function displayLocality(result) {
     marker.setMap(null);
   }
   if (result?.geometry) {
-    marker = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    marker = new woosmap.map.marker.AdvancedMarkerElement({
       position: result.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
     marker.setMap(map);
     map.flyTo({ center: result.geometry.location, zoom: 14 });
@@ -156,11 +174,6 @@ document.addEventListener("click", (event) => {
   }
 });
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

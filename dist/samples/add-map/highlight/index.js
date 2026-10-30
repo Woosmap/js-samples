@@ -1,7 +1,9 @@
 // Initialize and add the map
 let map;
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
   // The location of London
   const position = {
     lat: 51.50940214,
@@ -9,10 +11,11 @@ function initMap() {
   };
 
   // The map, centered at London
-  map = new woosmap.map.Map(document.getElementById("map"), {
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     zoom: 13,
     center: position,
   });
 }
 
-window.initMap = initMap;
+initMap();

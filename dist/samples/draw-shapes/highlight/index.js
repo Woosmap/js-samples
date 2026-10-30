@@ -4,14 +4,19 @@ const modal = document.getElementById("modal");
 const modalOverlay = document.getElementById("modal-overlay");
 const modalContent = document.getElementById("modal-content");
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("drawing");
+  map = document.getElementById("map").innerMap;
+  map.setOptions({
     gestureHandling: "greedy",
+  });
+  map.moveCamera({
     center: { lng: 3.878, lat: 43.611 },
     zoom: 15,
   });
 
-  const draw = new window.woosmap.map.Drawing({});
+  const draw = new woosmap.map.Drawing({});
 
   draw.addControl(map);
 
@@ -30,7 +35,7 @@ function initMap() {
   };
 
   // Once map is loaded, load features and update them
-  window.woosmap.map.event.addListenerOnce(map, "idle", () => {
+  woosmap.map.event.addListenerOnce(map, "idle", () => {
     const data = {
       type: "FeatureCollection",
       features: [
@@ -499,4 +504,4 @@ function initMap() {
   };
 }
 
-window.initMap = initMap;
+initMap();

@@ -11,16 +11,18 @@ const centerLatLng: woosmap.map.LatLngLiteral = {
   lng: 6.073999,
 };
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 15.64,
-      center: centerLatLng,
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
       mapTypeControl: true,
       styles: STYLE_PRESETS.lightgrey,
-    },
-  );
+    });
+    map.moveCamera({
+      zoom: 15.64,
+      center: centerLatLng,
+    });
 
   styleSelect = document.getElementById(
     "woosmap-style-select",
@@ -56,7 +58,7 @@ function readOpacity(): number {
 
 function onStyleChange() {
   applyStyle(styleSelect.value);
-  // Recreating the map wipes overlays — reapply the current layer.
+  // Restyling reloads the base style, which drops overlays: reapply the current layer.
   applyLayer(layerSelect.value, readOpacity());
 }
 
@@ -73,16 +75,7 @@ function onOpacityChange() {
 }
 
 function applyStyle(name: string) {
-  const styles = STYLE_PRESETS[name] ?? [];
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: map.getZoom(),
-      center: map.getCenter(),
-      mapTypeControl: true,
-      styles,
-    },
-  );
+  map.setOptions({ styles: STYLE_PRESETS[name] ?? [] });
 }
 
 function applyLayer(provider: string, opacity: number) {
@@ -420,11 +413,6 @@ const LAYER_VIEWS: Record<string, { center: { lat: number; lng: number }; zoom: 
   precipitation: US_VIEW,
 };
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

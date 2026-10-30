@@ -101,7 +101,7 @@
         const e = n,
           o = "no-viewpoint",
           s = e.matched_substrings;
-        let t = "";
+        let t;
         e.matched_substrings && e.matched_substrings.description
           ? (t = v(e.description, s.description))
           : (t = e.description);
@@ -175,6 +175,8 @@
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,

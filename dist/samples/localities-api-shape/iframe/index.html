@@ -7,185 +7,190 @@
 
     <script type="module" crossorigin>
       (function () {
-        const e = document.createElement("link").relList;
-        if (e && e.supports && e.supports("modulepreload")) return;
-        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(n);
-        new MutationObserver((n) => {
-          for (const i of n)
+        const t = document.createElement("link").relList;
+        if (t && t.supports && t.supports("modulepreload")) return;
+        for (const s of document.querySelectorAll('link[rel="modulepreload"]'))
+          n(s);
+        new MutationObserver((s) => {
+          for (const i of s)
             if (i.type === "childList")
-              for (const a of i.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && s(a);
+              for (const p of i.addedNodes)
+                p.tagName === "LINK" && p.rel === "modulepreload" && n(p);
         }).observe(document, { childList: !0, subtree: !0 });
-        function o(n) {
+        function o(s) {
           const i = {};
           return (
-            n.integrity && (i.integrity = n.integrity),
-            n.referrerPolicy && (i.referrerPolicy = n.referrerPolicy),
-            n.crossOrigin === "use-credentials"
+            s.integrity && (i.integrity = s.integrity),
+            s.referrerPolicy && (i.referrerPolicy = s.referrerPolicy),
+            s.crossOrigin === "use-credentials"
               ? (i.credentials = "include")
-              : n.crossOrigin === "anonymous"
+              : s.crossOrigin === "anonymous"
                 ? (i.credentials = "omit")
                 : (i.credentials = "same-origin"),
             i
           );
         }
-        function s(n) {
-          if (n.ep) return;
-          n.ep = !0;
-          const i = o(n);
-          fetch(n.href, i);
+        function n(s) {
+          if (s.ep) return;
+          s.ep = !0;
+          const i = o(s);
+          fetch(s.href, i);
         }
       })();
-      const r = { country: [] },
+      const l = { country: [] },
         h = "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f";
       let v,
-        l,
+        r,
         c,
         u,
-        p,
+        a,
         d,
         f,
         b,
         g = !1;
-      function _() {
-        ((p = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 48.8534, lng: 2.3488 },
-          disableDefaultUI: !0,
-          gestureHandling: "greedy",
-          zoom: 5,
-          styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
-        })),
-          A(),
-          I());
+      async function E() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (a = document.getElementById("map").innerMap),
+          a.setOptions({
+            disableDefaultUI: !0,
+            gestureHandling: "greedy",
+            styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
+          }),
+          a.moveCamera({ center: { lat: 48.8534, lng: 2.3488 }, zoom: 5 }),
+          C(),
+          P());
       }
-      function $(t) {
-        var e;
+      function _(e) {
+        var t;
         if (
-          (e = t == null ? void 0 : t.geometry) != null &&
-          e.shape &&
+          (t = e == null ? void 0 : e.geometry) != null &&
+          t.shape &&
           ((g = !0),
-          p.data.addGeoJson({ type: "Feature", geometry: t.geometry.shape }),
-          t.geometry.viewport)
+          a.data.addGeoJson({ type: "Feature", geometry: e.geometry.shape }),
+          e.geometry.viewport)
         ) {
           const o = {
-            east: t.geometry.viewport.northeast.lng,
-            south: t.geometry.viewport.southwest.lat,
-            north: t.geometry.viewport.northeast.lat,
-            west: t.geometry.viewport.southwest.lng,
+            east: e.geometry.viewport.northeast.lng,
+            south: e.geometry.viewport.southwest.lat,
+            north: e.geometry.viewport.northeast.lat,
+            west: e.geometry.viewport.southwest.lng,
           };
-          p.fitBounds(o, { top: 60, left: 60, bottom: 60, right: 60 });
+          a.fitBounds(o, { top: 60, left: 60, bottom: 60, right: 60 });
         }
       }
-      function E(t) {
-        if ((d && d.setMap(null), t != null && t.geometry)) {
-          const e = t.geometry.location;
-          ((d = new woosmap.map.Marker({
-            position: e,
-            icon: {
-              url: "https://images.woosmap.com/marker.png",
-              scaledSize: { height: 59, width: 37 },
-            },
+      function $(e) {
+        if ((d && d.setMap(null), e != null && e.geometry)) {
+          const t = e.geometry.location,
+            { PinElement: o } = woosmap.map.marker,
+            n = new o({
+              background: "#5588FF",
+              borderColor: "#3D6FE0",
+              glyphColor: "#FFFFFF",
+            });
+          ((d = new woosmap.map.marker.AdvancedMarkerElement({
+            position: t,
+            content: n.element,
           })),
-            d.setMap(p),
-            g ? (g = !1) : x(t));
+            d.setMap(a),
+            g ? (g = !1) : N(e));
         }
       }
-      function M(t, e = "block") {
-        t.style.display = e;
+      function k(e, t = "block") {
+        e.style.display = t;
       }
-      function k(t) {
-        const e = [];
+      function A(e) {
+        const t = [];
         if (
           ((f.innerHTML = ""),
           (f.style.display = "block"),
-          t.formatted_address &&
-            e.push(
-              `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${t.formatted_address}</span></p>`,
+          e.formatted_address &&
+            t.push(
+              `<p class='option-detail'><span class='option-detail-label'>Formatted_address :</span><span class='bold'>${e.formatted_address}</span></p>`,
             ),
-          t.types &&
-            t.types[0] &&
-            e.push(
-              `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${t.types[0].replace("_", " ")}</span></p>`,
+          e.types &&
+            e.types[0] &&
+            t.push(
+              `<p class='option-detail'><span class='option-detail-label'>Type : </span><span class='bold'>${e.types[0].replace("_", " ")}</span></p>`,
             ),
-          t.geometry)
+          e.geometry)
         ) {
-          const o = t.geometry.accuracy;
+          const o = e.geometry.accuracy;
           if (
             (o &&
-              e.push(
+              t.push(
                 `<div class='option-detail'><div><span class='option-detail-label'>Location type :</span><span class='bold'>${o.replace("_", " ").toLowerCase()}</span></div></div>`,
               ),
-            e.push(
-              `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${t.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${t.geometry.location.lng.toString()}</span></div></div>`,
+            t.push(
+              `<div class='option-detail'><div><span class='option-detail-label'>Latitude :</span> <span class='bold'>${e.geometry.location.lat.toString()}</span></div><div><span class='option-detail-label'>Longitude : </span><span class='bold'>${e.geometry.location.lng.toString()}</span></div></div>`,
             ),
-            t.address_components)
+            e.address_components)
           ) {
-            const s = t.address_components
+            const n = e.address_components
               .map(
-                (n) =>
-                  `<p class='option-detail'><span class='option-detail-label'>${n.types[0]}:</span> <span class='bold'>${n.long_name}</span></p>`,
+                (s) =>
+                  `<p class='option-detail'><span class='option-detail-label'>${s.types[0]}:</span> <span class='bold'>${s.long_name}</span></p>`,
               )
               .join("");
-            e.push(
-              `<div class='address-components'><div class='title'>Address components</div><div>${s}</div>`,
+            t.push(
+              `<div class='address-components'><div class='title'>Address components</div><div>${n}</div>`,
             );
           }
         }
-        f.innerHTML = e.join("");
+        f.innerHTML = t.join("");
       }
-      function A() {
-        ((l = document.getElementById("autocomplete-input")),
+      function C() {
+        ((r = document.getElementById("autocomplete-input")),
           (c = document.getElementById("suggestions-list")),
           (u = document.getElementsByClassName("clear-searchButton")[0]),
           (b = document.querySelector(".addressDetails")),
           (f = document.querySelector(".addressDetails .addressOptions")),
-          l &&
+          r &&
             c &&
-            (l.addEventListener("input", w),
-            l.addEventListener("keydown", (t) => {
-              if (t.key === "Enter") {
-                const e = c.querySelector("li");
-                e && e.click();
+            (r.addEventListener("input", w),
+            r.addEventListener("keydown", (e) => {
+              if (e.key === "Enter") {
+                const t = c.querySelector("li");
+                t && t.click();
               }
             })),
           u.addEventListener("click", () => {
-            ((l.value = ""),
+            ((r.value = ""),
               (c.style.display = "none"),
               (u.style.display = "none"),
               (f.style.display = "none"),
-              l.focus(),
+              r.focus(),
               d.setMap(null));
           }),
-          (v = H(B, 0)));
+          (v = B(F, 0)));
       }
       function w() {
-        if (l && c) {
-          let t = l.value;
-          t = t.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
-          const e = r.country.map((o) => `country:${o}`).join("|");
-          t !== ""
-            ? v(t, e, h)
-                .then(({ localities: o }) => T(o))
+        if (r && c) {
+          let e = r.value;
+          e = e.replace('"', '\\"').replace(/^\s+|\s+$/g, "");
+          const t = l.country.map((o) => `country:${o}`).join("|");
+          e !== ""
+            ? v(e, t)
+                .then(({ localities: o }) => M(o))
                 .catch((o) =>
                   console.error("Error autocomplete localities:", o),
                 )
             : ((c.style.display = "none"), (u.style.display = "none"));
         }
       }
-      function T(t) {
-        l &&
+      function M(e) {
+        r &&
           c &&
           ((c.innerHTML = ""),
-          t.length > 0
-            ? (t.forEach((e) => {
-                var s;
+          e.length > 0
+            ? (e.forEach((t) => {
+                var n;
                 const o = document.createElement("li");
-                ((o.innerHTML = (s = q(e)) != null ? s : ""),
+                ((o.innerHTML = (n = T(t)) != null ? n : ""),
                   o.addEventListener("click", () => {
-                    var n;
-                    ((l.value = (n = e.description) != null ? n : ""),
-                      N(e.public_id),
+                    var s;
+                    ((r.value = (s = t.description) != null ? s : ""),
+                      R(t.public_id),
                       (c.style.display = "none"));
                   }),
                   c.appendChild(o));
@@ -194,158 +199,159 @@
               (u.style.display = "block"))
             : (c.style.display = "none"));
       }
-      function q(t) {
-        const e = t,
+      function T(e) {
+        const t = e,
           o = "no-viewpoint",
-          s = e.matched_substrings;
-        let n = "";
-        e.matched_substrings && e.matched_substrings.description
-          ? (n = C(e.description, s.description))
-          : (n = e.description);
+          n = t.matched_substrings;
+        let s;
+        t.matched_substrings && t.matched_substrings.description
+          ? (s = q(t.description, n.description))
+          : (s = t.description);
         let i = "";
-        return ((i += `<div class="prediction ${o}">${n}</div>`), i);
+        return ((i += `<div class="prediction ${o}">${s}</div>`), i);
       }
-      function C(t, e) {
-        e = e.reverse();
-        for (const o of e) {
-          const s = t.substring(o.offset, o.offset + o.length);
-          t = `${t.substring(0, o.offset)}<span class='bold'>${s}</span>${t.substring(o.offset + o.length)}`;
+      function q(e, t) {
+        t = t.reverse();
+        for (const o of t) {
+          const n = e.substring(o.offset, o.offset + o.length);
+          e = `${e.substring(0, o.offset)}<span class='bold'>${n}</span>${e.substring(o.offset + o.length)}`;
         }
-        return t;
+        return e;
       }
-      function B(t, e) {
+      function F(e, t) {
         const o = {
           key: h,
-          input: t,
+          input: e,
           no_deprecated_fields: "true",
           types: "locality|admin_level|country|postal_code",
-          components: e,
+          components: t,
         };
         return (
-          e !== "" && o.components && (o.components = e),
+          t !== "" && o.components && (o.components = t),
           fetch(
             `https://api.woosmap.com/localities/autocomplete/?${L(o)}`,
-          ).then((s) => s.json())
+          ).then((n) => n.json())
         );
       }
-      function L(t) {
-        const e = [];
-        for (const o in t)
-          if (t[o]) {
-            const s = t[o];
-            e.push(`${encodeURIComponent(o)}=${encodeURIComponent(s)}`);
+      function L(e) {
+        const t = [];
+        for (const o in e)
+          if (e[o]) {
+            const n = e[o];
+            t.push(`${encodeURIComponent(o)}=${encodeURIComponent(n)}`);
           }
-        return e.join("&");
+        return t.join("&");
       }
-      function H(t, e) {
+      function B(e, t) {
         let o = null,
-          s = null,
-          n = null;
+          n = null,
+          s = null;
         return function (...i) {
-          return new Promise((a, y) => {
+          return new Promise((p, m) => {
             (o !== null && clearTimeout(o),
-              (s = a),
-              (n = y),
+              (n = p),
+              (s = m),
               (o = setTimeout(() => {
-                t(...i)
-                  .then((m) => {
-                    s === a && n === y && a(m);
+                e(...i)
+                  .then((y) => {
+                    n === p && s === m && p(y);
                   })
-                  .catch((m) => {
-                    s === a && n === y && y(m);
+                  .catch((y) => {
+                    n === p && s === m && m(y);
                   });
-              }, e)));
+              }, t)));
           });
         };
       }
-      function I() {
-        (document.querySelectorAll(".country").forEach((s) => {
+      function P() {
+        (document.querySelectorAll(".country").forEach((n) => {
           if (
-            (s.addEventListener("click", () => {
-              j(s);
+            (n.addEventListener("click", () => {
+              O(n);
             }),
-            s.classList.contains("active"))
+            n.classList.contains("active"))
           ) {
-            const n = s.dataset.countrycode;
-            r.country = [...r.country, n];
+            const s = n.dataset.countrycode;
+            l.country = [...l.country, s];
           }
         }),
           document
             .querySelectorAll(".dropdown .dropdown-button")
-            .forEach((s) => s.addEventListener("click", P)));
+            .forEach((n) => n.addEventListener("click", H)));
         const o = document.querySelectorAll(".dropdown");
-        document.addEventListener("click", (s) => {
-          o.forEach((n) => {
-            n.contains(s.target) || S(n);
+        document.addEventListener("click", (n) => {
+          o.forEach((s) => {
+            s.contains(n.target) || S(s);
           });
         });
       }
-      function P(t) {
-        t.stopPropagation();
-        const e = t.target.closest(".dropdown");
-        e && (e.classList.contains("active") ? S(e) : O(e));
+      function H(e) {
+        e.stopPropagation();
+        const t = e.target.closest(".dropdown");
+        t && (t.classList.contains("active") ? S(t) : I(t));
       }
-      function S(t) {
-        const e = t.querySelector(".dropdown-content");
-        (e == null || e.classList.remove("visible"),
-          t.classList.remove("active"));
+      function S(e) {
+        const t = e.querySelector(".dropdown-content");
+        (t == null || t.classList.remove("visible"),
+          e.classList.remove("active"));
       }
-      function O(t) {
-        const e = t.querySelector(".dropdown-content");
-        (e == null || e.classList.add("visible"), t.classList.add("active"));
+      function I(e) {
+        const t = e.querySelector(".dropdown-content");
+        (t == null || t.classList.add("visible"), e.classList.add("active"));
       }
-      function j(t) {
-        const e = t.classList.toggle("active"),
-          o = t.dataset.countrycode;
+      function O(e) {
+        const t = e.classList.toggle("active"),
+          o = e.dataset.countrycode;
         o &&
-          (e
-            ? (r.country = [...r.country, o])
-            : (r.country = r.country.filter((s) => s !== o)),
-          R(),
+          (t
+            ? (l.country = [...l.country, o])
+            : (l.country = l.country.filter((n) => n !== o)),
+          j(),
           w());
       }
-      function R() {
-        const t = document.querySelector(".dropdown-button span");
-        r.country.length > 0
-          ? (t.innerHTML = `Selected countries: <strong>${r.country.join("</strong>, <strong>")}</strong>`)
-          : (t.textContent = "Select countries");
+      function j() {
+        const e = document.querySelector(".dropdown-button span");
+        l.country.length > 0
+          ? (e.innerHTML = `Selected countries: <strong>${l.country.join("</strong>, <strong>")}</strong>`)
+          : (e.textContent = "Select countries");
       }
-      const N = (t) => {
-        z(t).then((e) => {
-          e && (k(e.result), M(b), $(e.result), E(e.result));
+      const R = (e) => {
+        x(e).then((t) => {
+          t && (A(t.result), k(b), _(t.result), $(t.result));
         });
       };
-      function x(t) {
-        let e;
+      function N(e) {
+        let t;
         if (
-          (t && t.geometry && (e = t.geometry),
-          t && t.geometry && t.geometry.viewport)
+          (e && e.geometry && (t = e.geometry),
+          e && e.geometry && e.geometry.viewport)
         ) {
-          const { viewport: o } = e,
-            s = {
+          const { viewport: o } = t,
+            n = {
               east: o.northeast.lng,
               south: o.southwest.lat,
               north: o.northeast.lat,
               west: o.southwest.lng,
             };
-          (p.fitBounds(s, { top: 100, left: 100, bottom: 100, right: 100 }),
-            p.panTo(t.geometry.location));
+          (a.fitBounds(n, { top: 100, left: 100, bottom: 100, right: 100 }),
+            a.panTo(e.geometry.location));
         } else {
           let o = 17;
-          (t.types[0] === "address" && (o = 18),
-            p.setZoom(o),
-            p.panTo(e.location));
+          (e.types[0] === "address" && (o = 18),
+            a.moveCamera({ zoom: o, center: t.location }));
         }
       }
-      function z(t) {
+      function x(e) {
         return fetch(
-          `https://api.woosmap.com/localities/details/?${L({ key: h, public_id: t, fields: "shape|geometry" })}`,
+          `https://api.woosmap.com/localities/details/?${L({ key: h, public_id: e, fields: "shape|geometry" })}`,
         ).then((o) => o.json());
       }
-      window.initMap = _;
+      E();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -665,7 +671,7 @@
   </head>
   <body>
     <div id="app">
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
       <div class="addressDetails">
         <div class="addressOptions"></div>
       </div>
@@ -762,9 +768,49 @@
       </div>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

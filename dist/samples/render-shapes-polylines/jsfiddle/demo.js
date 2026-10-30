@@ -1,8 +1,10 @@
 // Initialize and add the map
 let map;
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 51.505, lng: -0.118 },
     zoom: 15,
   });
@@ -38,4 +40,4 @@ function initMap() {
   polyline.setMap(map);
 }
 
-window.initMap = initMap;
+initMap();

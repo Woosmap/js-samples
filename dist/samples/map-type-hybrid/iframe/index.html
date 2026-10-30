@@ -7,17 +7,17 @@
 
     <script type="module" crossorigin>
       (function () {
-        const o = document.createElement("link").relList;
-        if (o && o.supports && o.supports("modulepreload")) return;
+        const r = document.createElement("link").relList;
+        if (r && r.supports && r.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
           s(e);
         new MutationObserver((e) => {
           for (const t of e)
             if (t.type === "childList")
-              for (const r of t.addedNodes)
-                r.tagName === "LINK" && r.rel === "modulepreload" && s(r);
+              for (const n of t.addedNodes)
+                n.tagName === "LINK" && n.rel === "modulepreload" && s(n);
         }).observe(document, { childList: !0, subtree: !0 });
-        function c(e) {
+        function a(e) {
           const t = {};
           return (
             e.integrity && (t.integrity = e.integrity),
@@ -33,27 +33,30 @@
         function s(e) {
           if (e.ep) return;
           e.ep = !0;
-          const t = c(e);
+          const t = a(e);
           fetch(e.href, t);
         }
       })();
-      let n;
-      function p() {
+      let o;
+      async function c() {
+        await woosmap.map.importLibrary("maps");
         const i = { lat: 48.8584, lng: 2.2945 };
-        ((n = new woosmap.map.Map(document.getElementById("map"), {
-          zoom: 16,
-          center: i,
-          mapTypeId: woosmap.map.MapTypeId.HYBRID,
-          mapTypeControl: !0,
-        })),
-          n.addListener("mapTypeId_changed", () => {
-            console.log("Map type switched to:", n.getMapTypeId());
+        ((o = document.getElementById("map").innerMap),
+          o.setOptions({
+            mapTypeId: woosmap.map.MapTypeId.HYBRID,
+            mapTypeControl: !0,
+          }),
+          o.moveCamera({ zoom: 16, center: i }),
+          o.addListener("mapTypeId_changed", () => {
+            console.log("Map type switched to:", o.getMapTypeId());
           }));
       }
-      window.initMap = p;
+      c();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -81,11 +84,51 @@
   </head>
   <body>
     <!--The div element for the map -->
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "",
+        language: "",
+      });
+    </script>
   </body>
 </html>

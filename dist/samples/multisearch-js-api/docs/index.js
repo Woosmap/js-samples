@@ -44,8 +44,7 @@ function init() {
     responseElement.style.display = "none";
     inputElement.focus();
   });
-  // @ts-ignore
-  multiSearch = window.woosmap.multisearch(searchOptions);
+  multiSearch = woosmap.multisearch(searchOptions);
 }
 
 function handleAutocomplete() {

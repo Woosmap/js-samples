@@ -37,13 +37,13 @@
           fetch(n.href, s);
         }
       })();
-      let m,
+      let u,
         g,
         A,
         o,
         f = [],
-        h,
         y,
+        h,
         L;
       const l = [];
       let _;
@@ -53,41 +53,28 @@
         CYCLING: "https://images.woosmap.com/directions/bicycle_black.png",
       };
       function M(e, t, i) {
-        return new woosmap.map.Marker({
-          map: m,
+        const { PinElement: a } = woosmap.map.marker,
+          n = new a({ background: i, glyphText: t, glyphColor: "#FFFFFF" });
+        return new woosmap.map.marker.AdvancedMarkerElement({
+          map: u,
           position: e,
-          draggable: !0,
-          icon: {
-            url: i,
-            labelOrigin: new woosmap.map.Point(13, 15),
-            scaledSize: { height: 38, width: 26 },
-          },
-          label: { text: t, color: "white" },
+          gmpDraggable: !0,
+          content: n.element,
         });
       }
-      function $() {
+      function O() {
         for (const e of f) e.setMap(null);
         f = [];
       }
-      function C() {
-        $();
-        const e = M(
-          o.origin,
-          "O",
-          "https://images.woosmap.com/marker-blue.svg",
-        );
+      function $() {
+        O();
+        const e = M(o.origin, "O", "#3d5afe");
         e.addListener("dragend", () => {
-          ((o.origin = e.getPosition()), v(y, e.getPosition().toJSON()), d());
+          ((o.origin = e.position), v(h, e.position.toJSON()), d());
         });
-        const t = M(
-          o.destination,
-          "D",
-          "https://images.woosmap.com/marker-red.svg",
-        );
+        const t = M(o.destination, "D", "#f50057");
         (t.addListener("dragend", () => {
-          ((o.destination = t.getPosition()),
-            v(L, t.getPosition().toJSON()),
-            d());
+          ((o.destination = t.position), v(L, t.position.toJSON()), d());
         }),
           f.push(e),
           f.push(t),
@@ -95,31 +82,27 @@
           g.extend(o.destination),
           l.forEach((i, a) => {
             g.extend(i.location);
-            const n = M(
-              i.location,
-              (a + 1).toString(),
-              "https://images.woosmap.com/marker-green.svg",
-            );
+            const n = M(i.location, (a + 1).toString(), "#03BDA5");
             (n.addListener("dragend", () => {
-              ((l[a].location = n.getPosition().toJSON()),
-                (h.querySelectorAll("li")[a].innerHTML =
-                  `<span>lat: ${n.getPosition().lat().toFixed(4)}, lng: ${n.getPosition().lng().toFixed(4)}<span>`),
+              ((l[a].location = n.position.toJSON()),
+                (y.querySelectorAll("li")[a].innerHTML =
+                  `<span>lat: ${n.position.lat().toFixed(4)}, lng: ${n.position.lng().toFixed(4)}<span>`),
                 d());
             }),
               f.push(n));
           }),
-          m.fitBounds(g, { top: 70, bottom: 40, left: 50, right: 50 }, !0));
+          u.fitBounds(g, { top: 70, bottom: 40, left: 50, right: 50 }, !0));
       }
-      function R() {
+      function F() {
         const e = { lat: 51.6511, lng: -0.1615 },
           t = { lat: 51.5146, lng: -0.0212 };
         (l.push(
           { location: { lat: 51.4855, lng: -0.3179 } },
           { location: { lat: 51.5074, lng: -0.1278 } },
         ),
-          v(y, e),
+          v(h, e),
           v(L, t));
-        for (const i of l) q(h, i.location);
+        for (const i of l) q(y, i.location);
         return {
           origin: e,
           destination: t,
@@ -139,7 +122,7 @@
             '<svg class="clear-icon" viewBox="0 0 24 24"><path d="M7.074 5.754a.933.933 0 1 0-1.32 1.317L10.693 12l-4.937 4.929a.931.931 0 1 0 1.319 1.317l4.938-4.93 4.937 4.93a.933.933 0 0 0 1.581-.662.93.93 0 0 0-.262-.655L13.331 12l4.937-4.929a.93.93 0 0 0-.663-1.578.93.93 0 0 0-.656.261l-4.938 4.93z"></path></svg> '),
           a.addEventListener("click", () => {
             (e.removeChild(i),
-              e === h &&
+              e === y &&
                 l.splice(
                   l.findIndex((n) => n.location === t),
                   1,
@@ -152,24 +135,24 @@
       function v(e, t) {
         e.innerHTML = `<li><span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span></li>`;
       }
-      function P(e) {
+      function R(e) {
         const t = e.routes.map((r, c) => {
-          const u = r.legs[0],
-            w = r.legs.reduce((E, T) => E + T.distance.value, 0),
-            k = r.legs.reduce((E, T) => E + T.duration.value, 0),
+          const m = r.legs[0],
+            E = r.legs.reduce((T, w) => T + w.distance.value, 0),
+            k = r.legs.reduce((T, w) => T + w.duration.value, 0),
             p = document.createElement("div");
           ((p.className = "directionTrip"),
             c === 0 && p.classList.add("directionTrip__selected"));
-          const O = I[o.travelMode] || I.DRIVING;
+          const C = I[o.travelMode] || I.DRIVING;
           return (
             (p.innerHTML = `
-            <img alt="travel mode" class="directionTrip__travelModeIcon" src="${O}">
+            <img alt="travel mode" class="directionTrip__travelModeIcon" src="${C}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
                     <div class="directionTrip__duration">${a(k)}</div>
-                    <div class="directionTrip__distance">${i(w)}</div>
+                    <div class="directionTrip__distance">${i(E)}</div>
                 </div>
-                <div class="directionTrip__title">through ${r.main_route_name ? r.main_route_name : JSON.stringify(u.start_location)}</div>
+                <div class="directionTrip__title">through ${r.main_route_name ? r.main_route_name : JSON.stringify(m.start_location)}</div>
                 <div class="directionTrip__summary">${a(k)} ${o.departure_time || o.arrival_time ? "with" : "without"} traffic</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
@@ -187,9 +170,9 @@
           const c = Math.round(r / 60);
           if (c < 60) return `${c}m`;
           {
-            const u = Math.floor(c / 60),
-              w = c % 60;
-            return `${u}h${w}m`;
+            const m = Math.floor(c / 60),
+              E = c % 60;
+            return `${m}h${E}m`;
           }
         }
         function n(r) {
@@ -214,14 +197,14 @@
           ((i.innerHTML = ""), (i.style.display = "none"));
         }
       }
-      function B() {
+      function D() {
         document.querySelector(".linear-progress").classList.toggle("hide");
       }
       function N(e) {
         _.setDirections(e);
       }
       function d() {
-        (B(),
+        (D(),
           new Promise((e, t) => {
             const i = setTimeout(() => {
               t(new Error("Callback not called within 3 secs"));
@@ -235,13 +218,13 @@
           })
             .then((e) => {
               const t = e;
-              (C(), N(t), P(t), b(""));
+              ($(), N(t), R(t), b(""));
             })
             .catch((e) => {
               (console.error(e), b(e.message));
             })
             .finally(() => {
-              B();
+              D();
             }));
       }
       function H(e) {
@@ -257,7 +240,7 @@
           }),
         );
       }
-      function F() {
+      function P() {
         document.querySelectorAll(".avoid").forEach((e) =>
           e.addEventListener("click", () => {
             const t = document.getElementById("avoidHighways"),
@@ -317,7 +300,7 @@
           ((o.language = e.value), d());
         });
       }
-      function D(e) {
+      function B(e) {
         return e.getTime && typeof e.getTime == "function";
       }
       function K() {
@@ -340,7 +323,7 @@
                   case "datetime":
                     if (e.value) {
                       const n = new Date(e.value);
-                      o.departure_time = D(n) ? n.getTime().toString() : void 0;
+                      o.departure_time = B(n) ? n.getTime().toString() : void 0;
                     } else o.departure_time = void 0;
                     e.disabled = !1;
                     break;
@@ -351,7 +334,7 @@
           e.addEventListener("change", () => {
             t && (t.checked = !0);
             const i = new Date(e.value);
-            ((o.departure_time = D(i)
+            ((o.departure_time = B(i)
               ? Math.floor(i.getTime() / 1e3).toString()
               : void 0),
               d());
@@ -365,21 +348,21 @@
             (a.classList.remove("addLocation__selected"),
               (n = document.getElementById("map")) == null ||
                 n.classList.remove("cursor-crosshair"),
-              woosmap.map.event.clearListeners(m, "click"));
+              woosmap.map.event.clearListeners(u, "click"));
             return;
           }
           (a.classList.add("addLocation__selected"),
             (s = document.getElementById("map")) == null ||
               s.classList.add("cursor-crosshair"),
-            woosmap.map.event.addListenerOnce(m, "click", (r) => {
-              var u;
-              ((u = document.getElementById("map")) == null ||
-                u.classList.remove("cursor-crosshair"),
+            woosmap.map.event.addListenerOnce(u, "click", (r) => {
+              var m;
+              ((m = document.getElementById("map")) == null ||
+                m.classList.remove("cursor-crosshair"),
                 a.classList.remove("addLocation__selected"));
               const c = r.latlng;
               (Array.isArray(i)
                 ? (l.push({ location: c }), q(t, c))
-                : (t === y && (o.origin = c),
+                : (t === h && (o.origin = c),
                   t === L && (o.destination = c),
                   v(t, c)),
                 d());
@@ -388,7 +371,7 @@
       }
       function Y() {
         (x(),
-          F(),
+          P(),
           G(),
           J(),
           W(),
@@ -397,30 +380,30 @@
           V(),
           z(),
           S(".addLocation__destinations", L, o.destination),
-          S(".addLocation__origins", y, o.origin),
+          S(".addLocation__origins", h, o.origin),
           S(
             ".addLocation__waypoints",
-            h,
+            y,
             l.map((e) => e.location),
           ));
       }
-      function Q() {
-        ((m = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 51.5074, lng: -0.1478 },
-          zoom: 10,
-        })),
+      async function Q() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (u = document.getElementById("map").innerMap),
+          u.moveCamera({ center: { lat: 51.5074, lng: -0.1478 }, zoom: 10 }),
           (A = new woosmap.map.DirectionsService()),
           (_ = new woosmap.map.DirectionsRenderer({})),
-          _.setMap(m),
+          _.setMap(u),
           (g = new woosmap.map.LatLngBounds()),
-          (y = document.getElementById("origin")),
+          (h = document.getElementById("origin")),
           (L = document.getElementById("destination")),
-          (h = document.getElementById("waypoints")),
-          (o = R()),
+          (y = document.getElementById("waypoints")),
+          (o = F()),
           Y(),
           d());
       }
-      window.initMap = Q;
+      Q();
     </script>
     <style>
       html,
@@ -1184,15 +1167,55 @@
         <div class="linear-progress hide">
           <div class="progress"></div>
         </div>
-        <div id="map"></div>
+        <wmp-map id="map"></wmp-map>
         <div id="infoMessage">Drag markers to update route</div>
         <div class="tableContainer"></div>
       </div>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

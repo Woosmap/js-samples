@@ -4,12 +4,14 @@ let indoorNavigation: woosmap.map.NavigationWidget;
 let indoorService: woosmap.map.IndoorService;
 let venue: string;
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   venue = "gdn_doc";
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    { center: { lat: 43.6066, lng: 3.9218 } },
-  );
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
+    center: { lat: 43.6066, lng: 3.9218 },
+  });
 
   const conf: woosmap.map.IndoorRendererOptions = {
     venue: venue,
@@ -21,14 +23,14 @@ function initMap(): void {
   indoorRenderer.setMap(map);
 
   // Indoor event that is triggered when the indoor venue is loaded.
-  indoorRenderer.addListener("indoor_venue_loaded", (venue) => {
-    indoorService = new window.woosmap.map.IndoorService();
+  indoorRenderer.addListener("indoor_venue_loaded", () => {
+    indoorService = new woosmap.map.IndoorService();
 
     const request: woosmap.map.IndoorDirectionRequest = {
       venueId: "gdn_doc",
-      origin: new window.woosmap.map.LatLng(48.8801287, 2.3548678),
+      origin: new woosmap.map.LatLng(48.8801287, 2.3548678),
       originLevel: 0,
-      destination: new window.woosmap.map.LatLng(48.8799341, 2.3563779),
+      destination: new woosmap.map.LatLng(48.8799341, 2.3563779),
       destinationLevel: 0,
       units: "metric",
       originId: null,
@@ -37,7 +39,7 @@ function initMap(): void {
     indoorService.directions(request, (response) => {
       if (response) {
         indoorRenderer.setDirections(response);
-        indoorNavigation = new window.woosmap.map.NavigationWidget(
+        indoorNavigation = new woosmap.map.NavigationWidget(
           indoorRenderer,
           exitNavigation,
         );
@@ -57,11 +59,6 @@ const hideLoader = () => {
   (document.querySelector(".progress") as HTMLElement).remove();
 };
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

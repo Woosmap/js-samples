@@ -30,7 +30,9 @@ function setQuery() {
   storesOverlay.setQuery(query.toString());
 }
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
   const center = { lat: 51.52, lng: -0.13 };
   const icon = {
     url: "https://images.woosmap.com/marker-blue.svg",
@@ -82,11 +84,12 @@ function initMap() {
       },
     },
   };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
+  const map = document.getElementById("map").innerMap;
+
+  map.moveCamera({
     zoom: 8,
     center: center,
   });
-
   storesOverlay = new woosmap.map.StoresOverlay(style);
   storesOverlay.setMap(map);
   initUI();
@@ -104,5 +107,5 @@ function initUI() {
   clauseOr.addEventListener("change", setQuery);
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_stores_overlay_query_advanced]

@@ -10,12 +10,16 @@ const centerLatLng = {
   lng: 6.073999,
 };
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
-    zoom: 15.64,
-    center: centerLatLng,
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  map = document.getElementById("map").innerMap;
+  map.setOptions({
     mapTypeControl: true,
     styles: STYLE_PRESETS.lightgrey,
+  });
+  map.moveCamera({
+    zoom: 15.64,
+    center: centerLatLng,
   });
   styleSelect = document.getElementById("woosmap-style-select");
   layerSelect = document.getElementById("layer-provider-select");
@@ -42,7 +46,7 @@ function readOpacity() {
 
 function onStyleChange() {
   applyStyle(styleSelect.value);
-  // Recreating the map wipes overlays — reapply the current layer.
+  // Restyling reloads the base style, which drops overlays: reapply the current layer.
   applyLayer(layerSelect.value, readOpacity());
 }
 
@@ -61,14 +65,7 @@ function onOpacityChange() {
 }
 
 function applyStyle(name) {
-  const styles = STYLE_PRESETS[name] ?? [];
-
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
-    zoom: map.getZoom(),
-    center: map.getCenter(),
-    mapTypeControl: true,
-    styles,
-  });
+  map.setOptions({ styles: STYLE_PRESETS[name] ?? [] });
 }
 
 function applyLayer(provider, opacity) {
@@ -403,5 +400,5 @@ const LAYER_VIEWS = {
   precipitation: US_VIEW,
 };
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_map_external_layer]

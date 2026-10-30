@@ -9,35 +9,35 @@
       (function () {
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
-        for (const r of document.querySelectorAll('link[rel="modulepreload"]'))
-          s(r);
-        new MutationObserver((r) => {
-          for (const o of r)
-            if (o.type === "childList")
-              for (const c of o.addedNodes)
+        for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
+          s(o);
+        new MutationObserver((o) => {
+          for (const r of o)
+            if (r.type === "childList")
+              for (const c of r.addedNodes)
                 c.tagName === "LINK" && c.rel === "modulepreload" && s(c);
         }).observe(document, { childList: !0, subtree: !0 });
-        function e(r) {
-          const o = {};
+        function e(o) {
+          const r = {};
           return (
-            r.integrity && (o.integrity = r.integrity),
-            r.referrerPolicy && (o.referrerPolicy = r.referrerPolicy),
-            r.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : r.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            o.integrity && (r.integrity = o.integrity),
+            o.referrerPolicy && (r.referrerPolicy = o.referrerPolicy),
+            o.crossOrigin === "use-credentials"
+              ? (r.credentials = "include")
+              : o.crossOrigin === "anonymous"
+                ? (r.credentials = "omit")
+                : (r.credentials = "same-origin"),
+            r
           );
         }
-        function s(r) {
-          if (r.ep) return;
-          r.ep = !0;
-          const o = e(r);
-          fetch(r.href, o);
+        function s(o) {
+          if (o.ep) return;
+          o.ep = !0;
+          const r = e(o);
+          fetch(o.href, r);
         }
       })();
-      const k = [
+      const j = [
           Int8Array,
           Uint8Array,
           Uint8ClampedArray,
@@ -48,47 +48,47 @@
           Float32Array,
           Float64Array,
         ],
-        Z = 1,
-        O = 8;
-      class B {
+        S = 1,
+        b = 8;
+      class D {
         static from(t) {
           if (!(t instanceof ArrayBuffer))
             throw new Error("Data must be an instance of ArrayBuffer.");
           const [e, s] = new Uint8Array(t, 0, 2);
           if (e !== 219)
             throw new Error("Data does not appear to be in a KDBush format.");
-          const r = s >> 4;
-          if (r !== Z) throw new Error(`Got v${r} data when expected v${Z}.`);
-          const o = k[s & 15];
-          if (!o) throw new Error("Unrecognized array type.");
+          const o = s >> 4;
+          if (o !== S) throw new Error(`Got v${o} data when expected v${S}.`);
+          const r = j[s & 15];
+          if (!r) throw new Error("Unrecognized array type.");
           const [c] = new Uint16Array(t, 2, 1),
-            [l] = new Uint32Array(t, 4, 1);
-          return new B(l, c, o, t);
+            [a] = new Uint32Array(t, 4, 1);
+          return new D(a, c, r, t);
         }
-        constructor(t, e = 64, s = Float64Array, r) {
+        constructor(t, e = 64, s = Float64Array, o) {
           if (isNaN(t) || t < 0)
             throw new Error(`Unpexpected numItems value: ${t}.`);
           ((this.numItems = +t),
             (this.nodeSize = Math.min(Math.max(+e, 2), 65535)),
             (this.ArrayType = s),
             (this.IndexArrayType = t < 65536 ? Uint16Array : Uint32Array));
-          const o = k.indexOf(this.ArrayType),
+          const r = j.indexOf(this.ArrayType),
             c = t * 2 * this.ArrayType.BYTES_PER_ELEMENT,
-            l = t * this.IndexArrayType.BYTES_PER_ELEMENT,
-            n = (8 - (l % 8)) % 8;
-          if (o < 0) throw new Error(`Unexpected typed array class: ${s}.`);
-          r && r instanceof ArrayBuffer
-            ? ((this.data = r),
-              (this.ids = new this.IndexArrayType(this.data, O, t)),
-              (this.coords = new this.ArrayType(this.data, O + l + n, t * 2)),
+            a = t * this.IndexArrayType.BYTES_PER_ELEMENT,
+            n = (8 - (a % 8)) % 8;
+          if (r < 0) throw new Error(`Unexpected typed array class: ${s}.`);
+          o && o instanceof ArrayBuffer
+            ? ((this.data = o),
+              (this.ids = new this.IndexArrayType(this.data, b, t)),
+              (this.coords = new this.ArrayType(this.data, b + a + n, t * 2)),
               (this._pos = t * 2),
               (this._finished = !0))
-            : ((this.data = new ArrayBuffer(O + c + l + n)),
-              (this.ids = new this.IndexArrayType(this.data, O, t)),
-              (this.coords = new this.ArrayType(this.data, O + l + n, t * 2)),
+            : ((this.data = new ArrayBuffer(b + c + a + n)),
+              (this.ids = new this.IndexArrayType(this.data, b, t)),
+              (this.coords = new this.ArrayType(this.data, b + a + n, t * 2)),
               (this._pos = 0),
               (this._finished = !1),
-              new Uint8Array(this.data, 0, 2).set([219, (Z << 4) + o]),
+              new Uint8Array(this.data, 0, 2).set([219, (S << 4) + r]),
               (new Uint16Array(this.data, 2, 1)[0] = e),
               (new Uint32Array(this.data, 4, 1)[0] = t));
         }
@@ -111,98 +111,98 @@
             this
           );
         }
-        range(t, e, s, r) {
+        range(t, e, s, o) {
           if (!this._finished)
             throw new Error("Data not yet indexed - call index.finish().");
-          const { ids: o, coords: c, nodeSize: l } = this,
-            n = [0, o.length - 1, 0],
+          const { ids: r, coords: c, nodeSize: a } = this,
+            n = [0, r.length - 1, 0],
             h = [];
           for (; n.length; ) {
             const p = n.pop() || 0,
-              a = n.pop() || 0,
+              l = n.pop() || 0,
               u = n.pop() || 0;
-            if (a - u <= l) {
-              for (let f = u; f <= a; f++) {
+            if (l - u <= a) {
+              for (let f = u; f <= l; f++) {
                 const g = c[2 * f],
                   w = c[2 * f + 1];
-                g >= t && g <= s && w >= e && w <= r && h.push(o[f]);
+                g >= t && g <= s && w >= e && w <= o && h.push(r[f]);
               }
               continue;
             }
-            const d = (u + a) >> 1,
+            const d = (u + l) >> 1,
               y = c[2 * d],
               m = c[2 * d + 1];
-            (y >= t && y <= s && m >= e && m <= r && h.push(o[d]),
+            (y >= t && y <= s && m >= e && m <= o && h.push(r[d]),
               (p === 0 ? t <= y : e <= m) &&
                 (n.push(u), n.push(d - 1), n.push(1 - p)),
-              (p === 0 ? s >= y : r >= m) &&
-                (n.push(d + 1), n.push(a), n.push(1 - p)));
+              (p === 0 ? s >= y : o >= m) &&
+                (n.push(d + 1), n.push(l), n.push(1 - p)));
           }
           return h;
         }
         within(t, e, s) {
           if (!this._finished)
             throw new Error("Data not yet indexed - call index.finish().");
-          const { ids: r, coords: o, nodeSize: c } = this,
-            l = [0, r.length - 1, 0],
+          const { ids: o, coords: r, nodeSize: c } = this,
+            a = [0, o.length - 1, 0],
             n = [],
             h = s * s;
-          for (; l.length; ) {
-            const p = l.pop() || 0,
-              a = l.pop() || 0,
-              u = l.pop() || 0;
-            if (a - u <= c) {
-              for (let f = u; f <= a; f++)
-                z(o[2 * f], o[2 * f + 1], t, e) <= h && n.push(r[f]);
+          for (; a.length; ) {
+            const p = a.pop() || 0,
+              l = a.pop() || 0,
+              u = a.pop() || 0;
+            if (l - u <= c) {
+              for (let f = u; f <= l; f++)
+                z(r[2 * f], r[2 * f + 1], t, e) <= h && n.push(o[f]);
               continue;
             }
-            const d = (u + a) >> 1,
-              y = o[2 * d],
-              m = o[2 * d + 1];
-            (z(y, m, t, e) <= h && n.push(r[d]),
+            const d = (u + l) >> 1,
+              y = r[2 * d],
+              m = r[2 * d + 1];
+            (z(y, m, t, e) <= h && n.push(o[d]),
               (p === 0 ? t - s <= y : e - s <= m) &&
-                (l.push(u), l.push(d - 1), l.push(1 - p)),
+                (a.push(u), a.push(d - 1), a.push(1 - p)),
               (p === 0 ? t + s >= y : e + s >= m) &&
-                (l.push(d + 1), l.push(a), l.push(1 - p)));
+                (a.push(d + 1), a.push(l), a.push(1 - p)));
           }
           return n;
         }
       }
-      function N(i, t, e, s, r, o) {
-        if (r - s <= e) return;
-        const c = (s + r) >> 1;
-        (H(i, t, c, s, r, o),
-          N(i, t, e, s, c - 1, 1 - o),
-          N(i, t, e, c + 1, r, 1 - o));
+      function N(i, t, e, s, o, r) {
+        if (o - s <= e) return;
+        const c = (s + o) >> 1;
+        (H(i, t, c, s, o, r),
+          N(i, t, e, s, c - 1, 1 - r),
+          N(i, t, e, c + 1, o, 1 - r));
       }
-      function H(i, t, e, s, r, o) {
-        for (; r > s; ) {
-          if (r - s > 600) {
-            const h = r - s + 1,
+      function H(i, t, e, s, o, r) {
+        for (; o > s; ) {
+          if (o - s > 600) {
+            const h = o - s + 1,
               p = e - s + 1,
-              a = Math.log(h),
-              u = 0.5 * Math.exp((2 * a) / 3),
+              l = Math.log(h),
+              u = 0.5 * Math.exp((2 * l) / 3),
               d =
                 0.5 *
-                Math.sqrt((a * u * (h - u)) / h) *
+                Math.sqrt((l * u * (h - u)) / h) *
                 (p - h / 2 < 0 ? -1 : 1),
               y = Math.max(s, Math.floor(e - (p * u) / h + d)),
-              m = Math.min(r, Math.floor(e + ((h - p) * u) / h + d));
-            H(i, t, e, y, m, o);
+              m = Math.min(o, Math.floor(e + ((h - p) * u) / h + d));
+            H(i, t, e, y, m, r);
           }
-          const c = t[2 * e + o];
-          let l = s,
-            n = r;
-          for (b(i, t, s, e), t[2 * r + o] > c && b(i, t, s, r); l < n; ) {
-            for (b(i, t, l, n), l++, n--; t[2 * l + o] < c; ) l++;
-            for (; t[2 * n + o] > c; ) n--;
+          const c = t[2 * e + r];
+          let a = s,
+            n = o;
+          for (O(i, t, s, e), t[2 * o + r] > c && O(i, t, s, o); a < n; ) {
+            for (O(i, t, a, n), a++, n--; t[2 * a + r] < c; ) a++;
+            for (; t[2 * n + r] > c; ) n--;
           }
-          (t[2 * s + o] === c ? b(i, t, s, n) : (n++, b(i, t, n, r)),
+          (t[2 * s + r] === c ? O(i, t, s, n) : (n++, O(i, t, n, o)),
             n <= e && (s = n + 1),
-            e <= n && (r = n - 1));
+            e <= n && (o = n - 1));
         }
       }
-      function b(i, t, e, s) {
+      function O(i, t, e, s) {
         (F(i, e, s), F(t, 2 * e, 2 * s), F(t, 2 * e + 1, 2 * s + 1));
       }
       function F(i, t, e) {
@@ -210,9 +210,9 @@
         ((i[t] = i[e]), (i[e] = s));
       }
       function z(i, t, e, s) {
-        const r = i - e,
-          o = t - s;
-        return r * r + o * o;
+        const o = i - e,
+          r = t - s;
+        return o * o + r * r;
       }
       const Y = {
           minZoom: 0,
@@ -229,10 +229,10 @@
         W =
           Math.fround ||
           ((i) => (t) => ((i[0] = +t), i[0]))(new Float32Array(1)),
-        A = 2,
+        M = 2,
         E = 3,
-        C = 4,
-        x = 5,
+        Z = 4,
+        T = 5,
         J = 6;
       class Q {
         constructor(t) {
@@ -242,29 +242,29 @@
             (this.clusterProps = []));
         }
         load(t) {
-          const { log: e, minZoom: s, maxZoom: r } = this.options;
+          const { log: e, minZoom: s, maxZoom: o } = this.options;
           e && console.time("total time");
-          const o = `prepare ${t.length} points`;
-          (e && console.time(o), (this.points = t));
+          const r = `prepare ${t.length} points`;
+          (e && console.time(r), (this.points = t));
           const c = [];
           for (let n = 0; n < t.length; n++) {
             const h = t[n];
             if (!h.geometry) continue;
-            const [p, a] = h.geometry.coordinates,
+            const [p, l] = h.geometry.coordinates,
               u = W(P(p)),
-              d = W(S(a));
+              d = W(v(l));
             (c.push(u, d, 1 / 0, n, -1, 1), this.options.reduce && c.push(0));
           }
-          let l = (this.trees[r + 1] = this._createTree(c));
-          e && console.timeEnd(o);
-          for (let n = r; n >= s; n--) {
+          let a = (this.trees[o + 1] = this._createTree(c));
+          e && console.timeEnd(r);
+          for (let n = o; n >= s; n--) {
             const h = +Date.now();
-            ((l = this.trees[n] = this._createTree(this._cluster(l, n))),
+            ((a = this.trees[n] = this._createTree(this._cluster(a, n))),
               e &&
                 console.log(
                   "z%d: %d clusters in %dms",
                   n,
-                  l.numItems,
+                  a.numItems,
                   +Date.now() - h,
                 ));
           }
@@ -272,24 +272,24 @@
         }
         getClusters(t, e) {
           let s = ((((t[0] + 180) % 360) + 360) % 360) - 180;
-          const r = Math.max(-90, Math.min(90, t[1]));
-          let o =
+          const o = Math.max(-90, Math.min(90, t[1]));
+          let r =
             t[2] === 180 ? 180 : ((((t[2] + 180) % 360) + 360) % 360) - 180;
           const c = Math.max(-90, Math.min(90, t[3]));
-          if (t[2] - t[0] >= 360) ((s = -180), (o = 180));
-          else if (s > o) {
-            const a = this.getClusters([s, r, 180, c], e),
-              u = this.getClusters([-180, r, o, c], e);
-            return a.concat(u);
+          if (t[2] - t[0] >= 360) ((s = -180), (r = 180));
+          else if (s > r) {
+            const l = this.getClusters([s, o, 180, c], e),
+              u = this.getClusters([-180, o, r, c], e);
+            return l.concat(u);
           }
-          const l = this.trees[this._limitZoom(e)],
-            n = l.range(P(s), S(c), P(o), S(r)),
-            h = l.data,
+          const a = this.trees[this._limitZoom(e)],
+            n = a.range(P(s), v(c), P(r), v(o)),
+            h = a.data,
             p = [];
-          for (const a of n) {
-            const u = this.stride * a;
+          for (const l of n) {
+            const u = this.stride * l;
             p.push(
-              h[u + x] > 1 ? G(h, u, this.clusterProps) : this.points[h[u + E]],
+              h[u + T] > 1 ? G(h, u, this.clusterProps) : this.points[h[u + E]],
             );
           }
           return p;
@@ -297,70 +297,70 @@
         getChildren(t) {
           const e = this._getOriginId(t),
             s = this._getOriginZoom(t),
-            r = "No cluster with the specified id.",
-            o = this.trees[s];
-          if (!o) throw new Error(r);
-          const c = o.data;
-          if (e * this.stride >= c.length) throw new Error(r);
-          const l =
+            o = "No cluster with the specified id.",
+            r = this.trees[s];
+          if (!r) throw new Error(o);
+          const c = r.data;
+          if (e * this.stride >= c.length) throw new Error(o);
+          const a =
               this.options.radius / (this.options.extent * Math.pow(2, s - 1)),
             n = c[e * this.stride],
             h = c[e * this.stride + 1],
-            p = o.within(n, h, l),
-            a = [];
+            p = r.within(n, h, a),
+            l = [];
           for (const u of p) {
             const d = u * this.stride;
-            c[d + C] === t &&
-              a.push(
-                c[d + x] > 1
+            c[d + Z] === t &&
+              l.push(
+                c[d + T] > 1
                   ? G(c, d, this.clusterProps)
                   : this.points[c[d + E]],
               );
           }
-          if (a.length === 0) throw new Error(r);
-          return a;
+          if (l.length === 0) throw new Error(o);
+          return l;
         }
         getLeaves(t, e, s) {
           ((e = e || 10), (s = s || 0));
-          const r = [];
-          return (this._appendLeaves(r, t, e, s, 0), r);
+          const o = [];
+          return (this._appendLeaves(o, t, e, s, 0), o);
         }
         getTile(t, e, s) {
-          const r = this.trees[this._limitZoom(t)],
-            o = Math.pow(2, t),
-            { extent: c, radius: l } = this.options,
-            n = l / c,
-            h = (s - n) / o,
-            p = (s + 1 + n) / o,
-            a = { features: [] };
+          const o = this.trees[this._limitZoom(t)],
+            r = Math.pow(2, t),
+            { extent: c, radius: a } = this.options,
+            n = a / c,
+            h = (s - n) / r,
+            p = (s + 1 + n) / r,
+            l = { features: [] };
           return (
             this._addTileFeatures(
-              r.range((e - n) / o, h, (e + 1 + n) / o, p),
-              r.data,
+              o.range((e - n) / r, h, (e + 1 + n) / r, p),
+              o.data,
               e,
               s,
-              o,
-              a,
+              r,
+              l,
             ),
             e === 0 &&
               this._addTileFeatures(
-                r.range(1 - n / o, h, 1, p),
-                r.data,
-                o,
+                o.range(1 - n / r, h, 1, p),
+                o.data,
+                r,
                 s,
-                o,
-                a,
+                r,
+                l,
               ),
-            e === o - 1 &&
+            e === r - 1 &&
               this._addTileFeatures(
-                r.range(0, h, n / o, p),
-                r.data,
+                o.range(0, h, n / r, p),
+                o.data,
                 -1,
                 s,
-                o,
-                a,
+                r,
+                l,
               ),
-            a.features.length ? a : null
+            l.features.length ? l : null
           );
         }
         getClusterExpansionZoom(t) {
@@ -372,26 +372,26 @@
           }
           return e;
         }
-        _appendLeaves(t, e, s, r, o) {
+        _appendLeaves(t, e, s, o, r) {
           const c = this.getChildren(e);
-          for (const l of c) {
-            const n = l.properties;
+          for (const a of c) {
+            const n = a.properties;
             if (
               (n && n.cluster
-                ? o + n.point_count <= r
-                  ? (o += n.point_count)
-                  : (o = this._appendLeaves(t, n.cluster_id, s, r, o))
-                : o < r
-                  ? o++
-                  : t.push(l),
+                ? r + n.point_count <= o
+                  ? (r += n.point_count)
+                  : (r = this._appendLeaves(t, n.cluster_id, s, o, r))
+                : r < o
+                  ? r++
+                  : t.push(a),
               t.length === s)
             )
               break;
           }
-          return o;
+          return r;
         }
         _createTree(t) {
-          const e = new B(
+          const e = new D(
             (t.length / this.stride) | 0,
             this.options.nodeSize,
             Float32Array,
@@ -399,25 +399,25 @@
           for (let s = 0; s < t.length; s += this.stride) e.add(t[s], t[s + 1]);
           return (e.finish(), (e.data = t), e);
         }
-        _addTileFeatures(t, e, s, r, o, c) {
-          for (const l of t) {
-            const n = l * this.stride,
-              h = e[n + x] > 1;
-            let p, a, u;
+        _addTileFeatures(t, e, s, o, r, c) {
+          for (const a of t) {
+            const n = a * this.stride,
+              h = e[n + T] > 1;
+            let p, l, u;
             if (h)
-              ((p = K(e, n, this.clusterProps)), (a = e[n]), (u = e[n + 1]));
+              ((p = K(e, n, this.clusterProps)), (l = e[n]), (u = e[n + 1]));
             else {
               const m = this.points[e[n + E]];
               p = m.properties;
               const [f, g] = m.geometry.coordinates;
-              ((a = P(f)), (u = S(g)));
+              ((l = P(f)), (u = v(g)));
             }
             const d = {
               type: 1,
               geometry: [
                 [
-                  Math.round(this.options.extent * (a * o - s)),
-                  Math.round(this.options.extent * (u * o - r)),
+                  Math.round(this.options.extent * (l * r - s)),
+                  Math.round(this.options.extent * (u * r - o)),
                 ],
               ],
               tags: p,
@@ -439,58 +439,58 @@
         _cluster(t, e) {
           const {
               radius: s,
-              extent: r,
-              reduce: o,
+              extent: o,
+              reduce: r,
               minPoints: c,
             } = this.options,
-            l = s / (r * Math.pow(2, e)),
+            a = s / (o * Math.pow(2, e)),
             n = t.data,
             h = [],
             p = this.stride;
-          for (let a = 0; a < n.length; a += p) {
-            if (n[a + A] <= e) continue;
-            n[a + A] = e;
-            const u = n[a],
-              d = n[a + 1],
-              y = t.within(n[a], n[a + 1], l),
-              m = n[a + x];
+          for (let l = 0; l < n.length; l += p) {
+            if (n[l + M] <= e) continue;
+            n[l + M] = e;
+            const u = n[l],
+              d = n[l + 1],
+              y = t.within(n[l], n[l + 1], a),
+              m = n[l + T];
             let f = m;
             for (const g of y) {
               const w = g * p;
-              n[w + A] > e && (f += n[w + x]);
+              n[w + M] > e && (f += n[w + T]);
             }
             if (f > m && f >= c) {
               let g = u * m,
                 w = d * m,
-                T,
-                $ = -1;
-              const L = (((a / p) | 0) << 5) + (e + 1) + this.points.length;
+                x,
+                R = -1;
+              const I = (((l / p) | 0) << 5) + (e + 1) + this.points.length;
               for (const V of y) {
-                const M = V * p;
-                if (n[M + A] <= e) continue;
-                n[M + A] = e;
-                const j = n[M + x];
-                ((g += n[M] * j),
-                  (w += n[M + 1] * j),
-                  (n[M + C] = L),
-                  o &&
-                    (T ||
-                      ((T = this._map(n, a, !0)),
-                      ($ = this.clusterProps.length),
-                      this.clusterProps.push(T)),
-                    o(T, this._map(n, M))));
+                const A = V * p;
+                if (n[A + M] <= e) continue;
+                n[A + M] = e;
+                const k = n[A + T];
+                ((g += n[A] * k),
+                  (w += n[A + 1] * k),
+                  (n[A + Z] = I),
+                  r &&
+                    (x ||
+                      ((x = this._map(n, l, !0)),
+                      (R = this.clusterProps.length),
+                      this.clusterProps.push(x)),
+                    r(x, this._map(n, A))));
               }
-              ((n[a + C] = L),
-                h.push(g / f, w / f, 1 / 0, L, -1, f),
-                o && h.push($));
+              ((n[l + Z] = I),
+                h.push(g / f, w / f, 1 / 0, I, -1, f),
+                r && h.push(R));
             } else {
-              for (let g = 0; g < p; g++) h.push(n[a + g]);
+              for (let g = 0; g < p; g++) h.push(n[l + g]);
               if (f > 1)
                 for (const g of y) {
                   const w = g * p;
-                  if (!(n[w + A] <= e)) {
-                    n[w + A] = e;
-                    for (let T = 0; T < p; T++) h.push(n[w + T]);
+                  if (!(n[w + M] <= e)) {
+                    n[w + M] = e;
+                    for (let x = 0; x < p; x++) h.push(n[w + x]);
                   }
                 }
             }
@@ -504,13 +504,13 @@
           return (t - this.points.length) % 32;
         }
         _map(t, e, s) {
-          if (t[e + x] > 1) {
+          if (t[e + T] > 1) {
             const c = this.clusterProps[t[e + J]];
             return s ? Object.assign({}, c) : c;
           }
-          const r = this.points[t[e + E]].properties,
-            o = this.options.map(r);
-          return s && o === r ? Object.assign({}, o) : o;
+          const o = this.points[t[e + E]].properties,
+            r = this.options.map(o);
+          return s && r === o ? Object.assign({}, r) : r;
         }
       }
       function G(i, t, e) {
@@ -522,26 +522,26 @@
         };
       }
       function K(i, t, e) {
-        const s = i[t + x],
-          r =
+        const s = i[t + T],
+          o =
             s >= 1e4
               ? `${Math.round(s / 1e3)}k`
               : s >= 1e3
                 ? `${Math.round(s / 100) / 10}k`
                 : s,
-          o = i[t + J],
-          c = o === -1 ? {} : Object.assign({}, e[o]);
+          r = i[t + J],
+          c = r === -1 ? {} : Object.assign({}, e[r]);
         return Object.assign(c, {
           cluster: !0,
           cluster_id: i[t + E],
           point_count: s,
-          point_count_abbreviated: r,
+          point_count_abbreviated: o,
         });
       }
       function P(i) {
         return i / 360 + 0.5;
       }
-      function S(i) {
+      function v(i) {
         const t = Math.sin((i * Math.PI) / 180),
           e = 0.5 - (0.25 * Math.log((1 + t) / (1 - t))) / Math.PI;
         return e < 0 ? 0 : e > 1 ? 1 : e;
@@ -554,17 +554,18 @@
         return (360 * Math.atan(Math.exp(t))) / Math.PI - 90;
       }
       let _,
-        v,
-        R,
-        D = [];
+        C,
+        B,
+        $ = [];
       const tt = "https://demo.woosmap.com/misc/data/uk-all-pubs.geojson",
         et = "https://images.woosmap.com/dot-green.svg",
         st = { radius: 40, extent: 256, maxZoom: 14, minPoints: 5 };
-      function nt() {
-        ((v = new woosmap.map.InfoWindow({})),
-          (_ = new window.woosmap.map.Map(document.getElementById("map"), {
-            center: { lat: 55.5, lng: -4 },
-            zoom: 5.7,
+      async function nt() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (C = new woosmap.map.InfoWindow({})),
+          (_ = document.getElementById("map").innerMap),
+          _.setOptions({
             styles: [
               { elementType: "geometry", stylers: [{ color: "#f6f6f6" }] },
               { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
@@ -627,10 +628,11 @@
                 stylers: [{ color: "#9e9e9e" }],
               },
             ],
-          })),
+          }),
+          _.moveCamera({ center: { lat: 55.5, lng: -4 }, zoom: 5.7 }),
           ot(tt).then((i) => {
             const t = i.features;
-            ((R = new Q(st).load(t)), I());
+            ((B = new Q(st).load(t)), L());
           }),
           rt());
       }
@@ -638,11 +640,11 @@
         return fetch(i).then((t) => t.json());
       }
       function rt() {
-        (_.addListener("dragend", U(I, 20)),
-          _.addListener("zoom_changed", U(I, 20)),
-          window.addEventListener("resize", U(I, 100)));
+        (_.addListener("dragend", U(L, 20)),
+          _.addListener("zoom_changed", U(L, 20)),
+          window.addEventListener("resize", U(L, 100)));
       }
-      function I() {
+      function L() {
         it();
         const i = _.getBounds(),
           t = [
@@ -651,18 +653,18 @@
             i.getNorthEast().lng(),
             i.getNorthEast().lat(),
           ],
-          e = R.getClusters(t, _.getZoom());
+          e = B.getClusters(t, _.getZoom());
         for (const s of e) {
-          const r = {
+          const o = {
             lat: s.geometry.coordinates[1],
             lng: s.geometry.coordinates[0],
           };
-          D.push(ct(s, r));
+          $.push(ct(s, o));
         }
       }
       function it() {
-        for (const i of D) i.setMap(null);
-        D = [];
+        for (const i of $) i.setMap(null);
+        $ = [];
       }
       function ct(i, t) {
         return i.properties.cluster ? at(i, t) : lt(i, t);
@@ -670,45 +672,62 @@
       function at(i, t) {
         const e = i.properties.point_count,
           s = e < 80 ? "#0B9D58" : e < 500 ? "#F5B300" : "#DA0A40",
-          r = e < 80 ? 45 : e < 400 ? 55 : 65,
-          o = window.btoa(`
+          o = e < 80 ? 45 : e < 400 ? 55 : 65,
+          r = window.btoa(`
 <svg fill="${s}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
   <circle cx="120" cy="120" opacity=".8" r="70" />
   <circle cx="120" cy="120" opacity=".3" r="80" />
   <circle cx="120" cy="120" opacity=".2" r="110" />
 </svg>`),
-          c = new window.woosmap.map.Marker({
-            label: {
-              text: i.properties.point_count_abbreviated,
-              color: "white",
-            },
-            position: t,
-            icon: {
-              url: `data:image/svg+xml;base64,${o}`,
-              scaledSize: new window.woosmap.map.Size(r, r),
-            },
-            map: _,
-          });
-        return (
-          c.addListener("click", (l) => {
-            v.close();
-            const n = R.getClusterExpansionZoom(i.properties.cluster_id);
-            (_.setCenter(c.getPosition()), _.setZoom(n));
-          }),
-          c
-        );
-      }
-      function lt(i, t) {
-        const e = new window.woosmap.map.Marker({
-          icon: { url: et, scaledSize: { height: 20, width: 20 } },
+          c = document.createElement("div");
+        ((c.style.position = "relative"),
+          (c.style.width = `${o}px`),
+          (c.style.height = `${o}px`));
+        const a = document.createElement("img");
+        ((a.src = `data:image/svg+xml;base64,${r}`),
+          (a.style.width = `${o}px`),
+          (a.style.height = `${o}px`),
+          c.appendChild(a));
+        const n = document.createElement("span");
+        ((n.textContent = i.properties.point_count_abbreviated),
+          (n.style.position = "absolute"),
+          (n.style.left = "50%"),
+          (n.style.top = "50%"),
+          (n.style.transform = "translate(-50%, -50%)"),
+          (n.style.color = "white"),
+          (n.style.fontSize = "12px"),
+          (n.style.fontWeight = "bold"),
+          c.appendChild(n));
+        const h = new woosmap.map.marker.AdvancedMarkerElement({
           position: t,
+          content: c,
+          gmpClickable: !0,
           map: _,
         });
         return (
-          e.addListener("click", () => {
-            (v.setContent(`<h3>${i.properties.name}</h3>`), v.open(_, e));
+          h.addListener("click", () => {
+            C.close();
+            const p = B.getClusterExpansionZoom(i.properties.cluster_id);
+            _.moveCamera({ center: h.position, zoom: p });
           }),
-          e
+          h
+        );
+      }
+      function lt(i, t) {
+        const e = document.createElement("img");
+        ((e.src = et), (e.style.width = "20px"), (e.style.height = "20px"));
+        const s = new woosmap.map.marker.AdvancedMarkerElement({
+          position: t,
+          content: e,
+          gmpClickable: !0,
+          map: _,
+        });
+        return (
+          s.addListener("click", () => {
+            (C.setContent(`<h3>${i.properties.name}</h3>`),
+              C.open({ map: _, anchor: s }));
+          }),
+          s
         );
       }
       function U(i, t) {
@@ -720,10 +739,12 @@
             }, t)));
         };
       }
-      window.initMap = nt;
+      nt();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -751,11 +772,51 @@
   </head>
   <body>
     <!--The div element for the map -->
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

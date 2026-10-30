@@ -37,30 +37,30 @@
           fetch(e.href, t);
         }
       })();
-      let a;
+      let i;
       const c = document.getElementById("modal"),
-        i = document.getElementById("modal-overlay"),
+        a = document.getElementById("modal-overlay"),
         p = document.getElementById("modal-content");
-      function l() {
-        a = new window.woosmap.map.Map(document.getElementById("map"), {
-          gestureHandling: "greedy",
-          center: { lng: 3.878, lat: 43.611 },
-          zoom: 15,
-        });
-        const d = new window.woosmap.map.Drawing({});
-        d.addControl(a);
+      async function l() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("drawing"),
+          (i = document.getElementById("map").innerMap),
+          i.setOptions({ gestureHandling: "greedy" }),
+          i.moveCamera({ center: { lng: 3.878, lat: 43.611 }, zoom: 15 }));
+        const d = new woosmap.map.Drawing({});
+        d.addControl(i);
         const o = document.getElementById("getDrawData");
         ((o.onclick = function () {
           const r = d.getAll();
           p &&
             c &&
-            i &&
+            a &&
             ((p.innerHTML =
               "<div><pre>" + JSON.stringify(r, null, 2) + "</pre></div>"),
             c.classList.toggle("closed"),
-            i.classList.toggle("closed"));
+            a.classList.toggle("closed"));
         }),
-          window.woosmap.map.event.addListenerOnce(a, "idle", () => {
+          woosmap.map.event.addListenerOnce(i, "idle", () => {
             const r = {
               type: "FeatureCollection",
               features: [
@@ -521,14 +521,16 @@
             };
             d.add(r);
           }),
-          (i.onclick = function () {
-            (c.classList.toggle("closed"), i.classList.toggle("closed"));
+          (a.onclick = function () {
+            (c.classList.toggle("closed"), a.classList.toggle("closed"));
           }));
       }
-      window.initMap = l;
+      l();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -642,16 +644,56 @@
       </button>
     </div>
     <!--The div element for the map -->
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
     <div class="modal-overlay closed" id="modal-overlay"></div>
     <div class="modal closed" id="modal">
       <!-- Modal content -->
       <div class="modal-content" id="modal-content"></div>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap&libraries=drawing"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "drawing",
+        language: "",
+      });
+    </script>
   </body>
 </html>

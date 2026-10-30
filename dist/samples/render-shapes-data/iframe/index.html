@@ -10,12 +10,12 @@
         const i = document.createElement("link").relList;
         if (i && i.supports && i.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          r(e);
+          t(e);
         new MutationObserver((e) => {
           for (const I of e)
             if (I.type === "childList")
               for (const n of I.addedNodes)
-                n.tagName === "LINK" && n.rel === "modulepreload" && r(n);
+                n.tagName === "LINK" && n.rel === "modulepreload" && t(n);
         }).observe(document, { childList: !0, subtree: !0 });
         function a(e) {
           const I = {};
@@ -30,14 +30,14 @@
             I
           );
         }
-        function r(e) {
+        function t(e) {
           if (e.ep) return;
           e.ep = !0;
           const I = a(e);
           fetch(e.href, I);
         }
       })();
-      let t;
+      let r;
       const s = {
         pubs: [
           {
@@ -228,21 +228,23 @@
           },
         ],
       };
-      function g() {
-        ((t = new window.woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 53.3430183, lng: -6.25321 },
-          zoom: 14,
-        })),
+      async function g() {
+        (await woosmap.map.importLibrary("maps"),
+          (r = document.getElementById("map").innerMap),
+          r.moveCamera({
+            center: { lat: 53.3430183, lng: -6.25321 },
+            zoom: 14,
+          }),
           s.pubs.forEach((i) => {
-            t.data.add({
-              geometry: new window.woosmap.map.Data.Point({
+            r.data.add({
+              geometry: new woosmap.map.Data.Point({
                 lat: i.coordinates[1],
                 lng: i.coordinates[0],
               }),
               properties: { name: i.properties.name },
             });
           }),
-          t.data.setStyle((i) => {
+          r.data.setStyle((i) => {
             let a =
               "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMzRweCIgaGVpZ2h0PSIzNHB4IiB2aWV3Qm94PSIwIDAgMzQgMzQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8dGl0bGU+T3ZhbDwvdGl0bGU+CiAgICA8ZGVmcz4KICAgICAgICA8Y2lyY2xlIGlkPSJwYXRoLTEiIGN4PSIxNyIgY3k9IjE1IiByPSIxMyI+PC9jaXJjbGU+CiAgICAgICAgPGZpbHRlciB4PSItMjYuOSUiIHk9Ii0xOS4yJSIgd2lkdGg9IjE1My44JSIgaGVpZ2h0PSIxNTMuOCUiIGZpbHRlclVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgaWQ9ImZpbHRlci0yIj4KICAgICAgICAgICAgPGZlT2Zmc2V0IGR4PSIwIiBkeT0iMiIgaW49IlNvdXJjZUFscGhhIiByZXN1bHQ9InNoYWRvd09mZnNldE91dGVyMSI+PC9mZU9mZnNldD4KICAgICAgICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMiIgaW49InNoYWRvd09mZnNldE91dGVyMSIgcmVzdWx0PSJzaGFkb3dCbHVyT3V0ZXIxIj48L2ZlR2F1c3NpYW5CbHVyPgogICAgICAgICAgICA8ZmVDb21wb3NpdGUgaW49InNoYWRvd0JsdXJPdXRlcjEiIGluMj0iU291cmNlQWxwaGEiIG9wZXJhdG9yPSJvdXQiIHJlc3VsdD0ic2hhZG93Qmx1ck91dGVyMSI+PC9mZUNvbXBvc2l0ZT4KICAgICAgICAgICAgPGZlQ29sb3JNYXRyaXggdmFsdWVzPSIwIDAgMCAwIDAgICAwIDAgMCAwIDAgICAwIDAgMCAwIDAgIDAgMCAwIDAuNSAwIiB0eXBlPSJtYXRyaXgiIGluPSJzaGFkb3dCbHVyT3V0ZXIxIj48L2ZlQ29sb3JNYXRyaXg+CiAgICAgICAgPC9maWx0ZXI+CiAgICA8L2RlZnM+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iT3ZhbCI+CiAgICAgICAgICAgIDx1c2UgZmlsbD0iYmxhY2siIGZpbGwtb3BhY2l0eT0iMSIgZmlsdGVyPSJ1cmwoI2ZpbHRlci0yKSIgeGxpbms6aHJlZj0iI3BhdGgtMSI+PC91c2U+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lam9pbj0ic3F1YXJlIiBmaWxsPSIjRTJCOTY3IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGN4PSIxNyIgY3k9IjE1IiByPSIxMS41Ij48L2NpcmNsZT4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==";
             return (
@@ -253,10 +255,10 @@
             );
           }));
         let o;
-        t.data.addListener("click", (i) => {
+        r.data.addListener("click", (i) => {
           if (o) {
-            const r = t.data.getFeatureById(o);
-            r && r.setProperty("highlighted", !1);
+            const t = r.data.getFeatureById(o);
+            t && t.setProperty("highlighted", !1);
           }
           const a = document.getElementById("info");
           (a &&
@@ -265,10 +267,12 @@
             (o = i.feature.id));
         });
       }
-      window.initMap = g;
+      g();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -310,11 +314,51 @@
   <body>
     <div id="info">Click on a Pub...</div>
     <!--The div element for the map -->
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "",
+        language: "",
+      });
+    </script>
   </body>
 </html>

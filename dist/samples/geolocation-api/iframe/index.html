@@ -9,45 +9,47 @@
       (function () {
         const e = document.createElement("link").relList;
         if (e && e.supports && e.supports("modulepreload")) return;
-        for (const s of document.querySelectorAll('link[rel="modulepreload"]'))
-          r(s);
-        new MutationObserver((s) => {
-          for (const t of s)
+        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
+          r(n);
+        new MutationObserver((n) => {
+          for (const t of n)
             if (t.type === "childList")
               for (const i of t.addedNodes)
                 i.tagName === "LINK" && i.rel === "modulepreload" && r(i);
         }).observe(document, { childList: !0, subtree: !0 });
-        function n(s) {
+        function s(n) {
           const t = {};
           return (
-            s.integrity && (t.integrity = s.integrity),
-            s.referrerPolicy && (t.referrerPolicy = s.referrerPolicy),
-            s.crossOrigin === "use-credentials"
+            n.integrity && (t.integrity = n.integrity),
+            n.referrerPolicy && (t.referrerPolicy = n.referrerPolicy),
+            n.crossOrigin === "use-credentials"
               ? (t.credentials = "include")
-              : s.crossOrigin === "anonymous"
+              : n.crossOrigin === "anonymous"
                 ? (t.credentials = "omit")
                 : (t.credentials = "same-origin"),
             t
           );
         }
-        function r(s) {
-          if (s.ep) return;
-          s.ep = !0;
-          const t = n(s);
-          fetch(s.href, t);
+        function r(n) {
+          if (n.ep) return;
+          n.ep = !0;
+          const t = s(n);
+          fetch(n.href, t);
         }
       })();
       let l;
-      const f = "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f";
-      function c() {
-        fetch(`https://api.woosmap.com/geolocation/position/?key=${f}`)
-          .then((o) => o.json())
-          .then((o) => {
-            (p(o), u(o));
-          });
+      const c = "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f";
+      async function f() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          fetch(`https://api.woosmap.com/geolocation/position/?key=${c}`)
+            .then((o) => o.json())
+            .then((o) => {
+              (p(o), u(o));
+            }));
       }
-      function p({ latitude: o, accuracy: e, longitude: n, viewport: r }) {
-        const s = { lat: o, lng: n };
+      function p({ latitude: o, accuracy: e, longitude: s, viewport: r }) {
+        const n = { lat: o, lng: s };
         let t = 12;
         if (
           (e > 200
@@ -61,10 +63,8 @@
                   : e > 5
                     ? (t = 10)
                     : e > 1 && (t = 11),
-          (l = new woosmap.map.Map(document.getElementById("map"), {
-            center: s,
-            zoom: t,
-          })),
+          (l = document.getElementById("map").innerMap),
+          l.moveCamera({ center: n, zoom: t }),
           r)
         ) {
           const a = {
@@ -73,20 +73,22 @@
             north: r.northeast.lat,
             west: r.southwest.lng,
           };
-          (l.fitBounds(a), m(a));
+          (l.fitBounds(a), d(a));
         }
-        new woosmap.map.Marker({
-          position: s,
-          icon: { url: "https://images.woosmap.com/user-position-small.png" },
-        }).setMap(l);
+        const i = document.createElement("img");
+        ((i.src = "https://images.woosmap.com/user-position-small.png"),
+          new woosmap.map.marker.AdvancedMarkerElement({
+            position: n,
+            content: i,
+          }).setMap(l));
       }
       function u(o) {
         const e = [];
-        e.push(d(o));
-        const n = document.getElementById("response");
-        n && ((n.innerHTML = e.join("")), (n.style.display = "block"));
+        e.push(m(o));
+        const s = document.getElementById("response");
+        s && ((s.innerHTML = e.join("")), (s.style.display = "block"));
       }
-      function d(o) {
+      function m(o) {
         return (
           typeof o != "string" && (o = JSON.stringify(o, void 0, 2)),
           (o = o
@@ -96,22 +98,22 @@
           o.replace(
             /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\\-]?\d+)?)/g,
             (e) => {
-              let n = "number";
+              let s = "number";
               return (
                 /^"/.test(e)
                   ? /:$/.test(e)
-                    ? (n = "key")
-                    : (n = "string")
+                    ? (s = "key")
+                    : (s = "string")
                   : /true|false/.test(e)
-                    ? (n = "boolean")
-                    : /null/.test(e) && (n = "null"),
-                '<span class="' + n + '">' + e + "</span>"
+                    ? (s = "boolean")
+                    : /null/.test(e) && (s = "null"),
+                '<span class="' + s + '">' + e + "</span>"
               );
             },
           )
         );
       }
-      function m(o) {
+      function d(o) {
         new woosmap.map.Rectangle({
           bounds: o,
           strokeColor: "#b71c1c",
@@ -121,7 +123,7 @@
           fillOpacity: 0.2,
         }).setMap(l);
       }
-      window.initMap = c;
+      f();
     </script>
     <style>
       html,
@@ -190,12 +192,52 @@
         <strong>Geolocation API Response</strong>
         <pre id="response"></pre>
       </div>
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

@@ -10,12 +10,12 @@
         const i = document.createElement("link").relList;
         if (i && i.supports && i.supports("modulepreload")) return;
         for (const e of document.querySelectorAll('link[rel="modulepreload"]'))
-          l(e);
+          s(e);
         new MutationObserver((e) => {
           for (const t of e)
             if (t.type === "childList")
               for (const c of t.addedNodes)
-                c.tagName === "LINK" && c.rel === "modulepreload" && l(c);
+                c.tagName === "LINK" && c.rel === "modulepreload" && s(c);
         }).observe(document, { childList: !0, subtree: !0 });
         function o(e) {
           const t = {};
@@ -30,14 +30,14 @@
             t
           );
         }
-        function l(e) {
+        function s(e) {
           if (e.ep) return;
           e.ep = !0;
           const t = o(e);
           fetch(e.href, t);
         }
       })();
-      let s;
+      let l;
       const a = {
         megacities: [
           { latlng: "35.700556,139.715", cityname: "Tokyo", citizens: 374e5 },
@@ -144,11 +144,10 @@
           { latlng: "48.856614,2.3522219", cityname: "Paris", citizens: 11e6 },
         ],
       };
-      function r() {
-        s = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 40, lng: 0 },
-          zoom: 2,
-        });
+      async function r() {
+        (await woosmap.map.importLibrary("maps"),
+          (l = document.getElementById("map").innerMap),
+          l.moveCamera({ center: { lat: 40, lng: 0 }, zoom: 2 }));
         for (const n in a.megacities) {
           const i = {
             lat: parseFloat(a.megacities[n].latlng.split(",")[0]),
@@ -160,16 +159,18 @@
             strokeWeight: 2,
             fillColor: "#b71c1c",
             fillOpacity: 0.5,
-            map: s,
+            map: l,
             center: i,
             radius: Math.sqrt(a.megacities[n].citizens) * 100,
           });
         }
       }
-      window.initMap = r;
+      r();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -197,11 +198,51 @@
   </head>
   <body>
     <!--The div element for the map -->
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "",
+        language: "",
+      });
+    </script>
   </body>
 </html>

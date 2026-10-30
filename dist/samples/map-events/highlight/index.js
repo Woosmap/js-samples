@@ -14,15 +14,18 @@ const events = [
   "zoom_changed",
 ];
 
-function initMap() {
-  const map = new woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
+  const map = document.getElementById("map").innerMap;
+
+  map.moveCamera({
     center: {
       lat: 51.52,
       lng: -0.13,
     },
     zoom: 10,
   });
-
   populateEventsTable();
   events.forEach((event) => {
     map.addListener(event, () => {
@@ -52,4 +55,4 @@ function setupListener(name) {
   }
 }
 
-window.initMap = initMap;
+initMap();

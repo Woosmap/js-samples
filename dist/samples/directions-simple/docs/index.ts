@@ -3,10 +3,13 @@ let map: woosmap.map.Map;
 let fromSelect: HTMLSelectElement;
 let toSelect: HTMLSelectElement;
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const directionsService = new woosmap.map.DirectionsService();
   const directionsRenderer = new woosmap.map.DirectionsRenderer({});
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
     zoom: 7,
     center: {
       lat: 43.5,
@@ -76,12 +79,7 @@ function getSelectedLatLng(
   };
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_directions_simple]
 
 export {};

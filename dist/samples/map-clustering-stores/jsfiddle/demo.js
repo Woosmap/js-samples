@@ -11,11 +11,12 @@ const SUPERCLUSTER_OPTIONS = {
   minPoints: 2,
 };
 
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
   infoWindow = new woosmap.map.InfoWindow({});
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
-    center: { lat: 53.3485, lng: -6.257 },
-    zoom: 12,
+  map = document.getElementById("map").innerMap;
+  map.setOptions({
     styles: [
       {
         elementType: "geometry",
@@ -84,6 +85,10 @@ function initMap() {
         stylers: [{ color: "#9e9e9e" }],
       },
     ],
+  });
+  map.moveCamera({
+    center: { lat: 53.3485, lng: -6.257 },
+    zoom: 12,
   });
   getAllStores().then((stores) => {
     index = new Supercluster(SUPERCLUSTER_OPTIONS).load(stores);
@@ -173,48 +178,67 @@ function createCluster(feature, latlng) {
   <circle cx="120" cy="120" opacity=".3" r="80" />
   <circle cx="120" cy="120" opacity=".2" r="110" />
 </svg>`);
-  const marker = new window.woosmap.map.Marker({
-    label: {
-      text: feature.properties["point_count_abbreviated"],
-      color: "white",
-    },
+  const container = document.createElement("div");
+
+  container.style.position = "relative";
+  container.style.width = `${size}px`;
+  container.style.height = `${size}px`;
+
+  const icon = document.createElement("img");
+
+  icon.src = `data:image/svg+xml;base64,${svg}`;
+  icon.style.width = `${size}px`;
+  icon.style.height = `${size}px`;
+  container.appendChild(icon);
+
+  const labelSpan = document.createElement("span");
+
+  labelSpan.textContent = feature.properties["point_count_abbreviated"];
+  labelSpan.style.position = "absolute";
+  labelSpan.style.left = "50%";
+  labelSpan.style.top = "50%";
+  labelSpan.style.transform = "translate(-50%, -50%)";
+  labelSpan.style.color = "white";
+  labelSpan.style.fontSize = "12px";
+  labelSpan.style.fontWeight = "bold";
+  container.appendChild(labelSpan);
+
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: latlng,
-    icon: {
-      url: `data:image/svg+xml;base64,${svg}`,
-      scaledSize: new window.woosmap.map.Size(size, size),
-    },
+    content: container,
+    gmpClickable: true,
     map: map,
   });
 
-  marker.addListener("click", (e) => {
+  marker.addListener("click", () => {
     infoWindow.close();
 
     const expansionZoom = index.getClusterExpansionZoom(
       feature.properties["cluster_id"],
     );
 
-    map.setCenter(marker.getPosition());
-    map.setZoom(expansionZoom);
+    map.moveCamera({ center: marker.position, zoom: expansionZoom });
   });
   return marker;
 }
 
 function createMarker(feature, latlng) {
-  const marker = new window.woosmap.map.Marker({
-    icon: {
-      url: ICON_URL,
-      scaledSize: {
-        height: 20,
-        width: 20,
-      },
-    },
+  const markerContent = document.createElement("img");
+
+  markerContent.src = ICON_URL;
+  markerContent.style.width = "20px";
+  markerContent.style.height = "20px";
+
+  const marker = new woosmap.map.marker.AdvancedMarkerElement({
     position: latlng,
+    content: markerContent,
+    gmpClickable: true,
     map: map,
   });
 
   marker.addListener("click", () => {
     infoWindow.setContent(`<h3>${feature.properties.name}</h3>`);
-    infoWindow.open(map, marker);
+    infoWindow.open({ map, anchor: marker });
   });
   return marker;
 }
@@ -230,4 +254,4 @@ function debounce(callback, timeout) {
   };
 }
 
-window.initMap = initMap;
+initMap();

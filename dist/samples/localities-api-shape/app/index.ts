@@ -1,27 +1,24 @@
 const componentsRestriction: woosmap.map.localities.LocalitiesComponentRestrictions =
   { country: [] };
 const woosmap_key = import.meta.env.VITE_WOOSMAP_PUBLIC_API_KEY!;
-let debouncedAutocomplete: (
-  ...args: any[]
-) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
+let debouncedAutocomplete: typeof autocompleteAddress;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
 let map: woosmap.map.Map;
-let markerAddress: woosmap.map.Marker;
+let markerAddress: woosmap.map.marker.AdvancedMarkerElement;
 let detailsHTML: HTMLElement;
 let addressDetailsContainer: HTMLElement;
 let hasShape = false;
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
-    center: {
-      lat: 48.8534,
-      lng: 2.3488,
-    },
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     disableDefaultUI: true,
     gestureHandling: "greedy",
-    zoom: 5,
     styles: [
       {
         featureType: "poi",
@@ -29,15 +26,21 @@ function initMap(): void {
       },
     ],
   });
+  map.moveCamera({
+    center: {
+      lat: 48.8534,
+      lng: 2.3488,
+    },
+    zoom: 5,
+  });
   init();
   manageCountrySelector();
 }
 
 function createShape(result: woosmap.map.localities.LocalitiesDetailsResult) {
-  // @ts-ignore TypeDef to be updated
   if (result?.geometry?.shape) {
     hasShape = true;
-    // @ts-ignore TypeDef to be updated
+    // @ts-expect-error shape is typed as a Feature, but the API returns a bare geometry
     map.data.addGeoJson({ type: "Feature", geometry: result.geometry.shape });
     if (result.geometry.viewport) {
       const bounds = {
@@ -57,15 +60,16 @@ function createAddressMarker(addressDetail) {
   }
   if (addressDetail?.geometry) {
     const position = addressDetail.geometry.location;
-    markerAddress = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    markerAddress = new woosmap.map.marker.AdvancedMarkerElement({
       position: position,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 59,
-          width: 37,
-        },
-      },
+      content: pin.element,
     });
     markerAddress.setMap(map);
 
@@ -172,7 +176,7 @@ function handleAutocomplete(): void {
       .map((country) => `country:${country}`)
       .join("|");
     if (input !== "") {
-      debouncedAutocomplete(input, componentsArgs, woosmap_key)
+      debouncedAutocomplete(input, componentsArgs)
         .then(({ localities }) => displaySuggestions(localities))
         .catch((error) =>
           console.error("Error autocomplete localities:", error),
@@ -212,7 +216,7 @@ function formatPredictionList(locality): string {
   const prediction = locality;
   const predictionClass = "no-viewpoint";
   const matched_substrings = prediction.matched_substrings;
-  let formatted_name = "";
+  let formatted_name: string;
   if (
     prediction.matched_substrings &&
     prediction.matched_substrings.description
@@ -283,17 +287,17 @@ function buildQueryString(params: object) {
   return queryStringParts.join("&");
 }
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {
@@ -447,8 +451,7 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
     if (addressDetail.types[0] === "address") {
       zoom = 18;
     }
-    map.setZoom(zoom);
-    map.panTo(geometry.location);
+    map.moveCamera({ zoom, center: geometry.location });
   }
 }
 
@@ -465,12 +468,7 @@ function getLocalitiesDetails(
   ).then((response) => response.json());
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 
 export {};

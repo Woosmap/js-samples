@@ -1,4 +1,6 @@
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const center: woosmap.map.LatLngLiteral = { lat: 51.52, lng: -0.13 };
   const style: woosmap.map.Style = {
     breakPoint: 14,
@@ -24,22 +26,15 @@ function initMap(): void {
     },
   };
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+  const map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       zoom: 4,
       center: center,
-    },
-  );
+    });
 
   const storesOverlay = new woosmap.map.StoresOverlay(style);
   storesOverlay.setMap(map);
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 export {};

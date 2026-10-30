@@ -10,52 +10,53 @@
         const e = document.createElement("link").relList;
         if (e && e.supports && e.supports("modulepreload")) return;
         for (const t of document.querySelectorAll('link[rel="modulepreload"]'))
-          r(t);
+          o(t);
         new MutationObserver((t) => {
-          for (const o of t)
-            if (o.type === "childList")
-              for (const l of o.addedNodes)
-                l.tagName === "LINK" && l.rel === "modulepreload" && r(l);
+          for (const r of t)
+            if (r.type === "childList")
+              for (const c of r.addedNodes)
+                c.tagName === "LINK" && c.rel === "modulepreload" && o(c);
         }).observe(document, { childList: !0, subtree: !0 });
         function s(t) {
-          const o = {};
+          const r = {};
           return (
-            t.integrity && (o.integrity = t.integrity),
-            t.referrerPolicy && (o.referrerPolicy = t.referrerPolicy),
+            t.integrity && (r.integrity = t.integrity),
+            t.referrerPolicy && (r.referrerPolicy = t.referrerPolicy),
             t.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
+              ? (r.credentials = "include")
               : t.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+                ? (r.credentials = "omit")
+                : (r.credentials = "same-origin"),
+            r
           );
         }
-        function r(t) {
+        function o(t) {
           if (t.ep) return;
           t.ep = !0;
-          const o = s(t);
-          fetch(t.href, o);
+          const r = s(t);
+          fetch(t.href, r);
         }
       })();
-      let a, i, u, p, d;
-      function c() {
-        const n = a.value,
+      let l, i, u, d, m;
+      function a() {
+        const n = l.value,
           e = i.value,
           s = u.checked ? woosmap.map.query.and : woosmap.map.query.or;
-        let r;
+        let o;
         (n !== "all" && e !== "all"
-          ? (r = s([
+          ? (o = s([
               woosmap.map.query.F("type", n),
               woosmap.map.query.F("tag", e),
             ]))
           : n !== "all"
-            ? (r = s([woosmap.map.query.F("type", n)]))
+            ? (o = s([woosmap.map.query.F("type", n)]))
             : e !== "all"
-              ? (r = s([woosmap.map.query.F("tag", e)]))
-              : (r = s([])),
-          d.setQuery(r.toString()));
+              ? (o = s([woosmap.map.query.F("tag", e)]))
+              : (o = s([])),
+          m.setQuery(o.toString()));
       }
-      function m() {
+      async function p() {
+        await woosmap.map.importLibrary("maps");
         const n = { lat: 51.52, lng: -0.13 },
           e = {
             url: "https://images.woosmap.com/marker-blue.svg",
@@ -81,26 +82,28 @@
               },
             },
           },
-          r = new woosmap.map.Map(document.getElementById("map"), {
-            zoom: 8,
-            center: n,
-          });
-        ((d = new woosmap.map.StoresOverlay(s)), d.setMap(r), y());
+          o = document.getElementById("map").innerMap;
+        (o.moveCamera({ zoom: 8, center: n }),
+          (m = new woosmap.map.StoresOverlay(s)),
+          m.setMap(o),
+          y());
       }
       function y() {
-        ((a = document.getElementById("type")),
+        ((l = document.getElementById("type")),
           (i = document.getElementById("tag")),
           (u = document.getElementById("clauseAND")),
-          (p = document.getElementById("clauseOR")),
-          a.addEventListener("change", c),
-          i.addEventListener("change", c),
-          u.addEventListener("change", c),
-          p.addEventListener("change", c));
+          (d = document.getElementById("clauseOR")),
+          l.addEventListener("change", a),
+          i.addEventListener("change", a),
+          u.addEventListener("change", a),
+          d.addEventListener("change", a));
       }
-      window.initMap = m;
+      p();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -254,11 +257,51 @@
         </div>
       </div>
     </div>
-    <div id="map"></div>
+    <wmp-map id="map"></wmp-map>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-88403c6e-a493-337d-a620-7716f7aa6008&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-88403c6e-a493-337d-a620-7716f7aa6008",
+        libraries: "",
+        language: "",
+      });
+    </script>
   </body>
 </html>

@@ -1,18 +1,23 @@
 // Initialize and add the map with hybrid (satellite) map type
 let map: woosmap.map.Map;
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   const position: woosmap.map.LatLngLiteral = {
     lat: 48.8584,
     lng: 2.2945,
   };
 
   // The map, initialized with hybrid satellite view
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
-    zoom: 16,
-    center: position,
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     mapTypeId: woosmap.map.MapTypeId.HYBRID,
     mapTypeControl: true,
+  });
+  map.moveCamera({
+    zoom: 16,
+    center: position,
   });
 
   // Listen for map type changes via the built-in control
@@ -21,11 +26,6 @@ function initMap(): void {
   });
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

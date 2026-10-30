@@ -5,6 +5,7 @@
  */
 interface ImportMetaEnv {
   readonly VITE_WOOSMAP_PUBLIC_API_KEY: string;
+  readonly VITE_WOOSMAP_SDK_HOST: string;
 }
 
 interface ImportMeta {

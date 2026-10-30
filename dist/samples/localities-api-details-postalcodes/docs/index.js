@@ -33,21 +33,26 @@ function init() {
   debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
 }
 
-function initMap() {
-  map = new woosmap.map.Map(document.getElementById("map"), {
-    center: {
-      lat: 48.8534,
-      lng: 2.3488,
-    },
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.setOptions({
     disableDefaultUI: true,
     gestureHandling: "greedy",
-    zoom: 5,
     styles: [
       {
         featureType: "poi",
         stylers: [{ visibility: "off" }],
       },
     ],
+  });
+  map.moveCamera({
+    center: {
+      lat: 48.8534,
+      lng: 2.3488,
+    },
+    zoom: 5,
   });
 }
 
@@ -159,15 +164,16 @@ function createAddressMarker(addressDetail) {
   }
 
   if (addressDetail && addressDetail.geometry) {
-    markerAddress = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    markerAddress = new woosmap.map.marker.AdvancedMarkerElement({
       position: addressDetail.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 59,
-          width: 37,
-        },
-      },
+      content: pin.element,
     });
     markerAddress.setMap(map);
     panMap(addressDetail);
@@ -203,8 +209,7 @@ function panMap(addressDetail) {
       zoom = 18;
     }
 
-    map.setZoom(zoom);
-    map.panTo(geometry.location);
+    map.moveCamera({ zoom, center: geometry.location });
   }
 }
 
@@ -286,5 +291,5 @@ document.addEventListener("DOMContentLoaded", () => {
   clearSearchBtn = document.getElementsByClassName("clear-searchButton")[0];
   init();
 });
-window.initMap = initMap;
+initMap();
 // [END woosmap_localities_api_details_postalcodes]

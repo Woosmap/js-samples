@@ -29,8 +29,6 @@ const storesStyle = {
   },
 };
 const mapOptions = {
-  center: { lat: 51.50940214, lng: -0.133012 },
-  zoom: 12,
   styles: [
     {
       featureType: "poi.business",
@@ -131,7 +129,9 @@ function handleGeocode(latlng) {
 function handleGeocodeResults(localities) {
   const location = localities.results[0]?.geometry?.location;
 
-  location && handleStoresSearch(location);
+  if (location) {
+    handleStoresSearch(location);
+  }
 }
 
 function handleStoresSearch(latlng) {
@@ -179,15 +179,16 @@ function displayStoresAndLocation(stores, latlng) {
   }
 
   if (stores && latlng) {
-    activeLocation = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    activeLocation = new woosmap.map.marker.AdvancedMarkerElement({
       position: latlng,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
 
     const bounds = calculateLatLngBounds(stores);
@@ -198,8 +199,12 @@ function displayStoresAndLocation(stores, latlng) {
   }
 }
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), mapOptions);
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.setOptions(mapOptions);
+  map.moveCamera({ center: { lat: 51.50940214, lng: -0.133012 }, zoom: 12 });
   storesOverlay = new woosmap.map.StoresOverlay(storesStyle);
   storesOverlay.setMap(map);
   map.data.setStyle((feature) => {
@@ -209,7 +214,9 @@ function initMap() {
     return { icon: iconPint };
   });
   map.addListener("click", (e) => {
-    e.latlng && handleGeocode(e.latlng);
+    if (e.latlng) {
+      handleGeocode(e.latlng);
+    }
   });
   storesService = new woosmap.map.StoresService();
   localitiesService = new woosmap.map.LocalitiesService();
@@ -219,5 +226,5 @@ function handleError(error) {
   console.error("Error:", error);
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_stores_search]

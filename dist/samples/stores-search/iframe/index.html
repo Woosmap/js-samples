@@ -10,34 +10,34 @@
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
         for (const o of document.querySelectorAll('link[rel="modulepreload"]'))
-          i(o);
+          r(o);
         new MutationObserver((o) => {
-          for (const n of o)
-            if (n.type === "childList")
-              for (const a of n.addedNodes)
-                a.tagName === "LINK" && a.rel === "modulepreload" && i(a);
+          for (const s of o)
+            if (s.type === "childList")
+              for (const a of s.addedNodes)
+                a.tagName === "LINK" && a.rel === "modulepreload" && r(a);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(o) {
-          const n = {};
+        function n(o) {
+          const s = {};
           return (
-            o.integrity && (n.integrity = o.integrity),
-            o.referrerPolicy && (n.referrerPolicy = o.referrerPolicy),
+            o.integrity && (s.integrity = o.integrity),
+            o.referrerPolicy && (s.referrerPolicy = o.referrerPolicy),
             o.crossOrigin === "use-credentials"
-              ? (n.credentials = "include")
+              ? (s.credentials = "include")
               : o.crossOrigin === "anonymous"
-                ? (n.credentials = "omit")
-                : (n.credentials = "same-origin"),
-            n
+                ? (s.credentials = "omit")
+                : (s.credentials = "same-origin"),
+            s
           );
         }
-        function i(o) {
+        function r(o) {
           if (o.ep) return;
           o.ep = !0;
-          const n = s(o);
-          fetch(o.href, n);
+          const s = n(o);
+          fetch(o.href, s);
         }
       })();
-      let r,
+      let i,
         c = null,
         u;
       const v = "greedy";
@@ -59,9 +59,7 @@
             },
           },
         },
-        L = {
-          center: { lat: 51.50940214, lng: -0.133012 },
-          zoom: 12,
+        b = {
           styles: [
             {
               featureType: "poi.business",
@@ -75,8 +73,8 @@
         m = document.getElementById("submit-button");
       l &&
         m &&
-        (l.addEventListener("keydown", b), m.addEventListener("click", S));
-      function b(e) {
+        (l.addEventListener("keydown", L), m.addEventListener("click", S));
+      function L(e) {
         e.key === "Enter" && d(null);
       }
       function S() {
@@ -84,24 +82,24 @@
       }
       function E(e) {
         const t = e.map(k),
-          s = document.querySelector(".stores-list");
-        (s && (s.innerHTML = t.join("")), M(e));
+          n = document.querySelector(".stores-list");
+        (n && (n.innerHTML = t.join("")), F(e));
       }
       function k(e, t) {
-        const { name: s, address: i, contact: o, distance: n } = e.properties,
+        const { name: n, address: r, contact: o, distance: s } = e.properties,
           a = o.phone
             ? `<div class='store-contact'><a href='tel:${o.phone}'>${o.phone}</a></div>`
             : "",
-          g = n ? `<div class='store-distance'>${n}</div>` : "",
+          g = s ? `<div class='store-distance'>${s}</div>` : "",
           y = o.website
             ? `<div class='store-website'><a href='${o.website}' target="_blank">go to website</a></div>`
             : "";
         return `
     <div class='controls summary-store-card' data-index=${t}>
       <div>
-        <div><strong>${s} - ${i.city}</strong></div>
+        <div><strong>${n} - ${r.city}</strong></div>
         <div>
-          <div class='store-address'>${(i && i.lines && i.lines.join(", ")) || "Address not available"}</div>
+          <div class='store-address'>${(r && r.lines && r.lines.join(", ")) || "Address not available"}</div>
           ${a}
           ${y}
           ${g}
@@ -109,81 +107,91 @@
       </div>
     </div>`;
       }
-      function M(e) {
+      function F(e) {
         document.querySelectorAll(".summary-store-card").forEach((t) => {
           t.addEventListener("click", () => {
             console.log(e[t.dataset.index]);
           });
         });
       }
-      function $(e) {
+      function P(e) {
         return l ? (e ? { latLng: e } : { address: l.value }) : null;
       }
       function d(e) {
-        const t = $(e);
+        const t = P(e);
         t &&
           f
             .geocode(t)
-            .then((s) => P(s))
+            .then((n) => $(n))
             .catch(h);
       }
-      function P(e) {
-        var s, i;
+      function $(e) {
+        var n, r;
         const t =
-          (i = (s = e.results[0]) == null ? void 0 : s.geometry) == null
+          (r = (n = e.results[0]) == null ? void 0 : n.geometry) == null
             ? void 0
-            : i.location;
-        t && O(t);
+            : r.location;
+        t && M(t);
       }
-      function O(e) {
+      function M(e) {
         const t = { storesByPage: 15, latLng: e };
         p.search(t)
-          .then((s) => B(s, e))
+          .then((n) => O(n, e))
           .catch(h);
       }
-      function B(e, t) {
-        e.features.length > 0 && (E(e.features), z(e.features, t), T(e));
+      function O(e, t) {
+        e.features.length > 0 && (E(e.features), T(e.features, t), B(e));
       }
-      function T(e) {
-        (r.data.forEach((t) => r.data.remove(t)), r.data.addGeoJson(e));
+      function B(e) {
+        (i.data.forEach((t) => i.data.remove(t)), i.data.addGeoJson(e));
       }
-      function q(e) {
+      function A(e) {
         const t = new woosmap.map.LatLngBounds();
         return (
-          e.forEach((s) => {
+          e.forEach((n) => {
             t.extend(
               new woosmap.map.LatLng(
-                s.geometry.coordinates[1],
-                s.geometry.coordinates[0],
+                n.geometry.coordinates[1],
+                n.geometry.coordinates[0],
               ),
             );
           }),
           t
         );
       }
-      function z(e, t) {
+      function T(e, t) {
         if ((c && c.setMap(null), e && t)) {
-          c = new woosmap.map.Marker({
+          const { PinElement: n } = woosmap.map.marker,
+            r = new n({
+              background: "#5588FF",
+              borderColor: "#3D6FE0",
+              glyphColor: "#FFFFFF",
+            });
+          c = new woosmap.map.marker.AdvancedMarkerElement({
             position: t,
-            icon: {
-              url: "https://images.woosmap.com/marker.png",
-              scaledSize: { height: 50, width: 32 },
-            },
+            content: r.element,
           });
-          const s = q(e);
-          (s.extend(t), c.setMap(r), r.fitBounds(s, {}, !0));
+          const o = A(e);
+          (o.extend(t), c.setMap(i), i.fitBounds(o, {}, !0));
         }
       }
-      function A() {
-        ((r = new window.woosmap.map.Map(document.getElementById("map"), L)),
+      async function q() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (i = document.getElementById("map").innerMap),
+          i.setOptions(b),
+          i.moveCamera({
+            center: { lat: 51.50940214, lng: -0.133012 },
+            zoom: 12,
+          }),
           (u = new woosmap.map.StoresOverlay(w)),
-          u.setMap(r),
-          r.data.setStyle((e) => ({
+          u.setMap(i),
+          i.data.setStyle((e) => ({
             icon: e.getProperty("highlighted")
               ? "https://images.woosmap.com/starbucks-marker-selected.svg"
               : "https://images.woosmap.com/starbucks-marker.svg",
           })),
-          r.addListener("click", (e) => {
+          i.addListener("click", (e) => {
             e.latlng && d(e.latlng);
           }),
           (p = new woosmap.map.StoresService()),
@@ -192,7 +200,7 @@
       function h(e) {
         console.error("Error:", e);
       }
-      window.initMap = A;
+      q();
     </script>
     <style>
       html,
@@ -403,12 +411,52 @@
           </div>
         </div>
       </div>
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

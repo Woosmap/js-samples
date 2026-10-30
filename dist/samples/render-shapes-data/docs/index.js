@@ -197,14 +197,16 @@ const pubsData = {
   ],
 };
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 53.3430183, lng: -6.25321 },
     zoom: 14,
   });
   pubsData.pubs.forEach((pub) => {
     map.data.add({
-      geometry: new window.woosmap.map.Data.Point({
+      geometry: new woosmap.map.Data.Point({
         lat: pub.coordinates[1],
         lng: pub.coordinates[0],
       }),
@@ -246,5 +248,5 @@ function initMap() {
   });
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_render_shapes_data]

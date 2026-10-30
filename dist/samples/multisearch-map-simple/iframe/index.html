@@ -11,32 +11,32 @@
       (function () {
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
-        for (const i of document.querySelectorAll('link[rel="modulepreload"]'))
-          c(i);
-        new MutationObserver((i) => {
-          for (const o of i)
-            if (o.type === "childList")
-              for (const d of o.addedNodes)
-                d.tagName === "LINK" && d.rel === "modulepreload" && c(d);
+        for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
+          a(n);
+        new MutationObserver((n) => {
+          for (const i of n)
+            if (i.type === "childList")
+              for (const p of i.addedNodes)
+                p.tagName === "LINK" && p.rel === "modulepreload" && a(p);
         }).observe(document, { childList: !0, subtree: !0 });
-        function s(i) {
-          const o = {};
+        function l(n) {
+          const i = {};
           return (
-            i.integrity && (o.integrity = i.integrity),
-            i.referrerPolicy && (o.referrerPolicy = i.referrerPolicy),
-            i.crossOrigin === "use-credentials"
-              ? (o.credentials = "include")
-              : i.crossOrigin === "anonymous"
-                ? (o.credentials = "omit")
-                : (o.credentials = "same-origin"),
-            o
+            n.integrity && (i.integrity = n.integrity),
+            n.referrerPolicy && (i.referrerPolicy = n.referrerPolicy),
+            n.crossOrigin === "use-credentials"
+              ? (i.credentials = "include")
+              : n.crossOrigin === "anonymous"
+                ? (i.credentials = "omit")
+                : (i.credentials = "same-origin"),
+            i
           );
         }
-        function c(i) {
-          if (i.ep) return;
-          i.ep = !0;
-          const o = s(i);
-          fetch(i.href, o);
+        function a(n) {
+          if (n.ep) return;
+          n.ep = !0;
+          const i = l(n);
+          fetch(n.href, i);
         }
       })();
       const u = {
@@ -54,109 +54,116 @@
           minInputLength: 5,
         },
       };
-      let m, l, n, r, p, a;
+      let m, s, o, r, d, c;
       function f() {
-        ((l = document.getElementById("autocomplete-input")),
-          (n = document.getElementById("suggestions-list")),
+        ((s = document.getElementById("autocomplete-input")),
+          (o = document.getElementById("suggestions-list")),
           (r = document.getElementsByClassName("clear-searchButton")[0]),
-          l &&
-            n &&
-            (l.addEventListener("input", g),
-            l.addEventListener("keydown", (e) => {
+          s &&
+            o &&
+            (s.addEventListener("input", g),
+            s.addEventListener("keydown", (e) => {
               if (e.key === "Enter") {
-                const t = n.querySelector("li");
+                const t = o.querySelector("li");
                 t && t.click();
               }
             })),
           r.addEventListener("click", () => {
-            ((l.value = ""),
-              (n.style.display = "none"),
+            ((s.value = ""),
+              (o.style.display = "none"),
               (r.style.display = "none"),
-              a && a.setMap(null),
-              l.focus());
+              c && c.setMap(null),
+              s.focus());
           }),
-          (m = window.woosmap.multisearch(u)));
+          (m = woosmap.multisearch(u)));
       }
-      function y() {
-        ((p = new window.woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 51.50940214, lng: -0.133012 },
-          zoom: 4,
-        })),
+      async function y() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (d = document.getElementById("map").innerMap),
+          d.moveCamera({
+            center: { lat: 51.50940214, lng: -0.133012 },
+            zoom: 4,
+          }),
           f());
       }
       function g() {
-        if (l && n) {
-          const e = l.value;
+        if (s && o) {
+          const e = s.value;
           (e.replace('"', '\\"').replace(/^\s+|\s+$/g, ""),
             e !== ""
               ? m.autocompleteMulti(e).then(
                   (t) => E(t),
                   (t) => console.error(`Error autocomplete localities: ${t}`),
                 )
-              : ((n.style.display = "none"), (r.style.display = "none")));
+              : ((o.style.display = "none"), (r.style.display = "none")));
         }
       }
       function h() {
         const e = document.createElement("li");
         ((e.innerHTML =
           "<div class='prediction no-result'>No results found...</div>"),
-          n.appendChild(e),
-          (n.className = ""),
-          (n.style.display = "block"));
+          o.appendChild(e),
+          (o.className = ""),
+          (o.style.display = "block"));
       }
       function E(e) {
-        l &&
-          n &&
-          ((n.innerHTML = ""),
+        s &&
+          o &&
+          ((o.innerHTML = ""),
           e.length > 0
             ? (e.forEach((t) => {
-                var c;
-                const s = document.createElement("li");
-                ((s.innerHTML = (c = L(t)) != null ? c : ""),
-                  s.addEventListener("click", () => {
-                    var i;
-                    ((l.value = (i = t.description) != null ? i : ""),
-                      (n.style.display = "none"),
-                      m.detailsMulti({ id: t.id, api: t.api }).then((o) => {
-                        w(o);
+                var a;
+                const l = document.createElement("li");
+                ((l.innerHTML = (a = L(t)) != null ? a : ""),
+                  l.addEventListener("click", () => {
+                    var n;
+                    ((s.value = (n = t.description) != null ? n : ""),
+                      (o.style.display = "none"),
+                      m.detailsMulti({ id: t.id, api: t.api }).then((i) => {
+                        v(i);
                       }));
                   }),
-                  n.appendChild(s));
+                  o.appendChild(l));
               }),
-              (n.className = e[0].api),
-              (n.style.display = "block"),
+              (o.className = e[0].api),
+              (o.style.display = "block"),
               (r.style.display = "block"))
             : h());
       }
       function L(e) {
         const t = "no-viewpoint",
-          s = e.highlight;
-        let c = "";
-        return ((c += `<div class="prediction ${t}">${s}</div>`), c);
+          l = e.highlight;
+        let a = "";
+        return ((a += `<div class="prediction ${t}">${l}</div>`), a);
       }
-      function w(e) {
-        (a && a.setMap(null),
-          e != null &&
-            e.geometry &&
-            ((a = new woosmap.map.Marker({
-              position: e.geometry.location,
-              icon: {
-                url: "https://images.woosmap.com/marker.png",
-                scaledSize: { height: 50, width: 32 },
-              },
-            })),
-            a.setMap(p),
-            p.flyTo({ center: e.geometry.location, zoom: 14 })));
+      function v(e) {
+        if ((c && c.setMap(null), e != null && e.geometry)) {
+          const { PinElement: t } = woosmap.map.marker,
+            l = new t({
+              background: "#5588FF",
+              borderColor: "#3D6FE0",
+              glyphColor: "#FFFFFF",
+            });
+          ((c = new woosmap.map.marker.AdvancedMarkerElement({
+            position: e.geometry.location,
+            content: l.element,
+          })),
+            c.setMap(d),
+            d.flyTo({ center: e.geometry.location, zoom: 14 }));
+        }
       }
       document.addEventListener("click", (e) => {
         !e.target.closest("#autocomplete-container") &&
-          n &&
-          (n.style.display = "none");
+          o &&
+          (o.style.display = "none");
       });
-      window.initMap = y;
+      y();
     </script>
     <style>
       #map {
+        display: block;
+        width: 100%;
         height: 100%;
       }
       html,
@@ -325,12 +332,52 @@
         </button>
         <ul id="suggestions-list"></ul>
       </div>
-      <div id="map"></div>
+      <wmp-map id="map"></wmp-map>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

@@ -10,103 +10,90 @@
         const t = document.createElement("link").relList;
         if (t && t.supports && t.supports("modulepreload")) return;
         for (const n of document.querySelectorAll('link[rel="modulepreload"]'))
-          r(n);
+          a(n);
         new MutationObserver((n) => {
-          for (const i of n)
-            if (i.type === "childList")
-              for (const o of i.addedNodes)
-                o.tagName === "LINK" && o.rel === "modulepreload" && r(o);
+          for (const o of n)
+            if (o.type === "childList")
+              for (const i of o.addedNodes)
+                i.tagName === "LINK" && i.rel === "modulepreload" && a(i);
         }).observe(document, { childList: !0, subtree: !0 });
-        function c(n) {
-          const i = {};
+        function r(n) {
+          const o = {};
           return (
-            n.integrity && (i.integrity = n.integrity),
-            n.referrerPolicy && (i.referrerPolicy = n.referrerPolicy),
+            n.integrity && (o.integrity = n.integrity),
+            n.referrerPolicy && (o.referrerPolicy = n.referrerPolicy),
             n.crossOrigin === "use-credentials"
-              ? (i.credentials = "include")
+              ? (o.credentials = "include")
               : n.crossOrigin === "anonymous"
-                ? (i.credentials = "omit")
-                : (i.credentials = "same-origin"),
-            i
+                ? (o.credentials = "omit")
+                : (o.credentials = "same-origin"),
+            o
           );
         }
-        function r(n) {
+        function a(n) {
           if (n.ep) return;
           n.ep = !0;
-          const i = c(n);
-          fetch(n.href, i);
+          const o = r(n);
+          fetch(n.href, o);
         }
       })();
-      let m,
-        $,
-        a,
-        T = [],
-        g,
+      let u,
+        I,
+        c,
+        v = [],
+        p,
         f,
-        _;
-      function E(e, t, c) {
-        return new woosmap.map.Marker({
-          map: m,
+        T;
+      function b(e, t, r) {
+        const { PinElement: a } = woosmap.map.marker,
+          n = new a({ background: r, glyphText: t, glyphColor: "#FFFFFF" });
+        return new woosmap.map.marker.AdvancedMarkerElement({
+          map: u,
           position: e,
-          draggable: !0,
-          icon: {
-            url: c,
-            labelOrigin: new woosmap.map.Point(13, 15),
-            scaledSize: { height: 38, width: 26 },
-          },
-          label: { text: t, color: "white" },
+          gmpDraggable: !0,
+          content: n.element,
         });
       }
       function B() {
-        for (const e of T) e.setMap(null);
-        T = [];
-      }
-      function x() {
-        B();
-        const e = E(
-          a.origin,
-          "O",
-          "https://images.woosmap.com/marker-blue.svg",
-        );
-        e.addListener("dragend", () => {
-          ((a.origin = e.getPosition()), p(g, e.getPosition().toJSON()), l());
-        });
-        const t = E(
-          a.destination,
-          "D",
-          "https://images.woosmap.com/marker-red.svg",
-        );
-        (t.addListener("dragend", () => {
-          ((a.destination = t.getPosition()),
-            p(f, t.getPosition().toJSON()),
-            l());
-        }),
-          T.push(e),
-          T.push(t));
+        for (const e of v) e.setMap(null);
+        v = [];
       }
       function C() {
+        B();
+        const e = b(c.origin, "O", "#3d5afe");
+        e.addListener("dragend", () => {
+          ((c.origin = e.position), m(p, e.position.toJSON()), l());
+        });
+        const t = b(c.destination, "D", "#f50057");
+        (t.addListener("dragend", () => {
+          ((c.destination = t.position), m(f, t.position.toJSON()), l());
+        }),
+          v.push(e),
+          v.push(t));
+      }
+      function x() {
         const e = { lat: 45.4765, lng: 9.0553 },
           t = { lat: 45.4599, lng: 9.2822 };
-        return (p(g, e), p(f, t), { origin: e, destination: t });
+        return (m(p, e), m(f, t), { origin: e, destination: t });
       }
-      function p(e, t) {
+      function m(e, t) {
         e.innerHTML = `<li><span>lat: ${t.lat.toFixed(4)}, lng: ${t.lng.toFixed(4)}<span></li>`;
       }
       function D(e) {
-        const t = e.routes.map((o, s) => {
-          var k;
-          const u = o.legs.reduce((h, q) => h + q.distance, 0),
+        const t = e.routes.map((i, s) => {
+          var E;
+          const L = i.legs.reduce((g, q) => g + q.distance, 0),
             d = document.createElement("div");
           ((d.className = "directionTrip"),
             s === 0 && d.classList.add("directionTrip__selected"));
-          const b =
-              ((k = o.legs.find(
-                (h) => h.start_location && h.start_location.name !== null,
+          const k =
+              ((E = i.legs.find(
+                (g) => g.start_location && g.start_location.name !== null,
               )) == null
                 ? void 0
-                : k.start_location.name) || "Walking",
+                : E.start_location.name) || "Walking",
             R =
-              b === "Walking"
+              k === "Walking"
                 ? "https://images.woosmap.com/directions/walk_black.png"
                 : "https://images.woosmap.com/directions/transit_black.png";
           return (
@@ -114,103 +101,103 @@
             <img class="directionTrip__travelModeIcon" src="${R}">
             <div class="directionTrip__description">
                 <div class="directionTrip__numbers">
-                    <div class="directionTrip__duration">${r(o.duration)}</div>
-                    <div class="directionTrip__distance">${c(u)}</div>
+                    <div class="directionTrip__duration">${a(i.duration)}</div>
+                    <div class="directionTrip__distance">${r(L)}</div>
                 </div>
-                <div class="directionTrip__title">through ${b}</div>
-                <div class="directionTrip__summary">${r(o.duration)}</div>
+                <div class="directionTrip__title">through ${k}</div>
+                <div class="directionTrip__summary">${a(i.duration)}</div>
                 <div class="directionTrip__detailsMsg"></div>
             </div>
         `),
             d.addEventListener("click", () => {
-              (n(s), _.setRouteIndex(s));
+              (n(s), T.setRouteIndex(s));
             }),
             d
           );
         });
-        function c(o) {
-          return o < 1e3 ? `${o} m` : `${(o / 1e3).toFixed(2)} km`;
+        function r(i) {
+          return i < 1e3 ? `${i} m` : `${(i / 1e3).toFixed(2)} km`;
         }
-        function r(o) {
-          const s = Math.round(o / 60);
+        function a(i) {
+          const s = Math.round(i / 60);
           if (s < 60) return `${s}m`;
           {
-            const u = Math.floor(s / 60),
+            const L = Math.floor(s / 60),
               d = s % 60;
-            return `${u}h${d}m`;
+            return `${L}h${d}m`;
           }
         }
-        function n(o) {
+        function n(i) {
           (document
             .querySelectorAll(".directionTrip__selected")
             .forEach((s) => {
               s.classList.remove("directionTrip__selected");
             }),
-            t[o].classList.add("directionTrip__selected"));
+            t[i].classList.add("directionTrip__selected"));
         }
-        const i = document.querySelector(".tableContainer");
-        ((i.innerHTML = ""),
-          t.forEach((o) => i.appendChild(o)),
-          (i.style.display = "block"));
+        const o = document.querySelector(".tableContainer");
+        ((o.innerHTML = ""),
+          t.forEach((i) => o.appendChild(i)),
+          (o.style.display = "block"));
       }
-      function I(e) {
+      function O(e) {
         const t = document.getElementById("infoMessage");
         if (e === "") t.innerText = "Drag markers to update route";
         else {
           ((t.innerHTML = e), (t.style.display = "block"));
-          const c = document.querySelector(".tableContainer");
-          ((c.innerHTML = ""), (c.style.display = "none"));
+          const r = document.querySelector(".tableContainer");
+          ((r.innerHTML = ""), (r.style.display = "none"));
         }
       }
-      function L() {
+      function _() {
         document.querySelector(".linear-progress").classList.toggle("hide");
       }
-      function P(e) {
-        _.setRoutes(e);
+      function F(e) {
+        T.setRoutes(e);
       }
       function l() {
-        (L(),
-          $.route(a)
+        (_(),
+          I.route(c)
             .then(A)
             .catch((e) => {
-              (console.error("Error calculating transit route:", e), I(e), L());
+              (console.error("Error calculating transit route:", e), O(e), _());
             }));
       }
       function A(e) {
-        (P(e.routes), x(), D(e), I(""), L());
-      }
-      function w(e) {
-        return e.getTime && typeof e.getTime == "function";
+        (F(e.routes), C(), D(e), O(""), _());
       }
       function M(e) {
+        return e.getTime && typeof e.getTime == "function";
+      }
+      function w(e) {
         const t = document.getElementById(`${e}-time`),
-          c = document.getElementById("datetime"),
-          r = e === "departureTime" ? "arrivalTime" : "departureTime",
-          n = document.getElementById(`${r}-time`);
+          r = document.getElementById("datetime"),
+          a = e === "departureTime" ? "arrivalTime" : "departureTime",
+          n = document.getElementById(`${a}-time`);
         !t ||
           !n ||
           ((t.min = new Date().toISOString().slice(0, 16)),
           (t.disabled = !0),
-          document.querySelectorAll(`input[name="${e}"]`).forEach((i) => {
-            i.addEventListener("change", () => {
-              switch (i.value) {
+          document.querySelectorAll(`input[name="${e}"]`).forEach((o) => {
+            o.addEventListener("change", () => {
+              switch (o.value) {
                 case "empty":
-                  (delete a[e], (t.disabled = !0));
+                  (delete c[e], (t.disabled = !0));
                   break;
                 case "now":
                 case "datetime":
                   if (
-                    (delete a[r],
+                    (delete c[a],
                     (document.querySelector(
-                      `input[name="${r}"][value="empty"]`,
+                      `input[name="${a}"][value="empty"]`,
                     ).checked = !0),
                     (n.value = ""),
                     (n.disabled = !0),
                     t.value)
                   ) {
                     const s = new Date(t.value);
-                    a[e] = w(s) ? s.getTime().toString() : void 0;
-                  } else a[e] = void 0;
+                    c[e] = M(s) ? s.getTime().toString() : void 0;
+                  } else c[e] = void 0;
                   t.disabled = !1;
                   break;
               }
@@ -218,41 +205,41 @@
             });
           }),
           t.addEventListener("change", () => {
-            c && (c.checked = !0);
-            const i = new Date(t.value);
-            ((a[e] = w(i) ? i.getTime().toString() : void 0), l());
+            r && (r.checked = !0);
+            const o = new Date(t.value);
+            ((c[e] = M(o) ? o.getTime().toString() : void 0), l());
           }));
       }
-      function S(e, t, c) {
+      function S(e, t) {
         const r = document.querySelector(e);
         r.addEventListener("click", () => {
-          var n, i;
+          var a, n;
           if (r.classList.contains("addLocation__selected")) {
             (r.classList.remove("addLocation__selected"),
-              (n = document.getElementById("map")) == null ||
-                n.classList.remove("cursor-crosshair"),
-              woosmap.map.event.clearListeners(m, "click"));
+              (a = document.getElementById("map")) == null ||
+                a.classList.remove("cursor-crosshair"),
+              woosmap.map.event.clearListeners(u, "click"));
             return;
           }
           (r.classList.add("addLocation__selected"),
-            (i = document.getElementById("map")) == null ||
-              i.classList.add("cursor-crosshair"),
-            woosmap.map.event.addListenerOnce(m, "click", (o) => {
-              var u;
-              ((u = document.getElementById("map")) == null ||
-                u.classList.remove("cursor-crosshair"),
+            (n = document.getElementById("map")) == null ||
+              n.classList.add("cursor-crosshair"),
+            woosmap.map.event.addListenerOnce(u, "click", (o) => {
+              var s;
+              ((s = document.getElementById("map")) == null ||
+                s.classList.remove("cursor-crosshair"),
                 r.classList.remove("addLocation__selected"));
-              const s = o.latlng;
-              (t === g && (a.origin = s),
-                t === f && (a.destination = s),
-                p(t, s),
+              const i = o.latlng;
+              (t === p && (c.origin = i),
+                t === f && (c.destination = i),
+                m(t, i),
                 l());
             }));
         });
       }
-      const v = [],
+      const h = [],
         y = [],
-        O = {
+        $ = {
           train: [
             "highSpeedTrain",
             "intercityTrain",
@@ -271,51 +258,51 @@
       function N() {
         const e = document.querySelectorAll('.modesChk[type="checkbox"]'),
           t = document.querySelector("#includeModes"),
-          c = document.querySelector("#excludeModes");
-        function r() {
-          ((v.length = 0),
+          r = document.querySelector("#excludeModes");
+        function a() {
+          ((h.length = 0),
             (y.length = 0),
-            Object.keys(O).forEach((n) => {
+            Object.keys($).forEach((n) => {
               document.querySelector(
                 `#mode${n.charAt(0).toUpperCase() + n.slice(1)}`,
               ).checked &&
-                O[n].forEach((o) => {
-                  t.checked ? v.push(o) : c.checked && y.push("-" + o);
+                $[n].forEach((i) => {
+                  t.checked ? h.push(i) : r.checked && y.push("-" + i);
                 });
             }),
-            v.length === 0 && y.length === 0
-              ? delete a.modes
-              : (a.modes = t.checked ? v : y),
+            h.length === 0 && y.length === 0
+              ? delete c.modes
+              : (c.modes = t.checked ? h : y),
             l());
         }
         (e.forEach((n) => {
-          n.addEventListener("change", r);
+          n.addEventListener("change", a);
         }),
-          t.addEventListener("change", r),
-          c.addEventListener("change", r));
+          t.addEventListener("change", a),
+          r.addEventListener("change", a));
       }
       function H() {
-        (M("departureTime"),
-          M("arrivalTime"),
+        (w("departureTime"),
+          w("arrivalTime"),
           N(),
-          S(".addLocation__destinations", f, a.destination),
-          S(".addLocation__origins", g, a.origin));
+          S(".addLocation__destinations", f),
+          S(".addLocation__origins", p));
       }
-      function F() {
-        ((m = new woosmap.map.Map(document.getElementById("map"), {
-          center: { lat: 45.482604, lng: 9.16924 },
-          zoom: 11,
-        })),
-          ($ = new woosmap.map.TransitService()),
-          (_ = new woosmap.map.TransitRenderer({})),
-          _.setMap(m),
-          (g = document.getElementById("origin")),
+      async function P() {
+        (await woosmap.map.importLibrary("maps"),
+          await woosmap.map.importLibrary("marker"),
+          (u = document.getElementById("map").innerMap),
+          u.moveCamera({ center: { lat: 45.482604, lng: 9.16924 }, zoom: 11 }),
+          (I = new woosmap.map.TransitService()),
+          (T = new woosmap.map.TransitRenderer({})),
+          T.setMap(u),
+          (p = document.getElementById("origin")),
           (f = document.getElementById("destination")),
-          (a = C()),
+          (c = x()),
           H(),
           l());
       }
-      window.initMap = F;
+      P();
     </script>
     <style>
       html,
@@ -818,15 +805,55 @@
         <div class="linear-progress hide">
           <div class="progress"></div>
         </div>
-        <div id="map"></div>
+        <wmp-map id="map"></wmp-map>
         <div id="infoMessage">Drag markers to update route</div>
         <div class="tableContainer"></div>
       </div>
     </div>
 
-    <script
-      src="https://sdk.woosmap.com/map/map.js?key=woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f&callback=initMap"
-      defer
-    ></script>
+    <script>
+      ((g) => {
+        let p;
+        const w = window,
+          d = document;
+        const L = "importLibrary",
+          CB = "__ib__";
+        const E = "The Woosmap Maps JavaScript API";
+        const woosmap = w.woosmap || (w.woosmap = {});
+        const maps = woosmap.map || (woosmap.map = {});
+        // Seed with the sample's configured libraries: some (e.g. widgets) are
+        // not importLibrary() names and only load through the script URL.
+        const libs = new Set(
+            String(g.libraries || "")
+              .split(",")
+              .filter(Boolean),
+          ),
+          params = new URLSearchParams();
+        const load = () =>
+          p ||
+          (p = new Promise((res, rej) => {
+            const s = d.createElement("script");
+            params.set("libraries", [...libs].join(","));
+            for (const k in g)
+              if (k !== "libraries" && g[k]) params.set(k, g[k]);
+            params.set("callback", "woosmap.map." + CB);
+            s.src = "https://sdk.woosmap.com/map/map.js?" + params;
+            maps[CB] = res;
+            s.onerror = () => rej(Error(E + " could not load."));
+            s.nonce = d.querySelector("script[nonce]")?.nonce || "";
+            d.head.append(s);
+          }));
+        if (maps[L]) {
+          console.warn(E + " only loads once. Ignoring:", g);
+        } else {
+          maps[L] = (name, ...args) =>
+            libs.add(name) && load().then(() => maps[L](name, ...args));
+        }
+      })({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+        language: "",
+      });
+    </script>
   </body>
 </html>

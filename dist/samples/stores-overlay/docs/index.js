@@ -1,5 +1,7 @@
 // [START woosmap_stores_overlay]
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
   const center = { lat: 51.52, lng: -0.13 };
   // [START woosmap_stores_overlay_style]
   const style = {
@@ -27,15 +29,18 @@ function initMap() {
   };
   // [END woosmap_stores_overlay_style]
   // [START woosmap_stores_overlay_add_map]
-  const map = new woosmap.map.Map(document.getElementById("map"), {
+  const map = document.getElementById("map").innerMap;
+
+  map.moveCamera({
     zoom: 4,
     center: center,
   });
+
   const storesOverlay = new woosmap.map.StoresOverlay(style);
 
   storesOverlay.setMap(map);
   // [END woosmap_stores_overlay_add_map]
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_stores_overlay]

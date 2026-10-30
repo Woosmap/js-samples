@@ -1,18 +1,19 @@
 // Initialize and add the map
 let map: woosmap.map.Map;
-let marker: woosmap.map.Marker;
+let marker: woosmap.map.marker.AdvancedMarkerElement;
 let infoWindow: woosmap.map.InfoWindow;
 let localitiesService: woosmap.map.LocalitiesService;
 const request: woosmap.map.localities.LocalitiesGeocodeRequest = {};
 
-function initMap() {
-  map = new window.woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
       center: { lat: 51.50940214, lng: -0.133012 },
       zoom: 12,
-    },
-  );
+    });
   infoWindow = new woosmap.map.InfoWindow({});
   localitiesService = new woosmap.map.LocalitiesService();
   map.addListener("click", (e) => {
@@ -78,19 +79,20 @@ function displayLocality(
   }
 
   if (locality?.geometry) {
-    marker = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    marker = new woosmap.map.marker.AdvancedMarkerElement({
       position: locality.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 50,
-          width: 32,
-        },
-      },
+      content: pin.element,
     });
     marker.setMap(map);
     infoWindow.setContent(`<span>${locality.formatted_address}</span>`);
-    infoWindow.open(map, marker);
+    infoWindow.open({map, anchor: marker});
     map.setCenter(locality.geometry.location);
     renderResponse(locality);
   }
@@ -210,11 +212,6 @@ function clearResponse() {
   if (rawEl) rawEl.textContent = "";
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 
 export {};

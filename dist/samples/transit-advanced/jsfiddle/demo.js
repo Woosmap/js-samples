@@ -6,23 +6,18 @@ let originContainer;
 let destinationContainer;
 let transitRenderer;
 
-function createMarker(position, label, url) {
-  return new woosmap.map.Marker({
+function createMarker(position, label, background) {
+  const { PinElement } = woosmap.map.marker;
+  const pin = new PinElement({
+    background,
+    glyphText: label,
+    glyphColor: "#FFFFFF",
+  });
+  return new woosmap.map.marker.AdvancedMarkerElement({
     map,
     position,
-    draggable: true,
-    icon: {
-      url,
-      labelOrigin: new woosmap.map.Point(13, 15),
-      scaledSize: {
-        height: 38,
-        width: 26,
-      },
-    },
-    label: {
-      text: label,
-      color: "white",
-    },
+    gmpDraggable: true,
+    content: pin.element,
   });
 }
 
@@ -37,29 +32,25 @@ function clearMarkers() {
 function displayTransitMarkers() {
   clearMarkers();
 
-  const originMarker = createMarker(
-    transitRequest.origin,
-    "O",
-    "https://images.woosmap.com/marker-blue.svg",
-  );
+  const originMarker = createMarker(transitRequest.origin, "O", "#3d5afe");
 
   originMarker.addListener("dragend", () => {
-    transitRequest.origin = originMarker.getPosition();
-    setLatLngToContainer(originContainer, originMarker.getPosition().toJSON());
+    transitRequest.origin = originMarker.position;
+    setLatLngToContainer(originContainer, originMarker.position.toJSON());
     calculateTransit();
   });
 
   const destinationMarker = createMarker(
     transitRequest.destination,
     "D",
-    "https://images.woosmap.com/marker-red.svg",
+    "#f50057",
   );
 
   destinationMarker.addListener("dragend", () => {
-    transitRequest.destination = destinationMarker.getPosition();
+    transitRequest.destination = destinationMarker.position;
     setLatLngToContainer(
       destinationContainer,
-      destinationMarker.getPosition().toJSON(),
+      destinationMarker.position.toJSON(),
     );
     calculateTransit();
   });
@@ -271,7 +262,7 @@ function updateTime(timeType) {
   });
 }
 
-function registerAddButton(selector, element, loc) {
+function registerAddButton(selector, element) {
   const button = document.querySelector(selector);
 
   button.addEventListener("click", () => {
@@ -368,20 +359,15 @@ function initUI() {
   updateTime("departureTime");
   updateTime("arrivalTime");
   updateTransitOptions();
-  registerAddButton(
-    ".addLocation__destinations",
-    destinationContainer,
-    transitRequest.destination,
-  );
-  registerAddButton(
-    ".addLocation__origins",
-    originContainer,
-    transitRequest.origin,
-  );
+  registerAddButton(".addLocation__destinations", destinationContainer);
+  registerAddButton(".addLocation__origins", originContainer);
 }
 
-function initMap() {
-  map = new woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 45.482604, lng: 9.16924 },
     zoom: 11,
   });
@@ -395,4 +381,4 @@ function initMap() {
   calculateTransit();
 }
 
-window.initMap = initMap;
+initMap();

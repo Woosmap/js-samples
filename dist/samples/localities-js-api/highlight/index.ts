@@ -1,6 +1,28 @@
 const customDescription =
   'postal_code:"{name} ({postal_town}) - {administrative_area_level_0}"';
-let localitiesAutocompleteService;
+// The Localities JS API ships no typings: describe the parts this sample uses.
+interface LocalitiesAutocompleteService {
+  autocomplete(
+    request: { input: string; custom_description: string },
+    onSuccess: (
+      response: woosmap.map.localities.LocalitiesAutocompleteResponse,
+    ) => void,
+    onError: (errorCode: number, errorText: string) => void,
+    debounceTime: number,
+  ): void;
+  getDetails(
+    publicId: string,
+    onSuccess: (result: woosmap.map.localities.LocalitiesPredictions) => void,
+  ): void;
+}
+
+interface LocalitiesApiGlobal {
+  localities: {
+    AutocompleteService: new (key: string) => LocalitiesAutocompleteService;
+  };
+}
+
+let localitiesAutocompleteService: LocalitiesAutocompleteService;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
@@ -26,8 +48,10 @@ function init(): void {
     inputElement.focus();
   });
 
-  localitiesAutocompleteService =
-    new window.woosmap.localities.AutocompleteService("YOUR_API_KEY");
+  const { localities } = woosmap as unknown as LocalitiesApiGlobal;
+  localitiesAutocompleteService = new localities.AutocompleteService(
+    "YOUR_API_KEY",
+  );
 }
 
 function handleAutocomplete(): void {
@@ -83,7 +107,7 @@ function formatPredictionList(locality): string {
   const prediction = locality;
   const predictionClass = "no-viewpoint";
   const matched_substrings = prediction.matched_substrings;
-  let formatted_name = "";
+  let formatted_name: string;
   if (
     prediction.matched_substrings &&
     prediction.matched_substrings.description
@@ -144,15 +168,5 @@ document.addEventListener("DOMContentLoaded", () => {
   init();
 });
 
-declare global {
-  interface Window {
-    // currently, the localities JS API typings are not exported, so we use `any` here
-    woosmap: {
-      localities: {
-        AutocompleteService: new (key: string) => any;
-      };
-    };
-  }
-}
 
 export {};

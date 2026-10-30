@@ -1,6 +1,6 @@
 // [START woosmap_marker_click_event]
-const markers: woosmap.map.Marker[] = [];
-let markerSelected: woosmap.map.Marker;
+const markers: woosmap.map.marker.AdvancedMarkerElement[] = [];
+let markerSelected: woosmap.map.marker.AdvancedMarkerElement;
 const data = {
   megaCities: [
     {
@@ -136,26 +136,26 @@ const data = {
   ],
 };
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
   const center: woosmap.map.LatLngLiteral = { lat: 40.0, lng: 0.0 };
 
-  const iconCity: woosmap.map.Icon = {
-    url: "https://images.woosmap.com/icons/pin-red.png",
-    scaledSize: { height: 38, width: 26 },
-  };
+  const { PinElement } = woosmap.map.marker;
+  const CITY_PIN_COLORS = { background: "#EA4335", borderColor: "#B31412" };
+  const SELECTED_CITY_PIN_COLORS = { background: "#00BDA5", borderColor: "#004941" };
 
-  const iconSelectedCity: woosmap.map.Icon = {
-    url: "https://images.woosmap.com/icons/pin-green.png",
-    scaledSize: { height: 38, width: 26 },
-  };
+  function createCityMarkerContent(): woosmap.map.marker.PinElement {
+    return new PinElement(CITY_PIN_COLORS);
+  }
 
-  const map = new woosmap.map.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      zoom: 0,
-      center: center,
-    },
-  );
+  const map = (document.getElementById("map") as woosmap.map.MapElement)
+    .innerMap;
+  map.moveCamera({
+    zoom: 0,
+    center: center,
+  });
 
   data.megaCities.forEach((cityData) => {
     const latlng = {
@@ -163,9 +163,10 @@ function initMap(): void {
       lng: parseFloat(cityData.latlng.split(",")[1]),
     };
 
-    const markerCity = new woosmap.map.Marker({
+    const markerCity = new woosmap.map.marker.AdvancedMarkerElement({
       position: latlng,
-      icon: iconCity,
+      content: createCityMarkerContent(),
+      gmpClickable: true,
     });
 
     markerCity.setMap(map);
@@ -177,26 +178,27 @@ function initMap(): void {
   });
 
   const handleMarkerClick = (
-    marker: woosmap.map.Marker,
+    marker: woosmap.map.marker.AdvancedMarkerElement,
     cityData: Record<string, string>,
   ) => {
     if (markerSelected) {
-      markerSelected.setIcon(iconCity);
+      Object.assign(
+        markerSelected.content as woosmap.map.marker.PinElement,
+        CITY_PIN_COLORS,
+      );
     }
 
     markerSelected = marker;
-    marker.setIcon(iconSelectedCity);
+    Object.assign(
+      marker.content as woosmap.map.marker.PinElement,
+      SELECTED_CITY_PIN_COLORS,
+    );
 
     const infoElement = document.getElementById("info") as HTMLElement;
     infoElement.innerHTML = `<strong>${cityData.cityName}</strong><span>: ${cityData.citizens}</span>`;
   };
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_marker_click_event]
 export {};

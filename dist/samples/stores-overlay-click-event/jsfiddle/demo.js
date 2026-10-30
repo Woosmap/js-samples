@@ -1,4 +1,6 @@
-function initMap() {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+
   const center = { lat: 51.52, lng: -0.13 };
   const style = {
     breakPoint: 14,
@@ -23,36 +25,35 @@ function initMap() {
       },
     },
   };
-  const map = new woosmap.map.Map(document.getElementById("map"), {
+  const map = document.getElementById("map").innerMap;
+
+  map.moveCamera({
     zoom: 13,
     center: center,
   });
+
   const storesOverlay = new woosmap.map.StoresOverlay(style);
 
   storesOverlay.setMap(map);
   // Configure the click listener.
-  window.woosmap.map.event.addListener(
-    map,
-    "store_selected",
-    (storeGeoJSON) => {
-      const getAddress = (store) =>
-        `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
-      const getPhone = (store) =>
-        `Phone: <a href='${store.contact.phone}'>${store.contact.phone}</a>`;
+  woosmap.map.event.addListener(map, "store_selected", (storeGeoJSON) => {
+    const getAddress = (store) =>
+      `${store.address.lines}, ${store.address.zipcode} ${store.address.city}`;
+    const getPhone = (store) =>
+      `Phone: <a href='${store.contact.phone}'>${store.contact.phone}</a>`;
 
-      function getStoreHTML(store) {
-        return `<div>
+    function getStoreHTML(store) {
+      return `<div>
                   <span><strong>${store.name}</strong></span>
                   <p>${getAddress(store)}</p>
                   <span>${getPhone(store)}</span>
                 </div>`;
-      }
+    }
 
-      const infoElement = document.getElementById("info");
+    const infoElement = document.getElementById("info");
 
-      infoElement.innerHTML = getStoreHTML(storeGeoJSON.properties);
-    },
-  );
+    infoElement.innerHTML = getStoreHTML(storeGeoJSON.properties);
+  });
 }
 
-window.initMap = initMap;
+initMap();

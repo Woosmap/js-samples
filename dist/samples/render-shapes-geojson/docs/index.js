@@ -2,8 +2,10 @@
 // Initialize and add the map
 let map;
 
-function initMap() {
-  map = new window.woosmap.map.Map(document.getElementById("map"), {
+async function initMap() {
+  await woosmap.map.importLibrary("maps");
+  map = document.getElementById("map").innerMap;
+  map.moveCamera({
     center: { lat: 53.51, lng: 8.15 },
     zoom: 4,
   });
@@ -49,5 +51,5 @@ function initMap() {
   }
 }
 
-window.initMap = initMap;
+initMap();
 // [END woosmap_render_shapes_geojson]

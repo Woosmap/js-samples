@@ -3,13 +3,11 @@ const woosmap_key = "YOUR_API_KEY";
 const countryRestrictions = ["GB", "JE", "IM", "GG"];
 const types = ["postal_code"];
 let map: woosmap.map.Map;
-let debouncedAutocomplete: (
-  ...args: any[]
-) => Promise<woosmap.map.localities.LocalitiesAutocompleteResponse>;
+let debouncedAutocomplete: typeof autocompleteAddress;
 let inputElement: HTMLInputElement;
 let suggestionsList: HTMLUListElement;
 let clearSearchBtn: HTMLButtonElement;
-let markerAddress: woosmap.map.Marker;
+let markerAddress: woosmap.map.marker.AdvancedMarkerElement;
 
 function init(): void {
   if (inputElement && suggestionsList) {
@@ -34,21 +32,27 @@ function init(): void {
   debouncedAutocomplete = debouncePromise(autocompleteAddress, 0);
 }
 
-function initMap(): void {
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
-    center: {
-      lat: 48.8534,
-      lng: 2.3488,
-    },
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+  await woosmap.map.importLibrary("marker");
+
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.setOptions({
     disableDefaultUI: true,
     gestureHandling: "greedy",
-    zoom: 5,
     styles: [
       {
         featureType: "poi",
         stylers: [{ visibility: "off" }],
       },
     ],
+  });
+  map.moveCamera({
+    center: {
+      lat: 48.8534,
+      lng: 2.3488,
+    },
+    zoom: 5,
   });
 }
 
@@ -172,15 +176,16 @@ function createAddressMarker(
     markerAddress.setMap(null);
   }
   if (addressDetail && addressDetail.geometry) {
-    markerAddress = new woosmap.map.Marker({
+    const { PinElement } = woosmap.map.marker;
+    const pin = new PinElement({
+      background: "#5588FF",
+      borderColor: "#3D6FE0",
+      glyphColor: "#FFFFFF",
+    });
+
+    markerAddress = new woosmap.map.marker.AdvancedMarkerElement({
       position: addressDetail.geometry.location,
-      icon: {
-        url: "https://images.woosmap.com/marker.png",
-        scaledSize: {
-          height: 59,
-          width: 37,
-        },
-      },
+      content: pin.element,
     });
     markerAddress.setMap(map);
     panMap(addressDetail);
@@ -211,8 +216,7 @@ function panMap(addressDetail: woosmap.map.localities.LocalitiesDetailsResult) {
     if (addressDetail.types[0] === "address") {
       zoom = 18;
     }
-    map.setZoom(zoom);
-    map.panTo(geometry.location);
+    map.moveCamera({ zoom, center: geometry.location });
   }
 }
 
@@ -260,17 +264,17 @@ function getLocalitiesDetails(
   ).then((response) => response.json());
 }
 
-type DebouncePromiseFunction<T, Args extends any[]> = (
+type DebouncePromiseFunction<T, Args extends unknown[]> = (
   ...args: Args
 ) => Promise<T>;
 
-function debouncePromise<T, Args extends any[]>(
+function debouncePromise<T, Args extends unknown[]>(
   fn: (...args: Args) => Promise<T>,
   delay: number,
 ): DebouncePromiseFunction<T, Args> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let latestResolve: ((value: T | PromiseLike<T>) => void) | null = null;
-  let latestReject: ((reason?: any) => void) | null = null;
+  let latestReject: ((reason?: unknown) => void) | null = null;
 
   return function (...args: Args): Promise<T> {
     return new Promise<T>((resolve, reject) => {
@@ -309,12 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
   init();
 });
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_localities_api_details_postalcodes]
 
 export {};

@@ -3,7 +3,7 @@
   "description": "Listen to this event to get the marker associated attributes.",
   "category": "Markers",
   "callback": "initMap",
-  "libraries": [],
+  "libraries": "marker",
   "tag": "marker_click_event",
   "name": "marker-click-event",
   "pagination": {
@@ -11,5 +11,6 @@
     "size": 1,
     "alias": "mode"
   },
-  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}"
+  "permalink": "samples/{{ page.fileSlug }}/{{mode}}/{% if mode == 'jsfiddle' %}demo{% else %}index{% endif %}.{{ page.outputFileExtension }}",
+  "loaderShim": true
 }

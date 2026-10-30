@@ -9,6 +9,10 @@ module.exports = function (content, outputPath) {
       "import.meta.env.VITE_WOOSMAP_PUBLIC_API_KEY!",
     );
     content = content.replace(
+      /"https:\/\/sdk\.woosmap\.com"/g,
+      "import.meta.env.VITE_WOOSMAP_SDK_HOST",
+    );
+    content = content.replace(
       /"YOUR_GOOGLE_API_KEY"/g,
       "import.meta.env.VITE_GOOGLE_API_KEY!",
     );

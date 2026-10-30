@@ -19,7 +19,7 @@ module.exports = {
       name: sample.data.title,
       authors: ["Woosmap"],
       tags: ["woosmap"],
-      load_type: "h",
+      load_type: "b",
       description: "Sample code for Woosmap Map JavaScript API",
     });
   },

@@ -2,7 +2,9 @@
 // Initialize and add the map
 let map: woosmap.map.Map;
 
-function initMap(): void {
+async function initMap(): Promise<void> {
+  await woosmap.map.importLibrary("maps");
+
   // [START woosmap_vector_map_instantiate_map]
   // The location of London
   const position: woosmap.map.LatLngLiteral = {
@@ -11,7 +13,8 @@ function initMap(): void {
   };
 
   // The map, centered at London
-  map = new woosmap.map.Map(document.getElementById("map") as HTMLElement, {
+  map = (document.getElementById("map") as woosmap.map.MapElement).innerMap;
+  map.moveCamera({
     zoom: 17,
     center: position,
   });
@@ -29,12 +32,7 @@ function initMap(): void {
   // [END woosmap_vector_tilt]
 }
 
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}
-window.initMap = initMap;
+initMap();
 // [END woosmap_vector_map]
 
 export {};

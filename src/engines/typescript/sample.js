@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const ts = require("typescript");
 const fs = require("fs");
 const path = require("path");

@@ -27,3 +27,4 @@ jobs:
             ${{ runner.os }}-node
       - run: npm i
       - run: npm run test:check
+      - run: npm run lint

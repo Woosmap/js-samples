@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch Release Event
-        uses: peter-evans/repository-dispatch@v2.1.2
+        uses: peter-evans/repository-dispatch@v4.0.1
         with:
           token: ${{ secrets.WOOSMAP_GH_ACCESS_TOKEN }}
           repository: woosmap/developers.woosmap.com

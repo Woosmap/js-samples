@@ -15,6 +15,7 @@ import sass from "./src/engines/sass.js";
 import stripRegionTags from "./src/transforms/strip-region-tags.js";
 import yourAPIKey from "./src/transforms/your-api-key.js";
 import format from "./src/transforms/format.js";
+import stripPrettierIgnore from "./src/transforms/strip-prettier-ignore.js";
 import minify from "./src/transforms/minify.js";
 
 dotenv.config();
@@ -100,7 +101,9 @@ export default function (eleventyConfig) {
                 throw new Error(`Expected asset ${asset.name} to be inlined.`);
             }
           }
-          return prettier.format(html, { parser: "html" });
+          return prettier
+            .format(html, { parser: "html" })
+            .then(stripPrettierIgnore);
         },
       },
     };

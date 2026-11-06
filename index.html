@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stores Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div class="search-panel" id="sidebar">
+        <div id="search-container">
+          <h3>Search Stores Nearby</h3>
+          <div id="search-input-container">
+            <input
+              type="text"
+              name="autocomplete"
+              id="autocomplete-input"
+              placeholder="Search an Address..."
+              autocomplete="off"
+            />
+            <button class="btn" type="submit" id="submit-button">
+              <span class="btnText" tabindex="-1">Search</span>
+            </button>
+          </div>
+        </div>
+        <div id="stores-panel">
+          <div class="stores-list">
+            <p style="padding: 0 0.8rem; font-size: 17px">
+              Enter an address to geocode and search stores nearby or click on
+              the map to reverse geocode and search around this location.
+            </p>
+          </div>
+        </div>
+      </div>
+      <wmp-map id="map"></wmp-map>
+    </div>
+
+    <!-- prettier-ignore -->
+    <script>
+      (g=>{var p,w=window,d=document,l="importLibrary",q="__ib__",e="The Woosmap Maps JavaScript API",o=w.woosmap||(w.woosmap={}),m=o.map||(o.map={}),r=new Set(String(g.libraries||"").split(",").filter(Boolean)),s=new URLSearchParams,u=()=>p||(p=new Promise((f,n)=>{var a=d.createElement("script");s.set("libraries",[...r]+"");for(var k in g)k!="libraries"&&g[k]&&s.set(k,g[k]);s.set("callback","woosmap.map."+q);a.src="https://sdk.woosmap.com/map/map.js?"+s;m[q]=f;a.onerror=()=>n(Error(e+" could not load."));a.nonce=d.querySelector("script[nonce]")?.nonce||"";d.head.append(a)}));m[l]?console.warn(e+" only loads once. Ignoring:",g):m[l]=(f,...n)=>r.add(f)&&u().then(()=>m[l](f,...n))})({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+      });
+    </script>
+  </body>
+</html>

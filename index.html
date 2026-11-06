@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Distance Isochrone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div id="selector">
+        <div class="select-container">
+          <span>mode </span>
+          <select id="isochrone-mode-select">
+            <option value="driving">Driving</option>
+            <option value="walking">Walking</option>
+            <option value="cycling">Cycling</option>
+          </select>
+        </div>
+        <div class="select-container">
+          <span>method </span>
+          <select id="isochrone-method-select">
+            <option value="time">Time</option>
+            <option value="distance">Distance</option>
+          </select>
+        </div>
+        <div class="select-container">
+          <span>value </span>
+          <input
+            id="isochrone-distance-input"
+            type="number"
+            value="50"
+            min="1"
+            max="120"
+          />
+        </div>
+        <div class="select-container">
+          <small style="opacity: 0.5; padding: 0 5px"
+            >click on the map to change isochrone origin</small
+          >
+        </div>
+      </div>
+      <wmp-map id="map"></wmp-map>
+    </div>
+
+    <!-- prettier-ignore -->
+    <script>
+      (g=>{var p,w=window,d=document,l="importLibrary",q="__ib__",e="The Woosmap Maps JavaScript API",o=w.woosmap||(w.woosmap={}),m=o.map||(o.map={}),r=new Set(String(g.libraries||"").split(",").filter(Boolean)),s=new URLSearchParams,u=()=>p||(p=new Promise((f,n)=>{var a=d.createElement("script");s.set("libraries",[...r]+"");for(var k in g)k!="libraries"&&g[k]&&s.set(k,g[k]);s.set("callback","woosmap.map."+q);a.src="https://sdk.woosmap.com/map/map.js?"+s;m[q]=f;a.onerror=()=>n(Error(e+" could not load."));a.nonce=d.querySelector("script[nonce]")?.nonce||"";d.head.append(a)}));m[l]?console.warn(e+" only loads once. Ignoring:",g):m[l]=(f,...n)=>r.add(f)&&u().then(()=>m[l](f,...n))})({
+        key: "woos-e1e5490b-19d1-34f8-9955-fd5cfc8c880f",
+        libraries: "marker",
+      });
+    </script>
+  </body>
+</html>
